@@ -1,0 +1,3 @@
+type CounterState = {
+  count: number;
+};
