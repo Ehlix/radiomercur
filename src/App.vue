@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
+import NavMain from "@/components/navigation/NavMain.vue";
+import Player from "@/components/player/Player.vue";
 </script>
 
 <template>
-  <header>
-    <div class="container">
-      <nav class="relative bg-gray-800">
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-  <RouterView />
+  <div class="flex flex-col shrink grow basis-auto">
+    <NavMain/>
+    <main class="container grow py-4">
+      <RouterView />
+    </main>
+    <Player/>
+  </div>
 </template>

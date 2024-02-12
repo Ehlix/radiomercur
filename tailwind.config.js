@@ -1,22 +1,21 @@
 // eslint-disable-next-line no-undef
-const animate = require("tailwindcss-animate")
+const animate = require("tailwindcss-animate");
 
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx,vue}',
-    './components/**/*.{ts,tsx,vue}',
-    './app/**/*.{ts,tsx,vue}',
-    './src/**/*.{ts,tsx,vue}',
-	],
+    "./pages/**/*.{ts,tsx,vue}",
+    "./components/**/*.{ts,tsx,vue}",
+    "./app/**/*.{ts,tsx,vue}",
+    "./src/**/*.{ts,tsx,vue}",
+  ],
   theme: {
     container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
+      // center: true,
+      padding: {
+        DEFAULT: "1.2rem",
+      }
     },
     extend: {
       transitionDuration: {
@@ -40,35 +39,36 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       colors: {
-        'mc-1': '#a5a5a5',
-        'mc-2': '#f78ac9',
-        'tc-1': '#111111',
-        'erc-1': '#d02d1e',
-        'shc-1': '#00000050',
-        'shc-2': '#00000070',
+        "mc-1": "var(--main-color-1)",
+        "mc-2": "var(--main-color-2)",
+        "mc-3": "var(--main-color-3)",
+        "tc-1": "var(--text-color-1)",
+        "tc-2": "var(--text-color-2)",
+        "tc-3": "var(--text-color-3)",
+        "btc-1": "var(--button-color-1)",
+        "btc-2": "var(--button-color-2)",
+        "erc-1": "var(--error-color-1)",
+        "shc-1": "var(--shadow-color-1)",
+        "shc-2": "var(--shadow-color-2)",
+        "scroll-bg": "var(--scroll-background)",
       },
     },
     screens: {
-      xl: {max: "1279px"},
+      xl: { max: "1279px" },
       // => @media (max-width: 1279px) { ... }
 
-      lg: {max: "1023px"},
+      lg: { max: "1023px" },
       // => @media (max-width: 1023px) { ... }
 
-      md: {max: "800px"},
+      md: { max: "800px" },
       // => @media (max-width: 800px) { ... }
 
-      sm: {max: "639px"},
+      sm: { max: "639px" },
       // => @media (max-width: 639px) { ... }
 
-      xs: {max: "400px"},
+      xs: { max: "400px" },
       // => @media (max-width: 400px) { ... }
-    },
-  container: {
-    padding: {
-      DEFAULT: '1.3vw'
-    },
     },
   },
   plugins: [animate],
-}
+};

@@ -10,10 +10,27 @@
   font-weight: normal;
 }
 
+:root {
+  --main-color-1: #a5a5a5;
+  --main-color-2: #f78ac9;
+  --main-color-3: #d60000;
+  --text-color-1: #111111;
+  --text-color-2: #d60000;
+  --text-color-3: #111111;
+  --button-color-1: #111111;
+  --button-color-2: #111111;
+  --error-color-1: #d02d1e;
+  --shadow-color-1: #00000050;
+  --shadow-color-2: #00000070;
+  --scroll-background: #929292;
+}
+
 body {
+  width: 100%;
   min-height: 100vh;
-  color: theme(colors.tc-1);
-  background: theme(colors.mc-1);
+  overflow-x: hidden;
+  color: var(--text-color-1);
+  background: var(--main-color-1);
   line-height: 1.6;
   font-family:
     Inter,
@@ -32,4 +49,37 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  display: flex;
+  overflow-x: hidden;
+  height: inherit;
+  min-height: inherit;
+  width: inherit;
+}
+
+*::-webkit-scrollbar {
+  /*@apply h-[17px] w-[10px] md:h-[10px]*/
+  height: 17px;
+  width: 7px; /* ширина всей полосы прокрутки */
+}
+
+@media (max-width: 767px) {
+  *::-webkit-scrollbar {
+      height: 10px;
+  }
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scroll-background);
+  /*@apply bg-opacity-0 bg-t-main;*/
+  /* цвет зоны отслеживания */
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--main-color-2); /* цвет бегунка */
+  border-radius: 3px; /* округлось бегунка */
+  /*border: 3px solid orange;  !* отступ вокруг бегунка *!*/
+  /*@apply bg-t-main rounded-[3px]*/
 }
