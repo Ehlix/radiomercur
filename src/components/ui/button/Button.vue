@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { Primitive, type PrimitiveProps } from 'radix-vue'
-import { type ButtonVariants, buttonVariants } from '.'
-import { cn } from '@/lib/utils/twMerge'
-import type { _RouterLinkI } from 'vue-router';
+import type { HTMLAttributes } from "vue";
+import { Primitive, type PrimitiveProps } from "radix-vue";
+import { type ButtonVariants, buttonVariants } from ".";
+import { cn } from "@/lib/utils/twMerge";
+import type { _RouterLinkI } from "vue-router";
 
 interface Props extends PrimitiveProps {
-  variant?: ButtonVariants['variant']
-  size?: ButtonVariants['size']
-  as?: string | _RouterLinkI
-  class?: HTMLAttributes['class']
+  variant?: ButtonVariants["variant"];
+  size?: ButtonVariants["size"];
+  as?: string | _RouterLinkI;
+  class?: HTMLAttributes["class"];
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  as: 'button'
-})
+  as: "button",
+});
 </script>
 
 <template>
@@ -26,4 +26,3 @@ const props = withDefaults(defineProps<Props>(), {
     <slot />
   </Primitive>
 </template>
-@/lib/twMerge

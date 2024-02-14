@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Icon from "@/components/ui/icon/Icon.vue";
+import XIcon from "@/components/ui/icon/Icon.vue";
 import { navList } from "@/lib/static/navList";
 import { useRouter } from "vue-router";
 
@@ -20,7 +20,7 @@ const pushHandler = (link: string) => {
       >
         <div class="inner-rhomb bg-red-100">
           <div class="flex gap-2">
-            <Icon :icon="item.icon"  class="sm:hidden"/>
+            <x-icon :icon="item.icon"  class="sm:hidden"/>
             <span class="capitalize">
               {{ item.title }}
             </span>

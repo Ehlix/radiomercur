@@ -18,7 +18,7 @@ export const navList: NavList[] = [
     icon: ListMusic,
   },
   {
-    title: "search",
+    title: "find stations",
     link: "/search",
     icon: Search,
   },

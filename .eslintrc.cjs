@@ -14,14 +14,14 @@ module.exports = {
   },
   overrides: [
     {
-      rules: {
-        'vue/multi-word-component-names': [
-          'error',
-          {
-            ignores: ['default']
-          }
-        ]
-      }
+      // rules: {
+      //   'vue/multi-word-component-names': [
+      //     'error',
+      //     {
+      //       ignores: ['default']
+      //     }
+      //   ]
+      // }
     }
   ]
 }

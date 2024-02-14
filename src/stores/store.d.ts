@@ -1,3 +1,0 @@
-type CounterState = {
-  count: number;
-};

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Icon from "@/components/ui/icon/Icon.vue";
+import XIcon from "@/components/ui/icon/Icon.vue";
 import { navList } from "@/lib/static/navList";
 import { cn } from "@/lib/utils/twMerge";
 import SettingsBar from "@/components/navigation/SettingsBar.vue";
@@ -13,7 +13,8 @@ const nav = ref<Element | null>(null);
 const scrollVisible = ref(false);
 
 const scrollCheck = () => {
-  scrollVisible.value = window.innerWidth !== document.documentElement.clientWidth;
+  scrollVisible.value =
+    window.innerWidth !== document.documentElement.clientWidth;
 };
 
 onMounted(() => {
@@ -33,34 +34,34 @@ onUnmounted(() => {
     class="fixed left-0 top-0 flex h-16 w-full items-center justify-center bg-mc-1"
   >
     <nav ref="nav" class="container grid h-16 w-full grid-cols-[1fr_auto_1fr]">
-      <div class="h-full min-w-16 py-1 flex">
-        <RouterLink to="/" class="w-fit">
+      <div class="flex h-full min-w-16 py-1">
+        <router-link to="/" class="w-fit">
           <img src="/logo.svg" class="h-14" alt="logo" />
-        </RouterLink>
+        </router-link>
       </div>
       <div
         :class="
-          cn(`flex items-center justify-center gap-5`, {
+          cn(`flex justify-center`, {
             hidden: hideElem,
             ['ml-[7px]']: scrollVisible,
           })
         "
       >
-        <RouterLink
-          v-for="item of navList"
-          :to="item.link"
-          class="bg-mc-2 p-1 px-4"
+        <div
+          class="flex items-center justify-center gap-5 *:h-10 *:bg-mc-2 *:p-1 *:px-4"
         >
-          <div class="flex gap-2">
-            <Icon :icon="item.icon" />
-            <span class="capitalize">
-              {{ item.title }}
-            </span>
-          </div>
-        </RouterLink>
+          <router-link v-for="item of navList" :to="item.link">
+            <div class="flex gap-2">
+              <x-icon :icon="item.icon" />
+              <span class="capitalize">
+                {{ item.title }}
+              </span>
+            </div>
+          </router-link>
+        </div>
       </div>
       <div class="col-start-3 flex items-center justify-end">
-        <SettingsBar />
+        <settings-bar />
       </div>
     </nav>
   </header>
