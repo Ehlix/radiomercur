@@ -14,7 +14,7 @@ export default {
     container: {
       // center: true,
       padding: {
-        DEFAULT: "1.2rem",
+        DEFAULT: "0.25rem",
       }
     },
     extend: {
@@ -33,23 +33,35 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
+        'collapsible-down': {
+          from: { height: 0 },
+          to: { height: 'var(--radix-collapsible-content-height)' },
+        },
+        'collapsible-up': {
+          from: { height: 'var(--radix-collapsible-content-height)' },
+          to: { height: 0 },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        'collapsible-down': 'collapsible-down 0.2s ease-in-out',
+        'collapsible-up': 'collapsible-up 0.2s ease-in-out',
       },
       colors: {
         "mc-1": "var(--main-color-1)",
         "mc-2": "var(--main-color-2)",
         "mc-3": "var(--main-color-3)",
+        "mc-4": "var(--main-color-4)",
         "tc-1": "var(--text-color-1)",
         "tc-2": "var(--text-color-2)",
         "tc-3": "var(--text-color-3)",
+        "erc-1": "var(--error-color-1)",
         "btc-1": "var(--button-color-1)",
         "btc-2": "var(--button-color-2)",
-        "erc-1": "var(--error-color-1)",
         "shc-1": "var(--shadow-color-1)",
         "shc-2": "var(--shadow-color-2)",
+        "opc-1": "var(--opacity-color-1)",
         "scroll-bg": "var(--scroll-background)",
       },
     },

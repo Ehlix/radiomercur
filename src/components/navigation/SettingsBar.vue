@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Settings2 } from "lucide-vue-next";
+import XIcon from "../ui/icon/Icon.vue";
 import {
-  Sheet,
+  Sheet as XSheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -11,17 +12,17 @@ import {
 </script>
 
 <template>
-  <Sheet >
-    <SheetTrigger>
-      <Settings2 class="text-tc-2" />
-    </SheetTrigger>
-    <SheetContent>
-      <SheetHeader>
-        <SheetTitle>Settings</SheetTitle>
-        <SheetDescription>
-          
-        </SheetDescription>
-      </SheetHeader>
-    </SheetContent>
-  </Sheet>
+  <x-sheet >
+    <sheet-trigger>
+      <x-icon :icon="Settings2" class="text-tc-2"/>
+    </sheet-trigger>
+    <sheet-content side="right" class="backdrop-blur-md bg-mc-4">
+      <sheet-header>
+        <sheet-title>Settings</sheet-title>
+        <sheet-description>
+
+        </sheet-description>
+      </sheet-header>
+    </sheet-content>
+  </x-sheet>
 </template>

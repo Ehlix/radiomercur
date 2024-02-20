@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { computed } from "vue";
 import { Search } from "lucide-vue-next";
+import { cn } from "@/lib/utils/twMerge";
 
 type Props = {
   icon: typeof Search;
   size?: number;
-  color?: string;
   strokeWidth?: number;
-  defaultClass?: string;
+  class?:string
 };
 
 const props = defineProps<Props>();
@@ -16,9 +15,8 @@ const props = defineProps<Props>();
 <template>
   <component
     :is="icon"
-    :size="size"
-    :color="color"
+    :size="size || 24"
     :stroke-width="strokeWidth"
-    :default-class="defaultClass"
+    :class="cn('text-tc-1', props.class)"
   />
 </template>

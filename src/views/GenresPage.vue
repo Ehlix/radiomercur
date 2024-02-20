@@ -7,7 +7,7 @@ const searchStore = useSearchStations();
 const router = useRouter();
 
 const goToSearch = (name: string) => {
-  searchStore.clearStationsList();
+  searchStore.clearSearch();
   searchStore.searchStations(name);
   router.push("/search");
 };

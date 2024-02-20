@@ -3,45 +3,44 @@ import { defineStore } from "pinia";
 import { getBaseUrls } from "@/api/getBaseUrls";
 
 export const useBaseUrl = defineStore("baseUrl", () => {
-  const baseUrls = ref<BaseURL[]>([]);
+  const mainServerIsActive = ref(true);
+  const allBaseUrls = ref<BaseURL[]>([]);
   const baseUrl = ref<BaseURL>(undefined);
-  const refreshBaseUrlsCount = ref(0);
 
-  const setBaseUrls = async () => {
-    try {
-      const hosts = await getBaseUrls();
-      if (hosts) {
-        baseUrls.value = hosts;
-        refreshBaseUrlsCount.value++;
-      }
-      return;
-    } catch (error) {
-      console.log(error);
+  getBaseUrls().then((hosts) => {
+    if (!hosts) {
+      return (mainServerIsActive.value = false);
     }
-  };
-  setBaseUrls();
+    allBaseUrls.value = hosts;
+  });
 
-  watch([baseUrls, baseUrl], () => {
-    if (baseUrls.value.length && !baseUrl.value) {
+  watch([allBaseUrls, baseUrl], () => {
+    if (allBaseUrls.value.length && !baseUrl.value) {
       setBaseUrl();
     }
   });
 
+  watch(mainServerIsActive, () => {
+    console.log('Main server offline')
+  })
+
   const setBaseUrl = async () => {
-    if (refreshBaseUrlsCount.value === 2) {
-      console.log('Servers is down')
-      return
-    }
-    if (baseUrls.value.length === 0) {
-      await setBaseUrls();
+    if (!mainServerIsActive.value) {
+      console.log("Servers is down");
+      return;
     }
     if (baseUrl.value) {
-      baseUrls.value.filter((url) => url !== baseUrl.value);
+      allBaseUrls.value.filter((url) => url !== baseUrl.value);
+      if (!allBaseUrls.value.length) {
+        baseUrl.value = undefined;
+        mainServerIsActive.value = false;
+        return;
+      }
     }
     baseUrl.value =
-      baseUrls.value[Math.floor(Math.random() * baseUrls.value.length)];
+      allBaseUrls.value[Math.floor(Math.random() * allBaseUrls.value.length)];
     return;
   };
 
-  return { baseUrl, setBaseUrl };
+  return { baseUrl, setBaseUrl, mainServerIsActive };
 });

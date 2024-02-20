@@ -1,50 +1,85 @@
-import { useBaseUrl } from "@/stores/baseUrl";
-import axios from "axios";
+import axios, { type AxiosProgressEvent } from "axios";
 
-const store = useBaseUrl();
-
-const handleError = async () => {
-  await store.setBaseUrl();
-  return;
-};
-
-export const getStations = async (url: string, dataParams: DataParams) : Promise<Station[]> => {
-  if (!store.baseUrl) {
-    await store.setBaseUrl();
-  }
+const getStations = async (
+  baseUrl: string,
+  url: string,
+  dataParams: DataParams,
+  downloadProgressFn?: (progressEvent: AxiosProgressEvent) => void,
+): Promise<Station[] | null> => {
   const controller = new AbortController();
 
   try {
     const result = await axios({
       method: "POST",
-      baseURL: store.baseUrl,
+      baseURL: baseUrl,
       url: url,
       headers: { "content-type": "application/x-www-form-urlencoded" },
       data: dataParams,
       signal: controller?.signal,
+      onDownloadProgress: downloadProgressFn,
     });
     return result.data;
   } catch (error) {
-    console.log(error)
-      await handleError();
-      return await getStations(url, dataParams);
+    return null;
   }
 };
 
-export const getCurrentStation = async (url: string) => {
-  if (!store.baseUrl) {
-    await store.setBaseUrl();
-  }
+export const getAllStations = (
+  baseUrl: string,
+  dataParams: DataParams,
+  downloadProgressFn?: (progressEvent: AxiosProgressEvent) => void,
+) => {
+  return getStations(baseUrl, "/stations/search", dataParams, downloadProgressFn);
+};
 
+export const getAllStationsMostVoted = (
+  baseUrl: string,
+  dataParams: DataParams,
+  downloadProgressFn?: (progressEvent: AxiosProgressEvent) => void,
+) => {
+  return getStations(baseUrl, "/stations/topvote", dataParams, downloadProgressFn);
+};
+
+const getRequest = async (
+  baseUrl: string,
+  url: string,
+  uploadProgressFn?: (progressEvent: AxiosProgressEvent) => void,
+): Promise<Station | null> => {
   try {
     const result = await axios({
       method: "GET",
-      baseURL: store.baseUrl,
+      baseURL: baseUrl,
       url: url,
+      onUploadProgress: uploadProgressFn,
     });
 
     return result.data;
   } catch (error) {
     console.log(error);
+    return null;
   }
+};
+
+export const getStationInfoById = (
+  baseUrl: string,
+  stationId: string,
+  downloadProgressFn?: (progressEvent: AxiosProgressEvent) => void,
+) => {
+  return getRequest(baseUrl, `stations/byuuid?uuids=${stationId}`, downloadProgressFn);
+};
+
+export const sendStationClick = (
+  baseUrl: string,
+  stationId: string,
+  downloadProgressFn?: (progressEvent: AxiosProgressEvent) => void,
+) => {
+  return getRequest(baseUrl, `/url/${stationId}`, downloadProgressFn);
+};
+
+export const voteForStation = (
+  baseUrl: string,
+  stationId: string,
+  downloadProgressFn?: (progressEvent: AxiosProgressEvent) => void,
+) => {
+  return getRequest(baseUrl, `/vote/${stationId}`, downloadProgressFn);
 };
