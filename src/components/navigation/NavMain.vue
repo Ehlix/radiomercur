@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils/twMerge";
 import SettingsBar from "@/components/navigation/SettingsBar.vue";
 import { computed, ref, onMounted, onUnmounted } from "vue";
 import PlayerMain from "@/components/player/PlayerMain.vue";
+import shadowOverlay from "../ui/shadowOverlay/shadowOverlay.vue";
 
 const nav = ref<Element | null>(null);
 const scrollVisible = ref(false);
@@ -26,19 +27,30 @@ onUnmounted(() => {
   }
 });
 </script>
+
 <template>
-  <div class="h-24 w-full">
-    <header
-      class="fixed left-0 top-0 z-50 flex h-20 w-full items-center justify-center bg-mc-1"
-    >
-      <nav ref="nav" class="container flex h-full w-full">
-        <div to="/" class="flex h-full items-center justify-center">
-          <img src="/logo.svg" class="h-20" alt="logo" />
-        </div>
+  <header class="z-50 flex h-fit w-full items-center justify-center">
+    <nav ref="nav" class="flex h-full w-full gap-2">
+      <!-- Logo -->
+      <div
+        class="flex overflow-hidden relative rounded h-full w-[10%] min-w-[10%] items-center justify-center bg-mc-3"
+      >
+      <shadow-overlay />
+        <h1 class="hidden">Radio Mercur</h1>
+        <img src="/logo.svg" class="size-20" alt="logo" />
+      </div>
+      <!-- Player -->
+      <div class="flex overflow-hidden relative h-fit w-full flex-col bg-mc-2 rounded">
+        <shadow-overlay />
         <player-main />
-      </nav>
-    </header>
-  </div>
+      </div>
+      <!-- Settings -->
+      <div class="flex overflow-hidden relative w-[10%] min-w-[10%] bg-mc-3 rounded">
+        <shadow-overlay />
+        <settings-bar />
+      </div>
+    </nav>
+  </header>
 </template>
 
 <style scoped></style>

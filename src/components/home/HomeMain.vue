@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import StationsInspector from "./StationsInspector.vue";
 import DoublePanel from "./DoublePanel.vue";
+import FavoriteMain from "@/components/favorite/FavoriteMain.vue";
+import SearchMain from "@/components/search/SearchMain.vue";
 </script>
 
 <template>
   <double-panel>
     <template #left-panel>
-      <stations-inspector />
+      <favorite-main />
     </template>
     <template #right-panel>
-      <stations-inspector />
+      <search-main />
     </template>
   </double-panel>
 </template>

@@ -11,21 +11,52 @@
 }
 
 :root {
-  --main-color-1: #a5a5a5;
-  --main-color-2: #f78ac9;
-  --main-color-3: #d60000;
-  --main-color-4: #f3f3f3;
+  --main-color-1: #f0e8e8;
+  --main-color-2: #443d58;
+  --main-color-3: #f48032;
+  --main-color-4: #b7b7b7;
+  --text-color-1: #f0e8e8;
+  --text-color-2: #f94020;
+  --text-color-3: #7b604e;
+  --text-color-4: #443d58;
+  --hover-color-1: #736a8d;
+  --hover-color-2: #6e3eff;
+  --hover-color-3: #908686;
+  --shadow-color-1: #00000050;
+  --shadow-color-2: #00000070;
+  --opacity-color-1: #00aaff;
+  --scroll-background: #443d58;
+}
+
+/* --main-color-1: #1d1c1f;
+--main-color-2: #82718d;
+--main-color-3: #f0dcdc;
+--main-color-4: #a69994;
+--text-color-1: #0d0d0d;
+--text-color-2: #ac047a;
+--text-color-3: #ffffff;
+--error-color-1: #d02d1e;
+--button-color-1: #111111;
+--button-color-2: #111111;
+--shadow-color-1: #00000050;
+--shadow-color-2: #00000070;
+--opacity-color-1: #1f1919;
+--scroll-background: #929292; */
+
+/* --main-color-1: #1f1919;
+  --main-color-2: #f03f1f;
+  --main-color-3: #efefef;
+  --main-color-4: #f08842;
   --text-color-1: #111111;
-  --text-color-2: #111111;
-  --text-color-3: #d60000;
+  --text-color-2: #4625b4;
+  --text-color-3: #efefef;
   --error-color-1: #d02d1e;
   --button-color-1: #111111;
   --button-color-2: #111111;
   --shadow-color-1: #00000050;
   --shadow-color-2: #00000070;
-  --opacity-color-1: #a5a5a55c;
-  --scroll-background: #929292;
-}
+  --opacity-color-1: #1f1919;
+  --scroll-background: #929292; */
 
 body {
   width: 100%;
@@ -33,7 +64,6 @@ body {
   overflow-x: hidden;
   color: var(--text-color-1);
   background: var(--main-color-1);
-  line-height: 1.6;
   font-family:
     Inter,
     -apple-system,
@@ -47,31 +77,32 @@ body {
     "Droid Sans",
     "Helvetica Neue",
     sans-serif;
-  font-size: theme(fontSize.lg);
+  font-size: 1rem /* 16px */;
+  line-height: 1.5rem /* 24px */;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1 {
+  @apply text-2xl
+}
+
+h2 {
+  @apply text-xl;
+}
+
 #app {
-  display: flex;
-  overflow-x: hidden;
-  height: inherit;
-  min-height: inherit;
-  width: inherit;
+  @apply flex h-[100vh] w-full shrink grow overflow-hidden;
 }
 
 ::-webkit-scrollbar {
   /*@apply h-[17px] w-[10px] md:h-[10px]*/
   height: 17px;
   width: 7px;
-  * {
-    scrollbar-color: none;
-    scrollbar-width: none; /* ширина всей полосы прокрутки */
-  }
 }
-.ff-scroll {
-  scrollbar-color: var(--main-color-2) var(--scroll-background);
+aa {
+  scrollbar-color: var(--hover-color-1) var(--scroll-background);
   scrollbar-width: thin;
 }
 
@@ -88,9 +119,9 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--main-color-2); /* цвет бегунка */
+  background-color: var(--hover-color-1); /* цвет бегунка */
   /* округлось бегунка */
-  /* border-radius: 3px;  */
+  /* border-radius: 3px; */
   /*border: 3px solid orange;  !* отступ вокруг бегунка *!*/
   /*@apply bg-t-main rounded-[3px]*/
 }

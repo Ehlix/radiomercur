@@ -57,13 +57,13 @@ watch(selectedStation, () => {
 </script>
 
 <template>
-  <div :class="cn('flex h-fit w-full flex-col bg-mc-2')">
+
     <collapsible v-model:open="chevronIsOpen">
 
-      <div class="mx-1 h-full w-full">
+      <div class=" h-full w-full">
         <div class="flex h-full gap-2">
           <div class="flex items-center justify-center">
-            <collapsible-trigger class="w-5 bg-mc-2">
+            <collapsible-trigger class="w-5">
               <chevron-up v-if="!chevronIsOpen" />
               <chevron-down v-else />
             </collapsible-trigger>
@@ -106,12 +106,11 @@ watch(selectedStation, () => {
         <div>Music source: {{ selectedStation?.url }}</div>
       </collapsible-content>
     </collapsible>
-  </div>
   <audio
     ref="player"
     :src="streamLink"
     @change="togglePlay()"
     @canplay="autoPlay()"
-    autoplay
+
   ></audio>
 </template>

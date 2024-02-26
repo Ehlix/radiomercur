@@ -14,8 +14,8 @@ export default {
     container: {
       // center: true,
       padding: {
-        DEFAULT: "0.25rem",
-      }
+        DEFAULT: "0.5rem",
+      },
     },
     extend: {
       transitionDuration: {
@@ -33,20 +33,28 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
-        'collapsible-down': {
+        "collapsible-down": {
           from: { height: 0 },
-          to: { height: 'var(--radix-collapsible-content-height)' },
+          to: { height: "var(--radix-collapsible-content-height)" },
         },
-        'collapsible-up': {
-          from: { height: 'var(--radix-collapsible-content-height)' },
+        "collapsible-up": {
+          from: { height: "var(--radix-collapsible-content-height)" },
           to: { height: 0 },
+        },
+        fadeIn: {
+          '0%': {
+            opacity: '0',
+          },
+          '100%': {
+            opacity: '1',
+          },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        'collapsible-down': 'collapsible-down 0.2s ease-in-out',
-        'collapsible-up': 'collapsible-up 0.2s ease-in-out',
+        "collapsible-down": "collapsible-down 0.2s ease-in-out",
+        "collapsible-up": "collapsible-up 0.2s ease-in-out",
       },
       colors: {
         "mc-1": "var(--main-color-1)",
@@ -56,9 +64,10 @@ export default {
         "tc-1": "var(--text-color-1)",
         "tc-2": "var(--text-color-2)",
         "tc-3": "var(--text-color-3)",
-        "erc-1": "var(--error-color-1)",
-        "btc-1": "var(--button-color-1)",
-        "btc-2": "var(--button-color-2)",
+        "tc-4": "var(--text-color-4)",
+        "hc-1": "var(--hover-color-1)",
+        "hc-2": "var(--hover-color-2)",
+        "hc-3": "var(--hover-color-3)",
         "shc-1": "var(--shadow-color-1)",
         "shc-2": "var(--shadow-color-2)",
         "opc-1": "var(--opacity-color-1)",

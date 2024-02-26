@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import shadowOverlay from "../ui/shadowOverlay/shadowOverlay.vue";
+import { type HTMLAttributes, computed, onMounted, ref, watch } from "vue";
 import { useResizeObserver } from "@vueuse/core";
+import { cn } from "@/lib/utils/twMerge";
 
-const DRAGGER_SIZE = 4;
+// const props = defineProps<{
+//   class?: HTMLAttributes["class"];
+// }>();
+
+const DRAGGER_SIZE = 8;
 const LEFT_MAX_SCALE = 0.9;
-const RIGHT_MAX_SCALE = 0.1;
+const rightMaxScale = ref(0.1);
 const shell = ref<HTMLDivElement>();
 const leftPanel = ref<HTMLDivElement>();
 const rightPanel = ref<HTMLDivElement>();
@@ -27,7 +33,7 @@ const resize = (event: MouseEvent) => {
   mousePosition.value = event.x;
   const total = parseInt(getComputedStyle(rightPanel.value, "").width) + dx;
   const currentScale = total / shellWidth.value;
-  if (currentScale > RIGHT_MAX_SCALE && currentScale < LEFT_MAX_SCALE) {
+  if (currentScale > rightMaxScale.value && currentScale < LEFT_MAX_SCALE) {
     resizingScale.value = currentScale;
   }
 };
@@ -44,7 +50,7 @@ const startDragHandler = (event: MouseEvent) => {
 };
 
 const goToRight = () => {
-  resizingScale.value = RIGHT_MAX_SCALE;
+  resizingScale.value = rightMaxScale.value;
 };
 const goToLeft = () => {
   resizingScale.value = LEFT_MAX_SCALE;
@@ -53,17 +59,26 @@ const goToCenter = () => {
   resizingScale.value = 0.5;
 };
 
-const switcherHandler = (status: number) => {
-  switch (status) {
-    case 1:
-      goToRight();
-      break;
-    case 2:
+const uiSwitchHandler = (event: WheelEvent) => {
+  if (event.deltaY > 0) {
+    if (showRightOverlay.value) {
       goToCenter();
-      break;
-    case 3:
+      return;
+    }
+    if (!showLeftOverlay.value && !showRightOverlay.value) {
       goToLeft();
-      break;
+      return;
+    }
+  }
+  if (event.deltaY < 0) {
+    if (showLeftOverlay.value) {
+      goToCenter();
+      return;
+    }
+    if (!showLeftOverlay.value && !showRightOverlay.value) {
+      goToRight();
+      return;
+    }
   }
 };
 
@@ -84,6 +99,7 @@ useResizeObserver(shell, (entries) => {
   const entry = entries[0];
   const { width, height } = entry.contentRect;
   shellWidth.value = width | 0;
+  rightMaxScale.value = Math.trunc((0.1 + DRAGGER_SIZE / width) * 1000) / 1000;
 });
 
 watch([resizingScale, shellWidth], () => {
@@ -96,28 +112,28 @@ watch([resizingScale, shellWidth], () => {
 </script>
 
 <template>
-  <div class="flex h-full w-full flex-col items-center justify-center gap-1">
+  <div
+    :class="cn('flex h-full w-full flex-col items-center justify-center gap-2')"
+  >
     <!-- Shell -->
-    <div
-      ref="shell"
-      class="relative flex h-full w-full *:*:border *:*:border-mc-3 *:*:*:py-4"
-    >
+    <div ref="shell" class="relative flex h-full w-full overflow-hidden">
       <!-- Left panel -->
       <div
         ref="leftPanel"
-        class="absolute bottom-0 left-0 right-[90%] top-0"
+        class="absolute bottom-0 left-0 right-[90%] top-0 overflow-hidden rounded"
         :class="{
           ' duration-400 transition-all': !dragStart,
         }"
       >
-        <div class="relative h-full w-full bg-red-200/50">
+        <div class="relative h-full w-full">
+          <shadow-overlay />
           <button
             @click="goToRight"
-            class="absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center bg-opc-1 backdrop-blur-md"
+            class="absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center bg-mc-2 transition hover:bg-hc-1"
             :class="{ hidden: !showLeftOverlay }"
           >
             <div class="z-20 flex -rotate-90 flex-nowrap text-nowrap text-xl">
-              My stationsList
+              Favorite stations
             </div>
           </button>
 
@@ -127,15 +143,16 @@ watch([resizingScale, shellWidth], () => {
       <!-- Right panel -->
       <div
         ref="rightPanel"
-        class="absolute bottom-0 right-0 top-0 w-[90%] pl-1"
+        class="absolute bottom-0 right-0 top-0 w-[90%] pl-2"
         :class="{
           ' duration-400 transition-all': !dragStart,
         }"
       >
-        <div class="relative h-full w-full bg-red-100/40">
+        <div class="relative h-full w-full overflow-hidden rounded">
+          <shadow-overlay />
           <button
             @click="goToLeft"
-            class="absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center bg-opc-1 backdrop-blur-md"
+            class="absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center bg-mc-2 transition hover:bg-hc-1"
             :class="{ hidden: !showRightOverlay }"
           >
             <div class="z-20 flex rotate-90 flex-nowrap text-nowrap text-xl">
@@ -147,23 +164,27 @@ watch([resizingScale, shellWidth], () => {
         <!-- Dragger -->
         <div
           @mousedown="startDragHandler"
-          class="absolute left-0 top-0 z-40 h-full w-1 cursor-ew-resize border-none"
+          class="absolute left-0 top-0 z-40 h-full w-2 cursor-ew-resize border-none"
         ></div>
       </div>
     </div>
     <!-- Switcher bar -->
     <div
-      class="flex h-3 w-full overflow-hidden border border-mc-3 bg-red-900/50"
+      @wheel="uiSwitchHandler"
+      class="flex h-3 w-full gap-2 overflow-hidden *:relative *:size-full *:rounded *:bg-mc-3 *:transition-all hover:*:bg-hc-1 disabled:*:bg-mc-2"
+      :class="{
+        'even:*:bg-mc-2': !showRightOverlay && !showLeftOverlay,
+      }"
     >
-      <button
-        v-for="i in 3"
-        :key="i"
-        @click="() => switcherHandler(i)"
-        class="h-full w-full transition-all duration-300 hover:bg-mc-3"
-        :class="{
-          'border-x border-mc-3': i === 2,
-        }"
-      ></button>
+      <button :disabled="showRightOverlay" @click="goToRight">
+        <shadow-overlay />
+      </button>
+      <button :disabled="resizingScale === 0.5" @click="goToCenter">
+        <shadow-overlay />
+      </button>
+      <button :disabled="showLeftOverlay" @click="goToLeft">
+        <shadow-overlay />
+      </button>
     </div>
   </div>
 </template>

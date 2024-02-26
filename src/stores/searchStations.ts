@@ -55,6 +55,7 @@ export const useSearchStations = defineStore("searchStations", () => {
     if (!debSearch.value) {
       return;
     }
+    stationsList.value = [];
     searchStations(debSearch.value);
   });
 
