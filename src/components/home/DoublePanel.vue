@@ -171,7 +171,7 @@ watch([resizingScale, shellWidth], () => {
     <!-- Switcher bar -->
     <div
       @wheel="uiSwitchHandler"
-      class="flex h-3 w-full gap-2 overflow-hidden *:relative *:size-full *:rounded *:bg-mc-3 *:transition-all hover:*:bg-hc-1 disabled:*:bg-mc-2"
+      class="flex h-3 w-full gap-2 overflow-hidden *:relative *:size-full *:rounded *:bg-mc-3 *:overflow-hidden *:transition-all hover:*:bg-hc-1 disabled:*:bg-mc-2"
       :class="{
         'even:*:bg-mc-2': !showRightOverlay && !showLeftOverlay,
       }"

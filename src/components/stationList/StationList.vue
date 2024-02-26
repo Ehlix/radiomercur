@@ -5,7 +5,7 @@ import { Play } from "lucide-vue-next";
 import shadowOverlay from "../ui/shadowOverlay/shadowOverlay.vue";
 import XImage from "@/components/ui/image/Image.vue";
 import XIcon from "@/components/ui/icon/Icon.vue";
-
+import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 const { stationsList } = defineProps<{
   stationsList: Station[];
 }>();
@@ -14,13 +14,9 @@ const emits = defineEmits<{
   (e: "selectStation", station: Station): void;
 }>();
 
-const removeMetadata = (text: string) => {
-  return text.replace(/ *\([^)]*\) */g, "");
-};
-
 const selectStation = (station: Station) => {
-  emits("selectStation", station)
-}
+  emits("selectStation", station);
+};
 </script>
 
 <template>
@@ -58,16 +54,13 @@ const selectStation = (station: Station) => {
             v-if="station.homepage"
             :href="station.homepage"
             target="_blank"
-            class="text-tc-2 transition-all hover:text-hc-1"
+            class="text-tc-2 transition-all hover:text-hc-2"
           >
             Home page
           </a>
         </div>
-        <div v-if="station.countrycode" class="flex items-center gap-1">
-          <x-image
-            :src="getFlagImage(station.countrycode)"
-            class="h-5 w-8"
-          />
+        <div v-if="station.countrycode" class="flex items-center gap-1 mb-1">
+          <x-image :src="getFlagImage(station.countrycode)" class="h-5 w-8" />
           <p>
             {{ countriesList[station.countrycode] }}
           </p>

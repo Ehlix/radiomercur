@@ -1,23 +1,43 @@
 <script setup lang="ts">
 import { cn } from "@/lib/utils/twMerge";
 import XImage from "@/components/ui/image/Image.vue";
-import { ref, watch } from "vue";
+import { computed, ref, watch, watchEffect } from "vue";
 import { ChevronDown, ChevronUp, Play, Pause } from "lucide-vue-next";
 import { storeToRefs } from "pinia";
+import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 import { useUserStations } from "@/stores/userStations";
+import { getFlagImage } from "@/api/getFlagImage";
+import { countriesList } from "@/lib/static/countriesList";
+import XSlider from "@/components/ui/slider/Slider.vue";
 import XIcon from "@/components/ui/icon/Icon.vue";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { Volume1, Volume2, VolumeX } from "lucide-vue-next";
 
 const { selectedStation } = storeToRefs(useUserStations());
 const player = ref<HTMLAudioElement | null>(null);
 const paused = ref<boolean>(true);
 const loading = ref<boolean>(false);
+const loadingError = ref<boolean>(false);
 const chevronIsOpen = ref(false);
 const streamLink = ref<string | undefined>();
+const volume = ref([100]);
+const muteCache = ref([100]);
+const MAX_VOLUME = 100;
+const MIN_VOLUME = 0;
+
+const showIcon = computed(() => {
+  if (volume.value[0] === 0) {
+    return VolumeX;
+  }
+  if (volume.value[0] <= 50) {
+    return Volume1;
+  }
+  return Volume2;
+});
 
 const pauseCheck = () => {
   if (!player.value) {
@@ -49,68 +69,177 @@ const autoPlay = () => {
   pauseCheck();
 };
 
+const errorHandler = () => {
+  if (!player.value) {
+    return;
+  }
+  loading.value = false;
+  loadingError.value = true;
+};
+
+const wheelHandler = (event: WheelEvent) => {
+  if (event.deltaY < 0) {
+    volume.value = [Math.min(volume.value[0] + 10, MAX_VOLUME)];
+  }
+  if (event.deltaY > 0) {
+    volume.value = [Math.max(volume.value[0] - 10, MIN_VOLUME)];
+  }
+};
+
+const muteToggle = () => {
+  if (volume.value[0] === 0) {
+    volume.value = muteCache.value || [100];
+  } else {
+    muteCache.value = volume.value;
+    volume.value = [0];
+  }
+};
+
 watch(selectedStation, () => {
   paused.value = true;
   loading.value = true;
+  loadingError.value = false;
   streamLink.value = selectedStation.value?.url_resolved;
+  // chevronIsOpen.value = false;
+});
+
+watch([volume], () => {
+  if (!player.value) {
+    return;
+  }
+  player.value.volume = volume.value[0] / 100;
 });
 </script>
 
 <template>
-
-    <collapsible v-model:open="chevronIsOpen">
-
-      <div class=" h-full w-full">
-        <div class="flex h-full gap-2">
-          <div class="flex items-center justify-center">
-            <collapsible-trigger class="w-5">
-              <chevron-up v-if="!chevronIsOpen" />
-              <chevron-down v-else />
-            </collapsible-trigger>
-          </div>
-          <div class="flex items-center justify-center">
-            <x-image
-              :src="selectedStation?.favicon || ''"
-              :alt="selectedStation?.name"
-              class="h-20 w-20"
+  <collapsible v-model:open="chevronIsOpen" class="h-fit p-2">
+    <div class="relative flex h-20 w-full flex-col justify-between sm:h-16">
+      <!-- BG Logo -->
+      <div
+        class="pointer-events-none absolute left-2 top-2 z-0 size-28 overflow-hidden rounded-full opacity-20"
+      >
+        <x-image
+          :src="selectedStation?.favicon || '/logo.svg'"
+          :alt="selectedStation?.name"
+          class="size-28"
+        />
+      </div>
+      <!-- Extra Info -->
+      <div class="absolute -left-2 top-[4.2rem] sm:top-[3.2rem]">
+        <collapsible-trigger class="w-5">
+          <chevron-up v-if="chevronIsOpen" />
+          <chevron-down v-else />
+        </collapsible-trigger>
+      </div>
+      <!-- Station name -->
+      <div class="flex h-6 w-full z-10 items-center justify-center gap-2 sm:h-5">
+        <div
+          v-if="selectedStation"
+          class="flex size-4 min-h-4 min-w-4 items-center justify-center overflow-hidden rounded-full border-2 border-mc-1"
+        >
+          <div
+            :class="
+              cn('size-full bg-mc-4', {
+                'animate-pulse bg-mc-3': loading,
+                'bg-red-500': loadingError,
+                'bg-green-600': !paused && !loading && !loadingError,
+              })
+            "
+          />
+        </div>
+        <p class="w-fit truncate text-nowrap text-lg">
+          {{ removeMetadata(selectedStation?.name || "Radio Mercur") }}
+        </p>
+      </div>
+      <!-- Controls -->
+      <div
+        class="pointer-events-none absolute flex h-full w-full items-start gap-2 pt-[1.65rem] sm:pt-[1.5rem]"
+      >
+        <div
+          class="relative z-10 flex h-full w-full items-center justify-center"
+        >
+          <!-- Play -->
+          <button
+            @click="togglePlay()"
+            class="pointer-events-auto flex size-12 items-center justify-center rounded-full border-2 stroke-[0.1rem] p-1 transition-all hover:bg-hc-1 sm:size-10"
+          >
+            <x-icon
+              :icon="paused ? Play : Pause"
+              :class="
+                cn('size-8', {
+                  'translate-x-[0.17rem]': paused,
+                })
+              "
             />
-          </div>
-          <div class="flex w-full flex-col items-start justify-center">
-            <div class="h-7">
-              <p class="flex items-center justify-center">
-                {{ selectedStation?.name || "123" }}
-              </p>
-            </div>
-            <div class="flex h-full items-center justify-center">
-              <button @click="togglePlay()">
-                <x-icon :icon="paused ? Play : Pause" />
-              </button>
-            </div>
-            <div class="flex h-7 items-center justify-center">
-              <p>
-                {{ loading ? "Loading..." : selectedStation?.bitrate }}
-              </p>
-            </div>
-          </div>
+          </button>
         </div>
       </div>
-      <collapsible-content>
-        <div>{{ selectedStation?.bitrate }} bitrate</div>
-        <div>{{ selectedStation?.clickcount }} clicks</div>
-        <div>{{ selectedStation?.country }}</div>
-        <div>{{ selectedStation?.codec }} codec</div>
-        <div>{{ selectedStation?.countrycode }} code country</div>
-        <div>{{ selectedStation?.geo_lat }}</div>
-        <div>Tags: {{ selectedStation?.tags }}</div>
-        <div>Home page: {{ selectedStation?.homepage }}</div>
-        <div>Music source: {{ selectedStation?.url }}</div>
-      </collapsible-content>
-    </collapsible>
+      <div class="flex h-8 items-center gap-2 text-red-500">
+        <!-- Error status -->
+        <p v-if="loadingError" class="sm:hidden">! Connection Error !</p>
+        <!-- Volume -->
+        <div class="relative ml-auto w-fit xs:hidden" @wheel="wheelHandler">
+          <button @click="muteToggle()" class="absolute left-0 top-0 z-10">
+            <x-icon :stroke-width="1.8" :size="22" :icon="showIcon" />
+          </button>
+          <x-slider v-model="volume" :max="MAX_VOLUME" :step="1" />
+        </div>
+      </div>
+    </div>
+    <collapsible-content>
+      <div class="h-10" />
+      <div v-if="selectedStation?.clickcount">
+        {{ selectedStation.clickcount + "clicks" }}
+      </div>
+      <div v-if="selectedStation?.codec">
+        {{ selectedStation.codec + " " + (selectedStation.bitrate || "") }}
+      </div>
+
+      <div>{{ selectedStation?.geo_lat }}</div>
+      <div>
+        <a
+          v-if="selectedStation?.homepage"
+          :href="selectedStation.homepage"
+          target="_blank"
+          class="text-tc-2 transition-all hover:text-hc-2"
+        >
+          Home page
+        </a>
+      </div>
+      <div>
+        <a
+          v-if="selectedStation?.url_resolved || selectedStation?.url "
+          :href="selectedStation.url_resolved || selectedStation.url"
+          target="_blank"
+          class="text-tc-2 transition-all hover:text-hc-2"
+        >
+        Stream source
+        </a>
+      </div>
+      <div v-if="selectedStation?.countrycode" class="flex items-center gap-1">
+        <x-image
+          :src="getFlagImage(selectedStation?.countrycode)"
+          class="h-5 w-8"
+        />
+        <p>
+          {{ countriesList[selectedStation?.countrycode] }}
+        </p>
+      </div>
+      <div v-if="selectedStation?.tags" class="flex flex-wrap gap-1">
+        <div
+          v-for="tag in selectedStation.tags.split(',').splice(0, 10)"
+          class="rounded-sm border border-tc-3 px-1 text-sm capitalize text-tc-3"
+        >
+          {{ tag }}
+        </div>
+      </div>
+    </collapsible-content>
+  </collapsible>
   <audio
     ref="player"
     :src="streamLink"
     @change="togglePlay()"
     @canplay="autoPlay()"
-
+    @error="errorHandler()"
   ></audio>
 </template>

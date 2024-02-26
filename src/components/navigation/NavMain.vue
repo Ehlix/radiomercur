@@ -40,7 +40,7 @@ onUnmounted(() => {
         <img src="/logo.svg" class="size-20" alt="logo" />
       </div>
       <!-- Player -->
-      <div class="flex overflow-hidden relative h-fit w-full flex-col bg-mc-2 rounded">
+      <div class="overflow-hidden relative h-fit w-full bg-mc-2 rounded">
         <shadow-overlay />
         <player-main />
       </div>
