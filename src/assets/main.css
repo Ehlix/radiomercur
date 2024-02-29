@@ -19,7 +19,7 @@
   --text-color-2: #f48032;
   --text-color-3: #b7b7b7;
   --text-color-4: #443d58;
-  --hover-color-1: #736a8d;
+  --hover-color-1: #675f80;
   --hover-color-2: #f89c5e;
   --hover-color-3: rgb(209, 201, 201);
   --shadow-color-1: #00000050;
@@ -77,8 +77,8 @@ body {
     "Droid Sans",
     "Helvetica Neue",
     sans-serif;
-  font-size: 1rem /* 16px */;
-  line-height: 1.5rem /* 24px */;
+    font-size: 0.875rem/* 14px */;
+    line-height: 1.25rem/* 20p*/;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -89,7 +89,7 @@ h1 {
 }
 
 h2 {
-  @apply text-xl;
+  @apply text-lg;
 }
 
 #app {

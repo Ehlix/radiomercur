@@ -11,14 +11,17 @@ import {
 import { countriesList } from "@/lib/static/countriesList";
 import { ref, watchEffect } from "vue";
 
-const codes = Object.keys(countriesList);
-
-
+const names = Object.values(countriesList);
 const selected = ref("All");
 
+const emits = defineEmits<{
+  (e: "changeCountry", value: string): void;
+}>();
+
 watchEffect(() => {
-  console.log(selected.value);
-});
+  emits("changeCountry", selected.value);
+})
+
 </script>
 
 <template>
@@ -29,9 +32,9 @@ watchEffect(() => {
     <SelectContent>
       <SelectGroup class="text-tc-4">
         <!-- <SelectLabel>Countries</SelectLabel> -->
-        <SelectItem value="All"  > All countries </SelectItem>
-        <SelectItem v-for="code in codes" :value="code">
-          {{ countriesList[code] }}
+        <SelectItem value="All"> All countries </SelectItem>
+        <SelectItem v-for="country in names" :value="country">
+          {{ country }}
         </SelectItem>
       </SelectGroup>
     </SelectContent>

@@ -2,7 +2,14 @@
 import { cn } from "@/lib/utils/twMerge";
 import XImage from "@/components/ui/image/Image.vue";
 import { computed, ref, watch, watchEffect } from "vue";
-import { ChevronDown, ChevronUp, Play, Pause } from "lucide-vue-next";
+import {
+  ChevronDown,
+  ChevronUp,
+  Play,
+  Pause,
+  ThumbsUp,
+  Star,
+} from "lucide-vue-next";
 import { storeToRefs } from "pinia";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 import { useUserStations } from "@/stores/userStations";
@@ -22,7 +29,7 @@ const player = ref<HTMLAudioElement | null>(null);
 const paused = ref<boolean>(true);
 const loading = ref<boolean>(false);
 const loadingError = ref<boolean>(false);
-const chevronIsOpen = ref(false);
+const infoIsOpen = ref(false);
 const streamLink = ref<string | undefined>();
 const volume = ref([100]);
 const muteCache = ref([100]);
@@ -112,7 +119,7 @@ watch([volume], () => {
 </script>
 
 <template>
-  <collapsible v-model:open="chevronIsOpen" class="h-fit p-2">
+  <collapsible v-model:open="infoIsOpen" class="h-fit p-2">
     <div class="relative flex h-20 w-full flex-col justify-between sm:h-16">
       <!-- BG Logo -->
       <div
@@ -126,13 +133,23 @@ watch([volume], () => {
       </div>
       <!-- Extra Info -->
       <div class="absolute -left-2 top-[4.2rem] sm:top-[3.2rem]">
-        <collapsible-trigger class="w-5">
-          <chevron-up v-if="chevronIsOpen" />
-          <chevron-down v-else />
+        <collapsible-trigger
+          :disabled="!selectedStation"
+          class="w-5 transition-all disabled:opacity-20"
+        >
+        <chevron-down
+            :class="
+              cn('transition-all', {
+                'rotate-180 ': infoIsOpen,
+              })
+            "
+          />
         </collapsible-trigger>
       </div>
       <!-- Station name -->
-      <div class="flex h-6 w-full z-10 items-center justify-center gap-2 sm:h-5">
+      <div
+        class="z-10 flex h-[1.35rem] w-full items-center justify-center gap-2 sm:h-5"
+      >
         <div
           v-if="selectedStation"
           class="flex size-4 min-h-4 min-w-4 items-center justify-center overflow-hidden rounded-full border-2 border-mc-1"
@@ -153,7 +170,7 @@ watch([volume], () => {
       </div>
       <!-- Controls -->
       <div
-        class="pointer-events-none absolute flex h-full w-full items-start gap-2 pt-[1.65rem] sm:pt-[1.5rem]"
+        class="pointer-events-none absolute flex h-full w-full items-start gap-2 pt-[1.56rem] sm:pt-[1.5rem]"
       >
         <div
           class="relative z-10 flex h-full w-full items-center justify-center"
@@ -188,14 +205,24 @@ watch([volume], () => {
     </div>
     <collapsible-content>
       <div class="h-10" />
-      <div v-if="selectedStation?.clickcount">
-        {{ selectedStation.clickcount + "clicks" }}
+      <!-- Popularity -->
+      <div class="flex flex-col *:flex *:items-center *:gap-1">
+        <div v-show="selectedStation?.clickcount" class="*:text-mc-3">
+          <p>{{ selectedStation?.clickcount }}</p>
+          <x-icon :icon="Star" :size="20" />
+        </div>
+        <div v-show="selectedStation?.votes" class="*:text-teal-500">
+          <p>{{ selectedStation?.votes }}</p>
+          <x-icon :icon="ThumbsUp" :size="20" />
+        </div>
       </div>
+      <!-- Codec -->
       <div v-if="selectedStation?.codec">
         {{ selectedStation.codec + " " + (selectedStation.bitrate || "") }}
       </div>
-
+      <!-- Geo -->
       <div>{{ selectedStation?.geo_lat }}</div>
+      <!-- Home Page -->
       <div>
         <a
           v-if="selectedStation?.homepage"
@@ -206,17 +233,22 @@ watch([volume], () => {
           Home page
         </a>
       </div>
+      <!-- Stream Source -->
       <div>
         <a
-          v-if="selectedStation?.url_resolved || selectedStation?.url "
+          v-if="selectedStation?.url_resolved || selectedStation?.url"
           :href="selectedStation.url_resolved || selectedStation.url"
           target="_blank"
           class="text-tc-2 transition-all hover:text-hc-2"
         >
-        Stream source
+          Stream source
         </a>
       </div>
-      <div v-if="selectedStation?.countrycode" class="flex items-center gap-1">
+      <!-- Flag -->
+      <div
+        v-if="selectedStation?.countrycode"
+        class="mt-1 flex items-center gap-1"
+      >
         <x-image
           :src="getFlagImage(selectedStation?.countrycode)"
           class="h-5 w-8"
@@ -225,7 +257,8 @@ watch([volume], () => {
           {{ countriesList[selectedStation?.countrycode] }}
         </p>
       </div>
-      <div v-if="selectedStation?.tags" class="flex flex-wrap gap-1">
+      <!-- Tags -->
+      <div v-if="selectedStation?.tags" class="mt-2 flex flex-wrap gap-1">
         <div
           v-for="tag in selectedStation.tags.split(',').splice(0, 10)"
           class="rounded-sm border border-tc-3 px-1 text-sm capitalize text-tc-3"

@@ -1,54 +1,182 @@
 <script setup lang="ts">
 import { countriesList } from "@/lib/static/countriesList";
 import { getFlagImage } from "@/api/getFlagImage";
-import { Play } from "lucide-vue-next";
 import shadowOverlay from "../ui/shadowOverlay/shadowOverlay.vue";
 import XImage from "@/components/ui/image/Image.vue";
 import XIcon from "@/components/ui/icon/Icon.vue";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
-const { stationsList } = defineProps<{
+import { reactive, ref, watch } from "vue";
+import { useDebounce, useElementSize } from "@vueuse/core";
+import { cn } from "@/lib/utils/twMerge";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  ChevronDown,
+  Play,
+  ThumbsUp,
+  Star,
+  Plus,
+  Check,
+  X,
+} from "lucide-vue-next";
+
+const props = defineProps<{
   stationsList: Station[];
+  favoriteStations: Station[];
 }>();
 
 const emits = defineEmits<{
   (e: "selectStation", station: Station): void;
+  (e: "addStationToFavorites", station: Station): void;
+  (e: "removeStationFromFavorites", station: Station): void;
 }>();
 
 const selectStation = (station: Station) => {
   emits("selectStation", station);
 };
+const currentOpenId = ref("id");
+const el = ref<HTMLElement | null>(null);
+// const { width, height } = useElementSize(el);
+// watch([width], () => {
+//   // console.log(width.value)
+// })
+
+const infoOpenHandler = (station: Station) => {
+  if (currentOpenId.value === station.stationuuid) {
+    currentOpenId.value = "id";
+  } else {
+    currentOpenId.value = station.stationuuid || "id";
+  }
+};
+
+const checkStationInFavorites = (station: Station) => {
+  return props.favoriteStations.some((s) => s.stationuuid === station.stationuuid);
+};
+
+const addToFavorites = (station: Station) => {
+  emits("addStationToFavorites", station);
+};
+const removeFromFavorites = (station: Station) => {
+  emits("removeStationFromFavorites", station);
+};
 </script>
 
 <template>
   <div
+    ref="el"
     v-if="stationsList.length"
-    class="flex w-full flex-wrap gap-2 from-hc-1 p-2"
+    :class="cn('flex w-full flex-wrap gap-2 from-hc-1 p-2', {})"
   >
-    <div
-      v-for.lazy="station in stationsList"
+    <Collapsible
+      v-for.lazy="station in props.stationsList"
+      :open="currentOpenId === station.stationuuid"
       :key="station.stationuuid"
-      class="relative flex w-full select-text items-center gap-5 overflow-hidden rounded bg-gradient-to-r p-2"
-      :class="'animate-[fadeIn_300ms_ease-out]'"
+      class="relative flex h-fit w-[19%] min-w-56 grow animate-[fadeIn_300ms_ease-out] select-text flex-col justify-start gap-2 rounded bg-gradient-to-br from-hc-1 to-mc-2 p-2 shadow-md shadow-black/30 transition-all"
     >
-      <!-- animate-[fadeIn_100ms_ease-out_200ms_forwards] -->
-      <button
-        @click="selectStation(station)"
-        class="group relative flex min-w-20 overflow-hidden rounded-full bg-mc-1 *:size-20"
+      <!-- Add To Favorites -->
+      <div
+        class="group absolute right-0 top-0 size-[1.85rem] overflow-hidden rounded-tr transition-all [clip-path:polygon(0%_0%,100%_0%,100%_100%)] hover:size-8"
       >
-        <shadow-overlay class="z-0 rounded-full" />
-        <div
-          class="absolute left-0 top-0 flex size-full items-center justify-center opacity-0 shadow-[inset_0_0_5000px_2px_rgba(0,0,0,0.4)] transition-all group-hover:opacity-95"
+        <button
+          v-if="!checkStationInFavorites(station)"
+          @click="addToFavorites(station)"
+          class="h-full w-full bg-mc-3"
         >
-          <x-icon :icon="Play" :size="40" :stroke-width="2.5" class="pl-1" />
-        </div>
+          <x-icon
+            :icon="Plus"
+            :size="18"
+            :stroke-width="2"
+            class="absolute right-0 top-0 transition-all group-hover:scale-110"
+          />
+        </button>
+        <button
+          v-else-if="checkStationInFavorites(station)"
+          @click="removeFromFavorites(station)"
+          class="h-full w-full bg-teal-500 transition-all group-hover:bg-red-600"
+        >
+          <x-icon
+            :icon="Check"
+            :size="18"
+            :stroke-width="2"
+            class="absolute right-0 top-0 transition-all group-hover:hidden group-hover:scale-110"
+          />
+          <x-icon
+            :icon="X"
+            :size="18"
+            :stroke-width="2"
+            class="absolute right-0 top-0 hidden transition-all group-hover:block group-hover:scale-110"
+          />
+        </button>
+      </div>
+      <!-- <shadow-overlay class="z-0" /> -->
 
-        <x-image :src="station.favicon || ''" :alt="station.name" />
-      </button>
-      <div class="">
-        <h2>
-          {{ removeMetadata(station.name || "Unknown station") }}
-        </h2>
-        <p>{{ station.codec + " " + (station.bitrate || "") }}</p>
+      <!-- animate-[fadeIn_100ms_ease-out_200ms_forwards] -->
+
+      <!-- Station Name -->
+      <h2 class="-mb-2 w-full truncate text-nowrap text-center">
+        {{ removeMetadata(station.name || "Unknown station") }}
+      </h2>
+      <div class="flex w-fit justify-center gap-5">
+        <!-- Station Select / Logo -->
+        <button
+          @click="selectStation(station)"
+          class="group relative flex h-16 min-w-16 overflow-hidden rounded-full bg-mc-1 transition-all *:size-16"
+        >
+          <!-- <shadow-overlay class=" rounded-full" /> -->
+          <div
+            class="absolute left-0 top-0 z-10 flex size-full items-center justify-center opacity-0 shadow-[inset_0_0_5000px_2px_rgba(0,0,0,0.4)] transition-all group-hover:opacity-95"
+          >
+            <x-icon :icon="Play" :size="40" :stroke-width="2.5" class="pl-1" />
+          </div>
+
+          <x-image
+            :src="station.favicon || ''"
+            :alt="station.name"
+            class="z-0 transition-all group-hover:scale-110 group-hover:blur-[0.1rem]"
+          />
+        </button>
+        <div class="w-full">
+          <!-- Station Codec -->
+          <p class="w-fit truncate text-nowrap">
+            {{ station.codec + " " + (station.bitrate || "") }}
+          </p>
+          <!-- Station Country Name With Flag -->
+          <div v-if="station.countrycode" class="my-1 flex items-center gap-1">
+            <x-image :src="getFlagImage(station.countrycode)" class="h-5 w-8" />
+            <p class="truncate text-nowrap">
+              {{ countriesList[station.countrycode] }}
+            </p>
+          </div>
+          <!-- Station Popularity -->
+          <div class="flex gap-2 *:flex *:items-start *:gap-1">
+            <div v-show="station.clickcount" class="*:text-mc-3">
+              <p>{{ station.clickcount }}</p>
+              <x-icon :icon="Star" :size="18" :stroke-width="1.6" />
+            </div>
+            <div v-show="station.votes" class="*:text-teal-500">
+              <p>{{ station.votes }}</p>
+              <x-icon :icon="ThumbsUp" :size="18" :stroke-width="1.6" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Open Trigger -->
+      <div class="-mt-2 h-[1.20rem] w-full text-center">
+        <button @click="infoOpenHandler(station)" class="w-5">
+          <chevron-down
+            :class="
+              cn('transition-all', {
+                'rotate-180 ': currentOpenId === station.stationuuid,
+              })
+            "
+          />
+        </button>
+      </div>
+      <CollapsibleContent class="-mt-2 flex flex-col">
+        <!-- Station Home Page -->
         <div>
           <a
             v-if="station.homepage"
@@ -59,22 +187,28 @@ const selectStation = (station: Station) => {
             Home page
           </a>
         </div>
-        <div v-if="station.countrycode" class="flex items-center gap-1 mb-1">
-          <x-image :src="getFlagImage(station.countrycode)" class="h-5 w-8" />
-          <p>
-            {{ countriesList[station.countrycode] }}
-          </p>
+        <!-- Station Music Source -->
+        <div>
+          <a
+            v-if="station?.url_resolved || station?.url"
+            :href="station.url_resolved || station.url"
+            target="_blank"
+            class="text-tc-2 transition-all hover:text-hc-2"
+          >
+            Stream source
+          </a>
         </div>
-        <div v-if="station.tags" class="flex flex-wrap gap-1">
+        <!-- Station Tags -->
+        <div v-if="station.tags" class="mt-1 flex flex-wrap gap-1">
           <div
-            v-for="tag in station.tags.split(',').splice(0, 10)"
+            v-for="tag in station.tags.split(',').splice(0, 20)"
             class="rounded-sm border border-tc-3 px-1 text-sm capitalize text-tc-3"
           >
             {{ tag }}
           </div>
         </div>
-      </div>
-    </div>
+      </CollapsibleContent>
+    </Collapsible>
   </div>
 </template>
 

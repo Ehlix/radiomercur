@@ -77,3 +77,12 @@ type DataParams = {
   limit: number;
   offset: number;
 };
+
+type SearchFilters = {
+  name?: string;
+  countryCode?: string;
+  country?: string;
+  highQualityOnly?: boolean;
+  tag?: string;
+  language?: string;
+}

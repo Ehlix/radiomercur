@@ -40,7 +40,7 @@ export const getBaseUrls = async (): Promise<BaseURL[] | null> => {
   try {
     const result = await Promise.any(racers);
     const servers = result.data;
-    console.log(result.data);
+    // console.log(result.data);
     return await Promise.resolve(
       servers.map((server: { name?: string }) => {
         if (server.name) {

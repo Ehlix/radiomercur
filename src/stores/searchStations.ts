@@ -1,25 +1,25 @@
 import { ref, watch } from "vue";
 import { defineStore, storeToRefs } from "pinia";
-import { useDebounce } from "@vueuse/core";
+
 import { getAllStations } from "@/api/getStations";
 import { useBaseUrl } from "./baseUrl";
 import type { AxiosProgressEvent } from "axios";
-
+import { watchOnce } from "@vueuse/core";
 
 export const useSearchStations = defineStore("searchStations", () => {
   const { baseUrl, mainServerIsActive } = storeToRefs(useBaseUrl());
   const { setBaseUrl } = useBaseUrl();
   const stationsList = ref<Station[]>([]);
-  const searchInput = ref<string>();
-  const debSearch = useDebounce(searchInput, 500);
+  const historyList = ref<Station[]>([]);
+  const filters = ref<SearchFilters>({});
   const downloadProgress = ref(0);
+  const currentOffset = ref(0);
+  const canLoadMore = ref(false);
 
   const clearSearch = () => {
     stationsList.value = [];
-    searchInput.value = "";
+    filters.value = {};
   };
-
-
 
   const setDownloadProgress = (event: AxiosProgressEvent) => {
     if (event.total) {
@@ -27,50 +27,95 @@ export const useSearchStations = defineStore("searchStations", () => {
     }
   };
 
-  const searchStations = (name: string) => {
+  const searchStations = (filters: SearchFilters, mode?: 'push') => {
     if (!baseUrl.value || !mainServerIsActive.value) {
       return;
     }
     const dataParams: DataParams = {
-      name: name,
+      name: filters.name || "",
+      tag: filters.tag?.toLowerCase() || "",
+      country: filters.country || "",
+      bitrateMin: filters.highQualityOnly ? 128 : 0,
       order: "clickcount",
-      limit: 50,
+      limit: 30,
       reverse: true,
       hidebroken: true,
-      offset: 0,
+      offset: currentOffset.value,
+      // countrycode: '',
     };
     getAllStations(baseUrl.value, dataParams, setDownloadProgress).then(
       async (res) => {
         if (!res) {
           await setBaseUrl();
-          return searchStations(name);
+          return searchStations(filters);
+        }
+        if (res.length < 30) {
+          canLoadMore.value = false;
+        }
+
+        if (mode === 'push') {
+          stationsList.value.push(...res);
+          return;
         }
         stationsList.value = res;
-        console.log(res);
+        // console.log(res);
       },
     );
   };
 
-  watch(debSearch, () => {
-    if (!debSearch.value) {
+  const setFilters = (newFilters: SearchFilters) => {
+    filters.value = newFilters;
+  }
+
+  const addToHistory = (station: Station) => {
+    historyList.value.unshift(station);
+  }
+
+  const getMoreStations = () => {
+    if (
+      !baseUrl.value ||
+      !mainServerIsActive.value ||
+      !canLoadMore.value ||
+      !stationsList.value.length
+    ) {
       return;
     }
-    stationsList.value = [];
-    searchStations(debSearch.value);
+    currentOffset.value += 30;
+    searchStations(filters.value, 'push');
+  };
+
+  watchOnce(baseUrl, () => {
+    searchStations(filters.value);
   });
 
   watch(downloadProgress, () => {
-    console.log("progress: ", downloadProgress.value);
+    // console.log("progress: ", downloadProgress.value);
     if (downloadProgress.value === 100) {
       downloadProgress.value = 0;
     }
   });
 
+  watch(
+    filters,
+    () => {
+      stationsList.value = [];
+      currentOffset.value = 0;
+      canLoadMore.value = true;
+      searchStations(filters.value);
+    },
+    {
+      deep: true,
+    },
+  );
+
   return {
-    searchInput,
+    setFilters,
     stationsList,
-    searchStations,
+    historyList,
+    addToHistory,
+    getMoreStations,
     downloadProgress,
-    clearSearch
+    canLoadMore,
+    clearSearch,
   };
 });
