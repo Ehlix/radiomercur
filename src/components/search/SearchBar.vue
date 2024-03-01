@@ -16,6 +16,7 @@ import { genresList } from "@/lib/static/genresList";
 
 const props = defineProps<{
   downloadProgress?: number | null | undefined;
+  defaultFilters?: SearchFilters;
 }>();
 const emits = defineEmits<{
   (e: "currentTab", payload: string): void;
@@ -25,7 +26,7 @@ const emits = defineEmits<{
 const searchInput = ref<string>();
 const debSearch = useDebounce(searchInput, 500);
 const currentTab = ref<string>("name");
-const filters = ref<SearchFilters>({});
+const filters = ref<SearchFilters>({...props.defaultFilters} || {});
 const genresIsOpen = ref(false);
 
 const hqOnly = (payload: boolean) => {
@@ -34,7 +35,7 @@ const hqOnly = (payload: boolean) => {
 
 const changeCountry = (payload: string) => {
   if (payload.toLowerCase() === "all") {
-    filters.value.country = " ";
+    filters.value.country = "";
   } else {
     filters.value.country = payload;
   }
@@ -57,18 +58,19 @@ watch(
 watch(
   [filters],
   () => {
+    // console.log('searchbar');
     emits("filters", filters.value);
   },
   {
-    immediate: true,
+    deep: true,
   },
 );
 
 watch([debSearch, currentTab], () => {
   if (currentTab.value === "name") {
-    filters.value = {...filters.value, name: debSearch.value , tag: ''};
+    filters.value = { ...filters.value, name: debSearch.value, tag: "" };
   } else if (currentTab.value === "genres") {
-    const newName = '';
+    const newName = "";
     const newTags = debSearch.value;
     filters.value = { ...filters.value, name: newName, tag: newTags };
   }
@@ -81,12 +83,12 @@ watch([debSearch, currentTab], () => {
     default-value="name"
     class="flex w-full flex-col gap-2"
   >
-    <TabsList class="relative gap-2">
-      <TabsTrigger value="name"> Name </TabsTrigger>
-      <TabsTrigger value="genres"> Genres </TabsTrigger>
-      <TabsTrigger value="history"> History </TabsTrigger>
-    </TabsList>
-    <TabsContent value="name" class="mt-0">
+    <tabs-list class="relative gap-2">
+      <tabs-trigger value="name"> Name </tabs-trigger>
+      <tabs-trigger value="genres"> Genres </tabs-trigger>
+      <tabs-trigger value="history"> History </tabs-trigger>
+    </tabs-list>
+    <tabs-content value="name" class="mt-0">
       <div class="relative w-full items-center">
         <x-input
           name="searchInput"
@@ -102,9 +104,9 @@ watch([debSearch, currentTab], () => {
           class="absolute inset-y-0 start-[0.15rem] flex items-center justify-center px-1 text-tc-4"
         />
       </div>
-    </TabsContent>
-    <TabsContent value="genres" class="mt-0">
-      <Collapsible v-model:open="genresIsOpen">
+    </tabs-content>
+    <tabs-content value="genres" class="mt-0">
+      <collapsible v-model:open="genresIsOpen">
         <div class="relative flex w-full items-center gap-2">
           <x-input
             name="searchInput"
@@ -119,13 +121,13 @@ watch([debSearch, currentTab], () => {
             :stroke-width="1.5"
             class="absolute inset-y-0 start-[0.15rem] flex items-center justify-center px-1 text-tc-4"
           />
-          <CollapsibleTrigger
-            class="flex h-8 w-20 items-center justify-center rounded-full bg-mc-4 p-1 transition hover:bg-hc-2 text-tc-4"
+          <collapsible-trigger
+            class="flex h-8 w-20 items-center justify-center rounded-full bg-mc-4 p-1 text-tc-4 transition hover:bg-hc-2"
           >
             <span>Genres</span>
-          </CollapsibleTrigger>
+          </collapsible-trigger>
         </div>
-        <CollapsibleContent class="mt-2 h-fit text-base text-tc-4">
+        <collapsible-content class="mt-2 h-fit text-base text-tc-4">
           <div
             class="grid grid-cols-7 gap-2 lg:grid-cols-6 md:grid-cols-5 sm:grid-cols-3"
           >
@@ -134,7 +136,7 @@ watch([debSearch, currentTab], () => {
               @click="
                 () => {
                   genresIsOpen = false;
-                  searchInput = genre.name
+                  searchInput = genre.name;
                 }
               "
               class="aspect-square rounded bg-mc-4"
@@ -142,16 +144,16 @@ watch([debSearch, currentTab], () => {
               {{ genre.name }}
             </button>
           </div>
-        </CollapsibleContent>
-      </Collapsible>
-    </TabsContent>
+        </collapsible-content>
+      </collapsible>
+    </tabs-content>
     <div
       v-show="currentTab !== 'history'"
       class="flex items-center gap-2 text-sm"
     >
-      <x-switch @update:checked="hqOnly" />
+      <x-switch :checked="filters.highQualityOnly" @update:checked="hqOnly" />
       <p class="text-nowrap text-tc-1">HQ Only</p>
-      <choose-country @change-country="(e) => changeCountry(e)" />
+      <choose-country :country="filters.country" @change-country="(e) => changeCountry(e)" />
     </div>
   </Tabs>
 </template>

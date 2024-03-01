@@ -5,7 +5,7 @@ import shadowOverlay from "../ui/shadowOverlay/shadowOverlay.vue";
 import XImage from "@/components/ui/image/Image.vue";
 import XIcon from "@/components/ui/icon/Icon.vue";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
-import { reactive, ref, watch } from "vue";
+import { reactive, ref, watch, type HTMLAttributes } from "vue";
 import { useDebounce, useElementSize } from "@vueuse/core";
 import { cn } from "@/lib/utils/twMerge";
 import {
@@ -25,7 +25,8 @@ import {
 
 const props = defineProps<{
   stationsList: Station[];
-  favoriteStations: Station[];
+  favoriteStations: Station[] | 'add' | 'remove';
+  class?: HTMLAttributes["class"];
 }>();
 
 const emits = defineEmits<{
@@ -53,7 +54,13 @@ const infoOpenHandler = (station: Station) => {
 };
 
 const checkStationInFavorites = (station: Station) => {
-  return props.favoriteStations.some((s) => s.stationuuid === station.stationuuid);
+  if (props.favoriteStations === 'add') {
+    return false;
+  } else if (props.favoriteStations === 'remove') {
+    return true;
+  } else {
+    return props.favoriteStations.some((s) => s.stationuuid === station.stationuuid);
+  }
 };
 
 const addToFavorites = (station: Station) => {
@@ -68,7 +75,7 @@ const removeFromFavorites = (station: Station) => {
   <div
     ref="el"
     v-if="stationsList.length"
-    :class="cn('flex w-full flex-wrap gap-2 from-hc-1 p-2', {})"
+    :class="cn('flex w-full h-fit flex-wrap gap-2  px-2', props.class)"
   >
     <Collapsible
       v-for.lazy="station in props.stationsList"
@@ -116,7 +123,7 @@ const removeFromFavorites = (station: Station) => {
       <!-- animate-[fadeIn_100ms_ease-out_200ms_forwards] -->
 
       <!-- Station Name -->
-      <h2 class="-mb-2 w-full truncate text-nowrap text-center">
+      <h2 class="-mb-2 w-full truncate text-nowrap text-center px-2">
         {{ removeMetadata(station.name || "Unknown station") }}
       </h2>
       <div class="flex w-fit justify-center gap-5">
@@ -176,7 +183,6 @@ const removeFromFavorites = (station: Station) => {
         </button>
       </div>
       <CollapsibleContent class="-mt-2 flex flex-col">
-        <!-- Station Home Page -->
         <div>
           <a
             v-if="station.homepage"
@@ -187,7 +193,6 @@ const removeFromFavorites = (station: Station) => {
             Home page
           </a>
         </div>
-        <!-- Station Music Source -->
         <div>
           <a
             v-if="station?.url_resolved || station?.url"
@@ -198,7 +203,6 @@ const removeFromFavorites = (station: Station) => {
             Stream source
           </a>
         </div>
-        <!-- Station Tags -->
         <div v-if="station.tags" class="mt-1 flex flex-wrap gap-1">
           <div
             v-for="tag in station.tags.split(',').splice(0, 20)"

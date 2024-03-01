@@ -86,3 +86,15 @@ type SearchFilters = {
   tag?: string;
   language?: string;
 }
+
+type UserSettings = {
+  language: string,
+  colorTheme: string,
+}
+
+type LocalStorageData = {
+  favoritesStations?: Station[],
+  historyStations?: Station[],
+  searchFilters?: SearchFilters;
+  userSettings?: UserSettings,
+}

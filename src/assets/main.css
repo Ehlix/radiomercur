@@ -61,6 +61,7 @@
 body {
   width: 100%;
   min-height: 100vh;
+  max-height: 100vh;
   overflow-x: hidden;
   color: var(--text-color-1);
   background: var(--main-color-1);
@@ -77,23 +78,23 @@ body {
     "Droid Sans",
     "Helvetica Neue",
     sans-serif;
-    font-size: 0.875rem/* 14px */;
-    line-height: 1.25rem/* 20p*/;
+  font-size: 0.875rem /* 14px */;
+  line-height: 1.25rem /* 20p*/;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+#app {
+  @apply flex h-screen w-full;
+}
+
 h1 {
-  @apply text-2xl
+  @apply text-2xl;
 }
 
 h2 {
   @apply text-lg;
-}
-
-#app {
-  @apply flex h-[100vh] w-full shrink grow overflow-hidden;
 }
 
 ::-webkit-scrollbar {

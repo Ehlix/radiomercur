@@ -11,8 +11,12 @@ import {
 import { countriesList } from "@/lib/static/countriesList";
 import { ref, watchEffect } from "vue";
 
+
+const props = defineProps<{
+  country?: string
+}>()
 const names = Object.values(countriesList);
-const selected = ref("All");
+const selected = ref(props.country || "All");
 
 const emits = defineEmits<{
   (e: "changeCountry", value: string): void;

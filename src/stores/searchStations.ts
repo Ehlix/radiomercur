@@ -1,10 +1,10 @@
 import { ref, watch } from "vue";
 import { defineStore, storeToRefs } from "pinia";
-
 import { getAllStations } from "@/api/getStations";
 import { useBaseUrl } from "./baseUrl";
 import type { AxiosProgressEvent } from "axios";
 import { watchOnce } from "@vueuse/core";
+import { getLSData, setLSData } from "@/api/localStorage";
 
 export const useSearchStations = defineStore("searchStations", () => {
   const { baseUrl, mainServerIsActive } = storeToRefs(useBaseUrl());
@@ -13,12 +13,24 @@ export const useSearchStations = defineStore("searchStations", () => {
   const historyList = ref<Station[]>([]);
   const filters = ref<SearchFilters>({});
   const downloadProgress = ref(0);
-  const currentOffset = ref(0);
+  const currentPage = ref(0);
   const canLoadMore = ref(false);
+  const OFFSET = 30;
+
+  const lsData = getLSData();
+  historyList.value = lsData?.historyStations || [];
+  filters.value = lsData?.searchFilters || {};
 
   const clearSearch = () => {
     stationsList.value = [];
-    filters.value = {};
+  };
+
+  const searchStoreReset = () => {
+    stationsList.value = [];
+    currentPage.value = 0;
+    canLoadMore.value = true;
+    downloadProgress.value = 0;
+    historyList.value = [];
   };
 
   const setDownloadProgress = (event: AxiosProgressEvent) => {
@@ -27,7 +39,7 @@ export const useSearchStations = defineStore("searchStations", () => {
     }
   };
 
-  const searchStations = (filters: SearchFilters, mode?: 'push') => {
+  const searchStations = (filters: SearchFilters) => {
     if (!baseUrl.value || !mainServerIsActive.value) {
       return;
     }
@@ -37,10 +49,10 @@ export const useSearchStations = defineStore("searchStations", () => {
       country: filters.country || "",
       bitrateMin: filters.highQualityOnly ? 128 : 0,
       order: "clickcount",
-      limit: 30,
+      limit: OFFSET,
       reverse: true,
       hidebroken: true,
-      offset: currentOffset.value,
+      offset: OFFSET * currentPage.value,
       // countrycode: '',
     };
     getAllStations(baseUrl.value, dataParams, setDownloadProgress).then(
@@ -49,29 +61,28 @@ export const useSearchStations = defineStore("searchStations", () => {
           await setBaseUrl();
           return searchStations(filters);
         }
-        if (res.length < 30) {
+        if (res.length < OFFSET) {
           canLoadMore.value = false;
         }
 
-        if (mode === 'push') {
-          stationsList.value.push(...res);
-          return;
-        }
         stationsList.value = res;
         // console.log(res);
       },
     );
   };
 
-  const setFilters = (newFilters: SearchFilters) => {
-    filters.value = newFilters;
-  }
-
   const addToHistory = (station: Station) => {
     historyList.value.unshift(station);
-  }
+  };
+  const getStations = (newFilters: SearchFilters) => {
+    stationsList.value = [];
+    currentPage.value = 0;
+    canLoadMore.value = true;
+    filters.value = newFilters;
+    searchStations(newFilters);
+  };
 
-  const getMoreStations = () => {
+  const getMoreStations = (mode: "up" | "down" | "first") => {
     if (
       !baseUrl.value ||
       !mainServerIsActive.value ||
@@ -80,13 +91,20 @@ export const useSearchStations = defineStore("searchStations", () => {
     ) {
       return;
     }
-    currentOffset.value += 30;
-    searchStations(filters.value, 'push');
-  };
-
-  watchOnce(baseUrl, () => {
+    if (mode === "up") {
+      currentPage.value += 1;
+    }
+    if (mode === "down") {
+      if (currentPage.value < 1) {
+        return;
+      }
+      currentPage.value -= 1;
+    }
+    if (mode === "first") {
+      currentPage.value = 0;
+    }
     searchStations(filters.value);
-  });
+  };
 
   watch(downloadProgress, () => {
     // console.log("progress: ", downloadProgress.value);
@@ -95,13 +113,32 @@ export const useSearchStations = defineStore("searchStations", () => {
     }
   });
 
+  watchOnce(baseUrl, () => {
+    const ls = getLSData();
+    getStations(ls?.searchFilters || {});
+  });
+
   watch(
-    filters,
+    [historyList],
     () => {
-      stationsList.value = [];
-      currentOffset.value = 0;
-      canLoadMore.value = true;
-      searchStations(filters.value);
+      if (historyList.value.length > 70) {
+        historyList.value.splice(49);
+      }
+      setLSData({ historyStations: historyList.value });
+    },
+    {
+      deep: true,
+    },
+  );
+
+  watch(
+    [filters],
+    () => {
+      setLSData({
+        searchFilters: {
+          highQualityOnly: filters.value.highQualityOnly || false,
+        },
+      });
     },
     {
       deep: true,
@@ -109,13 +146,16 @@ export const useSearchStations = defineStore("searchStations", () => {
   );
 
   return {
-    setFilters,
-    stationsList,
-    historyList,
+    filters,
     addToHistory,
-    getMoreStations,
-    downloadProgress,
     canLoadMore,
+    currentPage,
     clearSearch,
+    downloadProgress,
+    getStations,
+    getMoreStations,
+    historyList,
+    searchStoreReset,
+    stationsList,
   };
 });
