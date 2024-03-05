@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import shadowOverlay from "../ui/shadowOverlay/shadowOverlay.vue";
 import { type HTMLAttributes, ref } from "vue";
-import {type UseSwipeDirection, useSwipe  } from "@vueuse/core";
+import { type UseSwipeDirection, useSwipe } from "@vueuse/core";
 import { cn } from "@/lib/utils/twMerge";
 
 const props = defineProps<{
+  leftPanelName: string;
+  rightPanelName: string;
   class?: HTMLAttributes["class"];
 }>();
 
@@ -58,7 +60,7 @@ const uiSwitchHandler = (event: WheelEvent) => {
               :class="{ hidden: !currentRightPanel }"
             >
               <div class="z-20 flex -rotate-90 flex-nowrap text-nowrap text-xl">
-                Favorite stations
+                {{ leftPanelName }}
               </div>
             </button>
 
@@ -81,7 +83,7 @@ const uiSwitchHandler = (event: WheelEvent) => {
               :class="{ hidden: currentRightPanel }"
             >
               <div class="z-20 flex rotate-90 flex-nowrap text-nowrap text-xl">
-                Search station
+                {{ rightPanelName }}
               </div>
             </button>
             <slot :v-show="currentRightPanel" name="right-panel"></slot>
@@ -91,7 +93,7 @@ const uiSwitchHandler = (event: WheelEvent) => {
       <!-- Switch bar -->
       <div
         @wheel="uiSwitchHandler"
-        class="flex h-3 w-full gap-2 overflow-hidden *:relative *:size-full *:overflow-hidden *:rounded *:bg-mc-3 *:transition-all hover:*:bg-hc-2 disabled:*:bg-mc-2"
+        class="flex h-3 w-full gap-2 overflow-hidden *:relative *:size-full *:overflow-hidden *:rounded *:bg-mc-2 *:transition-all hover:*:bg-hc-1 disabled:*:bg-mc-3"
       >
         <button :disabled="!currentRightPanel" @click="showLeftPanel">
           <shadow-overlay />

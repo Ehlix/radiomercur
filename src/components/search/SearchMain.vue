@@ -97,8 +97,8 @@ const el = ref<HTMLElement | null>(null);
         :stations-list="stationList"
         :favorite-stations="userStationsStore.favoriteStations"
         @select-station="selectStationHandler"
-        @addStationToFavorites="userStationsStore.addToFavorite($event)"
-        @removeStationFromFavorites="
+        @add-station-to-favorites="userStationsStore.addToFavorite($event)"
+        @remove-station-from-favorites="
           userStationsStore.removeFromFavorite($event)
         "
       />
@@ -109,7 +109,7 @@ const el = ref<HTMLElement | null>(null);
       class="flex h-fit w-full justify-between gap-2 px-2 pb-2 *:h-8 *:w-full"
     >
       <x-button @click="prevPage" :disabled="!searchStore.currentPage">
-        Previous
+        {{ $t("buttons.prev") }}
       </x-button>
       <x-button
         @click="firstPage"
@@ -117,10 +117,10 @@ const el = ref<HTMLElement | null>(null);
           hidden: searchStore.currentPage < 2,
         }"
       >
-        First
+        {{ $t("buttons.first") }}
       </x-button>
       <x-button @click="nextPage" :disabled="!searchStore.canLoadMore">
-        Next
+        {{ $t("buttons.next") }}
       </x-button>
     </div>
   </div>

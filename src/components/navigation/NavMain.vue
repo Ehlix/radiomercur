@@ -6,6 +6,7 @@ import SettingsBar from "@/components/navigation/SettingsBar.vue";
 import { computed, ref, onMounted, onUnmounted } from "vue";
 import PlayerMain from "@/components/player/PlayerMain.vue";
 import shadowOverlay from "../ui/shadowOverlay/shadowOverlay.vue";
+import logoMain from "@/components/logo/logoMain.vue";
 
 const nav = ref<Element | null>(null);
 const scrollVisible = ref(false);
@@ -33,19 +34,21 @@ onUnmounted(() => {
     <nav ref="nav" class="flex h-full w-full gap-2">
       <!-- Logo -->
       <div
-        class="flex overflow-hidden relative rounded h-full w-[10%] min-w-[10%] items-center justify-center bg-mc-3"
+        class="relative flex h-full w-[10%] min-w-[10%] items-center justify-center overflow-hidden rounded bg-mc-3"
       >
-      <shadow-overlay />
+        <shadow-overlay />
         <h1 class="hidden">Radio Mercur</h1>
-        <img src="/logo.svg" class="size-20" alt="logo" />
+        <logo-main class="size-20" />
       </div>
       <!-- Player -->
-      <div class="overflow-hidden relative h-fit w-full bg-mc-2 rounded">
+      <div class="relative h-fit w-full overflow-hidden rounded bg-mc-2">
         <shadow-overlay />
         <player-main />
       </div>
       <!-- Settings -->
-      <div class="flex overflow-hidden relative w-[10%] min-w-[10%] bg-mc-3 rounded">
+      <div
+        class="relative flex w-[10%] min-w-[10%] overflow-hidden rounded bg-mc-3"
+      >
         <shadow-overlay />
         <settings-bar />
       </div>

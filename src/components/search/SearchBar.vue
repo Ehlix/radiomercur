@@ -26,7 +26,7 @@ const emits = defineEmits<{
 const searchInput = ref<string>();
 const debSearch = useDebounce(searchInput, 500);
 const currentTab = ref<string>("name");
-const filters = ref<SearchFilters>({...props.defaultFilters} || {});
+const filters = ref<SearchFilters>({ ...props.defaultFilters } || {});
 const genresIsOpen = ref(false);
 
 const hqOnly = (payload: boolean) => {
@@ -83,10 +83,16 @@ watch([debSearch, currentTab], () => {
     default-value="name"
     class="flex w-full flex-col gap-2"
   >
-    <tabs-list class="relative gap-2">
-      <tabs-trigger value="name"> Name </tabs-trigger>
-      <tabs-trigger value="genres"> Genres </tabs-trigger>
-      <tabs-trigger value="history"> History </tabs-trigger>
+    <tabs-list class="relative gap-2 transition-none *:transition-none">
+      <tabs-trigger value="name">
+        {{ $t("searchBar.name") }}
+      </tabs-trigger>
+      <tabs-trigger value="genres">
+        {{ $tc("searchBar.genre", 2) }}
+      </tabs-trigger>
+      <tabs-trigger value="history">
+        {{ $t("searchBar.history") }}
+      </tabs-trigger>
     </tabs-list>
     <tabs-content value="name" class="mt-0">
       <div class="relative w-full items-center">
@@ -94,7 +100,7 @@ watch([debSearch, currentTab], () => {
           name="searchInput"
           type="text"
           v-model.trim="searchInput"
-          placeholder="Search by name"
+          :placeholder="$tc('searchBar.placeholder', 1)"
           class="border-0 pl-10 text-tc-4 focus-visible:text-tc-4"
         />
         <x-icon
@@ -112,7 +118,7 @@ watch([debSearch, currentTab], () => {
             name="searchInput"
             type="text"
             v-model.trim="searchInput"
-            placeholder="Search by genres"
+            :placeholder="$tc('searchBar.placeholder', 2)"
             class="border-0 pl-10 text-tc-4 focus-visible:text-tc-4"
           />
           <x-icon
@@ -124,7 +130,9 @@ watch([debSearch, currentTab], () => {
           <collapsible-trigger
             class="flex h-8 w-20 items-center justify-center rounded-full bg-mc-4 p-1 text-tc-4 transition hover:bg-hc-2"
           >
-            <span>Genres</span>
+            <span>
+              {{ $tc("searchBar.genre", 2) }}
+            </span>
           </collapsible-trigger>
         </div>
         <collapsible-content class="mt-2 h-fit text-base text-tc-4">
@@ -141,7 +149,7 @@ watch([debSearch, currentTab], () => {
               "
               class="aspect-square rounded bg-mc-4"
             >
-              {{ genre.name }}
+              {{ $t(`genres.${genre.name}`) }}
             </button>
           </div>
         </collapsible-content>
@@ -153,7 +161,10 @@ watch([debSearch, currentTab], () => {
     >
       <x-switch :checked="filters.highQualityOnly" @update:checked="hqOnly" />
       <p class="text-nowrap text-tc-1">HQ Only</p>
-      <choose-country :country="filters.country" @change-country="(e) => changeCountry(e)" />
+      <choose-country
+        :country="filters.country"
+        @change-country="(e) => changeCountry(e)"
+      />
     </div>
   </Tabs>
 </template>

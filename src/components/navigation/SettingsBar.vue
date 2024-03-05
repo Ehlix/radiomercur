@@ -1,28 +1,158 @@
 <script setup lang="ts">
-import { Settings2 } from "lucide-vue-next";
-import XIcon from "../ui/icon/Icon.vue";
 import {
-  Sheet as XSheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import XButton from "@/components/ui/button/Button.vue";
+import { Settings } from "lucide-vue-next";
+import XIcon from "@/components/ui/icon/Icon.vue";
+import { ref, watch } from "vue";
+import { getLSData, setLSData } from "@/api/localStorage";
+import { useUserStations } from "@/stores/userStations";
+
+const themeClasses: ThemeClasses = {
+  defaultLight: "default-light",
+  defaultDark: "default-dark",
+  apollo: "apollo",
+  greyScale: "grey-scale",
+  pastelLight: "pastel-light",
+  kittyDark: "kitty-dark",
+  kittyLight: "kitty-light",
+  vavilon: "vavilon",
+  darkContrast: "dark-contrast",
+};
+
+const themeList: ThemeObj[] = [
+  {
+    name: "default light",
+    value: "defaultLight",
+  },
+  {
+    name: "default dark",
+    value: "defaultDark",
+  },
+  {
+    name: "apollo",
+    value: "apollo",
+  },
+  {
+    name: "pastel light",
+    value: "pastelLight",
+  },
+  {
+    name: "kitty light",
+    value: "kittyLight",
+  },
+  {
+    name: "kitty dark",
+    value: "kittyDark",
+  },
+  {
+    name: "Hight contrast",
+    value: "darkContrast",
+  },
+  {
+    name: "grey scale",
+    value: "greyScale",
+  },
+  {
+    name: "vavilon",
+    value: "vavilon",
+  },
+];
+const ls = getLSData();
+
+const currentTheme = ref<Theme>(ls?.userSettings?.colorTheme || "defaultLight");
+
+// const thisCurrentTheme = (theme: Theme) => {
+//   const classes = document.documentElement.classList;
+//   if (
+//     (theme === "defaultLight" && classes.length === 0) ||
+//     classes.contains(themeClasses[theme])
+//   ) {
+//     return true;
+//   } else if (classes.contains(themeClasses[theme])) {
+//     return true;
+//   }
+//   return false;
+// };
+
+const { changeLocale } = useUserStations();
+
+watch(
+  currentTheme,
+  (theme: Theme) => {
+    document.documentElement.className = themeClasses[theme] || "";
+    currentTheme.value = theme;
+    setLSData({ userSettings: { colorTheme: theme } });
+  },
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <template>
-  <x-sheet >
-    <sheet-trigger>
-      <x-icon :icon="Settings2" class="text-tc-2"/>
-    </sheet-trigger>
-    <sheet-content side="right" class="backdrop-blur-md bg-mc-4">
-      <sheet-header>
-        <sheet-title>Settings</sheet-title>
-        <sheet-description>
-
-        </sheet-description>
-      </sheet-header>
-    </sheet-content>
-  </x-sheet>
+  <Dialog>
+    <DialogTrigger as-child>
+      <x-button class="h-full min-w-full p-1">
+        <x-icon
+          :icon="Settings"
+          :size="30"
+          :stroke-width="2"
+          class="text-tc-1"
+        />
+      </x-button>
+    </DialogTrigger>
+    <DialogContent class="w-full bg-mc-3 p-1 transition-none sm:max-w-[425px]">
+      <div
+        class="grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] rounded bg-mc-2 sm:max-w-[425px]"
+      >
+        <DialogHeader class="border-b border-mc-3 p-3">
+          <DialogTitle class="text-2xl text-mc-3">{{
+            $tc("settingsBar.title")
+          }}</DialogTitle>
+          <!-- <DialogDescription> 123 </DialogDescription> -->
+        </DialogHeader>
+        <div class="grid gap-2 overflow-y-auto px-10 py-2">
+          <div class="flex flex-col gap-1">
+            <h3 class="text-center text-base text-tc-1">
+              {{ $tc("settingsBar.theme") }}
+            </h3>
+            <x-button
+              :disabled="currentTheme === theme.value"
+              v-for:="theme in themeList"
+              @click="currentTheme = theme.value"
+              class="capitalize"
+            >
+              {{ theme.name }}
+            </x-button>
+            <h3 class="text-center text-base text-tc-1">
+              {{ $tc("settingsBar.lang") }}
+            </h3>
+            <div class="flex gap-2 *:grow">
+              <x-button
+                :disabled="$i18n.locale === 'en'"
+                @click="($i18n.locale = 'en'), changeLocale('en')"
+              >
+                English
+              </x-button>
+              <x-button
+                :disabled="$i18n.locale === 'ru'"
+                @click="($i18n.locale = 'ru'), changeLocale('ru')"
+              >
+                Русский
+              </x-button>
+            </div>
+          </div>
+        </div>
+        <DialogFooter class="p-6 pt-0"> </DialogFooter>
+      </div>
+    </DialogContent>
+  </Dialog>
 </template>

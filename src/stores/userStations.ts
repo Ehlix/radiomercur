@@ -8,11 +8,25 @@ export const useUserStations = defineStore("userStations", () => {
   const { baseUrl } = storeToRefs(useBaseUrl());
   const favoriteStations = ref<Station[]>([]);
   const selectedStation = ref<Station>();
+  const locale = ref<"en" | "ru">("en");
 
   favoriteStations.value = getLSData()?.favoritesStations || [];
+  const localeFromLS = getLSData()?.userSettings?.language;
+  const localeFromNav =
+    window.navigator.language === "ru-RU" || "ru" ? "ru" : "en";
+
+  locale.value = localeFromLS
+    ? localeFromLS === "ru"
+      ? "ru"
+      : "en"
+    : localeFromNav;
 
   const selectStation = (station: Station) => {
-    selectedStation.value = station;
+    selectedStation.value = { ...station };
+  };
+
+  const changeLocale = (newLocale: "en" | "ru") => {
+    locale.value = newLocale;
   };
 
   const selectStationWithUpdate = (station: Station) => {
@@ -48,8 +62,20 @@ export const useUserStations = defineStore("userStations", () => {
     },
   );
 
+  watch(
+    [locale],
+    () => {
+      setLSData({ userSettings: { language: locale.value } });
+    },
+    {
+      immediate: true,
+    },
+  );
+
   return {
     addToFavorite,
+    locale,
+    changeLocale,
     removeFromFavorite,
     favoriteStations,
     selectStation,

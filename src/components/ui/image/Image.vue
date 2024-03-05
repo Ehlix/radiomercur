@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, watchEffect, type HTMLAttributes } from "vue";
 import { cn } from "@/lib/utils/twMerge";
+import logoMain from "@/components/logo/logoMain.vue";
+
 type Props = {
   src: string | undefined | null;
   alt?: string;
@@ -24,8 +26,10 @@ watchEffect(() => {
 
 <template>
   <img
+    v-if="newImage"
     :src="newImage || '/logo.svg'"
     :alt="alt || 'image'"
     :class="cn(props.class)"
   />
+  <logo-main v-else :class="cn(props.class)" />
 </template>

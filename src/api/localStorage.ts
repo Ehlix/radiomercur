@@ -11,7 +11,7 @@ export const getLSData = (): LocalStorageData | null => {
   return null;
 };
 
-const setLocalStorage = (key: string, value: any) => {
+const setLocalStorage = (key: string, value: LocalStorageData) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
 
@@ -21,6 +21,12 @@ export const setLSData = (LSData: LocalStorageData) => {
     setLocalStorage("localStorageData", {
       ...ls,
       ...LSData,
+      userSettings: {
+        ...ls.userSettings,
+        ...LSData.userSettings,
+      },
     });
+  } else {
+    setLocalStorage("localStorageData", LSData);
   }
 };

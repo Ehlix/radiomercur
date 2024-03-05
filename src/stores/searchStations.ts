@@ -63,6 +63,8 @@ export const useSearchStations = defineStore("searchStations", () => {
         }
         if (res.length < OFFSET) {
           canLoadMore.value = false;
+        } else {
+          canLoadMore.value = true;
         }
 
         stationsList.value = res;
@@ -72,6 +74,9 @@ export const useSearchStations = defineStore("searchStations", () => {
   };
 
   const addToHistory = (station: Station) => {
+    if (historyList.value.length && historyList.value[0].stationuuid === station.stationuuid) {
+      return;
+    }
     historyList.value.unshift(station);
   };
   const getStations = (newFilters: SearchFilters) => {
@@ -86,7 +91,6 @@ export const useSearchStations = defineStore("searchStations", () => {
     if (
       !baseUrl.value ||
       !mainServerIsActive.value ||
-      !canLoadMore.value ||
       !stationsList.value.length
     ) {
       return;

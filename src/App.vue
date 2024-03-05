@@ -11,7 +11,10 @@ var elements = document.getElementsByTagName("*");
     class="container relative flex h-full max-h-[100vh] w-full select-none flex-col gap-2 overflow-hidden p-2 py-2"
   >
     <nav-main />
-    <double-panel>
+    <double-panel
+      :left-panel-name="$t('leftPanelName')"
+      :right-panel-name="$t('rightPanelName')"
+    >
       <template #left-panel>
         <favorite-main />
       </template>

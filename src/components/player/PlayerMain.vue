@@ -1,20 +1,12 @@
 <script setup lang="ts">
-import { cn } from "@/lib/utils/twMerge";
-import XImage from "@/components/ui/image/Image.vue";
-import { computed, ref, watch, watchEffect } from "vue";
-import {
-  ChevronDown,
-  ChevronUp,
-  Play,
-  Pause,
-  ThumbsUp,
-  Star,
-} from "lucide-vue-next";
+import { computed, ref, watch, nextTick } from "vue";
 import { storeToRefs } from "pinia";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
-import { useUserStations } from "@/stores/userStations";
-import { getFlagImage } from "@/api/getFlagImage";
 import { countriesList } from "@/lib/static/countriesList";
+import { cn } from "@/lib/utils/twMerge";
+import { getFlagImage } from "@/api/getFlagImage";
+import { useUserStations } from "@/stores/userStations";
+import XImage from "@/components/ui/image/Image.vue";
 import XSlider from "@/components/ui/slider/Slider.vue";
 import XIcon from "@/components/ui/icon/Icon.vue";
 import {
@@ -22,7 +14,16 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Volume1, Volume2, VolumeX } from "lucide-vue-next";
+import {
+  ChevronDown,
+  Play,
+  Pause,
+  ThumbsUp,
+  Star,
+  Volume1,
+  Volume2,
+  VolumeX,
+} from "lucide-vue-next";
 
 const { selectedStation } = storeToRefs(useUserStations());
 const player = ref<HTMLAudioElement | null>(null);
@@ -58,8 +59,11 @@ const togglePlay = () => {
     return;
   }
   if (player.value.paused) {
-    streamLink.value = selectedStation.value.url_resolved;
-    loading.value = true;
+    streamLink.value = undefined;
+    nextTick(() => {
+      streamLink.value = selectedStation.value?.url_resolved;
+      loading.value = true;
+    });
   } else {
     player.value.pause();
     streamLink.value = undefined;
@@ -103,10 +107,10 @@ const muteToggle = () => {
 };
 
 watch(selectedStation, () => {
-  paused.value = true;
-  loading.value = true;
+  player.value?.pause();
+  loading.value = false;
   loadingError.value = false;
-  streamLink.value = selectedStation.value?.url_resolved;
+  togglePlay();
   // chevronIsOpen.value = false;
 });
 
@@ -126,7 +130,7 @@ watch([volume], () => {
         class="pointer-events-none absolute left-2 top-2 z-0 size-28 overflow-hidden rounded-full opacity-20"
       >
         <x-image
-          :src="selectedStation?.favicon || '/logo.svg'"
+          :src="selectedStation?.favicon"
           :alt="selectedStation?.name"
           class="size-28"
         />
@@ -137,7 +141,7 @@ watch([volume], () => {
           :disabled="!selectedStation"
           class="w-5 transition-all disabled:opacity-20"
         >
-        <chevron-down
+          <chevron-down
             :class="
               cn('transition-all', {
                 'rotate-180 ': infoIsOpen,
@@ -178,7 +182,7 @@ watch([volume], () => {
           <!-- Play -->
           <button
             @click="togglePlay()"
-            class="pointer-events-auto flex size-12 items-center justify-center rounded-full border-2 stroke-[0.1rem] p-1 transition-all hover:bg-hc-1 sm:size-10"
+            class="pointer-events-auto flex size-12 items-center justify-center rounded-full border-2 border-tc-1 stroke-[0.1rem] p-1 transition-all hover:bg-hc-1 sm:size-10"
           >
             <x-icon
               :icon="paused ? Play : Pause"
@@ -230,7 +234,7 @@ watch([volume], () => {
           target="_blank"
           class="text-tc-2 transition-all hover:text-hc-2"
         >
-          Home page
+        {{  $t('stationCard.homepage') }}
         </a>
       </div>
       <!-- Stream Source -->
@@ -241,7 +245,7 @@ watch([volume], () => {
           target="_blank"
           class="text-tc-2 transition-all hover:text-hc-2"
         >
-          Stream source
+          {{  $t('stationCard.streamSource') }}
         </a>
       </div>
       <!-- Flag -->

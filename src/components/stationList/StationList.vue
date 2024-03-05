@@ -25,7 +25,7 @@ import {
 
 const props = defineProps<{
   stationsList: Station[];
-  favoriteStations: Station[] | 'add' | 'remove';
+  favoriteStations: Station[] | "add" | "remove";
   class?: HTMLAttributes["class"];
 }>();
 
@@ -54,12 +54,14 @@ const infoOpenHandler = (station: Station) => {
 };
 
 const checkStationInFavorites = (station: Station) => {
-  if (props.favoriteStations === 'add') {
+  if (props.favoriteStations === "add") {
     return false;
-  } else if (props.favoriteStations === 'remove') {
+  } else if (props.favoriteStations === "remove") {
     return true;
   } else {
-    return props.favoriteStations.some((s) => s.stationuuid === station.stationuuid);
+    return props.favoriteStations.some(
+      (s) => s.stationuuid === station.stationuuid,
+    );
   }
 };
 
@@ -75,7 +77,7 @@ const removeFromFavorites = (station: Station) => {
   <div
     ref="el"
     v-if="stationsList.length"
-    :class="cn('flex w-full h-fit flex-wrap gap-2  px-2', props.class)"
+    :class="cn('flex h-fit w-full flex-wrap gap-2  px-2', props.class)"
   >
     <Collapsible
       v-for.lazy="station in props.stationsList"
@@ -85,7 +87,7 @@ const removeFromFavorites = (station: Station) => {
     >
       <!-- Add To Favorites -->
       <div
-        class="group absolute right-0 top-0 size-[1.85rem] overflow-hidden rounded-tr transition-all [clip-path:polygon(0%_0%,100%_0%,100%_100%)] hover:size-8"
+        class="group absolute right-0 top-0 size-[2.2rem] overflow-hidden rounded-tr transition-all [clip-path:polygon(15%_0%,100%_0%,100%_85%)] hover:[clip-path:polygon(0%_0%,100%_0%,100%_100%)]"
       >
         <button
           v-if="!checkStationInFavorites(station)"
@@ -96,7 +98,7 @@ const removeFromFavorites = (station: Station) => {
             :icon="Plus"
             :size="18"
             :stroke-width="2"
-            class="absolute right-0 top-0 transition-all group-hover:scale-110"
+            class="absolute right-0 top-0 transition-all"
           />
         </button>
         <button
@@ -108,13 +110,13 @@ const removeFromFavorites = (station: Station) => {
             :icon="Check"
             :size="18"
             :stroke-width="2"
-            class="absolute right-0 top-0 transition-all group-hover:hidden group-hover:scale-110"
+            class="absolute right-0 top-0 transition-all group-hover:hidden"
           />
           <x-icon
             :icon="X"
             :size="18"
             :stroke-width="2"
-            class="absolute right-0 top-0 hidden transition-all group-hover:block group-hover:scale-110"
+            class="absolute right-0 top-0 hidden transition-all group-hover:block"
           />
         </button>
       </div>
@@ -123,7 +125,7 @@ const removeFromFavorites = (station: Station) => {
       <!-- animate-[fadeIn_100ms_ease-out_200ms_forwards] -->
 
       <!-- Station Name -->
-      <h2 class="-mb-2 w-full truncate text-nowrap text-center px-2">
+      <h2 class="-mb-2 w-full truncate text-nowrap px-2 text-center">
         {{ removeMetadata(station.name || "Unknown station") }}
       </h2>
       <div class="flex w-fit justify-center gap-5">
@@ -190,7 +192,7 @@ const removeFromFavorites = (station: Station) => {
             target="_blank"
             class="text-tc-2 transition-all hover:text-hc-2"
           >
-            Home page
+            {{ $t("stationCard.homepage") }}
           </a>
         </div>
         <div>
@@ -200,7 +202,7 @@ const removeFromFavorites = (station: Station) => {
             target="_blank"
             class="text-tc-2 transition-all hover:text-hc-2"
           >
-            Stream source
+            {{ $t("stationCard.streamSource") }}
           </a>
         </div>
         <div v-if="station.tags" class="mt-1 flex flex-wrap gap-1">

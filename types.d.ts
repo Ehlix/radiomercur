@@ -85,16 +85,35 @@ type SearchFilters = {
   highQualityOnly?: boolean;
   tag?: string;
   language?: string;
-}
+};
+
+type Theme =
+  | "defaultLight"
+  | "defaultDark"
+  | "darkContrast"
+  | "kittyDark"
+  | "kittyLight"
+  | "pastelLight"
+  | "pastelDark"
+  | "vavilon"
+  | "apollo"
+  | "greyScale";
+
+type ThemeClasses = Partial<Record<Theme, string>>;
+
+type ThemeObj = {
+  name: string;
+  value: Theme;
+};
 
 type UserSettings = {
-  language: string,
-  colorTheme: string,
-}
+  language?: "en" | "ru";
+  colorTheme?: Theme;
+};
 
 type LocalStorageData = {
-  favoritesStations?: Station[],
-  historyStations?: Station[],
+  favoritesStations?: Station[];
+  historyStations?: Station[];
   searchFilters?: SearchFilters;
-  userSettings?: UserSettings,
-}
+  userSettings?: UserSettings;
+};

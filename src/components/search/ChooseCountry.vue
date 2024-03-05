@@ -4,19 +4,24 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { countriesList } from "@/lib/static/countriesList";
-import { ref, watchEffect } from "vue";
-
+import { computed, ref, watchEffect } from "vue";
+import { messages } from "@/lib/locale/locale";
+import { useUserStations } from "@/stores/userStations";
 
 const props = defineProps<{
-  country?: string
-}>()
-const names = Object.values(countriesList);
+  country?: string;
+}>();
 const selected = ref(props.country || "All");
+
+const userStore = useUserStations();
+const countries = computed(() =>
+  Object.entries(messages[userStore.locale].countries).sort((a, b) => {
+    return a[1] < b[1] ? -1 : 1;
+  }),
+);
 
 const emits = defineEmits<{
   (e: "changeCountry", value: string): void;
@@ -24,8 +29,7 @@ const emits = defineEmits<{
 
 watchEffect(() => {
   emits("changeCountry", selected.value);
-})
-
+});
 </script>
 
 <template>
@@ -36,9 +40,11 @@ watchEffect(() => {
     <SelectContent>
       <SelectGroup class="text-tc-4">
         <!-- <SelectLabel>Countries</SelectLabel> -->
-        <SelectItem value="All"> All countries </SelectItem>
-        <SelectItem v-for="country in names" :value="country">
-          {{ country }}
+        <SelectItem value="All">
+          {{ $t("searchBar.defaultCountry") }}
+        </SelectItem>
+        <SelectItem v-for="country in countries" :value="country[0]">
+          {{ country[1] }}
         </SelectItem>
       </SelectGroup>
     </SelectContent>
