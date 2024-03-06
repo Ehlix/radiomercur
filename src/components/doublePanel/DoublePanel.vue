@@ -56,7 +56,7 @@ const uiSwitchHandler = (event: WheelEvent) => {
             <shadow-overlay />
             <button
               @click="showLeftPanel"
-              class="absolute left-0 top-0 z-40 flex h-full w-full items-center justify-center bg-mc-2 transition hover:bg-hc-1"
+              class="absolute left-0 top-0 z-40 flex h-full w-full items-center justify-center bg-mc-1 transition hover:bg-hc-1"
               :class="{ hidden: !currentRightPanel }"
             >
               <div class="z-20 flex -rotate-90 flex-nowrap text-nowrap text-xl">
@@ -79,7 +79,7 @@ const uiSwitchHandler = (event: WheelEvent) => {
             <shadow-overlay />
             <button
               @click="showRightPanel"
-              class="absolute left-0 top-0 z-40 flex h-full w-full items-center justify-center bg-mc-2 transition hover:bg-hc-1"
+              class="absolute left-0 top-0 z-40 flex h-full w-full items-center justify-center bg-mc-1 transition hover:bg-hc-1"
               :class="{ hidden: currentRightPanel }"
             >
               <div class="z-20 flex rotate-90 flex-nowrap text-nowrap text-xl">
@@ -93,12 +93,20 @@ const uiSwitchHandler = (event: WheelEvent) => {
       <!-- Switch bar -->
       <div
         @wheel="uiSwitchHandler"
-        class="flex h-3 w-full gap-2 overflow-hidden *:relative *:size-full *:overflow-hidden *:rounded *:bg-mc-2 *:transition-all hover:*:bg-hc-1 disabled:*:bg-mc-3"
+        class="flex h-3 w-full gap-2 overflow-hidden *:relative *:size-full *:overflow-hidden *:bg-mc-1 *:transition-all hover:*:bg-hc-1 disabled:*:bg-mc-2"
       >
-        <button :disabled="!currentRightPanel" @click="showLeftPanel">
+        <button
+          :disabled="!currentRightPanel"
+          @click="showLeftPanel"
+          class="rounded"
+        >
           <shadow-overlay />
         </button>
-        <button :disabled="currentRightPanel" @click="showRightPanel">
+        <button
+          :disabled="currentRightPanel"
+          @click="showRightPanel"
+          class="rounded"
+        >
           <shadow-overlay />
         </button>
       </div>

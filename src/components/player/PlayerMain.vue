@@ -3,9 +3,10 @@ import { computed, ref, watch, nextTick } from "vue";
 import { storeToRefs } from "pinia";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 import { countriesList } from "@/lib/static/countriesList";
+import { messages } from "@/lib/locale/locale";
 import { cn } from "@/lib/utils/twMerge";
 import { getFlagImage } from "@/api/getFlagImage";
-import { useUserStations } from "@/stores/userStations";
+import { useUserStore } from "@/stores/userStore";
 import XImage from "@/components/ui/image/Image.vue";
 import XSlider from "@/components/ui/slider/Slider.vue";
 import XIcon from "@/components/ui/icon/Icon.vue";
@@ -25,7 +26,7 @@ import {
   VolumeX,
 } from "lucide-vue-next";
 
-const { selectedStation } = storeToRefs(useUserStations());
+const { selectedStation, locale } = storeToRefs(useUserStore());
 const player = ref<HTMLAudioElement | null>(null);
 const paused = ref<boolean>(true);
 const loading = ref<boolean>(false);
@@ -156,11 +157,11 @@ watch([volume], () => {
       >
         <div
           v-if="selectedStation"
-          class="flex size-4 min-h-4 min-w-4 items-center justify-center overflow-hidden rounded-full border-2 border-mc-1"
+          class="flex size-4 min-h-4 min-w-4 items-center justify-center overflow-hidden rounded-full"
         >
           <div
             :class="
-              cn('size-full bg-mc-4', {
+              cn('size-full bg-mc-3', {
                 'animate-pulse bg-mc-3': loading,
                 'bg-red-500': loadingError,
                 'bg-green-600': !paused && !loading && !loadingError,
@@ -234,7 +235,7 @@ watch([volume], () => {
           target="_blank"
           class="text-tc-2 transition-all hover:text-hc-2"
         >
-        {{  $t('stationCard.homepage') }}
+          {{ $t("stationCard.homepage") }}
         </a>
       </div>
       <!-- Stream Source -->
@@ -245,10 +246,10 @@ watch([volume], () => {
           target="_blank"
           class="text-tc-2 transition-all hover:text-hc-2"
         >
-          {{  $t('stationCard.streamSource') }}
+          {{ $t("stationCard.streamSource") }}
         </a>
       </div>
-      <!-- Flag -->
+      <!-- Flag ana Country Name -->
       <div
         v-if="selectedStation?.countrycode"
         class="mt-1 flex items-center gap-1"
@@ -258,7 +259,11 @@ watch([volume], () => {
           class="h-5 w-8"
         />
         <p>
-          {{ countriesList[selectedStation?.countrycode] }}
+          {{
+            // @ts-expect-error
+            messages[locale || "en"]?.countries[selectedStation.countrycode] ||
+            ""
+          }}
         </p>
       </div>
       <!-- Tags -->
@@ -280,3 +285,4 @@ watch([volume], () => {
     @error="errorHandler()"
   ></audio>
 </template>
+@/stores/userStore

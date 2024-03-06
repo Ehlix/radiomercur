@@ -11,10 +11,10 @@
 }
 
 :root {
-  --main-color-1: #f0e8e8;
-  --main-color-2: #443d58;
-  --main-color-3: #f48032;
-  --main-color-4: #b7b7b7;
+  --background-color-1: #f0e8e8;
+  --main-color-1: #443d58;
+  --main-color-2: #f48032;
+  --main-color-3: #b7b7b7;
   --text-color-1: #f0e8e8;
   --text-color-2: #f48032;
   --text-color-3: #b7b7b7;
@@ -28,10 +28,10 @@
   --scroll-background: #443d58;
   --scroll-thumb: #675f80;
   &.default-dark {
-    --main-color-1: #141314;
-    --main-color-2: #29222f;
-    --main-color-3: #f57852;
-    --main-color-4: #8c8c8c;
+    --background-color-1: #141314;
+    --main-color-1: #29222f;
+    --main-color-2: #f57852;
+    --main-color-3: #8c8c8c;
     --text-color-1: #f1e4e4;
     --text-color-2: #f48032;
     --text-color-3: #b7b7b7;
@@ -46,10 +46,10 @@
     --scroll-thumb: #3e3546;
   }
   &.dark-contrast {
-    --main-color-1: #ffffff;
-    --main-color-2: #000000;
-    --main-color-3: #bebebe;
-    --main-color-4: #838383;
+    --background-color-1: #ffffff;
+    --main-color-1: #000000;
+    --main-color-2: #bebebe;
+    --main-color-3: #838383;
     --text-color-1: #ffffff;
     --text-color-2: #ffffff;
     --text-color-3: #555555;
@@ -62,12 +62,13 @@
     --opacity-color-1: #00aaff;
     --scroll-background: #000000;
     --scroll-thumb: #838383;
+
   }
   &.kitty-dark {
-    --main-color-1: #1a1a1a;
-    --main-color-2: #2b2b2b;
-    --main-color-3: #f05dab;
-    --main-color-4: #4d4d4d;
+    --background-color-1: #1a1a1a;
+    --main-color-1: #2b2b2b;
+    --main-color-2: #f05dab;
+    --main-color-3: #4d4d4d;
     --text-color-1: #f5f5f5;
     --text-color-2: #f05dab;
     --text-color-3: #808080;
@@ -82,10 +83,10 @@
     --scroll-thumb: #fa77bd;
   }
   &.kitty-light {
-    --main-color-1: #ffd3b6;
-    --main-color-2: #dddcdc;
-    --main-color-3: #f0a6ca;
-    --main-color-4: #b5b5b5;
+    --background-color-1: #ffd3b6;
+    --main-color-1: #dddcdc;
+    --main-color-2: #f0a6ca;
+    --main-color-3: #b5b5b5;
     --text-color-1: #2e2e2e;
     --text-color-2: #f0a6ca;
     --text-color-3: #7d7d7d;
@@ -100,13 +101,13 @@
     --scroll-thumb: #7d7d7d;
   }
   &.grey-scale {
-    --main-color-1: #2b2b2b;
-    --main-color-2: #6b6b6b;
-    --main-color-3: #a8a8a8;
-    --main-color-4: #585858;
+    --background-color-1: #2b2b2b;
+    --main-color-1: #6b6b6b;
+    --main-color-2: #a8a8a8;
+    --main-color-3: #585858;
     --text-color-1: #cfcfcf;
     --text-color-2: #000000;
-    --text-color-3: #3b3b3b;
+    --text-color-3: #4b4b4b;
     --text-color-4: #d4d4d4;
     --hover-color-1: #8b8b8b;
     --hover-color-2: #b5b5b5;
@@ -119,10 +120,10 @@
     filter: grayscale(0.7);
   }
   &.pastel-light {
-    -main-color-1: #d68189;
-    --main-color-2: #7f7fad;
-    --main-color-3: #6e9dbf;
-    --main-color-4: #d9a190;
+    --background-color-1: #e8e8e8;
+    --main-color-1: #7f7fad;
+    --main-color-2: #6e9dbf;
+    --main-color-3: #d9a190;
     --text-color-1: #ffffff;
     --text-color-2: #d68189;
     --text-color-3: #c4c4c4;
@@ -137,10 +138,10 @@
     --scroll-thumb: #8493c0;
   }
   &.vavilon {
-    --main-color-1: #ff6b6b;
-    --main-color-2: #ffd166;
-    --main-color-3: #06d6a0;
-    --main-color-4: #118ab2;
+    --background-color-1: #ff6b6b;
+    --main-color-1: #ffd166;
+    --main-color-2: #06d6a0;
+    --main-color-3: #118ab2;
     --text-color-1: #ffffff;
     --text-color-2: #ff6b6b;
     --text-color-3: #52cead;
@@ -155,10 +156,10 @@
     --scroll-thumb: #06d6a0;
   }
   &.apollo {
-    --main-color-1: #1a1928;
-    --main-color-2: #34495e;
-    --main-color-3: #ef5a4a;
-    --main-color-4: #95a5a6;
+    --background-color-1: #1a1928;
+    --main-color-1: #34495e;
+    --main-color-2: #ef5a4a;
+    --main-color-3: #95a5a6;
     --text-color-1: #ecf0f1;
     --text-color-2: #2ecc71;
     --text-color-3: #bdc3c7;
@@ -174,13 +175,36 @@
   }
 }
 
+.not-rounded {
+  .rounded {
+    border-radius: 0;
+  }
+
+  .rounded-sm {
+    border-radius: 0;
+  }
+
+  .rounded-md {
+    border-radius: 0;
+  }
+
+  .rounded-lg {
+    border-radius: 0;
+  }
+
+  .rounded-tr {
+    border-radius: 0;
+  }
+}
+
+
 body {
   width: 100%;
   min-height: 100vh;
   max-height: 100vh;
   overflow-x: hidden;
   color: var(--text-color-1);
-  background: var(--main-color-1);
+  background: var(--background-color-1);
   font-family:
     Inter,
     -apple-system,

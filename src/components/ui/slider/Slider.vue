@@ -35,9 +35,9 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
     v-bind="forwarded"
   >
     <SliderTrack
-      class="relative h-8 w-20 grow overflow-hidden bg-mc-1 [clip-path:polygon(100%_10%,0%_100%,100%_100%)]"
+      class="relative h-8 w-20 grow overflow-hidden bg-bgc-1 [clip-path:polygon(100%_10%,0%_100%,100%_100%)]"
     >
-      <SliderRange class="absolute h-full bg-mc-3" />
+      <SliderRange class="absolute h-full bg-mc-2" />
       <!-- <SliderThumb
       class="block h-8 w-0 border-r border-mc-1 opacity ring-mc-1 transition-colors focus-visible:outline-none focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-50"
     /> -->

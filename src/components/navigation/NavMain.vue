@@ -34,20 +34,20 @@ onUnmounted(() => {
     <nav ref="nav" class="flex h-full w-full gap-2">
       <!-- Logo -->
       <div
-        class="relative flex h-full w-[10%] min-w-[10%] items-center justify-center overflow-hidden rounded bg-mc-3"
+        class="relative flex h-full w-[10%] min-w-[10%] items-center justify-center overflow-hidden rounded bg-mc-2"
       >
         <shadow-overlay />
         <h1 class="hidden">Radio Mercur</h1>
         <logo-main class="size-20" />
       </div>
       <!-- Player -->
-      <div class="relative h-fit w-full overflow-hidden rounded bg-mc-2">
+      <div class="relative h-fit w-full overflow-hidden rounded bg-mc-1">
         <shadow-overlay />
         <player-main />
       </div>
       <!-- Settings -->
       <div
-        class="relative flex w-[10%] min-w-[10%] overflow-hidden rounded bg-mc-3"
+        class="relative flex w-[10%] min-w-[10%] overflow-hidden rounded bg-mc-2"
       >
         <shadow-overlay />
         <settings-bar />

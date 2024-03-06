@@ -25,7 +25,7 @@ const props = defineProps<Props>();
     <path
       id="svg-part-2"
       data-name="Треугольник 1"
-      class="fill-mc-1"
+      class="fill-bgc-1"
       d="M867.661,456.476L169.653,865.328,58.727,456.063Z"
     />
   </svg>

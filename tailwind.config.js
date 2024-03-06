@@ -57,10 +57,10 @@ export default {
         "collapsible-up": "collapsible-up 0.2s ease-in-out",
       },
       colors: {
+        "bgc-1": "var(--background-color-1)",
         "mc-1": "var(--main-color-1)",
         "mc-2": "var(--main-color-2)",
         "mc-3": "var(--main-color-3)",
-        "mc-4": "var(--main-color-4)",
         "tc-1": "var(--text-color-1)",
         "tc-2": "var(--text-color-2)",
         "tc-3": "var(--text-color-3)",

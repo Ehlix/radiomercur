@@ -4,11 +4,12 @@ import { getStationInfoById } from "@/api/getStations";
 import { useBaseUrl } from "./baseUrl";
 import { getLSData, setLSData } from "@/api/localStorage";
 
-export const useUserStations = defineStore("userStations", () => {
+export const useUserStore = defineStore("userStations", () => {
   const { baseUrl } = storeToRefs(useBaseUrl());
   const favoriteStations = ref<Station[]>([]);
   const selectedStation = ref<Station>();
   const locale = ref<"en" | "ru">("en");
+  const borders = ref<"rounded" | "square">("rounded");
 
   favoriteStations.value = getLSData()?.favoritesStations || [];
   const localeFromLS = getLSData()?.userSettings?.language;
@@ -20,6 +21,9 @@ export const useUserStations = defineStore("userStations", () => {
       ? "ru"
       : "en"
     : localeFromNav;
+
+  const borderFromLS = getLSData()?.userSettings?.borders;
+  borders.value = borderFromLS === "square" ? "square" : "rounded";
 
   const selectStation = (station: Station) => {
     selectedStation.value = { ...station };
@@ -52,6 +56,10 @@ export const useUserStations = defineStore("userStations", () => {
     );
   };
 
+  const changeBorders = (mode: typeof borders.value) => {
+    borders.value = mode;
+  };
+
   watch(
     [favoriteStations],
     () => {
@@ -72,10 +80,27 @@ export const useUserStations = defineStore("userStations", () => {
     },
   );
 
+  watch(
+    [borders],
+    () => {
+      setLSData({ userSettings: { borders: borders.value } });
+      if (borders.value === "square") {
+        document.body.classList.add("not-rounded");
+      } else {
+        document.body.classList.remove("not-rounded");
+      }
+    },
+    {
+      immediate: true,
+    },
+  );
+
   return {
     addToFavorite,
+    borders,
     locale,
     changeLocale,
+    changeBorders,
     removeFromFavorite,
     favoriteStations,
     selectStation,

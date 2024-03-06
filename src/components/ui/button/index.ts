@@ -8,7 +8,7 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-mc-3 text-tc-4 hover:bg-hc-2",
+          "bg-mc-2 text-tc-4 hover:bg-hc-2",
         destructive:
           "bg-red-500 text-zinc-50 hover:bg-red-500/90 dark:bg-red-900 dark:text-zinc-50 dark:hover:bg-red-900/90",
         outline:

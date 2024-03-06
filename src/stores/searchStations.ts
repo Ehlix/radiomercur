@@ -46,14 +46,14 @@ export const useSearchStations = defineStore("searchStations", () => {
     const dataParams: DataParams = {
       name: filters.name || "",
       tag: filters.tag?.toLowerCase() || "",
-      country: filters.country || "",
+      // country: filters.country || "",
+      countrycode: filters.countryCode,
       bitrateMin: filters.highQualityOnly ? 128 : 0,
       order: "clickcount",
       limit: OFFSET,
       reverse: true,
       hidebroken: true,
       offset: OFFSET * currentPage.value,
-      // countrycode: '',
     };
     getAllStations(baseUrl.value, dataParams, setDownloadProgress).then(
       async (res) => {

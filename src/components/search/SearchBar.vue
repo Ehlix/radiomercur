@@ -10,9 +10,10 @@ import {
 } from "@/components/ui/collapsible";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDebounce } from "@vueuse/core";
-import { Search } from "lucide-vue-next";
+import { Search, BookAudio } from "lucide-vue-next";
 import XInput from "@/components/ui/input/Input.vue";
 import { genresList } from "@/lib/static/genresList";
+import { useUserStore } from "@/stores/userStore";
 
 const props = defineProps<{
   downloadProgress?: number | null | undefined;
@@ -23,6 +24,7 @@ const emits = defineEmits<{
   (e: "filters", payload: SearchFilters): void;
 }>();
 
+const userStore = useUserStore();
 const searchInput = ref<string>();
 const debSearch = useDebounce(searchInput, 500);
 const currentTab = ref<string>("name");
@@ -33,11 +35,11 @@ const hqOnly = (payload: boolean) => {
   filters.value.highQualityOnly = payload;
 };
 
-const changeCountry = (payload: string) => {
-  if (payload.toLowerCase() === "all") {
-    filters.value.country = "";
+const changeCountryCode = (payload: CountryCodes | 'all') => {
+  if (payload === "all") {
+    filters.value.countryCode = undefined;
   } else {
-    filters.value.country = payload;
+    filters.value.countryCode = payload;
   }
 };
 
@@ -88,7 +90,7 @@ watch([debSearch, currentTab], () => {
         {{ $t("searchBar.name") }}
       </tabs-trigger>
       <tabs-trigger value="genres">
-        {{ $tc("searchBar.genre", 2) }}
+        {{ $tc("searchBar.genre", 1) }}
       </tabs-trigger>
       <tabs-trigger value="history">
         {{ $t("searchBar.history") }}
@@ -128,10 +130,11 @@ watch([debSearch, currentTab], () => {
             class="absolute inset-y-0 start-[0.15rem] flex items-center justify-center px-1 text-tc-4"
           />
           <collapsible-trigger
-            class="flex h-8 w-20 items-center justify-center rounded-full bg-mc-4 p-1 text-tc-4 transition hover:bg-hc-2"
+            class="flex h-8 w-14 items-center justify-center rounded-full bg-mc-3 p-1 text-tc-4 transition hover:bg-hc-3"
           >
             <span>
-              {{ $tc("searchBar.genre", 2) }}
+              <!-- {{ $tc("searchBar.genre", 2) }} -->
+              <x-icon :icon="BookAudio" />
             </span>
           </collapsible-trigger>
         </div>
@@ -147,7 +150,7 @@ watch([debSearch, currentTab], () => {
                   searchInput = genre.name;
                 }
               "
-              class="aspect-square rounded bg-mc-4"
+              class="aspect-square rounded bg-mc-3"
             >
               {{ $t(`genres.${genre.name}`) }}
             </button>
@@ -162,8 +165,9 @@ watch([debSearch, currentTab], () => {
       <x-switch :checked="filters.highQualityOnly" @update:checked="hqOnly" />
       <p class="text-nowrap text-tc-1">HQ Only</p>
       <choose-country
-        :country="filters.country"
-        @change-country="(e) => changeCountry(e)"
+        :user-locale="userStore.locale"
+        :country-code="filters.countryCode || undefined"
+        @change-country-code="(e) => changeCountryCode(e)"
       />
     </div>
   </Tabs>

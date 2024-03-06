@@ -11,8 +11,8 @@ const app = createApp(App);
 
 app.use(createPinia());
 
-import { useUserStations } from "@/stores/userStations";
-const userStore = useUserStations();
+import { useUserStore } from "@/stores/userStore";
+const userStore = useUserStore();
 
 const i18n = createI18n({
   locale: userStore.locale,

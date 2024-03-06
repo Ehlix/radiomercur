@@ -13,7 +13,8 @@ import { Settings } from "lucide-vue-next";
 import XIcon from "@/components/ui/icon/Icon.vue";
 import { ref, watch } from "vue";
 import { getLSData, setLSData } from "@/api/localStorage";
-import { useUserStations } from "@/stores/userStations";
+import { useUserStore } from "@/stores/userStore";
+import { storeToRefs } from "pinia";
 
 const themeClasses: ThemeClasses = {
   defaultLight: "default-light",
@@ -82,7 +83,8 @@ const currentTheme = ref<Theme>(ls?.userSettings?.colorTheme || "defaultLight");
 //   return false;
 // };
 
-const { changeLocale } = useUserStations();
+const { changeLocale, changeBorders } = useUserStore();
+const { borders } = storeToRefs(useUserStore());
 
 watch(
   currentTheme,
@@ -109,14 +111,14 @@ watch(
         />
       </x-button>
     </DialogTrigger>
-    <DialogContent class="w-full bg-mc-3 p-1 transition-none sm:max-w-[425px]">
+    <DialogContent class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
       <div
-        class="grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] rounded bg-mc-2 sm:max-w-[425px]"
+        class="grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] rounded bg-mc-1 sm:max-w-[425px]"
       >
-        <DialogHeader class="border-b border-mc-3 p-3">
-          <DialogTitle class="text-2xl text-mc-3">{{
-            $tc("settingsBar.title")
-          }}</DialogTitle>
+        <DialogHeader class="border-b border-mc-2 p-3">
+          <DialogTitle class="text-2xl text-mc-2">
+            {{ $tc("settingsBar.title") }}
+          </DialogTitle>
           <!-- <DialogDescription> 123 </DialogDescription> -->
         </DialogHeader>
         <div class="grid gap-2 overflow-y-auto px-10 py-2">
@@ -135,7 +137,7 @@ watch(
             <h3 class="text-center text-base text-tc-1">
               {{ $tc("settingsBar.lang") }}
             </h3>
-            <div class="flex gap-2 *:grow">
+            <div class="flex gap-2 *:w-full">
               <x-button
                 :disabled="$i18n.locale === 'en'"
                 @click="($i18n.locale = 'en'), changeLocale('en')"
@@ -147,6 +149,23 @@ watch(
                 @click="($i18n.locale = 'ru'), changeLocale('ru')"
               >
                 Русский
+              </x-button>
+            </div>
+            <h3 class="text-center text-base text-tc-1">
+              {{ $tc("settingsBar.appearance.title") }}
+            </h3>
+            <div class="flex gap-2 *:w-full">
+              <x-button
+                :disabled="borders === 'rounded'"
+                @click="changeBorders('rounded')"
+              >
+                {{ $tc("settingsBar.appearance.round") }}
+              </x-button>
+              <x-button
+                :disabled="borders === 'square'"
+                @click="changeBorders('square')"
+              >
+                {{ $tc("settingsBar.appearance.square") }}
               </x-button>
             </div>
           </div>

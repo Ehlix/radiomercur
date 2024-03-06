@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useSearchStations } from "@/stores/searchStations";
-import { useUserStations } from "@/stores/userStations";
+import { useUserStore } from "@/stores/userStore";
 import SearchBar from "./SearchBar.vue";
 import StationList from "../stationList/StationList.vue";
 import { computed, ref, watch } from "vue";
@@ -9,7 +9,7 @@ import XButton from "../ui/button/Button.vue";
 import { getLSData } from "@/api/localStorage";
 
 const searchStore = useSearchStations();
-const userStationsStore = useUserStations();
+const userStore = useUserStore();
 const currentTab = ref<string>("name");
 const stationList = computed(() => {
   if (currentTab.value === "history") {
@@ -22,7 +22,7 @@ const stationList = computed(() => {
 const ls = getLSData();
 
 const selectStationHandler = (station: Station) => {
-  userStationsStore.selectStation(station);
+  userStore.selectStation(station);
   searchStore.addToHistory(station);
 };
 
@@ -77,7 +77,7 @@ const el = ref<HTMLElement | null>(null);
 <template>
   <div
     ref="el"
-    class="relative flex h-full w-full flex-col gap-2 overflow-x-hidden overflow-y-scroll rounded bg-mc-2"
+    class="relative flex h-full w-full flex-col gap-2 overflow-x-hidden overflow-y-scroll rounded bg-mc-1"
   >
     <x-progress
       :model-value="searchStore.downloadProgress"
@@ -95,11 +95,12 @@ const el = ref<HTMLElement | null>(null);
     <div class="grow">
       <station-list
         :stations-list="stationList"
-        :favorite-stations="userStationsStore.favoriteStations"
+        :favorite-stations="userStore.favoriteStations"
+        :user-locale="userStore.locale"
         @select-station="selectStationHandler"
-        @add-station-to-favorites="userStationsStore.addToFavorite($event)"
+        @add-station-to-favorites="userStore.addToFavorite($event)"
         @remove-station-from-favorites="
-          userStationsStore.removeFromFavorite($event)
+          userStore.removeFromFavorite($event)
         "
       />
     </div>
@@ -135,4 +136,4 @@ const el = ref<HTMLElement | null>(null);
 .fade-leave-active {
   opacity: 0;
 } */
-</style>
+</style>@/stores/userStore

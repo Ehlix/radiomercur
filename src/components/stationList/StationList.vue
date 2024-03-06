@@ -8,6 +8,7 @@ import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 import { reactive, ref, watch, type HTMLAttributes } from "vue";
 import { useDebounce, useElementSize } from "@vueuse/core";
 import { cn } from "@/lib/utils/twMerge";
+import { messages } from "@/lib/locale/locale";
 import {
   Collapsible,
   CollapsibleContent,
@@ -27,6 +28,7 @@ const props = defineProps<{
   stationsList: Station[];
   favoriteStations: Station[] | "add" | "remove";
   class?: HTMLAttributes["class"];
+  userLocale?: "en" | "ru";
 }>();
 
 const emits = defineEmits<{
@@ -83,7 +85,7 @@ const removeFromFavorites = (station: Station) => {
       v-for.lazy="station in props.stationsList"
       :open="currentOpenId === station.stationuuid"
       :key="station.stationuuid"
-      class="relative flex h-fit w-[19%] min-w-56 grow animate-[fadeIn_300ms_ease-out] select-text flex-col justify-start gap-2 rounded bg-gradient-to-br from-hc-1 to-mc-2 p-2 shadow-md shadow-black/30 transition-all"
+      class="relative flex h-fit w-[19%] min-w-56 grow animate-[fadeIn_300ms_ease-out] select-text flex-col justify-start gap-2 overflow-clip rounded bg-gradient-to-br from-hc-1 to-mc-1 p-2 shadow-md shadow-black/30 transition-all"
     >
       <!-- Add To Favorites -->
       <div
@@ -92,7 +94,7 @@ const removeFromFavorites = (station: Station) => {
         <button
           v-if="!checkStationInFavorites(station)"
           @click="addToFavorites(station)"
-          class="h-full w-full bg-mc-3"
+          class="h-full w-full bg-mc-2"
         >
           <x-icon
             :icon="Plus"
@@ -128,11 +130,11 @@ const removeFromFavorites = (station: Station) => {
       <h2 class="-mb-2 w-full truncate text-nowrap px-2 text-center">
         {{ removeMetadata(station.name || "Unknown station") }}
       </h2>
-      <div class="flex w-fit justify-center gap-5">
+      <div class="flex w-fit justify-center gap-2">
         <!-- Station Select / Logo -->
         <button
           @click="selectStation(station)"
-          class="group relative flex h-16 min-w-16 overflow-hidden rounded-full bg-mc-1 transition-all *:size-16"
+          class="group relative flex h-16 min-w-16 overflow-hidden rounded-full bg-bgc-1 transition-all *:size-16"
         >
           <!-- <shadow-overlay class=" rounded-full" /> -->
           <div
@@ -153,15 +155,25 @@ const removeFromFavorites = (station: Station) => {
             {{ station.codec + " " + (station.bitrate || "") }}
           </p>
           <!-- Station Country Name With Flag -->
-          <div v-if="station.countrycode" class="my-1 flex items-center gap-1">
+          <div
+            v-if="station.countrycode"
+            class="my-1 flex items-center gap-1 overflow-clip"
+          >
             <x-image :src="getFlagImage(station.countrycode)" class="h-5 w-8" />
             <p class="truncate text-nowrap">
-              {{ countriesList[station.countrycode] }}
+              <!-- {{ countriesList[station.countrycode] }} -->
+
+              {{
+                // @ts-expect-error
+                messages[props.userLocale || "en"]?.countries[
+                  station.countrycode
+                ] || ""
+              }}
             </p>
           </div>
           <!-- Station Popularity -->
           <div class="flex gap-2 *:flex *:items-start *:gap-1">
-            <div v-show="station.clickcount" class="*:text-mc-3">
+            <div v-show="station.clickcount" class="*:text-tc-2">
               <p>{{ station.clickcount }}</p>
               <x-icon :icon="Star" :size="18" :stroke-width="1.6" />
             </div>
