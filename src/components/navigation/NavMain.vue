@@ -7,6 +7,7 @@ import { computed, ref, onMounted, onUnmounted } from "vue";
 import PlayerMain from "@/components/player/PlayerMain.vue";
 import shadowOverlay from "../ui/shadowOverlay/shadowOverlay.vue";
 import logoMain from "@/components/logo/logoMain.vue";
+import syncUserData from "@/components/navigation/syncUserData.vue";
 
 const nav = ref<Element | null>(null);
 const scrollVisible = ref(false);
@@ -47,10 +48,11 @@ onUnmounted(() => {
       </div>
       <!-- Settings -->
       <div
-        class="relative flex w-[10%] min-w-[10%] overflow-hidden rounded bg-mc-2"
+        class="relative flex flex-col w-[10%] min-w-[10%] overflow-hidden rounded bg-mc-2 py- last:*:pb-2 even:*:pt-2 *:rounded-none"
       >
         <shadow-overlay />
         <settings-bar />
+        <sync-user-data/>
       </div>
     </nav>
   </header>

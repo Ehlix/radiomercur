@@ -2,7 +2,6 @@
 import { computed, ref, watch, nextTick } from "vue";
 import { storeToRefs } from "pinia";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
-import { countriesList } from "@/lib/static/countriesList";
 import { messages } from "@/lib/locale/locale";
 import { cn } from "@/lib/utils/twMerge";
 import { getFlagImage } from "@/api/getFlagImage";

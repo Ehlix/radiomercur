@@ -102,10 +102,10 @@ watch(
 <template>
   <Dialog>
     <DialogTrigger as-child>
-      <x-button class="h-full min-w-full p-1">
+      <x-button class="h-full min-w-full p-1 bg-none">
         <x-icon
           :icon="Settings"
-          :size="30"
+          :size="27"
           :stroke-width="2"
           class="text-tc-1"
         />
@@ -115,13 +115,13 @@ watch(
       <div
         class="grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] rounded bg-mc-1 sm:max-w-[425px]"
       >
-        <DialogHeader class="border-b border-mc-2 p-3">
+        <DialogHeader class="border-b border-mc-2 p-2 px-10 xs:p-1 xs:px-6">
           <DialogTitle class="text-2xl text-mc-2">
             {{ $tc("settingsBar.title") }}
           </DialogTitle>
-          <!-- <DialogDescription> 123 </DialogDescription> -->
+          <DialogDescription></DialogDescription>
         </DialogHeader>
-        <div class="grid gap-2 overflow-y-auto px-10 py-2">
+        <div class="grid gap-2 overflow-y-auto px-10 py-2 xs:px-6">
           <div class="flex flex-col gap-1">
             <h3 class="text-center text-base text-tc-1">
               {{ $tc("settingsBar.theme") }}

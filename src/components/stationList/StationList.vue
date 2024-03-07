@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { countriesList } from "@/lib/static/countriesList";
 import { getFlagImage } from "@/api/getFlagImage";
-import shadowOverlay from "../ui/shadowOverlay/shadowOverlay.vue";
 import XImage from "@/components/ui/image/Image.vue";
 import XIcon from "@/components/ui/icon/Icon.vue";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
-import { reactive, ref, watch, type HTMLAttributes } from "vue";
-import { useDebounce, useElementSize } from "@vueuse/core";
+import { ref, type HTMLAttributes } from "vue";
 import { cn } from "@/lib/utils/twMerge";
 import { messages } from "@/lib/locale/locale";
 import {
@@ -42,10 +39,6 @@ const selectStation = (station: Station) => {
 };
 const currentOpenId = ref("id");
 const el = ref<HTMLElement | null>(null);
-// const { width, height } = useElementSize(el);
-// watch([width], () => {
-//   // console.log(width.value)
-// })
 
 const infoOpenHandler = (station: Station) => {
   if (currentOpenId.value === station.stationuuid) {

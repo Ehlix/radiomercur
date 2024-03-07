@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import shadowOverlay from "../ui/shadowOverlay/shadowOverlay.vue";
-import { type HTMLAttributes, ref } from "vue";
+import { type HTMLAttributes, ref, onMounted } from "vue";
 import { type UseSwipeDirection, useSwipe } from "@vueuse/core";
 import { cn } from "@/lib/utils/twMerge";
 
@@ -11,11 +11,14 @@ const props = defineProps<{
 }>();
 
 const currentRightPanel = ref<boolean>(true);
+const firstAnimation = ref<boolean>(true);
 
 const showLeftPanel = () => {
+  firstAnimation.value = false;
   currentRightPanel.value = false;
 };
 const showRightPanel = () => {
+  // firstAnimation.value = false;
   currentRightPanel.value = true;
 };
 
@@ -47,17 +50,18 @@ const uiSwitchHandler = (event: WheelEvent) => {
     <div class="absolute flex h-full w-full flex-col gap-2">
       <!-- Shell -->
       <div
-        ref="shell"
         class="flex h-full w-full gap-2 overflow-hidden transition-all *:transition-all"
       >
         <!-- Left panel -->
         <div class="grow overflow-hidden rounded">
           <div class="relative h-full w-full overflow-x-hidden">
-            <shadow-overlay />
+            <shadow-overlay class="z-50"/>
             <button
               @click="showLeftPanel"
               class="absolute left-0 top-0 z-40 flex h-full w-full items-center justify-center bg-mc-1 transition hover:bg-hc-1"
-              :class="{ hidden: !currentRightPanel }"
+              :class="{
+                'closed text-mc-1 hover:text-hc-1 hover:bg-mc-1': !currentRightPanel,
+              }"
             >
               <div class="z-20 flex -rotate-90 flex-nowrap text-nowrap text-xl">
                 {{ leftPanelName }}
@@ -76,11 +80,15 @@ const uiSwitchHandler = (event: WheelEvent) => {
           "
         >
           <div class="relative h-full w-full overflow-x-hidden rounded">
-            <shadow-overlay />
+            <shadow-overlay class="z-50"/>
             <button
               @click="showRightPanel"
               class="absolute left-0 top-0 z-40 flex h-full w-full items-center justify-center bg-mc-1 transition hover:bg-hc-1"
-              :class="{ hidden: currentRightPanel }"
+              :class="{
+                'closed hover:bg-mc-1 text-mc-1 hover:text-hc-1':
+                  currentRightPanel && !firstAnimation,
+                hidden: firstAnimation,
+              }"
             >
               <div class="z-20 flex rotate-90 flex-nowrap text-nowrap text-xl">
                 {{ rightPanelName }}
@@ -114,4 +122,17 @@ const uiSwitchHandler = (event: WheelEvent) => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.closed {
+  animation: 300ms fade-out-hidden linear forwards;
+}
+
+@keyframes fade-out-hidden {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    display: none;
+  }
+}
+</style>

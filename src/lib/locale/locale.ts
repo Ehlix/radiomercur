@@ -18,6 +18,14 @@ const EN = {
       square: "Square",
     },
   },
+  syncUserData: {
+    title: "Sync settings and stations",
+    uploadDescription:
+      "Upload your settings, click here or drop file (.txt only)",
+    downloadDescription:
+      "Download .txt file with your settings and favorite stations",
+    errorMessage: "File reading error",
+  },
   stationCard: {
     homepage: "Home page",
     streamSource: "Stream source",
@@ -329,6 +337,12 @@ const RU = {
       round: "Скругленный",
       square: "Квадратный",
     },
+  },
+  syncUserData: {
+    title: "Перенос настроек и станций",
+    uploadDescription: "Загрузить .txt файл настроек, нажмите или перетащите",
+    downloadDescription: "Скачать .txt файл с настройками и станциями",
+    errorMessage: "Ошибка чтения файла.",
   },
   stationCard: {
     homepage: "Страница станции",
