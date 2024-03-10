@@ -20,6 +20,10 @@ const stationList = computed(() => {
 });
 
 const ls = getLSData();
+const defaultFilters: SearchFilters = {
+  highQualityOnly: ls?.searchFilters?.highQualityOnly ?? false,
+  reverse: ls?.searchFilters?.reverse ?? true,
+};
 
 const selectStationHandler = (station: Station) => {
   userStore.selectStation(station);
@@ -86,7 +90,7 @@ const el = ref<HTMLElement | null>(null);
     <!-- Navigation -->
     <div class="flex w-full max-w-full flex-col gap-2 p-2 pb-0">
       <search-bar
-        :default-filters="ls?.searchFilters"
+        :default-filters="defaultFilters"
         @current-tab="currentTabHandler"
         @filters="filtersHandler"
       />
@@ -94,14 +98,13 @@ const el = ref<HTMLElement | null>(null);
     <!-- Stations -->
     <div class="grow">
       <station-list
+        :showExtendedInfo="currentTab !== 'history'"
         :stations-list="stationList"
         :favorite-stations="userStore.favoriteStations"
         :user-locale="userStore.locale"
         @select-station="selectStationHandler"
         @add-station-to-favorites="userStore.addToFavorite($event)"
-        @remove-station-from-favorites="
-          userStore.removeFromFavorite($event)
-        "
+        @remove-station-from-favorites="userStore.removeFromFavorite($event)"
       />
     </div>
     <!-- Pagination -->
@@ -136,4 +139,5 @@ const el = ref<HTMLElement | null>(null);
 .fade-leave-active {
   opacity: 0;
 } */
-</style>@/stores/userStore
+</style>
+@/stores/userStore

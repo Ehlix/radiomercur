@@ -42,11 +42,11 @@ export default {
           to: { height: 0 },
         },
         fadeIn: {
-          '0%': {
-            opacity: '0',
+          "0%": {
+            opacity: "0",
           },
-          '100%': {
-            opacity: '1',
+          "100%": {
+            opacity: "1",
           },
         },
       },
@@ -55,6 +55,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "collapsible-down": "collapsible-down 0.2s ease-in-out",
         "collapsible-up": "collapsible-up 0.2s ease-in-out",
+        "fade-in": "fadeIn 0.5s ease-in-out",
       },
       colors: {
         "bgc-1": "var(--background-color-1)",

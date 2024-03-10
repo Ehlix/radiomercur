@@ -3,6 +3,7 @@ import XIcon from "../ui/icon/Icon.vue";
 import { ref, watch } from "vue";
 import ChooseCountry from "@/components/search/ChooseCountry.vue";
 import XSwitch from "@/components/ui/switch/Switch.vue";
+import xButton from "@/components/ui/button/Button.vue";
 import {
   Collapsible,
   CollapsibleContent,
@@ -10,10 +11,17 @@ import {
 } from "@/components/ui/collapsible";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDebounce } from "@vueuse/core";
-import { Search, BookAudio, X } from "lucide-vue-next";
+import {
+  Search,
+  BookAudio,
+  X,
+  ArrowDownWideNarrow,
+  ArrowDownNarrowWide,
+} from "lucide-vue-next";
 import XInput from "@/components/ui/input/Input.vue";
 import { genresList } from "@/lib/static/genresList";
 import { useUserStore } from "@/stores/userStore";
+import { cn } from "@/lib/utils/twMerge";
 
 const props = defineProps<{
   downloadProgress?: number | null | undefined;
@@ -33,6 +41,10 @@ const genresIsOpen = ref(false);
 
 const hqOnly = (payload: boolean) => {
   filters.value.highQualityOnly = payload;
+};
+
+const reverseSearch = (payload: boolean) => {
+  filters.value.reverse = payload;
 };
 
 const changeCountryCode = (payload: CountryCodes | "all") => {
@@ -174,10 +186,41 @@ watch([debSearch, currentTab], () => {
     </tabs-content>
     <div
       v-show="currentTab !== 'history'"
-      class="flex items-center gap-2 text-sm"
+      class="flex items-center gap-2 text-sm xs:flex-col"
     >
-      <x-switch :checked="filters.highQualityOnly" @update:checked="hqOnly" />
-      <p class="text-nowrap text-tc-1">HQ Only</p>
+      <div class="flex gap-2">
+        <div class="flex items-center gap-2 text-nowrap text-tc-1">
+          <x-switch
+            :checked="filters.highQualityOnly"
+            @update:checked="hqOnly"
+          />
+          HQ Only
+        </div>
+        <!-- <div class="border-r border-mc-3 w-1 h-full mr-1"/> -->
+        <!-- <div class="flex text-nowrap gap-2 items-center text-tc-1">
+        <x-switch :checked="!filters.reverse" @update:checked="reverseSearch" />
+        Reverse
+      </div> -->
+        <!-- <div class="border-r border-mc-3 w-1 h-full"/> -->
+        <div class="flex items-center gap-2 text-tc-1">
+          <x-button
+            @click="reverseSearch(true)"
+            :disabled="filters.reverse"
+            :variant="'ghost'"
+            class="size-8 min-w-5 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
+          >
+            <x-icon :icon="ArrowDownWideNarrow" :size="21" :stroke-width="2" />
+          </x-button>
+          <x-button
+            @click="reverseSearch(false)"
+            :disabled="!filters.reverse"
+            :variant="'ghost'"
+            class="size-8 min-w-8 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
+          >
+            <x-icon :icon="ArrowDownNarrowWide" :size="21" :stroke-width="2" />
+          </x-button>
+        </div>
+      </div>
       <choose-country
         :user-locale="userStore.locale"
         :country-code="filters.countryCode || undefined"

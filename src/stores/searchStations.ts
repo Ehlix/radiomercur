@@ -51,7 +51,7 @@ export const useSearchStations = defineStore("searchStations", () => {
       bitrateMin: filters.highQualityOnly ? 128 : 0,
       order: "clickcount",
       limit: OFFSET,
-      reverse: true,
+      reverse: filters.reverse ?? true,
       hidebroken: true,
       offset: OFFSET * currentPage.value,
     };
@@ -140,7 +140,8 @@ export const useSearchStations = defineStore("searchStations", () => {
     () => {
       setLSData({
         searchFilters: {
-          highQualityOnly: filters.value.highQualityOnly || false,
+          highQualityOnly: filters.value.highQualityOnly ?? false,
+          reverse: filters.value.reverse ?? true,
         },
       });
     },

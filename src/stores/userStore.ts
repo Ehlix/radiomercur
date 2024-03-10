@@ -60,6 +60,65 @@ export const useUserStore = defineStore("userStations", () => {
     borders.value = mode;
   };
 
+  const replaceFavoriteStations = (stations: {
+    stationOne: Station;
+    stationTwo: Station;
+  }) => {
+    if (stations.stationOne.stationuuid === stations.stationTwo.stationuuid) {
+      return;
+    }
+    const indexOne = favoriteStations.value.findIndex(
+      (s) => s.stationuuid === stations.stationOne.stationuuid,
+    );
+    const indexTwo = favoriteStations.value.findIndex(
+      (s) => s.stationuuid === stations.stationTwo.stationuuid,
+    );
+    const filteredFavoriteStations = favoriteStations.value.filter(
+      (s) =>
+        s.stationuuid !== stations.stationOne.stationuuid &&
+        s.stationuuid !== stations.stationTwo.stationuuid,
+    );
+    const pair =
+      indexOne > indexTwo
+        ? [stations.stationOne, stations.stationTwo]
+        : [stations.stationTwo, stations.stationOne];
+    const newFavorites = [
+      ...filteredFavoriteStations.slice(
+        0,
+        indexTwo > indexOne ? indexTwo - 1 : indexTwo,
+      ),
+      ...pair,
+      ...filteredFavoriteStations.slice(
+        indexTwo > indexOne ? indexTwo - 1 : indexTwo,
+      ),
+    ];
+    favoriteStations.value = newFavorites;
+  };
+
+  const stationPositionUp = (station: Station) => {
+    const index = favoriteStations.value.findIndex(
+      (s) => s.stationuuid === station.stationuuid,
+    );
+    if (index === 0) {
+      return;
+    }
+    const stationTwo = favoriteStations.value[index - 1];
+    favoriteStations.value[index - 1] = station;
+    favoriteStations.value[index] = stationTwo;
+  };
+
+  const stationPositionDown = (station: Station) => {
+    const index = favoriteStations.value.findIndex(
+      (s) => s.stationuuid === station.stationuuid,
+    );
+    if (index === favoriteStations.value.length - 1) {
+      return;
+    }
+    const stationTwo = favoriteStations.value[index + 1];
+    favoriteStations.value[index + 1] = station;
+    favoriteStations.value[index] = stationTwo;
+  };
+
   watch(
     [favoriteStations],
     () => {
@@ -103,6 +162,9 @@ export const useUserStore = defineStore("userStations", () => {
     changeBorders,
     removeFromFavorite,
     favoriteStations,
+    replaceFavoriteStations,
+    stationPositionUp,
+    stationPositionDown,
     selectStation,
     selectedStation,
     selectStationWithUpdate,

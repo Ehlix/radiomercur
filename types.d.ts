@@ -85,6 +85,7 @@ type SearchFilters = {
   highQualityOnly?: boolean;
   tag?: string;
   language?: string;
+  reverse?: boolean;
 };
 
 type Theme =

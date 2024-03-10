@@ -55,15 +55,16 @@ const uiSwitchHandler = (event: WheelEvent) => {
         <!-- Left panel -->
         <div class="grow overflow-hidden rounded">
           <div class="relative h-full w-full overflow-x-hidden">
-            <shadow-overlay class="z-50"/>
+            <shadow-overlay class="z-50" />
             <button
               @click="showLeftPanel"
               class="absolute left-0 top-0 z-40 flex h-full w-full items-center justify-center bg-mc-1 transition hover:bg-hc-1"
               :class="{
-                'closed text-mc-1 hover:text-hc-1 hover:bg-mc-1': !currentRightPanel,
+                'closed text-mc-1 hover:bg-mc-1 hover:text-hc-1':
+                  !currentRightPanel,
               }"
             >
-              <div class="z-20 flex -rotate-90 flex-nowrap text-nowrap text-xl">
+              <div class="z-20 -rotate-90 whitespace-nowrap text-xl">
                 {{ leftPanelName }}
               </div>
             </button>
@@ -80,17 +81,17 @@ const uiSwitchHandler = (event: WheelEvent) => {
           "
         >
           <div class="relative h-full w-full overflow-x-hidden rounded">
-            <shadow-overlay class="z-50"/>
+            <shadow-overlay class="z-50" />
             <button
               @click="showRightPanel"
               class="absolute left-0 top-0 z-40 flex h-full w-full items-center justify-center bg-mc-1 transition hover:bg-hc-1"
               :class="{
-                'closed hover:bg-mc-1 text-mc-1 hover:text-hc-1':
+                'closed text-mc-1 hover:bg-mc-1 hover:text-hc-1':
                   currentRightPanel && !firstAnimation,
                 hidden: firstAnimation,
               }"
             >
-              <div class="z-20 flex rotate-90 flex-nowrap text-nowrap text-xl">
+              <div class="z-20 rotate-90 whitespace-nowrap text-xl">
                 {{ rightPanelName }}
               </div>
             </button>
@@ -133,6 +134,7 @@ const uiSwitchHandler = (event: WheelEvent) => {
   }
   100% {
     display: none;
+    visibility: hidden;
   }
 }
 </style>

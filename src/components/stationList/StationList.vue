@@ -3,7 +3,7 @@ import { getFlagImage } from "@/api/getFlagImage";
 import XImage from "@/components/ui/image/Image.vue";
 import XIcon from "@/components/ui/icon/Icon.vue";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
-import { ref, type HTMLAttributes } from "vue";
+import { onMounted, ref, type HTMLAttributes } from "vue";
 import { cn } from "@/lib/utils/twMerge";
 import { messages } from "@/lib/locale/locale";
 import {
@@ -19,6 +19,8 @@ import {
   Plus,
   Check,
   X,
+  GripVertical,
+  ChevronsDown,
 } from "lucide-vue-next";
 
 const props = defineProps<{
@@ -26,12 +28,23 @@ const props = defineProps<{
   favoriteStations: Station[] | "add" | "remove";
   class?: HTMLAttributes["class"];
   userLocale?: "en" | "ru";
+  showExtendedInfo?: boolean;
+  canDrag?: boolean;
 }>();
 
 const emits = defineEmits<{
   (e: "selectStation", station: Station): void;
   (e: "addStationToFavorites", station: Station): void;
   (e: "removeStationFromFavorites", station: Station): void;
+  (e: "positionUp", station: Station): void;
+  (e: "positionDown", station: Station): void;
+  (
+    e: "replaceStations",
+    stations: {
+      stationOne: Station;
+      stationTwo: Station;
+    },
+  ): void;
 }>();
 
 const selectStation = (station: Station) => {
@@ -39,6 +52,8 @@ const selectStation = (station: Station) => {
 };
 const currentOpenId = ref("id");
 const el = ref<HTMLElement | null>(null);
+const isDragging = ref(false);
+const dragTarget = ref<Station | null>(null);
 
 const infoOpenHandler = (station: Station) => {
   if (currentOpenId.value === station.stationuuid) {
@@ -66,20 +81,133 @@ const addToFavorites = (station: Station) => {
 const removeFromFavorites = (station: Station) => {
   emits("removeStationFromFavorites", station);
 };
+
+const dragStartHandler = (e: DragEvent, station: Station) => {
+  dragTarget.value = station;
+};
+
+const dragEndHandler = (e: DragEvent) => {
+  isDragging.value = false;
+};
+
+const dragOverHandler = (e: DragEvent, station: Station) => {
+  e.preventDefault();
+  if (dragTarget.value?.stationuuid === station.stationuuid) {
+    return;
+  }
+  const stationOneIndex = props.stationsList.findIndex(
+    (s) => s.stationuuid === dragTarget.value?.stationuuid,
+  );
+  const stationTwoIndex = props.stationsList.findIndex(
+    (s) => s.stationuuid === station.stationuuid,
+  );
+  if (stationOneIndex > stationTwoIndex) {
+    (e.currentTarget as HTMLElement).classList.add("left-drag-preview");
+  } else {
+    (e.currentTarget as HTMLElement).classList.add("right-drag-preview");
+  }
+};
+
+const dragLeaveHandler = (e: DragEvent) => {
+  e.preventDefault();
+  (e.currentTarget as HTMLElement).classList.remove(
+    "left-drag-preview",
+    "right-drag-preview",
+  );
+};
+
+const dropHandler = (e: DragEvent, station: Station) => {
+  e.preventDefault();
+  (e.currentTarget as HTMLElement).classList.remove(
+    "left-drag-preview",
+    "right-drag-preview",
+  );
+  isDragging.value = false;
+  if (dragTarget.value && station) {
+    emits("replaceStations", {
+      stationOne: dragTarget.value,
+      stationTwo: station,
+    });
+  }
+  dragTarget.value = null;
+};
+
+const positionUpHandler = (station: Station) => {
+  emits("positionUp", station);
+};
+const positionDownHandler = (station: Station) => {
+  emits("positionDown", station);
+};
+
+onMounted(() => {
+  document.addEventListener("mouseup", () => {
+    isDragging.value = false;
+  });
+});
 </script>
 
 <template>
   <div
     ref="el"
     v-if="stationsList.length"
-    :class="cn('flex h-fit w-full flex-wrap gap-2  px-2', props.class)"
+    :class="cn('flex h-fit w-full flex-wrap gap-2 px-2', props.class)"
   >
     <Collapsible
       v-for.lazy="station in props.stationsList"
+      :draggable="isDragging"
+      @dragstart="dragStartHandler($event, station)"
+      @dragend="dragEndHandler"
+      @dragover="dragOverHandler($event, station)"
+      @dragleave="dragLeaveHandler"
+      @drop="dropHandler($event, station)"
       :open="currentOpenId === station.stationuuid"
       :key="station.stationuuid"
-      class="relative flex h-fit w-[19%] min-w-56 grow animate-[fadeIn_300ms_ease-out] select-text flex-col justify-start gap-2 overflow-clip rounded bg-gradient-to-br from-hc-1 to-mc-1 p-2 shadow-md shadow-black/30 transition-all"
+      :class="
+        cn(
+          'animate-fade-i relative flex h-fit w-[19%] min-w-56 grow  select-text flex-col justify-start gap-2  rounded bg-gradient-to-br from-hc-1 to-mc-1 p-2  shadow-md shadow-black/30 transition-all',
+          {
+            'pl-6': canDrag,
+            'opacity-20':
+              station.stationuuid === dragTarget?.stationuuid && isDragging,
+          },
+        )
+      "
     >
+      <!-- Drag Mask -->
+      <div
+        v-if="isDragging"
+        class="absolute left-0 top-0 z-50 h-full w-full"
+      ></div>
+      <!-- Dragger -->
+      <div
+        v-if="canDrag"
+        class="absolute bottom-0 left-0 flex h-full w-4 flex-col items-center justify-between py-[0.05rem] pl-[0.2rem]"
+      >
+        <button @click.stop="positionUpHandler(station)" class="">
+          <x-icon
+            :icon="ChevronsDown"
+            :size="22"
+            :stroke-width="2"
+            class="rotatorUp rotate-90 text-tc-3 transition-all"
+          />
+        </button>
+        <button @mousedown="isDragging = true" class="cursor-move">
+          <x-icon
+            :icon="GripVertical"
+            :size="23"
+            :stroke-width="1.8"
+            class="text-tc-3"
+          />
+        </button>
+        <button @click.stop="positionDownHandler(station)" class="">
+          <x-icon
+            :icon="ChevronsDown"
+            :size="22"
+            :stroke-width="2"
+            class="rotatorDown -rotate-90 text-tc-3 transition-all"
+          />
+        </button>
+      </div>
       <!-- Add To Favorites -->
       <div
         class="group absolute right-0 top-0 size-[2.2rem] overflow-hidden rounded-tr transition-all [clip-path:polygon(15%_0%,100%_0%,100%_85%)] hover:[clip-path:polygon(0%_0%,100%_0%,100%_100%)]"
@@ -123,7 +251,7 @@ const removeFromFavorites = (station: Station) => {
       <h2 class="-mb-2 w-full truncate text-nowrap px-2 text-center">
         {{ removeMetadata(station.name || "Unknown station") }}
       </h2>
-      <div class="flex w-fit justify-center gap-2">
+      <div class="mb-1 flex w-fit justify-center gap-2">
         <!-- Station Select / Logo -->
         <button
           @click="selectStation(station)"
@@ -178,7 +306,10 @@ const removeFromFavorites = (station: Station) => {
         </div>
       </div>
       <!-- Open Trigger -->
-      <div class="-mt-2 h-[1.20rem] w-full text-center">
+      <div
+        v-if="props.showExtendedInfo ?? true"
+        class="-mt-3 h-[1.20rem] w-full text-center"
+      >
         <button @click="infoOpenHandler(station)" class="w-5">
           <chevron-down
             :class="
@@ -189,7 +320,10 @@ const removeFromFavorites = (station: Station) => {
           />
         </button>
       </div>
-      <CollapsibleContent class="-mt-2 flex flex-col">
+      <CollapsibleContent
+        v-if="props.showExtendedInfo ?? true"
+        class="-mt-2 flex flex-col"
+      >
         <div>
           <a
             v-if="station.homepage"
@@ -223,4 +357,28 @@ const removeFromFavorites = (station: Station) => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.left-drag-preview {
+  @apply ml-12;
+}
+.left-drag-preview::before {
+  content: "";
+  @apply absolute right-full top-0 mr-2 h-full w-10 animate-fade-in rounded bg-mc-3;
+}
+.right-drag-preview {
+  @apply mr-12;
+}
+.right-drag-preview::before {
+  content: "";
+  @apply absolute left-full top-0 ml-2 h-full w-10 animate-fade-in rounded bg-mc-3;
+}
+
+@media (max-width: 557px) {
+  .rotatorUp {
+    @apply rotate-180;
+  }
+  .rotatorDown {
+    @apply rotate-0;
+  }
+}
+</style>
