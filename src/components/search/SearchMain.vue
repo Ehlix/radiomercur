@@ -83,6 +83,7 @@ const el = ref<HTMLElement | null>(null);
     ref="el"
     class="relative flex h-full w-full flex-col gap-2 overflow-x-hidden overflow-y-scroll rounded bg-mc-1"
   >
+    <!-- Progress bar -->
     <x-progress
       :model-value="searchStore.downloadProgress"
       class="fixed left-0 top-[6.5rem] h-2 w-full p-[0.1rem] sm:top-[5.5rem]"
@@ -103,8 +104,8 @@ const el = ref<HTMLElement | null>(null);
         :favorite-stations="userStore.favoriteStations"
         :user-locale="userStore.locale"
         @select-station="selectStationHandler"
-        @add-station-to-favorites="userStore.addToFavorite($event)"
-        @remove-station-from-favorites="userStore.removeFromFavorite($event)"
+        @add-station-to-favorites="userStore.addToFavorite($event, 'default')"
+        @remove-station-from-favorites="userStore.removeFromFavorite($event, 'default')"
       />
     </div>
     <!-- Pagination -->

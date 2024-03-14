@@ -141,7 +141,7 @@ onUnmounted(() => {
             <x-button
               @click="downloadData"
               variant="ghost"
-              class="flex h-full w-full flex-col items-center justify-start whitespace-normal rounded border border-mc-2 p-4 pt-10 sm:py-10 xs:p-16"
+              class="flex h-full w-full flex-col items-center justify-start whitespace-normal rounded border border-mc-2 p-4 pt-10 sm:py-10 xs:py-16"
             >
               <x-icon
                 :icon="FileDown"
@@ -160,7 +160,7 @@ onUnmounted(() => {
               variant="ghost"
               :class="
                 cn(
-                  'relative h-full w-full flex-col items-center justify-start whitespace-normal rounded border border-dashed border-mc-2 p-4 pt-10 text-mc-2 sm:py-10 xs:p-16',
+                  'relative h-full w-full flex-col items-center justify-start whitespace-normal rounded border border-dashed border-mc-2 p-4 pt-10 text-mc-2 sm:py-10 xs:py-16',
                   {
                     'bg-hc-1': isOverDropZone,
                   },

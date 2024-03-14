@@ -3,15 +3,20 @@ import { defineStore, storeToRefs } from "pinia";
 import { getStationInfoById } from "@/api/getStations";
 import { useBaseUrl } from "./baseUrl";
 import { getLSData, setLSData } from "@/api/localStorage";
+import { generateId } from "@/lib/utils/generateId";
 
 export const useUserStore = defineStore("userStations", () => {
   const { baseUrl } = storeToRefs(useBaseUrl());
-  const favoriteStations = ref<Station[]>([]);
+  const favoriteStations = ref<FavoriteStations>({
+    default: { name: "default", stations: [] },
+  });
   const selectedStation = ref<Station>();
   const locale = ref<"en" | "ru">("en");
   const borders = ref<"rounded" | "square">("rounded");
 
-  favoriteStations.value = getLSData()?.favoritesStations || [];
+  favoriteStations.value = getLSData()?.favoritesStations || {
+    default: { name: "default", stations: [] },
+  };
   const localeFromLS = getLSData()?.userSettings?.language;
   const localeFromNav =
     window.navigator.language === "ru-RU" || "ru" ? "ru" : "en";
@@ -46,34 +51,57 @@ export const useUserStore = defineStore("userStations", () => {
     selectedStation.value = station;
   };
 
-  const addToFavorite = (station: Station) => {
-    favoriteStations.value.unshift(station);
+  const addToFavorite = ({ station, folderID }: StationAndId) => {
+    if (favoriteStations.value[folderID]) {
+      favoriteStations.value[folderID].stations.unshift(station);
+    } else {
+      favoriteStations.value["default"].stations.unshift(station);
+    }
   };
 
-  const removeFromFavorite = (station: Station) => {
-    favoriteStations.value = [...favoriteStations.value].filter(
-      (s) => s.stationuuid !== station.stationuuid,
-    );
+  const removeFromFavorite = ({ station, folderID }: StationAndId) => {
+    if (favoriteStations.value[folderID]) {
+      favoriteStations.value[folderID].stations = [
+        ...favoriteStations.value[folderID].stations.filter(
+          (s) => s.stationuuid !== station.stationuuid,
+        ),
+      ];
+    }
+  };
+
+  const renameFolder = ({
+    folderID,
+    name,
+  }: {
+    folderID: string;
+    name: string;
+  }) => {
+    if (favoriteStations.value[folderID]) {
+      favoriteStations.value[folderID].name = name;
+    }
   };
 
   const changeBorders = (mode: typeof borders.value) => {
     borders.value = mode;
   };
 
-  const replaceFavoriteStations = (stations: {
-    stationOne: Station;
-    stationTwo: Station;
-  }) => {
+  const replaceFavoriteStations = (
+    stations: {
+      stationOne: Station;
+      stationTwo: Station;
+    },
+    folderID: string,
+  ) => {
     if (stations.stationOne.stationuuid === stations.stationTwo.stationuuid) {
       return;
     }
-    const indexOne = favoriteStations.value.findIndex(
+    const indexOne = favoriteStations.value[folderID].stations.findIndex(
       (s) => s.stationuuid === stations.stationOne.stationuuid,
     );
-    const indexTwo = favoriteStations.value.findIndex(
+    const indexTwo = favoriteStations.value[folderID].stations.findIndex(
       (s) => s.stationuuid === stations.stationTwo.stationuuid,
     );
-    const filteredFavoriteStations = favoriteStations.value.filter(
+    const filteredFolder = favoriteStations.value[folderID].stations.filter(
       (s) =>
         s.stationuuid !== stations.stationOne.stationuuid &&
         s.stationuuid !== stations.stationTwo.stationuuid,
@@ -82,41 +110,51 @@ export const useUserStore = defineStore("userStations", () => {
       indexOne > indexTwo
         ? [stations.stationOne, stations.stationTwo]
         : [stations.stationTwo, stations.stationOne];
-    const newFavorites = [
-      ...filteredFavoriteStations.slice(
-        0,
-        indexTwo > indexOne ? indexTwo - 1 : indexTwo,
-      ),
+    const newStations = [
+      ...filteredFolder.slice(0, indexTwo > indexOne ? indexTwo - 1 : indexTwo),
       ...pair,
-      ...filteredFavoriteStations.slice(
-        indexTwo > indexOne ? indexTwo - 1 : indexTwo,
-      ),
+      ...filteredFolder.slice(indexTwo > indexOne ? indexTwo - 1 : indexTwo),
     ];
-    favoriteStations.value = newFavorites;
+    favoriteStations.value[folderID].stations = newStations;
   };
 
-  const stationPositionUp = (station: Station) => {
-    const index = favoriteStations.value.findIndex(
+  const stationPositionUp = ({ station, folderID }: StationAndId) => {
+    const index = favoriteStations.value[folderID].stations.findIndex(
       (s) => s.stationuuid === station.stationuuid,
     );
     if (index === 0) {
       return;
     }
-    const stationTwo = favoriteStations.value[index - 1];
-    favoriteStations.value[index - 1] = station;
-    favoriteStations.value[index] = stationTwo;
+    const stationTwo = favoriteStations.value[folderID].stations[index - 1];
+    favoriteStations.value[folderID].stations[index - 1] = station;
+    favoriteStations.value[folderID].stations[index] = stationTwo;
   };
 
-  const stationPositionDown = (station: Station) => {
-    const index = favoriteStations.value.findIndex(
+  const stationPositionDown = ({ station, folderID }: StationAndId) => {
+    const index = favoriteStations.value[folderID].stations.findIndex(
       (s) => s.stationuuid === station.stationuuid,
     );
-    if (index === favoriteStations.value.length - 1) {
+    if (index === favoriteStations.value[folderID].stations.length - 1) {
       return;
     }
-    const stationTwo = favoriteStations.value[index + 1];
-    favoriteStations.value[index + 1] = station;
-    favoriteStations.value[index] = stationTwo;
+    const stationTwo = favoriteStations.value[folderID].stations[index + 1];
+    favoriteStations.value[folderID].stations[index + 1] = station;
+    favoriteStations.value[folderID].stations[index] = stationTwo;
+  };
+
+  const createFavoriteStationsFolder = (name: string) => {
+    const id = generateId();
+    favoriteStations.value[id] = {
+      name,
+      stations: [],
+    };
+  };
+
+  const deleteFavoriteStationsFolder = (folderID: string) => {
+    if (folderID === "default" || !favoriteStations.value[folderID]) {
+      return;
+    }
+    delete favoriteStations.value[folderID];
   };
 
   watch(
@@ -160,6 +198,9 @@ export const useUserStore = defineStore("userStations", () => {
     locale,
     changeLocale,
     changeBorders,
+    createFavoriteStationsFolder,
+    deleteFavoriteStationsFolder,
+    renameFolder,
     removeFromFavorite,
     favoriteStations,
     replaceFavoriteStations,

@@ -33,7 +33,7 @@ watchEffect(() => {
 <template>
   <Select v-model="selected" name="countries">
     <SelectTrigger class="text-tc-4">
-      <SelectValue placeholder="All countries" />
+      <SelectValue placeholder="All countries" class="font-medium"/>
     </SelectTrigger>
     <SelectContent>
       <SelectGroup class="text-tc-4">

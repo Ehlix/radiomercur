@@ -2,12 +2,11 @@
 import XIcon from "@/components/ui/icon/Icon.vue";
 import { navList } from "@/lib/static/navList";
 import { cn } from "@/lib/utils/twMerge";
-import SettingsBar from "@/components/navigation/SettingsBar.vue";
 import { computed, ref, onMounted, onUnmounted } from "vue";
 import PlayerMain from "@/components/player/PlayerMain.vue";
 import shadowOverlay from "../ui/shadowOverlay/shadowOverlay.vue";
 import logoMain from "@/components/logo/logoMain.vue";
-import syncUserData from "@/components/navigation/syncUserData.vue";
+import SettingsMain from "../settings/SettingsMain.vue";
 
 const nav = ref<Element | null>(null);
 const scrollVisible = ref(false);
@@ -48,11 +47,10 @@ onUnmounted(() => {
       </div>
       <!-- Settings -->
       <div
-        class="relative flex flex-col w-[10%] min-w-[10%] overflow-hidden rounded bg-mc-2 py- last:*:pb-2 even:*:pt-2 *:rounded-none"
+        class="py- relative flex w-[10%] min-w-[10%] flex-col overflow-hidden rounded bg-mc-2 *:rounded-none last:*:pb-2 even:*:pt-2"
       >
         <shadow-overlay />
-        <settings-bar />
-        <sync-user-data/>
+        <settings-main />
       </div>
     </nav>
   </header>

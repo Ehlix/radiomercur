@@ -115,11 +115,24 @@ type UserSettings = {
   language?: Locale;
 };
 
+type FavObj = {
+  name: string;
+  stations: Station[];
+}
+
+type FavoriteStations = Record<string, FavObj> &
+  Record<"default", FavObj>;
+
 type LocalStorageData = {
-  favoritesStations?: Station[];
+  favoritesStations?: FavoriteStations;
   historyStations?: Station[];
   searchFilters?: SearchFilters;
   userSettings?: UserSettings;
+};
+
+type StationAndId = {
+  station: Station;
+  folderID: string;
 };
 
 type CountryCodes =

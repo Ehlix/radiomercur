@@ -19,13 +19,13 @@ const forwardedProps = useForwardProps(delegatedProps)
   <SelectTrigger
     v-bind="forwardedProps"
     :class="cn(
-      'flex h-8 w-full items-center rounded justify-between bg-mc-3 px-2 py-2 text-sm placeholder:text-tc-3 text-tc-1 focus:outline-none focus:ring-0 focus:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
+      'flex h-8 w-full items-center rounded justify-between bg-mc-3 px-2 py-2 text-sm placeholder:text-tc-3 text-tc-1 focus:outline-none focus:ring-0 focus:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 pr-1',
       props.class,
     )"
   >
     <slot />
     <SelectIcon as-child>
-      <ChevronDown class="min-w-4 w-4 h-4 opacity-100" />
+      <ChevronDown :size="20" stroke-width="2" class="" />
     </SelectIcon>
   </SelectTrigger>
 </template>

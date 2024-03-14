@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import XIcon from "../ui/icon/Icon.vue";
 import { ref, watch } from "vue";
 import ChooseCountry from "@/components/search/ChooseCountry.vue";
+import XIcon from "../ui/icon/Icon.vue";
+import XInput from "@/components/ui/input/Input.vue";
 import XSwitch from "@/components/ui/switch/Switch.vue";
 import xButton from "@/components/ui/button/Button.vue";
 import {
@@ -18,7 +19,6 @@ import {
   ArrowDownWideNarrow,
   ArrowDownNarrowWide,
 } from "lucide-vue-next";
-import XInput from "@/components/ui/input/Input.vue";
 import { genresList } from "@/lib/static/genresList";
 import { useUserStore } from "@/stores/userStore";
 import { cn } from "@/lib/utils/twMerge";
@@ -189,7 +189,7 @@ watch([debSearch, currentTab], () => {
       class="flex items-center gap-2 text-sm xs:flex-col"
     >
       <div class="flex gap-2">
-        <div class="flex items-center gap-2 text-nowrap text-tc-1">
+        <div class="flex items-center gap-2 text-nowrap whitespace-nowrap text-tc-1">
           <x-switch
             :checked="filters.highQualityOnly"
             @update:checked="hqOnly"

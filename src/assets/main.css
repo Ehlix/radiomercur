@@ -240,7 +240,7 @@ h2 {
   height: 17px;
   width: 7px;
 }
-aa {
+* {
   scrollbar-color: var(--hover-color-1) var(--scroll-background);
   scrollbar-width: thin;
 }
