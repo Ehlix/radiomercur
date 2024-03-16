@@ -9,6 +9,7 @@ import { useUserStore } from "@/stores/userStore";
 import XImage from "@/components/ui/image/Image.vue";
 import XSlider from "@/components/ui/slider/Slider.vue";
 import XIcon from "@/components/ui/icon/Icon.vue";
+import PlayerVisual from "./PlayerVisual.vue";
 import {
   Collapsible,
   CollapsibleContent,
@@ -27,6 +28,7 @@ import {
 
 const { selectedStation, locale } = storeToRefs(useUserStore());
 const player = ref<HTMLAudioElement | null>(null);
+const canvas = ref<HTMLCanvasElement | null>(null);
 const paused = ref<boolean>(true);
 const loading = ref<boolean>(false);
 const loadingError = ref<boolean>(false);
@@ -120,19 +122,24 @@ watch([volume], () => {
   }
   player.value.volume = volume.value[0] / 100;
 });
+
 </script>
 
 <template>
-  <collapsible v-model:open="infoIsOpen" class="h-fit p-2">
-    <div class="relative flex h-20 w-full flex-col justify-between sm:h-16">
+  <collapsible v-model:open="infoIsOpen" class="relative h-fit p-2">
+    <!-- Visualization -->
+    <player-visual v-if="player && selectedStation" :player="player" />
+    <div
+      class="relative z-20 flex h-20 w-full flex-col justify-between sm:h-16"
+    >
       <!-- BG Logo -->
       <div
-        class="pointer-events-none absolute left-2 top-2 z-0 size-28 overflow-hidden rounded-full opacity-20"
+        class="pointer-events-none absolute left-2 top-2 z-30 size-28 overflow-hidden rounded-full opacity-20"
       >
         <x-image
           :src="selectedStation?.favicon"
           :alt="selectedStation?.name"
-          class="size-28"
+          class="size-28 mix-blend-overlay"
         />
       </div>
       <!-- Extra Info -->
@@ -182,7 +189,7 @@ watch([volume], () => {
           <!-- Play -->
           <button
             @click="togglePlay()"
-            class="pointer-events-auto flex size-12 items-center justify-center rounded-full border-2 border-tc-1 stroke-[0.1rem] p-1 transition-all hover:bg-hc-1 sm:size-10"
+            class="pointer-events-auto flex size-12 items-center justify-center rounded-full border-2 border-tc-1 stroke-[0.1rem] p-1 transition-all sm:size-10"
           >
             <x-icon
               :icon="paused ? Play : Pause"
@@ -208,70 +215,73 @@ watch([volume], () => {
       </div>
     </div>
     <collapsible-content>
-      <div class="h-10" />
-      <!-- Popularity -->
-      <div class="flex flex-col *:flex *:items-center *:gap-1">
-        <div v-show="selectedStation?.clickcount" class="*:text-mc-3">
-          <p>{{ selectedStation?.clickcount }}</p>
-          <x-icon :icon="Star" :size="20" />
+      <div class="relative z-20 flex flex-col">
+        <div class="h-10" />
+        <!-- Popularity -->
+        <div class="flex flex-col *:flex *:items-center *:gap-1">
+          <div v-show="selectedStation?.clickcount" class="*:text-mc-3">
+            <p>{{ selectedStation?.clickcount }}</p>
+            <x-icon :icon="Star" :size="20" />
+          </div>
+          <div v-show="selectedStation?.votes" class="*:text-teal-500">
+            <p>{{ selectedStation?.votes }}</p>
+            <x-icon :icon="ThumbsUp" :size="20" />
+          </div>
         </div>
-        <div v-show="selectedStation?.votes" class="*:text-teal-500">
-          <p>{{ selectedStation?.votes }}</p>
-          <x-icon :icon="ThumbsUp" :size="20" />
+        <!-- Codec -->
+        <div v-if="selectedStation?.codec">
+          {{ selectedStation.codec + " " + (selectedStation.bitrate || "") }}
         </div>
-      </div>
-      <!-- Codec -->
-      <div v-if="selectedStation?.codec">
-        {{ selectedStation.codec + " " + (selectedStation.bitrate || "") }}
-      </div>
-      <!-- Geo -->
-      <div>{{ selectedStation?.geo_lat }}</div>
-      <!-- Home Page -->
-      <div>
-        <a
-          v-if="selectedStation?.homepage"
-          :href="selectedStation.homepage"
-          target="_blank"
-          class="text-tc-2 transition-all hover:text-hc-2"
-        >
-          {{ $t("stationCard.homepage") }}
-        </a>
-      </div>
-      <!-- Stream Source -->
-      <div>
-        <a
-          v-if="selectedStation?.url_resolved || selectedStation?.url"
-          :href="selectedStation.url_resolved || selectedStation.url"
-          target="_blank"
-          class="text-tc-2 transition-all hover:text-hc-2"
-        >
-          {{ $t("stationCard.streamSource") }}
-        </a>
-      </div>
-      <!-- Flag ana Country Name -->
-      <div
-        v-if="selectedStation?.countrycode"
-        class="mt-1 flex items-center gap-1"
-      >
-        <x-image
-          :src="getFlagImage(selectedStation?.countrycode)"
-          class="h-5 w-8"
-        />
-        <p>
-          {{
-            // @ts-expect-error
-            messages[locale || "en"]?.countries[selectedStation.countrycode] ||
-            ""
-          }}
-        </p>
-      </div>
-      <!-- Tags -->
-      <div v-if="selectedStation?.tags" class="mt-2 flex flex-wrap gap-1">
+        <!-- Geo -->
+        <div>{{ selectedStation?.geo_lat }}</div>
+        <!-- Home Page -->
+        <div>
+          <a
+            v-if="selectedStation?.homepage"
+            :href="selectedStation.homepage"
+            target="_blank"
+            class="text-tc-2 transition-all hover:text-hc-2"
+          >
+            {{ $t("stationCard.homepage") }}
+          </a>
+        </div>
+        <!-- Stream Source -->
+        <div>
+          <a
+            v-if="selectedStation?.url_resolved || selectedStation?.url"
+            :href="selectedStation.url_resolved || selectedStation.url"
+            target="_blank"
+            class="text-tc-2 transition-all hover:text-hc-2"
+          >
+            {{ $t("stationCard.streamSource") }}
+          </a>
+        </div>
+        <!-- Flag ana Country Name -->
         <div
-          v-for="tag in selectedStation.tags.split(',').splice(0, 10)"
-          class="rounded-sm border border-tc-3 px-1 text-sm capitalize text-tc-3"
+          v-if="selectedStation?.countrycode"
+          class="mt-1 flex items-center gap-1"
         >
-          {{ tag }}
+          <x-image
+            :src="getFlagImage(selectedStation?.countrycode)"
+            class="h-5 w-8"
+          />
+          <p>
+            {{
+              // @ts-expect-error
+              messages[locale || "en"]?.countries[
+                selectedStation.countrycode
+              ] || ""
+            }}
+          </p>
+        </div>
+        <!-- Tags -->
+        <div v-if="selectedStation?.tags" class="mt-2 flex flex-wrap gap-1">
+          <div
+            v-for="tag in selectedStation.tags.split(',').splice(0, 10)"
+            class="rounded-sm border border-tc-3 px-1 text-sm capitalize text-tc-3"
+          >
+            {{ tag }}
+          </div>
         </div>
       </div>
     </collapsible-content>
@@ -282,6 +292,6 @@ watch([volume], () => {
     @change="togglePlay()"
     @canplay="autoPlay()"
     @error="errorHandler()"
+    crossorigin="anonymous"
   ></audio>
 </template>
-@/stores/userStore
