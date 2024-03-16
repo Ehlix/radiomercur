@@ -42,11 +42,14 @@ const addHandler = () => {
           :size="24"
           :stroke-width="1.5"
         />
-        {{ $t("favoriteBar.newFolder") }}
+        <span class="xs:hidden">
+          {{ $t("favoriteBar.newFolder") }}
+        </span>
       </x-button>
     </DialogTrigger>
     <DialogContent class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
-      <div
+      <form
+        @submit.prevent="addHandler"
         class="grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] rounded bg-mc-1 sm:max-w-[425px]"
       >
         <DialogHeader class="border-b border-mc-2 px-2 pt-2">
@@ -88,11 +91,11 @@ const addHandler = () => {
           >
             {{ $t("buttons.cancel") }}
           </DialogClose>
-          <DialogClose @click="addHandler">
-            {{ $t("buttons.add") }}
+          <DialogClose type="submit">
+            {{ $t("buttons.save") }}
           </DialogClose>
         </DialogFooter>
-      </div>
+      </form>
     </DialogContent>
   </Dialog>
 </template>

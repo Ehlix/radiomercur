@@ -52,7 +52,7 @@ const emits = defineEmits<{
             {{ $t("buttons.cancel") }}
           </DialogClose>
           <DialogClose @click="emits('delete', true)">
-            {{ $t("buttons.delete") }}
+            {{ $t("buttons.continue") }}
           </DialogClose>
         </DialogFooter>
       </div>

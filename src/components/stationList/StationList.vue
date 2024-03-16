@@ -22,6 +22,7 @@ import {
   X,
   GripVertical,
   ChevronsDown,
+  ListPlus,
 } from "lucide-vue-next";
 
 const props = defineProps<{
@@ -242,7 +243,7 @@ onMounted(() => {
         <div
           :class="
             cn(
-              'absolute right-0 top-0 z-30 size-8 overflow-hidden rounded-tr border-b-2 border-t-2 border-mc-2 bg-mc-2 transition-all duration-300 [clip-path:polygon(0%_0%,100%_0%,100%_100%,50%_50%)]',
+              'absolute right-0 top-0 z-30 size-9 overflow-hidden rounded-tr border-b-2 border-t-2 border-mc-2 bg-mc-2 transition-all duration-300 [clip-path:polygon(0%_0%,100%_0%,100%_100%,50%_50%)]',
               {
                 'size-full rounded border-b-2 border-t-2 bg-mc-1 [clip-path:polygon(0%_0%,100%_0%,100%_100%,0%_100%)]':
                   currentOpenFavMenu === station.stationuuid,
@@ -260,18 +261,18 @@ onMounted(() => {
             "
           >
             <x-icon
-              :icon="Plus"
+              v-if="currentOpenFavMenu !== station.stationuuid"
+              :icon="ListPlus"
               :size="18"
               :stroke-width="2"
-              :class="
-                cn(
-                  'absolute right-0 top-0 transition-all group-hover:opacity-90',
-                  {
-                    'rotate-45 text-mc-2':
-                      currentOpenFavMenu === station.stationuuid,
-                  },
-                )
-              "
+              class="absolute right-0 top-0 transition-all group-hover:opacity-90"
+            />
+            <x-icon
+              v-else
+              :icon="X"
+              :size="18"
+              :stroke-width="2"
+              class="absolute right-0 top-0 text-mc-2 transition-all group-hover:opacity-90"
             />
           </button>
           <div
@@ -400,9 +401,12 @@ onMounted(() => {
         <!-- Open Trigger -->
         <div
           v-if="props.showExtendedInfo ?? true"
-          class="absolute left-0 top-[6.5rem] h-[0.85rem] w-full text-center"
+          class="pointer-events-none absolute left-0 top-[6.5rem] h-[0.85rem] w-full text-center"
         >
-          <button @click="infoOpenHandler(station)" class="w-5">
+          <button
+            @click="infoOpenHandler(station)"
+            class="pointer-events-auto w-5"
+          >
             <chevron-down
               stroke-width="2"
               :size="22"
@@ -468,7 +472,7 @@ onMounted(() => {
   @apply absolute right-0 top-0 h-full w-2 animate-fade-in rounded bg-mc-3;
 }
 
-@media (max-width: 557px) {
+@media (max-width: 597px) {
   .rotatorUp {
     @apply rotate-180;
   }

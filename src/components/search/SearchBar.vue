@@ -18,6 +18,8 @@ import {
   X,
   ArrowDownWideNarrow,
   ArrowDownNarrowWide,
+  Star,
+  ThumbsUp,
 } from "lucide-vue-next";
 import { genresList } from "@/lib/static/genresList";
 import { useUserStore } from "@/stores/userStore";
@@ -45,6 +47,10 @@ const hqOnly = (payload: boolean) => {
 
 const reverseSearch = (payload: boolean) => {
   filters.value.reverse = payload;
+};
+
+const changeOrder = (order: ParamsOrder) => {
+  filters.value.order = order;
 };
 
 const changeCountryCode = (payload: CountryCodes | "all") => {
@@ -186,10 +192,12 @@ watch([debSearch, currentTab], () => {
     </tabs-content>
     <div
       v-show="currentTab !== 'history'"
-      class="flex items-center gap-2 text-sm xs:flex-col"
+      class="flex items-center gap-2 text-sm sm:flex-col"
     >
       <div class="flex gap-2">
-        <div class="flex items-center gap-2 text-nowrap whitespace-nowrap text-tc-1">
+        <div
+          class="flex items-center gap-2 whitespace-nowrap text-nowrap text-tc-1 xs:whitespace-normal"
+        >
           <x-switch
             :checked="filters.highQualityOnly"
             @update:checked="hqOnly"
@@ -202,6 +210,28 @@ watch([debSearch, currentTab], () => {
         Reverse
       </div> -->
         <!-- <div class="border-r border-mc-3 w-1 h-full"/> -->
+
+        <!-- Star of Likes filter -->
+        <div class="flex items-center gap-2 text-tc-1">
+          <x-button
+            @click="changeOrder('clickcount')"
+            :disabled="filters.order !== 'votes'"
+            :variant="'ghost'"
+            class="size-8 min-w-5 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
+          >
+            <x-icon :icon="Star" :size="21" :stroke-width="2" />
+          </x-button>
+          <x-button
+            @click="changeOrder('votes')"
+            :disabled="filters.order === 'votes'"
+            :variant="'ghost'"
+            class="size-8 min-w-8 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
+          >
+            <x-icon :icon="ThumbsUp" :size="21" :stroke-width="2" />
+          </x-button>
+        </div>
+
+        <!-- Reverse order -->
         <div class="flex items-center gap-2 text-tc-1">
           <x-button
             @click="reverseSearch(true)"

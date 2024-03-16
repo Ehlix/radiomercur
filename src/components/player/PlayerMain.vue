@@ -188,7 +188,7 @@ watch([volume], () => {
               :icon="paused ? Play : Pause"
               :class="
                 cn('size-8', {
-                  'translate-x-[0.17rem]': paused,
+                  'translate-x-[0.13rem]': paused,
                 })
               "
             />

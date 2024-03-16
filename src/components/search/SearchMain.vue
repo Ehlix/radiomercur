@@ -57,25 +57,6 @@ watch([stationList], () => {
 });
 
 const el = ref<HTMLElement | null>(null);
-
-// useInfiniteScroll(
-//   el,
-//   () => {
-//     loadMoreHandler()
-//   },
-//   {
-//     distance: 500,
-//     canLoadMore() {
-//         return searchStore.canLoadMore;
-//     },
-//     interval: 1500,
-//   },
-// );
-
-// onUnmounted(() => {
-//   console.log("unmounted");
-//   searchStore.searchStoreReset();
-// });
 </script>
 
 <template>
@@ -104,8 +85,8 @@ const el = ref<HTMLElement | null>(null);
         :favorite-stations="userStore.favoriteStations"
         :user-locale="userStore.locale"
         @select-station="selectStationHandler"
-        @add-station-to-favorites="userStore.addToFavorite($event, 'default')"
-        @remove-station-from-favorites="userStore.removeFromFavorite($event, 'default')"
+        @add-station-to-favorites="userStore.addToFavorite($event)"
+        @remove-station-from-favorites="userStore.removeFromFavorite($event)"
       />
     </div>
     <!-- Pagination -->
@@ -141,4 +122,3 @@ const el = ref<HTMLElement | null>(null);
   opacity: 0;
 } */
 </style>
-@/stores/userStore

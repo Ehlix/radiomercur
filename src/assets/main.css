@@ -65,16 +65,16 @@
   }
   &.pastel-light {
     --background-color-1: #e8e8e8;
-    --main-color-1: #7f7fad;
-    --main-color-2: #6e9dbf;
-    --main-color-3: #d9a190;
+    --main-color-1: #7d7dab;
+    --main-color-2: #9dbbd1;
+    --main-color-3: #bdc3c7;
     --text-color-1: #ffffff;
     --text-color-2: #d68189;
     --text-color-3: #c4c4c4;
     --text-color-4: #42426c;
-    --hover-color-1: #8d8ebc;
-    --hover-color-2: #7faccd;
-    --hover-color-3: #e6b3a4;
+    --hover-color-1: #9595c1;
+    --hover-color-2: #adcae1;
+    --hover-color-3: #d0d5d8;
     --shadow-color-1: #00000050;
     --shadow-color-2: #00000070;
     --opacity-color-1: #c69b9f;
@@ -263,4 +263,13 @@ h2 {
   /* border-radius: 3px; */
   /*border: 3px solid orange;  !* отступ вокруг бегунка *!*/
   /*@apply bg-t-main rounded-[3px]*/
+}
+
+input[type='number'] {
+  -moz-appearance:textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
 }

@@ -49,7 +49,7 @@ export const useSearchStations = defineStore("searchStations", () => {
       // country: filters.country || "",
       countrycode: filters.countryCode,
       bitrateMin: filters.highQualityOnly ? 128 : 0,
-      order: "clickcount",
+      order: filters.order || "clickcount",
       limit: OFFSET,
       reverse: filters.reverse ?? true,
       hidebroken: true,

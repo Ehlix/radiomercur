@@ -86,6 +86,7 @@ type SearchFilters = {
   tag?: string;
   language?: string;
   reverse?: boolean;
+  order?: ParamsOrder;
 };
 
 type Theme =

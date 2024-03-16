@@ -11,76 +11,77 @@ import {
 } from "@/components/ui/dialog";
 import XInput from "@/components/ui/input/Input.vue";
 import XIcon from "@/components/ui/icon/Icon.vue";
-import { FolderPen, Pen, X } from "lucide-vue-next";
+import { Milestone } from "lucide-vue-next";
 import DialogClose from "../ui/dialog/DialogClose.vue";
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 
 const props = defineProps<{
-  folderName: string;
+  currentPage: number;
+  disabled?: boolean;
 }>();
 
 const emits = defineEmits<{
-  (e: "renameFolder", value: string): void;
+  (e: "changePage", value: number): void;
 }>();
 
-const inputValue = ref<string>(props.folderName);
+const inputValue = ref<number>(props.currentPage);
 
-const addHandler = () => {
-  if (!inputValue.value) {
-    return;
-  }
-  emits("renameFolder", inputValue.value);
+const saveHandler = () => {
+  emits("changePage", inputValue.value);
 };
+
+watchEffect(() => {
+  inputValue.value = props.currentPage;
+});
 </script>
 
 <template>
   <Dialog>
-    <DialogTrigger class="group flex w-fit items-center justify-center rounded">
+    <DialogTrigger
+      :disabled="props.disabled ?? false"
+      class="group flex w-fit items-center justify-center rounded"
+    >
       <x-button
-        @click="inputValue = props.folderName"
-        class="group flex h-8 w-8 min-w-8 justify-center bg-mc-3 p-0 hover:bg-white/0"
+        :disabled="props.disabled ?? false"
+        @click="inputValue = props.currentPage"
+        class="flex h-8 w-5 min-w-8 justify-center gap-1 bg-mc-1 px-2 hover:bg-mc-1 hover:text-mc-2 xs:min-w-5"
       >
-        <x-icon
-          :icon="Pen"
-          class="text-tc-4 transition-all group-hover:text-mc-2"
-          :size="20"
-          :stroke-width="1.5"
-        />
+        {{ inputValue }}
       </x-button>
     </DialogTrigger>
     <DialogContent class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
       <form
-        @submit.prevent="addHandler"
+        @click.prevent="saveHandler"
         class="grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] rounded bg-mc-1 sm:max-w-[425px]"
       >
         <DialogHeader class="border-b border-mc-2 px-2 pt-2">
           <DialogTitle class="text-2xl text-mc-2">
-            {{ $t("favoriteBar.renameFolder") }}
+            {{ $t("favoriteBar.changePage") }}
           </DialogTitle>
           <DialogDescription>
             <div class="flex gap-2 py-2">
               <div class="relative w-full">
                 <x-input
                   name="searchInput"
-                  type="text"
+                  type="number"
                   maxlength="25"
                   v-model.trim="inputValue"
-                  :placeholder="$t('favoriteBar.renameFolderPlaceholder')"
+                  :placeholder="$t('favoriteBar.enterPage')"
                   class="border-0 px-10 text-tc-4 focus-visible:text-tc-4"
                 />
                 <x-icon
-                  :icon="FolderPen"
+                  :icon="Milestone"
                   :size="30"
                   :stroke-width="1.5"
                   class="absolute inset-y-[0.15rem] start-[0.29rem] flex items-center justify-center px-1 text-tc-4"
                 />
-                <x-icon
+                <!-- <x-icon
                   @click="() => (inputValue = '')"
                   :icon="X"
                   :size="32"
                   :stroke-width="1.5"
                   class="absolute inset-y-0 end-1 flex cursor-pointer items-center justify-center px-1 text-tc-4 transition-all hover:opacity-60"
-                />
+                /> -->
               </div>
             </div>
           </DialogDescription>
