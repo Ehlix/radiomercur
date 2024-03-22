@@ -102,7 +102,7 @@ watch(
 <template>
   <Dialog>
     <DialogTrigger as-child>
-      <x-button class="h-full min-w-full p-1 bg-none">
+      <x-button class="h-full min-w-full bg-none p-1">
         <x-icon
           :icon="Settings"
           :size="27"

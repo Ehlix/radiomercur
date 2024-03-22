@@ -44,9 +44,9 @@ watchEffect(() => {
       <x-button
         :disabled="props.disabled ?? false"
         @click="inputValue = props.currentPage"
-        class="flex h-8 w-5 min-w-8 justify-center gap-1 bg-mc-1 px-2 hover:bg-mc-1 hover:text-mc-2 xs:min-w-5"
+        class="flex h-8 w-5 min-w-8 text-mc-2 justify-center gap-1 bg-mc-1 px-2 hover:bg-mc-1 hover:text-hc-2 xs:min-w-5"
       >
-        {{ inputValue }}
+        {{ props.currentPage }}
       </x-button>
     </DialogTrigger>
     <DialogContent class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">

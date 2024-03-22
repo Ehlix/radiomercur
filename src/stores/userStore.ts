@@ -1,4 +1,4 @@
-import { ref, watch } from "vue";
+import { ref, toValue, watch } from "vue";
 import { defineStore, storeToRefs } from "pinia";
 import { getStationInfoById } from "@/api/getStations";
 import { useBaseUrl } from "./baseUrl";
@@ -38,17 +38,28 @@ export const useUserStore = defineStore("userStations", () => {
     locale.value = newLocale;
   };
 
-  const selectStationWithUpdate = (station: Station) => {
+  const updateStationInFavoriteAndSelect = (
+    station: Station,
+    folderID: string,
+    notSelect?: boolean,
+  ) => {
     if (baseUrl.value && station.stationuuid) {
       getStationInfoById(baseUrl.value, station.stationuuid).then((res) => {
-        console.log(res);
-        if (res) {
-          selectedStation.value = res;
+        if (res && res.length > 0) {
+          favoriteStations.value[folderID].stations = favoriteStations.value[
+            folderID
+          ].stations.map((s) => {
+            if (s.stationuuid === station.stationuuid) {
+              s = res[0];
+            }
+            return s;
+          });
+          !notSelect && (selectedStation.value = res[0]);
           return;
         }
       });
     }
-    selectedStation.value = station;
+    !notSelect && (selectedStation.value = station);
   };
 
   const addToFavorite = ({ station, folderID }: StationAndId) => {
@@ -208,6 +219,6 @@ export const useUserStore = defineStore("userStations", () => {
     stationPositionDown,
     selectStation,
     selectedStation,
-    selectStationWithUpdate,
+    updateStationInFavoriteAndSelect,
   };
 });

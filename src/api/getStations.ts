@@ -29,7 +29,12 @@ export const getAllStations = (
   dataParams: DataParams,
   downloadProgressFn?: (progressEvent: AxiosProgressEvent) => void,
 ) => {
-  return getStations(baseUrl, "/stations/search", dataParams, downloadProgressFn);
+  return getStations(
+    baseUrl,
+    "/stations/search",
+    dataParams,
+    downloadProgressFn,
+  );
 };
 
 export const getAllStationsMostVoted = (
@@ -37,14 +42,19 @@ export const getAllStationsMostVoted = (
   dataParams: DataParams,
   downloadProgressFn?: (progressEvent: AxiosProgressEvent) => void,
 ) => {
-  return getStations(baseUrl, "/stations/topvote", dataParams, downloadProgressFn);
+  return getStations(
+    baseUrl,
+    "/stations/topvote",
+    dataParams,
+    downloadProgressFn,
+  );
 };
 
 const getRequest = async (
   baseUrl: string,
   url: string,
   uploadProgressFn?: (progressEvent: AxiosProgressEvent) => void,
-): Promise<Station | null> => {
+): Promise<Station[] | null> => {
   try {
     const result = await axios({
       method: "GET",
@@ -65,7 +75,11 @@ export const getStationInfoById = (
   stationId: string,
   downloadProgressFn?: (progressEvent: AxiosProgressEvent) => void,
 ) => {
-  return getRequest(baseUrl, `stations/byuuid?uuids=${stationId}`, downloadProgressFn);
+  return getRequest(
+    baseUrl,
+    `stations/byuuid?uuids=${stationId}`,
+    downloadProgressFn,
+  );
 };
 
 export const sendStationClick = (

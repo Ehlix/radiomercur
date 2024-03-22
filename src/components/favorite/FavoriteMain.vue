@@ -34,15 +34,15 @@ const selectFolder = (folderID: string) => {
 };
 
 const selectStationHandler = (station: Station) => {
-  userStore.selectStation(station);
+  userStore.updateStationInFavoriteAndSelect(station, currentFolderID.value);
   searchStore.addToHistory(station);
 };
 
 const newFolderHandler = (name: string) => {
   userStore.createFavoriteStationsFolder(name);
-  const searchFolderId = Object.values(userStore.favoriteStations).findIndex(
-    (folder) => folder.name === name,
-  );
+  const searchFolderId = Object.values(
+    userStore.favoriteStations,
+  ).findLastIndex((folder) => folder.name === name);
   const id = Object.keys(userStore.favoriteStations)[searchFolderId];
   selectFolder(id);
 };
@@ -108,6 +108,16 @@ const changePageHandler = (event: number) => {
   }
   // el.value?.scrollTo(0, 0);
 };
+
+const updateStation = ({
+  station,
+  folderID,
+}: {
+  station: Station;
+  folderID: string;
+}) => {
+  userStore.updateStationInFavoriteAndSelect(station, folderID, true);
+};
 </script>
 
 <template>
@@ -117,7 +127,7 @@ const changePageHandler = (event: number) => {
   >
     <div>
       <favorite-nav
-        :current-folder="currentFolderID"
+        :current-folder-id="currentFolderID"
         :favorite-stations="userStore.favoriteStations"
         @change-current-folder="selectFolder($event)"
         @create-new-folder="newFolderHandler($event)"
@@ -127,6 +137,7 @@ const changePageHandler = (event: number) => {
     </div>
     <div class="grow">
       <station-list
+        :show-update-button="true"
         :current-folder-id="currentFolderID"
         :show-extended-info="true"
         :favorite-stations="userStore.favoriteStations"
@@ -137,10 +148,14 @@ const changePageHandler = (event: number) => {
         @replace-stations="replaceHandler($event)"
         @position-up="userStore.stationPositionUp($event)"
         @position-down="userStore.stationPositionDown($event)"
+        @update-fav-data="updateStation($event)"
       />
     </div>
     <!-- Pagination -->
-    <div v-if="true" class="flex h-fit w-full justify-between gap-2 px-2 *:h-8">
+    <div
+      v-if="userStore.favoriteStations[currentFolderID].stations.length"
+      class="flex h-fit w-full justify-between gap-2 px-2 *:h-8"
+    >
       <x-button
         @click="prevPage('min')"
         :disabled="currentPage === 1"

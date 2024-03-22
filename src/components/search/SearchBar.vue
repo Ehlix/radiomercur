@@ -110,9 +110,6 @@ watch([debSearch, currentTab], () => {
       <tabs-trigger value="genres">
         {{ $tc("searchBar.genre", 1) }}
       </tabs-trigger>
-      <tabs-trigger value="history">
-        {{ $t("searchBar.history") }}
-      </tabs-trigger>
     </tabs-list>
     <tabs-content value="name" class="mt-0">
       <div class="relative w-full items-center">
@@ -190,13 +187,11 @@ watch([debSearch, currentTab], () => {
         </collapsible-content>
       </collapsible>
     </tabs-content>
-    <div
-      v-show="currentTab !== 'history'"
-      class="flex items-center gap-2 text-sm sm:flex-col"
-    >
+    <div class="flex items-center gap-2 text-sm sm:flex-col">
       <div class="flex gap-2">
+        <!-- Quality -->
         <div
-          class="flex items-center gap-2 whitespace-nowrap text-nowrap text-tc-1 xs:whitespace-normal"
+          class="flex items-center gap-2 whitespace-nowrap text-nowrap font-medium text-tc-1 xs:whitespace-normal"
         >
           <x-switch
             :checked="filters.highQualityOnly"

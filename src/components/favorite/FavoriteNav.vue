@@ -15,26 +15,35 @@ import XInput from "@/components/ui/input/Input.vue";
 import DeleteAlert from "./DeleteAlert.vue";
 import AddFolder from "./AddFolder.vue";
 import RenameFolder from "./RenameFolder.vue";
-import { Folder, Plus, Check, FolderPen, X, FolderPlus } from "lucide-vue-next";
+import {
+  Folder,
+  Plus,
+  Check,
+  FolderPen,
+  X,
+  FolderPlus,
+  RefreshCcw,
+} from "lucide-vue-next";
 
 const props = defineProps<{
-  currentFolder: string;
+  currentFolderId: string;
   favoriteStations: FavoriteStations;
 }>();
 
 const newFolderIsOpen = ref(false);
 const folderNameInput = ref<string>();
-const selected = ref<string>(props.currentFolder);
+const selectedFolder = ref<string>(props.currentFolderId);
 
-watch([() => props.currentFolder], () => {
-  selected.value = props.currentFolder;
+watch([() => props.currentFolderId], () => {
+  selectedFolder.value = props.currentFolderId;
 });
 
 const emits = defineEmits<{
-  (e: "changeCurrentFolder", value: string): void;
-  (e: "createNewFolder", value: string): void;
-  (e: "deleteFolderById", value: string): void;
-  (e: "renameFolder", value: { folderID: string; name: string }): void;
+  (e: "changeCurrentFolder", folderID: string): void;
+  (e: "createNewFolder", name: string): void;
+  (e: "deleteFolderById", FolderId: string): void;
+  (e: "renameFolder", folderData: { folderID: string; name: string }): void;
+  (e: "updateFavData", folderID: string): void;
 }>();
 
 const keys = computed(() => Object.keys(props.favoriteStations));
@@ -66,16 +75,20 @@ const renameFolderHandler = (folderID: string, name: string) => {
   emits("renameFolder", { folderID: folderID, name: name });
 };
 
+const updateFavData = () => {
+  emits("updateFavData", selectedFolder.value);
+};
+
 watchEffect(() => {
-  emits("changeCurrentFolder", selected.value);
+  emits("changeCurrentFolder", selectedFolder.value);
 });
 </script>
 
 <template>
-  <Collapsible :open="newFolderIsOpen" class="w-full px-2">
+  <Collapsible :open="newFolderIsOpen" class="flex w-full justify-between px-2">
     <div class="flex items-center gap-2">
       <div class="w-72">
-        <Select v-model="selected" name="folders">
+        <Select v-model="selectedFolder" name="folders">
           <SelectTrigger class="text-tc-4">
             <div class="flex items-center justify-center gap-2">
               <x-icon
@@ -123,4 +136,3 @@ watchEffect(() => {
 </template>
 
 <style scoped></style>
-./AddFolder.vue

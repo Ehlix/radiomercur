@@ -1,6 +1,10 @@
 const EN = {
   leftPanelName: "Favorite stations",
   rightPanelName: "Search stations",
+  serverNoConnection: {
+    title: "Main server offline",
+    description: "Try again later",
+  },
   searchBar: {
     placeholder: "Search by name | Search by genre",
     name: "Name",
@@ -83,6 +87,7 @@ const EN = {
     first: "First",
     next: "Next",
     prev: "Previous",
+    reload: "Reload",
     reset: "Reset",
     removeFavorite: "Remove from favorites",
     save: "Save",
@@ -336,6 +341,10 @@ const EN = {
 const RU = {
   leftPanelName: "Избранные станции",
   rightPanelName: "Найти станцию",
+  serverNoConnection: {
+    title: "Сервер не отвечает",
+    description: "Попробуйте перезагрузить страницу",
+  },
   searchBar: {
     placeholder: "Поиск по названию | Поиск по жанру",
     name: "Название | Названию",
@@ -417,6 +426,7 @@ const RU = {
     next: "Далее",
     prev: "Назад",
     reset: "Сбросить",
+    reload: "Обновить",
     removeFavorite: "Удалить из избранного",
     save: "Сохранить",
     search: "Поиск",

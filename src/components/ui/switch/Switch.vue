@@ -29,26 +29,30 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
     v-bind="forwarded"
     :class="
       cn(
-        'peer relative inline-flex h-8 w-12 shrink-0 cursor-pointer items-center rounded px-0 transition-colors focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-mc-2 data-[state=unchecked]:bg-mc-3',
+        'peer relative inline-flex h-8 w-12 shrink-0 cursor-pointer items-center overflow-hidden rounded px-0 text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-mc-2 data-[state=unchecked]:bg-mc-3',
         props.class,
       )
     "
   >
     <div
-      v-if="!props.checked"
       :class="
         cn(
-          'absolute right-[0.55rem] animate-fade-in font-semibold text-mc-1 transition',
+          ' absolute right-[0.5rem] font-semibold text-mc-1 transition-transform',
+          {
+            'translate-x-8': props.checked,
+          },
         )
       "
     >
       Off
     </div>
     <div
-      v-if="props.checked"
       :class="
         cn(
-          'absolute left-[0.45rem] animate-fade-in font-semibold text-mc-1 transition',
+          'absolute left-[0.3rem]  font-semibold text-mc-1 transition-transform ',
+          {
+            '-translate-x-7': !props.checked,
+          },
         )
       "
     >

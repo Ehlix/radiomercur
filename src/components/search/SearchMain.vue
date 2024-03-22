@@ -11,13 +11,6 @@ import { getLSData } from "@/api/localStorage";
 const searchStore = useSearchStations();
 const userStore = useUserStore();
 const currentTab = ref<string>("name");
-const stationList = computed(() => {
-  if (currentTab.value === "history") {
-    return searchStore.historyList;
-  } else {
-    return searchStore.stationsList;
-  }
-});
 
 const ls = getLSData();
 const defaultFilters: SearchFilters = {
@@ -50,17 +43,18 @@ const firstPage = () => {
   searchStore.getMoreStations("first");
 };
 
-watch([stationList], () => {
+const el = ref<HTMLElement | null>(null);
+
+watch([() => searchStore.stationsList], () => {
   if (el.value) {
     el.value.scrollTo(0, 0);
   }
 });
-
-const el = ref<HTMLElement | null>(null);
 </script>
 
 <template>
   <div
+    v-if="searchStore.mainServerIsActive"
     ref="el"
     class="relative flex h-full w-full flex-col gap-2 overflow-x-hidden overflow-y-scroll rounded bg-mc-1"
   >
@@ -80,8 +74,8 @@ const el = ref<HTMLElement | null>(null);
     <!-- Stations -->
     <div class="grow">
       <station-list
-        :showExtendedInfo="currentTab !== 'history'"
-        :stations-list="stationList"
+        :showExtendedInfo="true"
+        :stations-list="searchStore.stationsList"
         :favorite-stations="userStore.favoriteStations"
         :user-locale="userStore.locale"
         @select-station="selectStationHandler"
@@ -91,7 +85,7 @@ const el = ref<HTMLElement | null>(null);
     </div>
     <!-- Pagination -->
     <div
-      v-if="searchStore.stationsList.length && currentTab !== 'history'"
+      v-if="searchStore.stationsList.length"
       class="flex h-fit w-full justify-between gap-2 px-2 pb-2 *:h-8 *:w-full"
     >
       <x-button @click="prevPage" :disabled="!searchStore.currentPage">
@@ -109,6 +103,20 @@ const el = ref<HTMLElement | null>(null);
         {{ $t("buttons.next") }}
       </x-button>
     </div>
+  </div>
+  <div
+    v-else
+    class="flex h-full w-full flex-col items-center justify-center gap-2 bg-mc-1"
+  >
+    <p class="text-center text-2xl text-tc-1">
+      {{ $t("serverNoConnection.title") }}
+    </p>
+    <p class="mb-2 text-center text-xl text-tc-1">
+      {{ $t("serverNoConnection.description") }}
+    </p>
+    <x-button @click="searchStore.baseUrlReload">
+      {{ $t("buttons.reload") }}
+    </x-button>
   </div>
 </template>
 

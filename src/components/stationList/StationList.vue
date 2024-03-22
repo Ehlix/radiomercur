@@ -23,6 +23,7 @@ import {
   GripVertical,
   ChevronsDown,
   ListPlus,
+  RefreshCcw,
 } from "lucide-vue-next";
 
 const props = defineProps<{
@@ -32,6 +33,7 @@ const props = defineProps<{
   userLocale?: "en" | "ru";
   showExtendedInfo?: boolean;
   currentFolderId?: string | null;
+  showUpdateButton?: boolean;
 }>();
 
 const emits = defineEmits<{
@@ -45,6 +47,13 @@ const emits = defineEmits<{
     stations: {
       stationOne: Station;
       stationTwo: Station;
+      folderID: string;
+    },
+  ): void;
+  (
+    e: "updateFavData",
+    value: {
+      station: Station;
       folderID: string;
     },
   ): void;
@@ -166,6 +175,17 @@ const positionDownHandler = (station: Station) => {
   });
 };
 
+const updateStationData = (station: Station) => {
+  if (!props.currentFolderId) {
+    return;
+  }
+  const value = {
+    folderID: props.currentFolderId,
+    station,
+  };
+  emits("updateFavData", value);
+};
+
 onMounted(() => {
   document.addEventListener("mouseup", () => {
     isDragging.value = false;
@@ -200,7 +220,7 @@ onMounted(() => {
       <div
         :class="
           cn(
-            'relative flex h-full min-h-32 w-full select-text flex-col justify-start  gap-2 rounded bg-gradient-to-br from-hc-1 to-mc-1  p-2 shadow-md shadow-black/30 transition-all',
+            'relative flex h-full min-h-32 w-full select-text flex-col justify-start  gap-2 rounded bg-gradient-to-br from-hc-1 to-mc-1  p-2 shadow-md shadow-black/30 transition-opacity',
             {
               'pl-6': currentFolderId,
               'opacity-20':
@@ -219,7 +239,7 @@ onMounted(() => {
               :icon="ChevronsDown"
               :size="22"
               :stroke-width="2"
-              class="rotatorUp rotate-90 text-tc-3 transition-all"
+              class="rotatorUp rotate-90 text-tc-3 transition-transform"
             />
           </button>
           <button @mousedown="isDragging = true" class="cursor-move">
@@ -235,7 +255,7 @@ onMounted(() => {
               :icon="ChevronsDown"
               :size="22"
               :stroke-width="2"
-              class="rotatorDown -rotate-90 text-tc-3 transition-all"
+              class="rotatorDown -rotate-90 text-tc-3 transition-transform"
             />
           </button>
         </div>
@@ -243,9 +263,9 @@ onMounted(() => {
         <div
           :class="
             cn(
-              'absolute right-0 top-0 z-30 size-9 overflow-hidden rounded-tr border-b-2 border-t-2 border-mc-2 bg-mc-2 transition-all duration-300 [clip-path:polygon(0%_0%,100%_0%,100%_100%,50%_50%)]',
+              'absolute right-0 top-0 z-30 size-9 overflow-hidden rounded-tr border-b-2 border-t-2 border-mc-2 bg-mc-2 transition-all duration-300 [clip-path:polygon(0%_0%,100%_0%,100%_100%,50%_50%)] hover:size-10',
               {
-                'size-full rounded border-b-2 border-t-2 bg-mc-1 [clip-path:polygon(0%_0%,100%_0%,100%_100%,0%_100%)]':
+                'size-full rounded border-b-2 border-t-2 bg-mc-1 [clip-path:polygon(0%_0%,100%_0%,100%_100%,0%_100%)] hover:size-full':
                   currentOpenFavMenu === station.stationuuid,
               },
             )
@@ -254,7 +274,7 @@ onMounted(() => {
           <button
             @click="menuToggle(station.stationuuid || '')"
             :class="
-              cn('group absolute -top-[0.1rem] right-0 size-6 transition-all', {
+              cn('group absolute -top-[0.1rem] right-0 size-6', {
                 'right-3 top-1 xs:right-2':
                   currentOpenFavMenu === station.stationuuid,
               })
@@ -265,14 +285,14 @@ onMounted(() => {
               :icon="ListPlus"
               :size="18"
               :stroke-width="2"
-              class="absolute right-0 top-0 transition-all group-hover:opacity-90"
+              class="absolute right-0 top-0 transition-opacity group-hover:opacity-90"
             />
             <x-icon
               v-else
               :icon="X"
               :size="18"
               :stroke-width="2"
-              class="absolute right-0 top-0 text-mc-2 transition-all group-hover:opacity-90"
+              class="absolute right-0 top-0 text-mc-2 transition-opacity group-hover:opacity-90"
             />
           </button>
           <div
@@ -328,6 +348,21 @@ onMounted(() => {
             />
           </button> -->
         </div>
+
+        <!-- Update station data -->
+        <x-button
+          v-if="showUpdateButton"
+          variant="ghost"
+          class="absolute -right-[0.1rem] top-[6.05rem] w-8 min-w-8 p-0 hover:bg-mc-1"
+        >
+          <x-icon
+            @click="updateStationData(station)"
+            :icon="RefreshCcw"
+            :size="20"
+            :stroke-width="2"
+            class="text-tc-3"
+          />
+        </x-button>
         <!-- <shadow-overlay class="z-0" /> -->
 
         <!-- animate-[fadeIn_100ms_ease-out_200ms_forwards] -->
@@ -340,7 +375,7 @@ onMounted(() => {
           <!-- Station Select / Logo -->
           <button
             @click="selectStation(station)"
-            class="group relative flex h-16 min-w-16 overflow-hidden rounded-full bg-bgc-1 transition-all *:size-16"
+            class="group relative flex h-16 min-w-16 overflow-hidden rounded-full bg-bgc-1 *:size-16"
           >
             <!-- <shadow-overlay class=" rounded-full" /> -->
             <div
@@ -411,7 +446,7 @@ onMounted(() => {
               stroke-width="2"
               :size="22"
               :class="
-                cn('transition-all', {
+                cn('transition-transform', {
                   'rotate-180 ': currentOpenId === station.stationuuid,
                 })
               "
@@ -427,7 +462,7 @@ onMounted(() => {
               v-if="station.homepage"
               :href="station.homepage"
               target="_blank"
-              class="text-tc-2 transition-all hover:text-hc-2"
+              class="text-tc-2 transition-colors hover:text-hc-2"
             >
               {{ $t("stationCard.homepage") }}
             </a>
@@ -437,7 +472,7 @@ onMounted(() => {
               v-if="station?.url_resolved || station?.url"
               :href="station.url_resolved || station.url"
               target="_blank"
-              class="text-tc-2 transition-all hover:text-hc-2"
+              class="text-tc-2 transition-colors hover:text-hc-2"
             >
               {{ $t("stationCard.streamSource") }}
             </a>

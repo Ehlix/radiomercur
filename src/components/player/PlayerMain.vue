@@ -10,6 +10,7 @@ import XImage from "@/components/ui/image/Image.vue";
 import XSlider from "@/components/ui/slider/Slider.vue";
 import XIcon from "@/components/ui/icon/Icon.vue";
 import PlayerVisual from "./PlayerVisual.vue";
+import HistoryList from "./HistoryList.vue";
 import {
   Collapsible,
   CollapsibleContent,
@@ -24,11 +25,11 @@ import {
   Volume1,
   Volume2,
   VolumeX,
+  History,
 } from "lucide-vue-next";
 
 const { selectedStation, locale } = storeToRefs(useUserStore());
 const player = ref<HTMLAudioElement | null>(null);
-const canvas = ref<HTMLCanvasElement | null>(null);
 const paused = ref<boolean>(true);
 const loading = ref<boolean>(false);
 const loadingError = ref<boolean>(false);
@@ -122,7 +123,6 @@ watch([volume], () => {
   }
   player.value.volume = volume.value[0] / 100;
 });
-
 </script>
 
 <template>
@@ -142,13 +142,18 @@ watch([volume], () => {
           class="size-28 mix-blend-overlay"
         />
       </div>
-      <!-- Extra Info -->
-      <div class="absolute -left-2 top-[4.2rem] sm:top-[3.2rem]">
+      <!-- History -->
+      <history-list />
+      <!-- Extra Info Trigger -->
+      <div class="absolute -left-[0.42rem] top-[4.1rem] sm:top-[3.2rem]">
         <collapsible-trigger
           :disabled="!selectedStation"
           class="w-5 transition-all disabled:opacity-20"
         >
-          <chevron-down
+          <x-icon
+            :icon="ChevronDown"
+            :size="23"
+            :stroke-width="2"
             :class="
               cn('transition-all', {
                 'rotate-180 ': infoIsOpen,
@@ -194,8 +199,8 @@ watch([volume], () => {
             <x-icon
               :icon="paused ? Play : Pause"
               :class="
-                cn('size-8', {
-                  'translate-x-[0.13rem]': paused,
+                cn('size-8 transition-transform hover:scale-110', {
+                  'translate-x-[0.11rem]': paused,
                 })
               "
             />
@@ -214,6 +219,7 @@ watch([volume], () => {
         </div>
       </div>
     </div>
+    <!-- Extra Info -->
     <collapsible-content>
       <div class="relative z-20 flex flex-col">
         <div class="h-10" />

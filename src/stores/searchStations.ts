@@ -8,7 +8,7 @@ import { getLSData, setLSData } from "@/api/localStorage";
 
 export const useSearchStations = defineStore("searchStations", () => {
   const { baseUrl, mainServerIsActive } = storeToRefs(useBaseUrl());
-  const { setBaseUrl } = useBaseUrl();
+  const { setBaseUrl, baseUrlReload } = useBaseUrl();
   const stationsList = ref<Station[]>([]);
   const historyList = ref<Station[]>([]);
   const filters = ref<SearchFilters>({});
@@ -74,7 +74,10 @@ export const useSearchStations = defineStore("searchStations", () => {
   };
 
   const addToHistory = (station: Station) => {
-    if (historyList.value.length && historyList.value[0].stationuuid === station.stationuuid) {
+    if (
+      historyList.value.length &&
+      historyList.value[0].stationuuid === station.stationuuid
+    ) {
       return;
     }
     historyList.value.unshift(station);
@@ -153,6 +156,7 @@ export const useSearchStations = defineStore("searchStations", () => {
   return {
     filters,
     addToHistory,
+    baseUrlReload,
     canLoadMore,
     currentPage,
     clearSearch,
@@ -160,6 +164,7 @@ export const useSearchStations = defineStore("searchStations", () => {
     getStations,
     getMoreStations,
     historyList,
+    mainServerIsActive,
     searchStoreReset,
     stationsList,
   };
