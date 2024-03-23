@@ -1,12 +1,13 @@
 <script setup lang="ts">
+import { cn } from "@/lib/utils/twMerge";
 import { getFlagImage } from "@/api/getFlagImage";
+import { messages } from "@/lib/locale/locale";
+import { onMounted, ref, type HTMLAttributes } from "vue";
+import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
+import xButton from "@/components/ui/button/Button.vue";
 import XImage from "@/components/ui/image/Image.vue";
 import XIcon from "@/components/ui/icon/Icon.vue";
-import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
-import { onMounted, ref, type HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils/twMerge";
-import { messages } from "@/lib/locale/locale";
-import xButton from "@/components/ui/button/Button.vue";
+import XTooltip from "@/components/ui/tooltip/Tooltip.vue";
 import {
   Collapsible,
   CollapsibleContent,
@@ -209,7 +210,7 @@ onMounted(() => {
       @drop="dropHandler($event, station)"
       :open="currentOpenId === station.stationuuid"
       :key="station.stationuuid"
-      class="relative flex h-fit w-[19%] min-w-60 grow transition-all"
+      class="relative overflow-hidden flex h-fit w-[19%] min-w-60 grow transition-all shadow-md shadow-black/30"
     >
       <!-- Drag Mask -->
       <div
@@ -220,7 +221,7 @@ onMounted(() => {
       <div
         :class="
           cn(
-            'relative flex h-full min-h-32 w-full select-text flex-col justify-start  gap-2 rounded bg-gradient-to-br from-hc-1 to-mc-1  p-2 shadow-md shadow-black/30 transition-opacity',
+            'relative flex h-full min-h-32 w-full select-text flex-col justify-start  gap-2 rounded bg-gradient-to-br from-hc-1 to-mc-1 p-2 transition-opacity',
             {
               'pl-6': currentFolderId,
               'opacity-20':
@@ -280,20 +281,34 @@ onMounted(() => {
               })
             "
           >
-            <x-icon
-              v-if="currentOpenFavMenu !== station.stationuuid"
-              :icon="ListPlus"
-              :size="18"
-              :stroke-width="2"
-              class="absolute right-0 top-0 transition-opacity group-hover:opacity-90"
-            />
-            <x-icon
-              v-else
-              :icon="X"
-              :size="18"
-              :stroke-width="2"
-              class="absolute right-0 top-0 text-mc-2 transition-opacity group-hover:opacity-90"
-            />
+            <x-tooltip
+              trigger-class="cursor-pointer"
+              content-side="left"
+              :content-side-offset="15"
+            >
+              <template #trigger>
+                <x-icon
+                  v-if="currentOpenFavMenu !== station.stationuuid"
+                  :icon="ListPlus"
+                  :size="18"
+                  :stroke-width="2"
+                  class="absolute right-0 top-0 transition-opacity group-hover:opacity-90"
+                />
+                <x-icon
+                  v-else
+                  :icon="X"
+                  :size="18"
+                  :stroke-width="2"
+                  class="absolute right-0 top-0 text-mc-2 transition-opacity group-hover:opacity-90"
+                />
+              </template>
+              <template #content>
+                <div v-if="currentOpenFavMenu !== station.stationuuid">
+                  {{ $t("stationCard.addToFavorites") }}
+                </div>
+                <div v-else>{{ $t("buttons.close") }}</div>
+              </template>
+            </x-tooltip>
           </button>
           <div
             v-if="currentOpenFavMenu === station.stationuuid"
@@ -350,34 +365,74 @@ onMounted(() => {
         </div>
 
         <!-- Update station data -->
-        <x-button
-          v-if="showUpdateButton"
-          variant="ghost"
-          class="absolute -right-[0.1rem] top-[6.05rem] w-8 min-w-8 p-0 hover:bg-mc-1"
+        <x-tooltip
+          trigger-class="absolute -right-[0.1rem] top-[6.05rem]"
+          :content-side="'left'"
         >
-          <x-icon
-            @click="updateStationData(station)"
-            :icon="RefreshCcw"
-            :size="20"
-            :stroke-width="2"
-            class="text-tc-3"
+          <template #trigger>
+            <x-button
+              v-if="showUpdateButton"
+              variant="ghost"
+              class="w-8 min-w-8 p-0 hover:bg-white/0"
+            >
+              <x-icon
+                @click="updateStationData(station)"
+                :icon="RefreshCcw"
+                :size="20"
+                :stroke-width="2"
+                class="text-tc-3"
+              />
+            </x-button>
+          </template>
+          <template #content>
+            {{ $t("stationCard.updateData") }}
+          </template>
+        </x-tooltip>
+
+        <!-- Logo -->
+        <div
+          class="z-0 select-none pointer-events-none absolute right-1 top-12 size-24 overflow-hidden rounded-full opacity-20"
+        >
+          <x-image
+            :src="station.favicon"
+            :alt="station.name"
+            class="size-28 mix-blend-overlay"
           />
-        </x-button>
+        </div>
+
         <!-- <shadow-overlay class="z-0" /> -->
 
         <!-- animate-[fadeIn_100ms_ease-out_200ms_forwards] -->
 
         <!-- Station Name -->
-        <h2 class="-mb-2 w-full truncate text-nowrap px-2 text-center">
-          {{ removeMetadata(station.name || "Unknown station") }}
-        </h2>
-        <div class="mb-1 flex w-fit justify-center gap-2">
-          <!-- Station Select / Logo -->
+        <x-tooltip>
+          <template #trigger>
+            <h2 class="-mb-2 w-full truncate text-nowrap px-2 text-center">
+              {{ removeMetadata(station.name || "Unknown station") }}
+            </h2>
+          </template>
+          <template #content>
+            {{ removeMetadata(station.name || "Unknown station") }}
+          </template>
+        </x-tooltip>
+
+        <div class="z-10 mb-1 flex w-fit justify-center gap-2">
+          <!-- Station Select -->
           <button
+            @click="selectStation(station)"
+            class="pointer-events-auto flex h-16 size-fit min-w-fit items-center justify-center rounded-full p-1 -ml-1 transition-all"
+          >
+            <x-icon
+              :icon="Play"
+              :size="36"
+              :stroke-width="1.5"
+              :class="cn('transition-transform hover:scale-105')"
+            />
+          </button>
+          <!-- <button
             @click="selectStation(station)"
             class="group relative flex h-16 min-w-16 overflow-hidden rounded-full bg-bgc-1 *:size-16"
           >
-            <!-- <shadow-overlay class=" rounded-full" /> -->
             <div
               class="absolute left-0 top-0 z-10 flex size-full items-center justify-center opacity-0 shadow-[inset_0_0_5000px_2px_rgba(0,0,0,0.4)] transition-all group-hover:opacity-95"
             >
@@ -394,42 +449,78 @@ onMounted(() => {
               :alt="station.name"
               class="z-0 transition-all group-hover:scale-110 group-hover:blur-[0.1rem]"
             />
-          </button>
+          </button> -->
           <div class="w-full">
             <!-- Station Codec -->
             <p class="w-fit truncate text-nowrap">
               {{ station.codec + " " + (station.bitrate || "") }}
             </p>
             <!-- Station Country Name With Flag -->
-            <div
-              v-if="station.countrycode"
-              class="my-1 flex items-center gap-1 overflow-clip"
-            >
-              <x-image
-                :src="getFlagImage(station.countrycode)"
-                class="h-5 w-8"
-              />
-              <p class="truncate text-nowrap">
-                <!-- {{ countriesList[station.countrycode] }} -->
+            <x-tooltip>
+              <template #trigger>
+                <div
+                  v-if="station.countrycode"
+                  class="my-1 flex items-center gap-1 overflow-clip"
+                >
+                  <x-image
+                    :src="getFlagImage(station.countrycode)"
+                    class="h-5 w-8"
+                  />
+                  <p class="truncate text-nowrap">
+                    <!-- {{ countriesList[station.countrycode] }} -->
 
-                {{
-                  // @ts-expect-error
-                  messages[props.userLocale || "en"]?.countries[
-                    station.countrycode
-                  ] || ""
-                }}
-              </p>
-            </div>
+                    {{
+                      // @ts-expect-error
+                      messages[props.userLocale || "en"]?.countries[
+                        station.countrycode
+                      ] || ""
+                    }}
+                  </p>
+                </div>
+              </template>
+              <template #content>
+                <div>
+                  {{
+                    messages[props.userLocale || "en"]?.countries[
+                      // @ts-expect-error
+                      station.countrycode
+                    ] || ""
+                  }}
+                </div>
+              </template>
+            </x-tooltip>
+
             <!-- Station Popularity -->
-            <div class="flex gap-2 *:flex *:items-start *:gap-1">
-              <div v-show="station.clickcount" class="*:text-tc-2">
-                <p>{{ station.clickcount }}</p>
-                <x-icon :icon="Star" :size="18" :stroke-width="1.6" />
-              </div>
-              <div v-show="station.votes" class="*:text-teal-500">
-                <p>{{ station.votes }}</p>
-                <x-icon :icon="ThumbsUp" :size="18" :stroke-width="1.6" />
-              </div>
+            <div class="flex gap-2">
+              <x-tooltip trigger-class="">
+                <template #trigger>
+                  <div
+                    v-show="station.clickcount"
+                    class="flex items-start gap-1 *:text-tc-2"
+                  >
+                    <p>{{ station.clickcount }}</p>
+                    <x-icon :icon="Star" :size="18" :stroke-width="1.6" />
+                  </div>
+                </template>
+                <template #content>
+                  {{ $t("stationCard.clickCount") }}
+                </template>
+              </x-tooltip>
+
+              <x-tooltip>
+                <template #trigger>
+                  <div
+                    v-show="station.votes"
+                    class="flex items-start gap-1 *:text-teal-500"
+                  >
+                    <p>{{ station.votes }}</p>
+                    <x-icon :icon="ThumbsUp" :size="18" :stroke-width="1.6" />
+                  </div>
+                </template>
+                <template #content>
+                  {{ $t("stationCard.votes") }}
+                </template>
+              </x-tooltip>
             </div>
           </div>
         </div>

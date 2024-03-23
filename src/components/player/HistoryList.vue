@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 import {
   Dialog,
   DialogContent,
@@ -18,9 +19,10 @@ import { storeToRefs } from "pinia";
 import { useSearchStations } from "@/stores/searchStations";
 import { getFlagImage } from "@/api/getFlagImage";
 import XImage from "@/components/ui/image/Image.vue";
-
+import XTooltip from "@/components/ui/tooltip/Tooltip.vue";
 const searchStore = useSearchStations();
 const userStore = useUserStore();
+import { messages } from "@/lib/locale/locale";
 
 const playHandler = (station: Station) => {
   userStore.selectStation(station);
@@ -30,11 +32,22 @@ const playHandler = (station: Station) => {
 
 <template>
   <Dialog>
-    <DialogTrigger as-child>
-      <button class="absolute -left-1 top-8 sm:top-6">
-        <x-icon :icon="History" :size="20" :stroke-width="2" />
-      </button>
-    </DialogTrigger>
+    <x-tooltip
+      trigger-class="absolute -left-1 top-8 sm:top-6"
+      content-side="right"
+    >
+      <template #trigger>
+        <DialogTrigger as-child>
+          <button>
+            <x-icon :icon="History" :size="20" :stroke-width="2" />
+          </button>
+        </DialogTrigger>
+      </template>
+      <template #content>
+        <span>{{ $tc("searchBar.history") }}</span>
+      </template>
+    </x-tooltip>
+
     <DialogContent
       class="w-full max-w-[70dvw] bg-mc-2 p-1 transition-none sm:max-w-[425px]"
     >
@@ -63,26 +76,50 @@ const playHandler = (station: Station) => {
             >
               <!-- <shadow-overlay class=" rounded-full" /> -->
               <div
-                class="absolute -left-[0.01rem] top-0 z-10 flex size-full items-center justify-center opacity-95 shadow-[inset_0_0_5000px_2px_rgba(0,0,0,0.3)]"
+                class="absolute top-0 z-10 flex size-full items-center justify-center opacity-95 shadow-[inset_0_0_5000px_2px_rgba(0,0,0,0.3)]"
               >
                 <x-icon
                   :icon="Play"
-                  :size="40"
+                  :size="24"
                   :stroke-width="2.5"
-                  class="pl-1"
+                  class="ml-[0.12rem]"
                 />
               </div>
 
               <x-image :src="station.favicon" :alt="station.name" class="z-0" />
             </button>
-            <x-image
-              v-if="station.countrycode"
-              :src="getFlagImage(station.countrycode)"
-              class="h-5 w-8 min-w-8"
-            />
-            <p class="w-[50dvw] truncate text-nowrap xs:w-[60dvw]">
-              {{ station.name }}
-            </p>
+            <x-tooltip>
+              <template #trigger>
+                <x-image
+                  v-if="station.countrycode"
+                  :src="getFlagImage(station.countrycode)"
+                  class="h-5 w-8 min-w-8"
+                />
+              </template>
+              <template #content>
+                <div>
+                  {{
+                    messages[userStore.locale || "en"]?.countries[
+                      // @ts-expect-error
+                      station.countrycode
+                    ] || ""
+                  }}
+                </div>
+              </template>
+            </x-tooltip>
+
+            <x-tooltip>
+              <template #trigger>
+                <h2
+                  class="w-[50dvw] truncate text-nowrap text-left text-base xs:w-[60dvw]"
+                >
+                  {{ removeMetadata(station.name || "Unknown station") }}
+                </h2>
+              </template>
+              <template #content>
+                {{ station.name || "Unknown station" }}
+              </template>
+            </x-tooltip>
           </div>
         </div>
         <!-- <DialogFooter class="p-6 pt-0"> </DialogFooter> -->

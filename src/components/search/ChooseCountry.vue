@@ -48,4 +48,3 @@ watchEffect(() => {
     </SelectContent>
   </Select>
 </template>
-@/stores/userStore

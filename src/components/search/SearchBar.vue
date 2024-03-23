@@ -5,6 +5,8 @@ import XIcon from "../ui/icon/Icon.vue";
 import XInput from "@/components/ui/input/Input.vue";
 import XSwitch from "@/components/ui/switch/Switch.vue";
 import xButton from "@/components/ui/button/Button.vue";
+import XTooltip from "@/components/ui/tooltip/Tooltip.vue";
+import ChooseInputMode from "@/components/search/ChooseInputMode.vue";
 import {
   Collapsible,
   CollapsibleContent,
@@ -63,6 +65,7 @@ const changeCountryCode = (payload: CountryCodes | "all") => {
 
 const updateCurrentTab = (payload: string) => {
   currentTab.value = payload;
+  console.log(payload);
 };
 
 watch(
@@ -98,20 +101,16 @@ watch([debSearch, currentTab], () => {
 </script>
 
 <template>
-  <Tabs
-    v-on:update:model-value="updateCurrentTab"
-    default-value="name"
-    class="flex w-full flex-col gap-2"
-  >
-    <tabs-list class="relative gap-2 transition-none *:transition-none">
+  <div class="flex w-full flex-col gap-2">
+    <!-- <tabs-list class="relative gap-2 transition-none *:transition-none">
       <tabs-trigger value="name">
         {{ $t("searchBar.name") }}
       </tabs-trigger>
       <tabs-trigger value="genres">
         {{ $tc("searchBar.genre", 1) }}
       </tabs-trigger>
-    </tabs-list>
-    <tabs-content value="name" class="mt-0">
+    </tabs-list> -->
+    <!-- <tabs-content value="name" class="mt-0">
       <div class="relative w-full items-center">
         <x-input
           name="searchInput"
@@ -162,7 +161,6 @@ watch([debSearch, currentTab], () => {
             class="flex h-8 w-14 items-center justify-center rounded-full bg-mc-3 p-1 text-tc-4 transition hover:bg-hc-3"
           >
             <span>
-              <!-- {{ $tc("searchBar.genre", 2) }} -->
               <x-icon :icon="BookAudio" />
             </span>
           </collapsible-trigger>
@@ -186,7 +184,39 @@ watch([debSearch, currentTab], () => {
           </div>
         </collapsible-content>
       </collapsible>
-    </tabs-content>
+    </tabs-content> -->
+    <div class="flex w-full items-center gap-2">
+      <choose-input-mode
+        @current-select="updateCurrentTab($event)"
+        class="w-fit min-w-24"
+      />
+      <div class="relative w-full">
+        <x-input
+          name="searchInput"
+          type="text"
+          v-model.trim="searchInput"
+          :placeholder="
+            currentTab === 'name'
+              ? $tc('searchBar.placeholder', 1)
+              : $tc('searchBar.placeholder', 2)
+          "
+          class="border-0 px-10 text-tc-4 focus-visible:text-tc-4"
+        />
+        <x-icon
+          :icon="Search"
+          :size="34"
+          :stroke-width="1.5"
+          class="absolute inset-y-0 start-[0.15rem] flex items-center justify-center px-1 text-tc-4"
+        />
+        <x-icon
+          @click="() => (searchInput = '')"
+          :icon="X"
+          :size="32"
+          :stroke-width="1.5"
+          class="absolute inset-y-0 end-1.5 flex cursor-pointer items-center justify-center px-1 text-tc-4 transition-all hover:opacity-60"
+        />
+      </div>
+    </div>
     <div class="flex items-center gap-2 text-sm sm:flex-col">
       <div class="flex gap-2">
         <!-- Quality -->
@@ -208,42 +238,79 @@ watch([debSearch, currentTab], () => {
 
         <!-- Star of Likes filter -->
         <div class="flex items-center gap-2 text-tc-1">
-          <x-button
-            @click="changeOrder('clickcount')"
-            :disabled="filters.order !== 'votes'"
-            :variant="'ghost'"
-            class="size-8 min-w-5 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
-          >
-            <x-icon :icon="Star" :size="21" :stroke-width="2" />
-          </x-button>
-          <x-button
-            @click="changeOrder('votes')"
-            :disabled="filters.order === 'votes'"
-            :variant="'ghost'"
-            class="size-8 min-w-8 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
-          >
-            <x-icon :icon="ThumbsUp" :size="21" :stroke-width="2" />
-          </x-button>
+          <x-tooltip>
+            <template #trigger>
+              <x-button
+                @click="changeOrder('clickcount')"
+                :disabled="filters.order !== 'votes'"
+                :variant="'ghost'"
+                class="size-8 min-w-5 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
+              >
+                <x-icon :icon="Star" :size="21" :stroke-width="2" />
+              </x-button>
+            </template>
+            <template #content>
+              {{ $t("stationCard.clickCount") }}
+            </template>
+          </x-tooltip>
+          <x-tooltip>
+            <template #trigger>
+              <x-button
+                @click="changeOrder('votes')"
+                :disabled="filters.order === 'votes'"
+                :variant="'ghost'"
+                class="size-8 min-w-8 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
+              >
+                <x-icon :icon="ThumbsUp" :size="21" :stroke-width="2" />
+              </x-button>
+            </template>
+            <template #content>
+              {{ $t("stationCard.votes") }}
+            </template>
+          </x-tooltip>
         </div>
 
         <!-- Reverse order -->
         <div class="flex items-center gap-2 text-tc-1">
-          <x-button
-            @click="reverseSearch(true)"
-            :disabled="filters.reverse"
-            :variant="'ghost'"
-            class="size-8 min-w-5 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
-          >
-            <x-icon :icon="ArrowDownWideNarrow" :size="21" :stroke-width="2" />
-          </x-button>
-          <x-button
-            @click="reverseSearch(false)"
-            :disabled="!filters.reverse"
-            :variant="'ghost'"
-            class="size-8 min-w-8 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
-          >
-            <x-icon :icon="ArrowDownNarrowWide" :size="21" :stroke-width="2" />
-          </x-button>
+          <x-tooltip>
+            <template #trigger>
+              <x-button
+                @click="reverseSearch(true)"
+                :disabled="filters.reverse"
+                :variant="'ghost'"
+                class="size-8 min-w-5 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
+              >
+                <x-icon
+                  :icon="ArrowDownWideNarrow"
+                  :size="21"
+                  :stroke-width="2"
+                />
+              </x-button>
+            </template>
+            <template #content>
+              {{ $t("searchBar.descendingOrder") }}
+            </template>
+          </x-tooltip>
+
+          <x-tooltip>
+            <template #trigger>
+              <x-button
+                @click="reverseSearch(false)"
+                :disabled="!filters.reverse"
+                :variant="'ghost'"
+                class="size-8 min-w-8 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
+              >
+                <x-icon
+                  :icon="ArrowDownNarrowWide"
+                  :size="21"
+                  :stroke-width="2"
+                />
+              </x-button>
+            </template>
+            <template #content>
+              {{ $t("searchBar.ascendingOrder") }}
+            </template>
+          </x-tooltip>
         </div>
       </div>
       <choose-country
@@ -252,5 +319,5 @@ watch([debSearch, currentTab], () => {
         @change-country-code="(e) => changeCountryCode(e)"
       />
     </div>
-  </Tabs>
+  </div>
 </template>
