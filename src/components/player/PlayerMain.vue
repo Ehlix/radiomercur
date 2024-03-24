@@ -9,6 +9,7 @@ import { useUserStore } from "@/stores/userStore";
 import XImage from "@/components/ui/image/Image.vue";
 import XSlider from "@/components/ui/slider/Slider.vue";
 import XIcon from "@/components/ui/icon/Icon.vue";
+import XTooltip from "@/components/ui/tooltip/Tooltip.vue";
 import PlayerVisual from "./PlayerVisual.vue";
 import HistoryList from "./HistoryList.vue";
 import {
@@ -28,7 +29,8 @@ import {
   History,
 } from "lucide-vue-next";
 
-const { selectedStation, locale } = storeToRefs(useUserStore());
+const { selectedStation, locale, playerVisualMode } =
+  storeToRefs(useUserStore());
 const player = ref<HTMLAudioElement | null>(null);
 const paused = ref<boolean>(true);
 const loading = ref<boolean>(false);
@@ -128,13 +130,17 @@ watch([volume], () => {
 <template>
   <collapsible v-model:open="infoIsOpen" class="relative h-fit p-2">
     <!-- Visualization -->
-    <player-visual v-if="player && selectedStation" :player="player" />
+    <player-visual
+      v-if="player && selectedStation"
+      :player="player"
+      :mode="playerVisualMode"
+    />
     <div
       class="relative z-20 flex h-20 w-full flex-col justify-between sm:h-16"
     >
       <!-- BG Logo -->
       <div
-        class="pointer-events-none absolute left-2 top-2 z-30 size-28 overflow-hidden rounded-full opacity-20"
+        class="pointer-events-none absolute left-4 top-2 z-30 size-28 overflow-hidden rounded-full opacity-20"
       >
         <x-image
           :src="selectedStation?.favicon"
@@ -224,15 +230,36 @@ watch([volume], () => {
       <div class="relative z-20 flex flex-col">
         <div class="h-10" />
         <!-- Popularity -->
-        <div class="flex flex-col *:flex *:items-center *:gap-1">
-          <div v-show="selectedStation?.clickcount" class="*:text-mc-3">
-            <p>{{ selectedStation?.clickcount }}</p>
-            <x-icon :icon="Star" :size="20" />
-          </div>
-          <div v-show="selectedStation?.votes" class="*:text-teal-500">
-            <p>{{ selectedStation?.votes }}</p>
-            <x-icon :icon="ThumbsUp" :size="20" />
-          </div>
+        <div class="flex gap-2">
+          <x-tooltip trigger-class="">
+            <template #trigger>
+              <div
+                v-show="selectedStation?.clickcount"
+                class="flex items-start gap-1 *:text-tc-2"
+              >
+                <p>{{ selectedStation?.clickcount }}</p>
+                <x-icon :icon="Star" :size="18" :stroke-width="1.6" />
+              </div>
+            </template>
+            <template #content>
+              {{ $t("stationCard.clickCount") }}
+            </template>
+          </x-tooltip>
+
+          <x-tooltip>
+            <template #trigger>
+              <div
+                v-show="selectedStation?.votes"
+                class="flex items-start gap-1 *:text-teal-500"
+              >
+                <p>{{ selectedStation?.votes }}</p>
+                <x-icon :icon="ThumbsUp" :size="18" :stroke-width="1.6" />
+              </div>
+            </template>
+            <template #content>
+              {{ $t("stationCard.votes") }}
+            </template>
+          </x-tooltip>
         </div>
         <!-- Codec -->
         <div v-if="selectedStation?.codec">
@@ -263,23 +290,39 @@ watch([volume], () => {
           </a>
         </div>
         <!-- Flag ana Country Name -->
-        <div
-          v-if="selectedStation?.countrycode"
-          class="mt-1 flex items-center gap-1"
-        >
-          <x-image
-            :src="getFlagImage(selectedStation?.countrycode)"
-            class="h-5 w-8"
-          />
-          <p>
-            {{
-              // @ts-expect-error
-              messages[locale || "en"]?.countries[
-                selectedStation.countrycode
-              ] || ""
-            }}
-          </p>
-        </div>
+        <x-tooltip trigger-class="w-fit">
+          <template #trigger>
+            <div
+              v-if="selectedStation?.countrycode"
+              class="my-1 flex items-center gap-1 overflow-clip"
+            >
+              <x-image
+                :src="getFlagImage(selectedStation?.countrycode)"
+                class="h-5 w-8"
+              />
+              <p class="truncate text-nowrap">
+                <!-- {{ countriesList[station.countrycode] }} -->
+
+                {{
+                  // @ts-expect-error
+                  messages[locale || "en"]?.countries[
+                    selectedStation?.countrycode
+                  ] || ""
+                }}
+              </p>
+            </div>
+          </template>
+          <template #content>
+            <div>
+              {{
+                messages[locale || "en"]?.countries[
+                  // @ts-expect-error
+                  selectedStation?.countrycode
+                ] || ""
+              }}
+            </div>
+          </template>
+        </x-tooltip>
         <!-- Tags -->
         <div v-if="selectedStation?.tags" class="mt-2 flex flex-wrap gap-1">
           <div

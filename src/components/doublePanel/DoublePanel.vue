@@ -4,21 +4,33 @@ import { type HTMLAttributes, ref, onMounted } from "vue";
 import { type UseSwipeDirection, useSwipe } from "@vueuse/core";
 import { cn } from "@/lib/utils/twMerge";
 
+defineSlots<{
+  "left-panel": () => any;
+  "right-panel": () => any;
+}>();
+
 const props = defineProps<{
   leftPanelName: string;
   rightPanelName: string;
   class?: HTMLAttributes["class"];
+  defaultOpen?: "right" | "left";
 }>();
 
-const currentRightPanel = ref<boolean>(true);
-const firstAnimation = ref<boolean>(true);
+const currentRightPanel = ref<boolean>(
+  props.defaultOpen === "right" ? true : false,
+);
+const rightAnimation = ref<boolean>(
+  props.defaultOpen === "right" ? true : false,
+);
+
+const leftAnimation = ref<boolean>(props.defaultOpen === "left" ? true : false);
 
 const showLeftPanel = () => {
-  firstAnimation.value = false;
+  rightAnimation.value = false;
   currentRightPanel.value = false;
 };
 const showRightPanel = () => {
-  // firstAnimation.value = false;
+  leftAnimation.value = false;
   currentRightPanel.value = true;
 };
 
@@ -61,15 +73,20 @@ const uiSwitchHandler = (event: WheelEvent) => {
               class="absolute left-0 top-0 z-40 flex h-full w-full items-center justify-center bg-mc-1 transition hover:bg-hc-1"
               :class="{
                 'closed text-mc-1 hover:bg-mc-1 hover:text-hc-1':
-                  !currentRightPanel,
+                  !currentRightPanel && !leftAnimation,
+                hidden: leftAnimation,
               }"
             >
               <div class="z-20 -rotate-90 whitespace-nowrap text-xl">
                 {{ leftPanelName }}
               </div>
             </button>
-
-            <slot :v-show="!currentRightPanel" name="left-panel"></slot>
+            <div
+              v-show="!currentRightPanel"
+              class="h-full w-full overflow-hidden"
+            >
+              <slot name="left-panel"></slot>
+            </div>
           </div>
         </div>
         <!-- Right panel -->
@@ -80,22 +97,27 @@ const uiSwitchHandler = (event: WheelEvent) => {
             })
           "
         >
-          <div class="relative h-full w-full overflow-x-hidden rounded">
+          <div class="relative z-50 h-full w-full overflow-x-hidden rounded">
             <shadow-overlay class="z-50" />
             <button
               @click="showRightPanel"
               class="absolute left-0 top-0 z-40 flex h-full w-full items-center justify-center bg-mc-1 transition hover:bg-hc-1"
               :class="{
                 'closed text-mc-1 hover:bg-mc-1 hover:text-hc-1':
-                  currentRightPanel && !firstAnimation,
-                hidden: firstAnimation,
+                  currentRightPanel && !rightAnimation,
+                hidden: rightAnimation,
               }"
             >
               <div class="z-20 rotate-90 whitespace-nowrap text-xl">
                 {{ rightPanelName }}
               </div>
             </button>
-            <slot :v-show="currentRightPanel" name="right-panel"></slot>
+            <div
+              v-show="currentRightPanel"
+              class="h-full w-full overflow-hidden"
+            >
+              <slot name="right-panel"></slot>
+            </div>
           </div>
         </div>
       </div>

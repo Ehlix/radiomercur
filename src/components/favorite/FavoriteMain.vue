@@ -142,6 +142,7 @@ const updateStation = ({
         :show-extended-info="true"
         :favorite-stations="userStore.favoriteStations"
         :stations-list="stationsList"
+        :user-locale="userStore.locale"
         @select-station="selectStationHandler"
         @add-station-to-favorites="userStore.addToFavorite($event)"
         @remove-station-from-favorites="userStore.removeFromFavorite($event)"

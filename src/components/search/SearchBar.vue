@@ -65,7 +65,6 @@ const changeCountryCode = (payload: CountryCodes | "all") => {
 
 const updateCurrentTab = (payload: string) => {
   currentTab.value = payload;
-  console.log(payload);
 };
 
 watch(
@@ -102,61 +101,8 @@ watch([debSearch, currentTab], () => {
 
 <template>
   <div class="flex w-full flex-col gap-2">
-    <!-- <tabs-list class="relative gap-2 transition-none *:transition-none">
-      <tabs-trigger value="name">
-        {{ $t("searchBar.name") }}
-      </tabs-trigger>
-      <tabs-trigger value="genres">
-        {{ $tc("searchBar.genre", 1) }}
-      </tabs-trigger>
-    </tabs-list> -->
-    <!-- <tabs-content value="name" class="mt-0">
-      <div class="relative w-full items-center">
-        <x-input
-          name="searchInput"
-          type="text"
-          v-model.trim="searchInput"
-          :placeholder="$tc('searchBar.placeholder', 1)"
-          class="border-0 px-10 text-tc-4 focus-visible:text-tc-4"
-        />
-        <x-icon
-          :icon="Search"
-          :size="34"
-          :stroke-width="1.5"
-          class="absolute inset-y-0 start-[0.15rem] flex items-center justify-center px-1 text-tc-4"
-        />
-        <x-icon
-          @click="() => (searchInput = '')"
-          :icon="X"
-          :size="32"
-          :stroke-width="1.5"
-          class="absolute inset-y-0 end-1.5 flex cursor-pointer items-center justify-center px-1 text-tc-4 transition-all hover:opacity-60"
-        />
-      </div>
-    </tabs-content>
-    <tabs-content value="genres" class="mt-0">
-      <collapsible v-model:open="genresIsOpen">
+    <!-- <collapsible v-model:open="genresIsOpen">
         <div class="relative flex w-full items-center gap-2">
-          <x-input
-            name="searchInput"
-            type="text"
-            v-model.trim="searchInput"
-            :placeholder="$tc('searchBar.placeholder', 2)"
-            class="border-0 px-10 text-tc-4 focus-visible:text-tc-4"
-          />
-          <x-icon
-            :icon="Search"
-            :size="34"
-            :stroke-width="1.5"
-            class="absolute inset-y-0 start-[0.15rem] flex items-center justify-center px-1 text-tc-4"
-          />
-          <x-icon
-            @click="() => (searchInput = '')"
-            :icon="X"
-            :size="32"
-            :stroke-width="1.5"
-            class="absolute inset-y-0 end-[4.1rem] flex cursor-pointer items-center justify-center px-1 text-tc-4 transition-all hover:opacity-60"
-          />
           <collapsible-trigger
             class="flex h-8 w-14 items-center justify-center rounded-full bg-mc-3 p-1 text-tc-4 transition hover:bg-hc-3"
           >
@@ -183,8 +129,7 @@ watch([debSearch, currentTab], () => {
             </button>
           </div>
         </collapsible-content>
-      </collapsible>
-    </tabs-content> -->
+      </collapsible> -->
     <div class="flex w-full items-center gap-2">
       <choose-input-mode
         @current-select="updateCurrentTab($event)"
@@ -229,14 +174,8 @@ watch([debSearch, currentTab], () => {
           />
           HQ Only
         </div>
-        <!-- <div class="border-r border-mc-3 w-1 h-full mr-1"/> -->
-        <!-- <div class="flex text-nowrap gap-2 items-center text-tc-1">
-        <x-switch :checked="!filters.reverse" @update:checked="reverseSearch" />
-        Reverse
-      </div> -->
-        <!-- <div class="border-r border-mc-3 w-1 h-full"/> -->
 
-        <!-- Star of Likes filter -->
+        <!-- Star/Likes filter -->
         <div class="flex items-center gap-2 text-tc-1">
           <x-tooltip>
             <template #trigger>

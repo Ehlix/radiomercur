@@ -86,7 +86,7 @@ watchEffect(() => {
 
 <template>
   <Collapsible :open="newFolderIsOpen" class="flex w-full justify-between px-2">
-    <div class="flex items-center gap-2">
+    <div class="flex w-full items-center gap-2">
       <div class="w-72">
         <Select v-model="selectedFolder" name="folders">
           <SelectTrigger class="text-tc-4">

@@ -12,21 +12,21 @@
 
 :root {
   --background-color-1: #f5f0f0;
-  --main-color-1: #443d58;
-  --main-color-2: #f48032;
-  --main-color-3: #b7b7b7;
-  --text-color-1: #f0e8e8;
-  --text-color-2: #f48032;
-  --text-color-3: #b7b7b7;
-  --text-color-4: #443d58;
-  --hover-color-1: #675f80;
-  --hover-color-2: #f89c5e;
-  --hover-color-3: #d1d1d1;
+  --main-color-1: #b1b1b1;
+  --main-color-2: #e4493e;
+  --main-color-3: #767676;
+  --text-color-1: #ffffff;
+  --text-color-2: #c4382e;
+  --text-color-3: #404040;
+  --text-color-4: #2c2c2c;
+  --hover-color-1: #9b9b9b;
+  --hover-color-2: #cd392e;
+  --hover-color-3: #676767;
   --shadow-color-1: #00000050;
   --shadow-color-2: #00000070;
   --opacity-color-1: #00aaff;
-  --scroll-background: #443d58;
-  --scroll-thumb: #675f80;
+  --scroll-background: #b1b1b1;
+  --scroll-thumb: #868686;
   &.default-dark {
     --background-color-1: #141314;
     --main-color-1: #29222f;
@@ -81,42 +81,6 @@
     --scroll-background: #7f7fad;
     --scroll-thumb: #8493c0;
   }
-  &.kitty-light {
-    --background-color-1: #ffd3b6;
-    --main-color-1: #dddcdc;
-    --main-color-2: #f0a6ca;
-    --main-color-3: #b5b5b5;
-    --text-color-1: #2e2e2e;
-    --text-color-2: #f0a6ca;
-    --text-color-3: #7d7d7d;
-    --text-color-4: #212121;
-    --hover-color-1: #b1b1b1;
-    --hover-color-2: #fbbcdb;
-    --hover-color-3: #d3d3d3;
-    --shadow-color-1: #00000050;
-    --shadow-color-2: #00000070;
-    --opacity-color-1: #a6a6a6;
-    --scroll-background: #e5e5e5;
-    --scroll-thumb: #7d7d7d;
-  }
-  &.kitty-dark {
-    --background-color-1: #1a1a1a;
-    --main-color-1: #2b2b2b;
-    --main-color-2: #f05dab;
-    --main-color-3: #4d4d4d;
-    --text-color-1: #f5f5f5;
-    --text-color-2: #f05dab;
-    --text-color-3: #808080;
-    --text-color-4: #d9d9d9;
-    --hover-color-1: #515151;
-    --hover-color-2: #fa77bd;
-    --hover-color-3: #e0e0e0;
-    --shadow-color-1: #00000050;
-    --shadow-color-2: #00000070;
-    --opacity-color-1: #4682b4;
-    --scroll-background: #2b2b2b;
-    --scroll-thumb: #fa77bd;
-  }
   &.grey-scale {
     --background-color-1: #2b2b2b;
     --main-color-1: #6b6b6b;
@@ -147,7 +111,7 @@
     --text-color-4: #000000;
     --hover-color-1: #2e2e2e;
     --hover-color-2: #afafaf;
-    --hover-color-3: #e0e0e0;
+    --hover-color-3: #656565;
     --shadow-color-1: #00000050;
     --shadow-color-2: #00000070;
     --opacity-color-1: #00aaff;
@@ -265,8 +229,8 @@ h2 {
   /*@apply bg-t-main rounded-[3px]*/
 }
 
-input[type='number'] {
-  -moz-appearance:textfield;
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 input::-webkit-outer-spin-button,

@@ -22,8 +22,6 @@ const themeClasses: ThemeClasses = {
   apollo: "apollo",
   greyScale: "grey-scale",
   pastelLight: "pastel-light",
-  kittyDark: "kitty-dark",
-  kittyLight: "kitty-light",
   vavilon: "vavilon",
   darkContrast: "dark-contrast",
 };
@@ -44,14 +42,6 @@ const themeList: ThemeObj[] = [
   {
     name: "pastel light",
     value: "pastelLight",
-  },
-  {
-    name: "kitty light",
-    value: "kittyLight",
-  },
-  {
-    name: "kitty dark",
-    value: "kittyDark",
   },
   {
     name: "Hight contrast",
@@ -83,8 +73,8 @@ const currentTheme = ref<Theme>(ls?.userSettings?.colorTheme || "defaultLight");
 //   return false;
 // };
 
-const { changeLocale, changeBorders } = useUserStore();
-const { borders } = storeToRefs(useUserStore());
+const { changeLocale, changeBorders, changePlayerVisualMode } = useUserStore();
+const { borders, playerVisualMode } = storeToRefs(useUserStore());
 
 watch(
   currentTheme,
@@ -127,8 +117,9 @@ watch(
               {{ $tc("settingsBar.theme") }}
             </h3>
             <x-button
-              :disabled="currentTheme === theme.value"
               v-for:="theme in themeList"
+              variant="reversed"
+              :disabled="currentTheme === theme.value"
               @click="currentTheme = theme.value"
               class="capitalize"
             >
@@ -139,12 +130,14 @@ watch(
             </h3>
             <div class="flex gap-2 *:w-full">
               <x-button
+                variant="reversed"
                 :disabled="$i18n.locale === 'en'"
                 @click="($i18n.locale = 'en'), changeLocale('en')"
               >
                 English
               </x-button>
               <x-button
+                variant="reversed"
                 :disabled="$i18n.locale === 'ru'"
                 @click="($i18n.locale = 'ru'), changeLocale('ru')"
               >
@@ -156,16 +149,37 @@ watch(
             </h3>
             <div class="flex gap-2 *:w-full">
               <x-button
+                variant="reversed"
                 :disabled="borders === 'rounded'"
                 @click="changeBorders('rounded')"
               >
                 {{ $tc("settingsBar.appearance.round") }}
               </x-button>
               <x-button
+                variant="reversed"
                 :disabled="borders === 'square'"
                 @click="changeBorders('square')"
               >
                 {{ $tc("settingsBar.appearance.square") }}
+              </x-button>
+            </div>
+            <h3 class="text-center text-base text-tc-1">
+              {{ $tc("settingsBar.playerVisual.title") }}
+            </h3>
+            <div class="flex gap-2 *:w-full">
+              <x-button
+                variant="reversed"
+                :disabled="playerVisualMode === '1'"
+                @click="changePlayerVisualMode('1')"
+              >
+                {{ $tc("settingsBar.playerVisual.wave") }}
+              </x-button>
+              <x-button
+                variant="reversed"
+                :disabled="playerVisualMode === '2'"
+                @click="changePlayerVisualMode('2')"
+              >
+                {{ $tc("settingsBar.playerVisual.columns") }}
               </x-button>
             </div>
           </div>

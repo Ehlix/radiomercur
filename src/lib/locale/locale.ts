@@ -33,6 +33,11 @@ const EN = {
       round: "Rounded",
       square: "Square",
     },
+    playerVisual: {
+      title: "Player visual",
+      wave: "Wave",
+      columns: "Columns",
+    },
   },
   syncUserData: {
     title: "Sync settings and stations",
@@ -378,6 +383,11 @@ const RU = {
       title: "Внешний вид",
       round: "Скругленный",
       square: "Квадратный",
+    },
+    playerVisual: {
+      title: "Визуальный режим плеера",
+      wave: "Волна",
+      columns: "Линии",
     },
   },
   syncUserData: {

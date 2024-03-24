@@ -3,7 +3,12 @@ import NavMain from "@/components/navigation/NavMain.vue";
 import DoublePanel from "@/components/doublePanel/DoublePanel.vue";
 import FavoriteMain from "@/components/favorite/FavoriteMain.vue";
 import SearchMain from "@/components/search/SearchMain.vue";
-var elements = document.getElementsByTagName("*");
+import { useUserStore } from "./stores/userStore";
+
+const userStore = useUserStore();
+const panel = userStore.favoriteStations["default"].stations.length
+  ? "left"
+  : "right";
 </script>
 
 <template>
@@ -14,6 +19,7 @@ var elements = document.getElementsByTagName("*");
     <double-panel
       :left-panel-name="$t('leftPanelName')"
       :right-panel-name="$t('rightPanelName')"
+      :default-open="panel"
     >
       <template #left-panel>
         <favorite-main />

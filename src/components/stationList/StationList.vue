@@ -210,13 +210,10 @@ onMounted(() => {
       @drop="dropHandler($event, station)"
       :open="currentOpenId === station.stationuuid"
       :key="station.stationuuid"
-      class="relative overflow-hidden flex h-fit w-[19%] min-w-60 grow transition-all shadow-md shadow-black/30"
+      class="relative flex h-fit w-[19%] min-w-60 grow overflow-hidden shadow-md shadow-black/30 transition-all"
     >
       <!-- Drag Mask -->
-      <div
-        v-if="isDragging"
-        class="absolute left-0 top-0 z-50 h-full w-full"
-      ></div>
+      <div v-if="isDragging" class="absolute left-0 top-0 z-50 h-full w-full" />
 
       <div
         :class="
@@ -233,14 +230,14 @@ onMounted(() => {
         <!-- Dragger -->
         <div
           v-if="currentFolderId"
-          class="absolute bottom-0 left-0 flex h-full w-4 flex-col items-center justify-between py-[0.05rem] pl-[0.2rem]"
+          class="absolute bottom-0 left-0 z-10 flex h-full w-5 flex-col items-center justify-between px-[0.2rem] py-[0.05rem] opacity-60"
         >
           <button @click.stop="positionUpHandler(station)" class="">
             <x-icon
               :icon="ChevronsDown"
               :size="22"
               :stroke-width="2"
-              class="rotatorUp rotate-90 text-tc-3 transition-transform"
+              class="rotatorUp rotate-90 text-tc-1 transition-transform"
             />
           </button>
           <button @mousedown="isDragging = true" class="cursor-move">
@@ -248,7 +245,7 @@ onMounted(() => {
               :icon="GripVertical"
               :size="23"
               :stroke-width="1.8"
-              class="text-tc-3"
+              class="text-tc-1"
             />
           </button>
           <button @click.stop="positionDownHandler(station)" class="">
@@ -256,7 +253,7 @@ onMounted(() => {
               :icon="ChevronsDown"
               :size="22"
               :stroke-width="2"
-              class="rotatorDown -rotate-90 text-tc-3 transition-transform"
+              class="rotatorDown -rotate-90 text-tc-1 transition-transform"
             />
           </button>
         </div>
@@ -366,21 +363,21 @@ onMounted(() => {
 
         <!-- Update station data -->
         <x-tooltip
-          trigger-class="absolute -right-[0.1rem] top-[6.05rem]"
+          trigger-class="absolute z-10 -right-[0.1rem] top-[6.05rem]"
           :content-side="'left'"
         >
           <template #trigger>
             <x-button
               v-if="showUpdateButton"
               variant="ghost"
-              class="w-8 min-w-8 p-0 hover:bg-white/0"
+              class="w-8 min-w-8 p-0 opacity-60 hover:bg-white/0"
             >
               <x-icon
                 @click="updateStationData(station)"
                 :icon="RefreshCcw"
                 :size="20"
                 :stroke-width="2"
-                class="text-tc-3"
+                class="text-tc-1"
               />
             </x-button>
           </template>
@@ -391,12 +388,12 @@ onMounted(() => {
 
         <!-- Logo -->
         <div
-          class="z-0 select-none pointer-events-none absolute right-1 top-12 size-24 overflow-hidden rounded-full opacity-20"
+          class="pointer-events-none absolute right-1 top-6 z-0 size-24 select-none overflow-hidden rounded-full opacity-25"
         >
           <x-image
             :src="station.favicon"
             :alt="station.name"
-            class="size-28 mix-blend-overlay"
+            class="size-24 mix-blend-overlay"
           />
         </div>
 
@@ -405,9 +402,9 @@ onMounted(() => {
         <!-- animate-[fadeIn_100ms_ease-out_200ms_forwards] -->
 
         <!-- Station Name -->
-        <x-tooltip>
+        <x-tooltip trigger-class="z-10 w-full">
           <template #trigger>
-            <h2 class="-mb-2 w-full truncate text-nowrap px-2 text-center">
+            <h2 class="-my-1 truncate text-nowrap px-3 text-center text-tc-1">
               {{ removeMetadata(station.name || "Unknown station") }}
             </h2>
           </template>
@@ -416,11 +413,15 @@ onMounted(() => {
           </template>
         </x-tooltip>
 
+        <div
+          class="absolute left-0 top-[0.4rem] h-6 w-full bg-gradient-to-r via-mc-1 opacity-70"
+        ></div>
+
         <div class="z-10 mb-1 flex w-fit justify-center gap-2">
           <!-- Station Select -->
           <button
             @click="selectStation(station)"
-            class="pointer-events-auto flex h-16 size-fit min-w-fit items-center justify-center rounded-full p-1 -ml-1 transition-all"
+            class="pointer-events-auto -ml-1 flex size-fit h-16 min-w-fit items-center justify-center rounded-full p-1 transition-all"
           >
             <x-icon
               :icon="Play"
@@ -511,7 +512,7 @@ onMounted(() => {
                 <template #trigger>
                   <div
                     v-show="station.votes"
-                    class="flex items-start gap-1 *:text-teal-500"
+                    class="flex items-start gap-1 *:text-tc-1"
                   >
                     <p>{{ station.votes }}</p>
                     <x-icon :icon="ThumbsUp" :size="18" :stroke-width="1.6" />

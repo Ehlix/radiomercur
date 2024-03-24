@@ -93,8 +93,6 @@ type Theme =
   | "defaultLight"
   | "defaultDark"
   | "darkContrast"
-  | "kittyDark"
-  | "kittyLight"
   | "pastelLight"
   | "pastelDark"
   | "vavilon"
@@ -114,15 +112,15 @@ type UserSettings = {
   borders?: "rounded" | "square";
   colorTheme?: Theme;
   language?: Locale;
+  playerVisualMode?: "1" | "2";
 };
 
 type FavObj = {
   name: string;
   stations: Station[];
-}
+};
 
-type FavoriteStations = Record<string, FavObj> &
-  Record<"default", FavObj>;
+type FavoriteStations = Record<string, FavObj> & Record<"default", FavObj>;
 
 type LocalStorageData = {
   favoritesStations?: FavoriteStations;

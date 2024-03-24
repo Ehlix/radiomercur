@@ -13,11 +13,13 @@ export const useUserStore = defineStore("userStations", () => {
   const selectedStation = ref<Station>();
   const locale = ref<"en" | "ru">("en");
   const borders = ref<"rounded" | "square">("rounded");
+  const playerVisualMode = ref<"1" | "2">("1");
 
-  favoriteStations.value = getLSData()?.favoritesStations || {
+  const lsData = getLSData();
+  favoriteStations.value = lsData?.favoritesStations || {
     default: { name: "default", stations: [] },
   };
-  const localeFromLS = getLSData()?.userSettings?.language;
+  const localeFromLS = lsData?.userSettings?.language;
   const localeFromNav =
     window.navigator.language === "ru-RU" || "ru" ? "ru" : "en";
 
@@ -27,8 +29,11 @@ export const useUserStore = defineStore("userStations", () => {
       : "en"
     : localeFromNav;
 
-  const borderFromLS = getLSData()?.userSettings?.borders;
+  const borderFromLS = lsData?.userSettings?.borders;
   borders.value = borderFromLS === "square" ? "square" : "rounded";
+
+  const playerVisualModeFromLS = lsData?.userSettings?.playerVisualMode;
+  playerVisualMode.value = playerVisualModeFromLS === "2" ? "2" : "1";
 
   const selectStation = (station: Station) => {
     selectedStation.value = { ...station };
@@ -36,6 +41,10 @@ export const useUserStore = defineStore("userStations", () => {
 
   const changeLocale = (newLocale: "en" | "ru") => {
     locale.value = newLocale;
+  };
+
+  const changePlayerVisualMode = (newMode: "1" | "2") => {
+    playerVisualMode.value = newMode;
   };
 
   const updateStationInFavoriteAndSelect = (
@@ -168,6 +177,10 @@ export const useUserStore = defineStore("userStations", () => {
     delete favoriteStations.value[folderID];
   };
 
+  watch([playerVisualMode], () => {
+    setLSData({ userSettings: { playerVisualMode: playerVisualMode.value } });
+  });
+
   watch(
     [favoriteStations],
     () => {
@@ -209,11 +222,13 @@ export const useUserStore = defineStore("userStations", () => {
     locale,
     changeLocale,
     changeBorders,
+    changePlayerVisualMode,
     createFavoriteStationsFolder,
     deleteFavoriteStationsFolder,
+    favoriteStations,
+    playerVisualMode,
     renameFolder,
     removeFromFavorite,
-    favoriteStations,
     replaceFavoriteStations,
     stationPositionUp,
     stationPositionDown,

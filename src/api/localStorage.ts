@@ -29,6 +29,7 @@ export const getLSData = (): LocalStorageData | null => {
             ls.userSettings?.language === "ru"
               ? ls.userSettings?.language
               : undefined,
+          playerVisualMode: ls.userSettings?.playerVisualMode ?? "1",
         },
       };
       return res;
