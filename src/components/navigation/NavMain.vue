@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import XIcon from "@/components/ui/icon/Icon.vue";
-import { navList } from "@/lib/static/navList";
-import { cn } from "@/lib/utils/twMerge";
-import { computed, ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import PlayerMain from "@/components/player/PlayerMain.vue";
-import shadowOverlay from "../ui/shadowOverlay/shadowOverlay.vue";
+import ShadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
 import logoMain from "@/components/logo/logoMain.vue";
-import SettingsMain from "../settings/SettingsMain.vue";
+import SettingsMain from "@/components/settings/SettingsMain.vue";
 
 const nav = ref<Element | null>(null);
 const scrollVisible = ref(false);

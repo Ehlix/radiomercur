@@ -1,31 +1,22 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import ChooseCountry from "@/components/search/ChooseCountry.vue";
-import XIcon from "../ui/icon/Icon.vue";
-import XInput from "@/components/ui/input/Input.vue";
-import XSwitch from "@/components/ui/switch/Switch.vue";
-import xButton from "@/components/ui/button/Button.vue";
-import XTooltip from "@/components/ui/tooltip/Tooltip.vue";
+import XIcon from "../ui/icon/XIcon.vue";
+import XInput from "@/components/ui/input/XInput.vue";
+import XSwitch from "@/components/ui/switch/XSwitch.vue";
+import xButton from "@/components/ui/button/XButton.vue";
+import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import ChooseInputMode from "@/components/search/ChooseInputMode.vue";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDebounce } from "@vueuse/core";
 import {
   Search,
-  BookAudio,
   X,
   ArrowDownWideNarrow,
   ArrowDownNarrowWide,
   Star,
   ThumbsUp,
 } from "lucide-vue-next";
-import { genresList } from "@/lib/static/genresList";
 import { useUserStore } from "@/stores/userStore";
-import { cn } from "@/lib/utils/twMerge";
 
 const props = defineProps<{
   downloadProgress?: number | null | undefined;
@@ -41,7 +32,7 @@ const searchInput = ref<string>();
 const debSearch = useDebounce(searchInput, 500);
 const currentTab = ref<string>("name");
 const filters = ref<SearchFilters>({ ...props.defaultFilters } || {});
-const genresIsOpen = ref(false);
+// const genresIsOpen = ref(false);
 
 const hqOnly = (payload: boolean) => {
   filters.value.highQualityOnly = payload;
@@ -132,14 +123,14 @@ watch([debSearch, currentTab], () => {
       </collapsible> -->
     <div class="flex w-full items-center gap-2">
       <choose-input-mode
-        @current-select="updateCurrentTab($event)"
         class="w-fit min-w-24"
+        @current-select="updateCurrentTab($event)"
       />
       <div class="relative w-full">
         <x-input
+          v-model.trim="searchInput"
           name="searchInput"
           type="text"
-          v-model.trim="searchInput"
           :placeholder="
             currentTab === 'name'
               ? $tc('searchBar.placeholder', 1)
@@ -154,11 +145,11 @@ watch([debSearch, currentTab], () => {
           class="absolute inset-y-0 start-[0.15rem] flex items-center justify-center px-1 text-tc-4"
         />
         <x-icon
-          @click="() => (searchInput = '')"
           :icon="X"
           :size="32"
           :stroke-width="1.5"
           class="absolute inset-y-0 end-1.5 flex cursor-pointer items-center justify-center px-1 text-tc-4 transition-all hover:opacity-60"
+          @click="() => (searchInput = '')"
         />
       </div>
     </div>
@@ -180,10 +171,10 @@ watch([debSearch, currentTab], () => {
           <x-tooltip>
             <template #trigger>
               <x-button
-                @click="changeOrder('clickcount')"
                 :disabled="filters.order !== 'votes'"
                 :variant="'ghost'"
                 class="size-8 min-w-5 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
+                @click="changeOrder('clickcount')"
               >
                 <x-icon :icon="Star" :size="21" :stroke-width="2" />
               </x-button>
@@ -195,10 +186,10 @@ watch([debSearch, currentTab], () => {
           <x-tooltip>
             <template #trigger>
               <x-button
-                @click="changeOrder('votes')"
                 :disabled="filters.order === 'votes'"
                 :variant="'ghost'"
                 class="size-8 min-w-8 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
+                @click="changeOrder('votes')"
               >
                 <x-icon :icon="ThumbsUp" :size="21" :stroke-width="2" />
               </x-button>
@@ -214,10 +205,10 @@ watch([debSearch, currentTab], () => {
           <x-tooltip>
             <template #trigger>
               <x-button
-                @click="reverseSearch(true)"
                 :disabled="filters.reverse"
                 :variant="'ghost'"
                 class="size-8 min-w-5 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
+                @click="reverseSearch(true)"
               >
                 <x-icon
                   :icon="ArrowDownWideNarrow"
@@ -234,10 +225,10 @@ watch([debSearch, currentTab], () => {
           <x-tooltip>
             <template #trigger>
               <x-button
-                @click="reverseSearch(false)"
                 :disabled="!filters.reverse"
                 :variant="'ghost'"
                 class="size-8 min-w-8 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
+                @click="reverseSearch(false)"
               >
                 <x-icon
                   :icon="ArrowDownNarrowWide"

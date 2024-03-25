@@ -21,7 +21,7 @@ export const useBaseUrl = defineStore("baseUrl", () => {
   });
 
   watch(mainServerIsActive, () => {
-    !mainServerIsActive && console.log("Main server offline");
+    !mainServerIsActive.value && console.log("Main server offline");
   });
 
   const setBaseUrl = async () => {

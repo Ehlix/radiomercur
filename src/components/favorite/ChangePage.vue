@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import XButton from "@/components/ui/button/Button.vue";
+import XButton from "@/components/ui/button/XButton.vue";
 import {
-  Dialog,
+  DialogMain,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -9,8 +9,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import XInput from "@/components/ui/input/Input.vue";
-import XIcon from "@/components/ui/icon/Icon.vue";
+import XInput from "@/components/ui/input/XInput.vue";
+import XIcon from "@/components/ui/icon/XIcon.vue";
 import { Milestone } from "lucide-vue-next";
 import DialogClose from "../ui/dialog/DialogClose.vue";
 import { ref, watchEffect } from "vue";
@@ -36,36 +36,36 @@ watchEffect(() => {
 </script>
 
 <template>
-  <Dialog>
-    <DialogTrigger
+  <dialog-main>
+    <dialog-trigger
       :disabled="props.disabled ?? false"
       class="group flex w-fit items-center justify-center rounded"
     >
       <x-button
         :disabled="props.disabled ?? false"
+        class="flex h-8 w-5 min-w-8 justify-center gap-1 bg-mc-1 px-2 text-mc-2 hover:bg-mc-1 hover:text-hc-2 xs:min-w-5"
         @click="inputValue = props.currentPage"
-        class="flex h-8 w-5 min-w-8 text-mc-2 justify-center gap-1 bg-mc-1 px-2 hover:bg-mc-1 hover:text-hc-2 xs:min-w-5"
       >
         {{ props.currentPage }}
       </x-button>
-    </DialogTrigger>
-    <DialogContent class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
+    </dialog-trigger>
+    <dialog-content class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
       <form
-        @click.prevent="saveHandler"
         class="grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] rounded bg-mc-1 sm:max-w-[425px]"
+        @click.prevent="saveHandler"
       >
-        <DialogHeader class="border-b border-mc-2 px-2 pt-2">
-          <DialogTitle class="text-2xl text-mc-2">
+        <dialog-header class="border-b border-mc-2 px-2 pt-2">
+          <dialog-title class="text-2xl text-mc-2">
             {{ $t("favoriteBar.changePage") }}
-          </DialogTitle>
-          <DialogDescription>
+          </dialog-title>
+          <dialog-description>
             <div class="flex gap-2 py-2">
               <div class="relative w-full">
                 <x-input
+                  v-model.trim="inputValue"
                   name="searchInput"
                   type="number"
                   maxlength="25"
-                  v-model.trim="inputValue"
                   :placeholder="$t('favoriteBar.enterPage')"
                   class="border-0 px-10 text-tc-4 focus-visible:text-tc-4"
                 />
@@ -84,22 +84,20 @@ watchEffect(() => {
                 /> -->
               </div>
             </div>
-          </DialogDescription>
-        </DialogHeader>
+          </dialog-description>
+        </dialog-header>
 
-        <DialogFooter class="flex flex-row gap-2 p-2">
-          <DialogClose
+        <dialog-footer class="flex flex-row gap-2 p-2">
+          <dialog-close
             class="border border-mc-2 bg-white/0 text-mc-2 hover:border-hc-2 hover:bg-white/0 hover:text-hc-2"
           >
             {{ $t("buttons.cancel") }}
-          </DialogClose>
+          </dialog-close>
           <DialogClose type="submit">
             {{ $t("buttons.save") }}
           </DialogClose>
-        </DialogFooter>
+        </dialog-footer>
       </form>
-    </DialogContent>
-  </Dialog>
+    </dialog-content>
+  </dialog-main>
 </template>
-
-<style scoped></style>

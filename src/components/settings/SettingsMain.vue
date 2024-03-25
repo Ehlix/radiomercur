@@ -7,6 +7,3 @@ import syncUserData from "./syncUserData.vue";
   <appearance-bar />
   <sync-user-data />
 </template>
-
-<style scoped></style>
-./AppearanceBar.vue

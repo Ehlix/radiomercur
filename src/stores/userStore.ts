@@ -1,4 +1,4 @@
-import { ref, toValue, watch } from "vue";
+import { ref, watch } from "vue";
 import { defineStore, storeToRefs } from "pinia";
 import { getStationInfoById } from "@/api/getStations";
 import { useBaseUrl } from "./baseUrl";
@@ -21,7 +21,9 @@ export const useUserStore = defineStore("userStations", () => {
   };
   const localeFromLS = lsData?.userSettings?.language;
   const localeFromNav =
-    window.navigator.language === "ru-RU" || "ru" ? "ru" : "en";
+    window.navigator.language === "ru-RU" || window.navigator.language === "ru"
+      ? "ru"
+      : "en";
 
   locale.value = localeFromLS
     ? localeFromLS === "ru"

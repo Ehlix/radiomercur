@@ -4,11 +4,7 @@ const BASE_HTTP = "http://all.api.radio-browser.info/json";
 const BASE_HTTPS_1 = "https://de1.api.radio-browser.info/json";
 const BASE_HTTPS_2 = "https://at1.api.radio-browser.info/json";
 
-const baseUrls = [
-  BASE_HTTP,
-  BASE_HTTPS_1,
-  BASE_HTTPS_2,
-];
+const baseUrls = [BASE_HTTP, BASE_HTTPS_1, BASE_HTTPS_2];
 
 // export const getBaseUrls = async (): Promise<BaseURL[] | null> => {
 //   try {

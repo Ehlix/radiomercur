@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {
-  Select,
+  SelectMain,
   SelectContent,
   SelectGroup,
   SelectItem,
@@ -24,20 +24,20 @@ watchEffect(() => {
 </script>
 
 <template>
-  <Select v-model="selected" name="mode">
-    <SelectTrigger class="text-tc-4" :class="class">
-      <SelectValue placeholder="Search by" class="font-medium" />
-    </SelectTrigger>
-    <SelectContent>
-      <SelectGroup class="text-tc-4">
+  <select-main v-model="selected" name="mode">
+    <select-trigger class="text-tc-4" :class="props.class">
+      <select-value placeholder="Search by" class="font-medium" />
+    </select-trigger>
+    <select-content>
+      <select-group class="text-tc-4">
         <!-- <SelectLabel>Countries</SelectLabel> -->
-        <SelectItem value="name">
+        <select-item value="name">
           {{ $t("searchBar.name") }}
-        </SelectItem>
-        <SelectItem value="genres">
+        </select-item>
+        <select-item value="genres">
           {{ $tc("searchBar.genre", 1) }}
-        </SelectItem>
-      </SelectGroup>
-    </SelectContent>
-  </Select>
+        </select-item>
+      </select-group>
+    </select-content>
+  </select-main>
 </template>

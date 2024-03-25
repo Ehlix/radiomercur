@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import {
-  Dialog,
+  DialogMain,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import XButton from "@/components/ui/button/Button.vue";
+import XButton from "@/components/ui/button/XButton.vue";
 import { Settings } from "lucide-vue-next";
-import XIcon from "@/components/ui/icon/Icon.vue";
+import XIcon from "@/components/ui/icon/XIcon.vue";
 import { ref, watch } from "vue";
 import { getLSData, setLSData } from "@/api/localStorage";
 import { useUserStore } from "@/stores/userStore";
@@ -90,8 +89,8 @@ watch(
 </script>
 
 <template>
-  <Dialog>
-    <DialogTrigger as-child>
+  <dialog-main>
+    <dialog-trigger as-child>
       <x-button class="h-full min-w-full bg-none p-1">
         <x-icon
           :icon="Settings"
@@ -100,17 +99,17 @@ watch(
           class="text-tc-1"
         />
       </x-button>
-    </DialogTrigger>
-    <DialogContent class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
+    </dialog-trigger>
+    <dialog-content class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
       <div
         class="grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] rounded bg-mc-1 sm:max-w-[425px]"
       >
-        <DialogHeader class="border-b border-mc-2 p-2 px-10 xs:p-1 xs:px-6">
-          <DialogTitle class="text-2xl text-mc-2">
+        <dialog-header class="border-b border-mc-2 p-2 px-10 xs:p-1 xs:px-6">
+          <dialog-title class="text-2xl text-mc-2">
             {{ $tc("settingsBar.title") }}
-          </DialogTitle>
-          <DialogDescription></DialogDescription>
-        </DialogHeader>
+          </dialog-title>
+          <dialog-description />
+        </dialog-header>
         <div class="grid gap-2 overflow-y-auto px-10 py-2 xs:px-6">
           <div class="flex flex-col gap-1">
             <h3 class="text-center text-base text-tc-1">
@@ -120,8 +119,8 @@ watch(
               v-for:="theme in themeList"
               variant="reversed"
               :disabled="currentTheme === theme.value"
-              @click="currentTheme = theme.value"
               class="capitalize"
+              @click="currentTheme = theme.value"
             >
               {{ theme.name }}
             </x-button>
@@ -184,8 +183,8 @@ watch(
             </div>
           </div>
         </div>
-        <DialogFooter class="p-6 pt-0"> </DialogFooter>
+        <dialog-footer class="p-6 pt-0" />
       </div>
-    </DialogContent>
-  </Dialog>
+    </dialog-content>
+  </dialog-main>
 </template>

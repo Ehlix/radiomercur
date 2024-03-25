@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { type HTMLAttributes, computed } from "vue";
-import { DialogDescription, type DialogDescriptionProps } from "radix-vue";
+import { Separator, type SeparatorProps } from "radix-vue";
 import { cn } from "@/lib/utils/twMerge";
 
 const props = defineProps<
-  DialogDescriptionProps & { class?: HTMLAttributes["class"] }
+  SeparatorProps & { class?: HTMLAttributes["class"] }
 >();
 
 const delegatedProps = computed(() => {
@@ -15,10 +15,14 @@ const delegatedProps = computed(() => {
 </script>
 
 <template>
-  <DialogDescription
-    :class="cn('text-sm text-zinc-500 dark:text-zinc-400', props.class)"
+  <Separator
     v-bind="delegatedProps"
-  >
-    <slot />
-  </DialogDescription>
+    :class="
+      cn(
+        'bg-border shrink-0 bg-mc-3',
+        props.orientation === 'vertical' ? 'h-full w-px' : 'h-px w-full',
+        props.class,
+      )
+    "
+  />
 </template>

@@ -4,14 +4,13 @@ import { getFlagImage } from "@/api/getFlagImage";
 import { messages } from "@/lib/locale/locale";
 import { onMounted, ref, type HTMLAttributes } from "vue";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
-import xButton from "@/components/ui/button/Button.vue";
-import XImage from "@/components/ui/image/Image.vue";
-import XIcon from "@/components/ui/icon/Icon.vue";
-import XTooltip from "@/components/ui/tooltip/Tooltip.vue";
+import xButton from "@/components/ui/button/XButton.vue";
+import XImage from "@/components/ui/image/XImage.vue";
+import XIcon from "@/components/ui/icon/XIcon.vue";
+import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import {
-  Collapsible,
+  CollapsibleMain,
   CollapsibleContent,
-  CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import {
   ChevronDown,
@@ -110,7 +109,7 @@ const dragStartHandler = (e: DragEvent, station: Station) => {
   dragTarget.value = station;
 };
 
-const dragEndHandler = (e: DragEvent) => {
+const dragEndHandler = () => {
   isDragging.value = false;
 };
 
@@ -196,21 +195,21 @@ onMounted(() => {
 
 <template>
   <div
-    ref="el"
     v-if="stationsList.length"
+    ref="el"
     :class="cn('flex h-fit w-full flex-wrap gap-2 px-2', props.class)"
   >
-    <Collapsible
-      v-for.lazy="station in props.stationsList"
+    <collapsible-main
+      v-for="station in props.stationsList"
+      :key="station.stationuuid"
       :draggable="isDragging"
+      :open="currentOpenId === station.stationuuid"
+      class="relative flex h-fit w-[19%] min-w-60 grow overflow-hidden shadow-md shadow-black/30 transition-all"
       @dragstart="dragStartHandler($event, station)"
       @dragend="dragEndHandler"
       @dragover="dragOverHandler($event, station)"
       @dragleave="dragLeaveHandler"
       @drop="dropHandler($event, station)"
-      :open="currentOpenId === station.stationuuid"
-      :key="station.stationuuid"
-      class="relative flex h-fit w-[19%] min-w-60 grow overflow-hidden shadow-md shadow-black/30 transition-all"
     >
       <!-- Drag Mask -->
       <div v-if="isDragging" class="absolute left-0 top-0 z-50 h-full w-full" />
@@ -232,7 +231,7 @@ onMounted(() => {
           v-if="currentFolderId"
           class="absolute bottom-0 left-0 z-10 flex h-full w-5 flex-col items-center justify-between px-[0.2rem] py-[0.05rem] opacity-60"
         >
-          <button @click.stop="positionUpHandler(station)" class="">
+          <button class="" @click.stop="positionUpHandler(station)">
             <x-icon
               :icon="ChevronsDown"
               :size="22"
@@ -240,7 +239,7 @@ onMounted(() => {
               class="rotatorUp rotate-90 text-tc-1 transition-transform"
             />
           </button>
-          <button @mousedown="isDragging = true" class="cursor-move">
+          <button class="cursor-move" @mousedown="isDragging = true">
             <x-icon
               :icon="GripVertical"
               :size="23"
@@ -248,7 +247,7 @@ onMounted(() => {
               class="text-tc-1"
             />
           </button>
-          <button @click.stop="positionDownHandler(station)" class="">
+          <button class="" @click.stop="positionDownHandler(station)">
             <x-icon
               :icon="ChevronsDown"
               :size="22"
@@ -270,13 +269,13 @@ onMounted(() => {
           "
         >
           <button
-            @click="menuToggle(station.stationuuid || '')"
             :class="
               cn('group absolute -top-[0.1rem] right-0 size-6', {
                 'right-3 top-1 xs:right-2':
                   currentOpenFavMenu === station.stationuuid,
               })
             "
+            @click="menuToggle(station.stationuuid || '')"
           >
             <x-tooltip
               trigger-class="cursor-pointer"
@@ -303,7 +302,9 @@ onMounted(() => {
                 <div v-if="currentOpenFavMenu !== station.stationuuid">
                   {{ $t("stationCard.addToFavorites") }}
                 </div>
-                <div v-else>{{ $t("buttons.close") }}</div>
+                <div v-else>
+                  {{ $t("buttons.close") }}
+                </div>
               </template>
             </x-tooltip>
           </button>
@@ -318,9 +319,9 @@ onMounted(() => {
             >
               <x-button
                 v-if="checkStationInFavorites(station, key)"
-                @click="removeFromFavorites(station, key)"
                 variant="ghost"
                 class="hover:text-c-1 h-8 w-full min-w-8 justify-start gap-2 p-0 px-2"
+                @click="removeFromFavorites(station, key)"
               >
                 <x-icon :icon="Check" :size="20" :stroke-width="2" />
                 <p class="w-fit text-tc-1">
@@ -330,9 +331,9 @@ onMounted(() => {
 
               <x-button
                 v-else
-                @click="addToFavorites(station, key)"
                 variant="ghost"
                 class="hover:text-c-1 h-8 w-full min-w-8 justify-start gap-2 p-0 px-2"
+                @click="addToFavorites(station, key)"
               >
                 <x-icon :icon="Plus" :size="20" :stroke-width="2" />
                 <p class="text-tc-1">
@@ -373,11 +374,11 @@ onMounted(() => {
               class="w-8 min-w-8 p-0 opacity-60 hover:bg-white/0"
             >
               <x-icon
-                @click="updateStationData(station)"
                 :icon="RefreshCcw"
                 :size="20"
                 :stroke-width="2"
                 class="text-tc-1"
+                @click="updateStationData(station)"
               />
             </x-button>
           </template>
@@ -415,13 +416,13 @@ onMounted(() => {
 
         <div
           class="absolute left-0 top-[0.4rem] h-6 w-full bg-gradient-to-r via-mc-1 opacity-70"
-        ></div>
+        />
 
         <div class="z-10 mb-1 flex w-fit justify-center gap-2">
           <!-- Station Select -->
           <button
-            @click="selectStation(station)"
             class="pointer-events-auto -ml-1 flex size-fit h-16 min-w-fit items-center justify-center rounded-full p-1 transition-all"
+            @click="selectStation(station)"
           >
             <x-icon
               :icon="Play"
@@ -531,8 +532,8 @@ onMounted(() => {
           class="pointer-events-none absolute left-0 top-[6.5rem] h-[0.85rem] w-full text-center"
         >
           <button
-            @click="infoOpenHandler(station)"
             class="pointer-events-auto w-5"
+            @click="infoOpenHandler(station)"
           >
             <chevron-down
               stroke-width="2"
@@ -545,7 +546,7 @@ onMounted(() => {
             />
           </button>
         </div>
-        <CollapsibleContent
+        <collapsible-content
           v-if="props.showExtendedInfo ?? true"
           class="-mt-2 flex flex-col"
         >
@@ -572,14 +573,15 @@ onMounted(() => {
           <div v-if="station.tags" class="mt-1 flex flex-wrap gap-1">
             <div
               v-for="tag in station.tags.split(',').splice(0, 20)"
+              :key="tag"
               class="rounded-sm border border-tc-3 px-1 text-sm capitalize text-tc-3"
             >
               {{ tag }}
             </div>
           </div>
-        </CollapsibleContent>
+        </collapsible-content>
       </div>
-    </Collapsible>
+    </collapsible-main>
   </div>
 </template>
 

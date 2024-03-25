@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import {
-  Dialog,
+  DialogMain,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import XButton from "@/components/ui/button/Button.vue";
+import XButton from "@/components/ui/button/XButton.vue";
 import { FolderSync, FileDown, FileUp } from "lucide-vue-next";
-import XIcon from "@/components/ui/icon/Icon.vue";
+import XIcon from "@/components/ui/icon/XIcon.vue";
 import { onUnmounted, ref } from "vue";
 import { getLSData, setLSData } from "@/api/localStorage";
 import { useDropZone } from "@vueuse/core";
@@ -43,7 +42,6 @@ const validateUploadData = (text: string) => {
     errorMessage.value = true;
   }
 };
-
 
 const onDrop = (files: File[] | null) => {
   errorMessage.value = false;
@@ -112,11 +110,11 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <Dialog>
-    <DialogTrigger as-child>
+  <dialog-main>
+    <dialog-trigger as-child>
       <x-button
-        @click="errorMessage = false"
         class="h-full min-w-full bg-none p-1"
+        @click="errorMessage = false"
       >
         <x-icon
           :icon="FolderSync"
@@ -125,23 +123,23 @@ onUnmounted(() => {
           class="text-tc-1"
         />
       </x-button>
-    </DialogTrigger>
-    <DialogContent class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
+    </dialog-trigger>
+    <dialog-content class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
       <div
         class="grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] rounded bg-mc-1 sm:max-w-[425px]"
       >
-        <DialogHeader class="border-b border-mc-2 p-3 px-8 xs:px-4">
-          <DialogTitle class="text-2xl text-mc-2">
+        <dialog-header class="border-b border-mc-2 p-3 px-8 xs:px-4">
+          <dialog-title class="text-2xl text-mc-2">
             {{ $tc("syncUserData.title") }}
-          </DialogTitle>
-          <DialogDescription></DialogDescription>
-        </DialogHeader>
+          </dialog-title>
+          <dialog-description />
+        </dialog-header>
         <div class="grid gap-2 overflow-y-auto p-8 xs:p-4">
           <div class="grid grid-cols-2 gap-8 *:aspect-square *:gap-2 md:gap-4">
             <x-button
-              @click="downloadData"
               variant="ghost"
               class="flex h-full w-full flex-col items-center justify-start whitespace-normal rounded border border-mc-2 p-4 pt-10 sm:py-10 xs:py-16"
+              @click="downloadData"
             >
               <x-icon
                 :icon="FileDown"
@@ -156,7 +154,6 @@ onUnmounted(() => {
 
             <x-button
               ref="dropZoneRef"
-              @click="uploadData"
               variant="ghost"
               :class="
                 cn(
@@ -166,6 +163,7 @@ onUnmounted(() => {
                   },
                 )
               "
+              @click="uploadData"
             >
               <x-icon
                 :icon="FileUp"
@@ -184,6 +182,6 @@ onUnmounted(() => {
         </div>
         <!-- <DialogFooter class="p-6 pt-0"></DialogFooter> -->
       </div>
-    </DialogContent>
-  </Dialog>
+    </dialog-content>
+  </dialog-main>
 </template>

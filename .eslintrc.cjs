@@ -12,16 +12,4 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest'
   },
-  overrides: [
-    {
-      // rules: {
-      //   'vue/multi-word-component-names': [
-      //     'error',
-      //     {
-      //       ignores: ['default']
-      //     }
-      //   ]
-      // }
-    }
-  ]
 }

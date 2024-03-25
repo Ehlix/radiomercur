@@ -3,9 +3,9 @@ import { useSearchStations } from "@/stores/searchStations";
 import { useUserStore } from "@/stores/userStore";
 import SearchBar from "./SearchBar.vue";
 import StationList from "../stationList/StationList.vue";
-import { computed, ref, watch } from "vue";
-import XProgress from "@/components/ui/progress/Progress.vue";
-import XButton from "../ui/button/Button.vue";
+import { ref, watch } from "vue";
+import XProgress from "@/components/ui/progress/XProgress.vue";
+import XButton from "../ui/button/XButton.vue";
 import { getLSData } from "@/api/localStorage";
 
 const searchStore = useSearchStations();
@@ -74,7 +74,7 @@ watch([() => searchStore.stationsList], () => {
     <!-- Stations -->
     <div class="grow">
       <station-list
-        :showExtendedInfo="true"
+        :show-extended-info="true"
         :stations-list="searchStore.stationsList"
         :favorite-stations="userStore.favoriteStations"
         :user-locale="userStore.locale"
@@ -88,18 +88,18 @@ watch([() => searchStore.stationsList], () => {
       v-if="searchStore.stationsList.length"
       class="flex h-fit w-full justify-between gap-2 px-2 pb-2 *:h-8 *:w-full"
     >
-      <x-button @click="prevPage" :disabled="!searchStore.currentPage">
+      <x-button :disabled="!searchStore.currentPage" @click="prevPage">
         {{ $t("buttons.prev") }}
       </x-button>
       <x-button
-        @click="firstPage"
         :class="{
           hidden: searchStore.currentPage < 2,
         }"
+        @click="firstPage"
       >
         {{ $t("buttons.first") }}
       </x-button>
-      <x-button @click="nextPage" :disabled="!searchStore.canLoadMore">
+      <x-button :disabled="!searchStore.canLoadMore" @click="nextPage">
         {{ $t("buttons.next") }}
       </x-button>
     </div>

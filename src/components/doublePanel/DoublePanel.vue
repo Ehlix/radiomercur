@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import shadowOverlay from "../ui/shadowOverlay/shadowOverlay.vue";
-import { type HTMLAttributes, ref, onMounted } from "vue";
+import shadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
+import { type HTMLAttributes, ref } from "vue";
 import { type UseSwipeDirection, useSwipe } from "@vueuse/core";
 import { cn } from "@/lib/utils/twMerge";
 
@@ -69,13 +69,13 @@ const uiSwitchHandler = (event: WheelEvent) => {
           <div class="relative h-full w-full overflow-x-hidden">
             <shadow-overlay class="z-50" />
             <button
-              @click="showLeftPanel"
               class="absolute left-0 top-0 z-40 flex h-full w-full items-center justify-center bg-mc-1 transition hover:bg-hc-1"
               :class="{
                 'closed text-mc-1 hover:bg-mc-1 hover:text-hc-1':
                   !currentRightPanel && !leftAnimation,
                 hidden: leftAnimation,
               }"
+              @click="showLeftPanel"
             >
               <div class="z-20 -rotate-90 whitespace-nowrap text-xl">
                 {{ leftPanelName }}
@@ -85,7 +85,7 @@ const uiSwitchHandler = (event: WheelEvent) => {
               v-show="!currentRightPanel"
               class="h-full w-full overflow-hidden"
             >
-              <slot name="left-panel"></slot>
+              <slot name="left-panel" />
             </div>
           </div>
         </div>
@@ -100,13 +100,13 @@ const uiSwitchHandler = (event: WheelEvent) => {
           <div class="relative z-50 h-full w-full overflow-x-hidden rounded">
             <shadow-overlay class="z-50" />
             <button
-              @click="showRightPanel"
               class="absolute left-0 top-0 z-40 flex h-full w-full items-center justify-center bg-mc-1 transition hover:bg-hc-1"
               :class="{
                 'closed text-mc-1 hover:bg-mc-1 hover:text-hc-1':
                   currentRightPanel && !rightAnimation,
                 hidden: rightAnimation,
               }"
+              @click="showRightPanel"
             >
               <div class="z-20 rotate-90 whitespace-nowrap text-xl">
                 {{ rightPanelName }}
@@ -116,27 +116,27 @@ const uiSwitchHandler = (event: WheelEvent) => {
               v-show="currentRightPanel"
               class="h-full w-full overflow-hidden"
             >
-              <slot name="right-panel"></slot>
+              <slot name="right-panel" />
             </div>
           </div>
         </div>
       </div>
       <!-- Switch bar -->
       <div
-        @wheel="uiSwitchHandler"
         class="flex h-3 w-full gap-2 overflow-hidden *:relative *:size-full *:overflow-hidden *:bg-mc-1 *:transition-all hover:*:bg-hc-1 disabled:*:bg-mc-2"
+        @wheel="uiSwitchHandler"
       >
         <button
           :disabled="!currentRightPanel"
-          @click="showLeftPanel"
           class="rounded"
+          @click="showLeftPanel"
         >
           <shadow-overlay />
         </button>
         <button
           :disabled="currentRightPanel"
-          @click="showRightPanel"
           class="rounded"
+          @click="showRightPanel"
         >
           <shadow-overlay />
         </button>

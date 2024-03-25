@@ -114,9 +114,6 @@ const second = () => {
   const color1 = getComputedStyle(ctx!.canvas).getPropertyValue(
     "--main-color-3",
   );
-  const color2 = getComputedStyle(ctx!.canvas).getPropertyValue(
-    "--main-color-2",
-  );
   // Записываем в массив данные уровней частот
   analyser.getByteFrequencyData(frequencyData);
   // Задаём цвет фона
@@ -138,7 +135,7 @@ const second = () => {
     } else {
       topYCache[i] = freq;
     }
-    const height = freq - topYCache[i] > 0 ? freq - topYCache[i] : 2;
+    // const height = freq - topYCache[i] > 0 ? freq - topYCache[i] : 2;
     ctx.fillStyle = color1;
     ctx.fillRect(i, topYCache[i], stepX, 4);
     ctx.fillRect(i, maxY - frequencyData[i], stepX, frequencyData[i]);
@@ -175,7 +172,7 @@ watch(
       class="h-[11.6rem] w-full sm:h-[9.6rem]"
       width="1024"
       height="512"
-    ></canvas>
+    />
   </div>
 </template>
 

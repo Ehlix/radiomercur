@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import {
-  TooltipWrap,
+  TooltipMain,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import type { HTMLAttributes } from "vue";
 
-const slots = defineSlots<{
+defineSlots<{
   trigger: () => any;
   content: () => any;
 }>();
@@ -22,7 +22,7 @@ const props = defineProps<{
 
 <template>
   <TooltipProvider>
-    <TooltipWrap>
+    <TooltipMain>
       <TooltipTrigger :class="props.triggerClass" class="cursor-default">
         <slot name="trigger" />
       </TooltipTrigger>
@@ -33,7 +33,7 @@ const props = defineProps<{
       >
         <slot name="content" />
       </TooltipContent>
-    </TooltipWrap>
+    </TooltipMain>
   </TooltipProvider>
 </template>
 

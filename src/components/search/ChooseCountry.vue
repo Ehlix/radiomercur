@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {
-  Select,
+  SelectMain,
   SelectContent,
   SelectGroup,
   SelectItem,
@@ -11,10 +11,10 @@ import { computed, ref, watchEffect } from "vue";
 import { messages } from "@/lib/locale/locale";
 
 const props = defineProps<{
-  countryCode?: CountryCodes | 'all';
+  countryCode?: CountryCodes | "all";
   userLocale: "en" | "ru";
 }>();
-const selected = ref<CountryCodes | 'all'>(props.countryCode || "all");
+const selected = ref<CountryCodes | "all">(props.countryCode || "all");
 const countries = computed(() =>
   Object.entries(messages[props.userLocale].countries).sort((a, b) => {
     return a[1] < b[1] ? -1 : 1;
@@ -22,7 +22,7 @@ const countries = computed(() =>
 );
 
 const emits = defineEmits<{
-  (e: "changeCountryCode", value: CountryCodes | 'all'): void;
+  (e: "changeCountryCode", value: CountryCodes | "all"): void;
 }>();
 
 watchEffect(() => {
@@ -31,20 +31,24 @@ watchEffect(() => {
 </script>
 
 <template>
-  <Select v-model="selected" name="countries">
-    <SelectTrigger class="text-tc-4">
-      <SelectValue placeholder="All countries" class="font-medium"/>
-    </SelectTrigger>
-    <SelectContent>
-      <SelectGroup class="text-tc-4">
+  <select-main v-model="selected" name="countries">
+    <select-trigger class="text-tc-4">
+      <select-value placeholder="All countries" class="font-medium" />
+    </select-trigger>
+    <select-content>
+      <select-group class="text-tc-4">
         <!-- <SelectLabel>Countries</SelectLabel> -->
-        <SelectItem value="all">
+        <select-item value="all">
           {{ $t("searchBar.defaultCountry") }}
-        </SelectItem>
-        <SelectItem v-for="country in countries" :value="country[0]">
+        </select-item>
+        <select-item
+          v-for="country in countries"
+          :key="country[0]"
+          :value="country[0]"
+        >
           {{ country[1] }}
-        </SelectItem>
-      </SelectGroup>
-    </SelectContent>
-  </Select>
+        </select-item>
+      </select-group>
+    </select-content>
+  </select-main>
 </template>

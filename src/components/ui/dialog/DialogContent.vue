@@ -11,7 +11,7 @@ import {
 } from "radix-vue";
 import { X } from "lucide-vue-next";
 import { cn } from "@/lib/utils/twMerge";
-import XIcon from "@/components/ui/icon/Icon.vue";
+import XIcon from "@/components/ui/icon/XIcon.vue";
 
 const props = defineProps<
   DialogContentProps & { class?: HTMLAttributes["class"] }
@@ -30,7 +30,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
 <template>
   <DialogPortal>
     <DialogOverlay
-      class="fixed inset-0 z-50 bg-black/75 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 backdrop-blur-[0.15rem]"
+      class="fixed inset-0 z-50 bg-black/75 backdrop-blur-[0.15rem] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
     />
     <DialogContent
       v-bind="forwarded"

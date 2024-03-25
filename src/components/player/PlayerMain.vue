@@ -6,14 +6,14 @@ import { messages } from "@/lib/locale/locale";
 import { cn } from "@/lib/utils/twMerge";
 import { getFlagImage } from "@/api/getFlagImage";
 import { useUserStore } from "@/stores/userStore";
-import XImage from "@/components/ui/image/Image.vue";
-import XSlider from "@/components/ui/slider/Slider.vue";
-import XIcon from "@/components/ui/icon/Icon.vue";
-import XTooltip from "@/components/ui/tooltip/Tooltip.vue";
+import XImage from "@/components/ui/image/XImage.vue";
+import XSlider from "@/components/ui/slider/XSlider.vue";
+import XIcon from "@/components/ui/icon/XIcon.vue";
+import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import PlayerVisual from "./PlayerVisual.vue";
 import HistoryList from "./HistoryList.vue";
 import {
-  Collapsible,
+  CollapsibleMain,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
@@ -26,7 +26,6 @@ import {
   Volume1,
   Volume2,
   VolumeX,
-  History,
 } from "lucide-vue-next";
 
 const { selectedStation, locale, playerVisualMode } =
@@ -77,7 +76,7 @@ const togglePlay = () => {
 };
 
 const autoPlay = () => {
-  if (!player.value || !streamLink) {
+  if (!player.value || !streamLink.value) {
     return;
   }
   player.value.play();
@@ -128,7 +127,7 @@ watch([volume], () => {
 </script>
 
 <template>
-  <collapsible v-model:open="infoIsOpen" class="relative h-fit p-2">
+  <collapsible-main v-model:open="infoIsOpen" class="relative h-fit p-2">
     <!-- Visualization -->
     <player-visual
       v-if="player && selectedStation"
@@ -199,8 +198,8 @@ watch([volume], () => {
         >
           <!-- Play -->
           <button
-            @click="togglePlay()"
             class="pointer-events-auto flex size-12 items-center justify-center rounded-full border-2 border-tc-1 stroke-[0.1rem] p-1 transition-all sm:size-10"
+            @click="togglePlay()"
           >
             <x-icon
               :icon="paused ? Play : Pause"
@@ -218,7 +217,7 @@ watch([volume], () => {
         <p v-if="loadingError" class="sm:hidden">! Connection Error !</p>
         <!-- Volume -->
         <div class="relative ml-auto w-fit xs:hidden" @wheel="wheelHandler">
-          <button @click="muteToggle()" class="absolute left-0 top-0 z-10">
+          <button class="absolute left-0 top-0 z-10" @click="muteToggle()">
             <x-icon :stroke-width="1.8" :size="22" :icon="showIcon" />
           </button>
           <x-slider v-model="volume" :max="MAX_VOLUME" :step="1" />
@@ -327,6 +326,7 @@ watch([volume], () => {
         <div v-if="selectedStation?.tags" class="mt-2 flex flex-wrap gap-1">
           <div
             v-for="tag in selectedStation.tags.split(',').splice(0, 10)"
+            :key="tag"
             class="rounded-sm border border-tc-3 px-1 text-sm capitalize text-tc-3"
           >
             {{ tag }}
@@ -334,13 +334,13 @@ watch([volume], () => {
         </div>
       </div>
     </collapsible-content>
-  </collapsible>
+  </collapsible-main>
   <audio
     ref="player"
     :src="streamLink"
+    crossorigin="anonymous"
     @change="togglePlay()"
     @canplay="autoPlay()"
     @error="errorHandler()"
-    crossorigin="anonymous"
-  ></audio>
+  />
 </template>

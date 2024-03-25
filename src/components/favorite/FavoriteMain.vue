@@ -4,8 +4,8 @@ import { useUserStore } from "@/stores/userStore";
 import FavoriteNav from "./FavoriteNav.vue";
 import StationList from "../stationList/StationList.vue";
 import { computed, nextTick, ref } from "vue";
-import XButton from "../ui/button/Button.vue";
-import XIcon from "../ui/icon/Icon.vue";
+import XButton from "../ui/button/XButton.vue";
+import XIcon from "../ui/icon/XIcon.vue";
 import ChangePage from "./ChangePage.vue";
 import { ChevronsRight } from "lucide-vue-next";
 
@@ -158,9 +158,9 @@ const updateStation = ({
       class="flex h-fit w-full justify-between gap-2 px-2 *:h-8"
     >
       <x-button
-        @click="prevPage('min')"
         :disabled="currentPage === 1"
         class="w-10 min-w-8 p-0 xs:min-w-5"
+        @click="prevPage('min')"
       >
         <x-icon
           :icon="ChevronsRight"
@@ -170,28 +170,28 @@ const updateStation = ({
         />
       </x-button>
       <x-button
-        @click="prevPage"
         :disabled="currentPage === 1"
         class="w-full xs:min-w-8"
+        @click="prevPage"
       >
         {{ $t("buttons.prev") }}
       </x-button>
       <change-page
         :disabled="totalStationCount <= STATIONS_PER_PAGE"
-        :currentPage="currentPage"
+        :current-page="currentPage"
         @change-page="changePageHandler($event)"
       />
       <x-button
-        @click="nextPage"
         :disabled="totalStationCount < currentPage * STATIONS_PER_PAGE"
         class="w-full xs:min-w-8"
+        @click="nextPage"
       >
         {{ $t("buttons.next") }}
       </x-button>
       <x-button
-        @click="() => nextPage('max')"
         :disabled="totalStationCount < currentPage * STATIONS_PER_PAGE"
         class="w-10 min-w-8 p-0 xs:min-w-5"
+        @click="() => nextPage('max')"
       >
         <x-icon
           :icon="ChevronsRight"

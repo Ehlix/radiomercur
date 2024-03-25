@@ -1,28 +1,24 @@
 <script setup lang="ts">
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 import {
-  Dialog,
+  DialogMain,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import XButton from "@/components/ui/button/Button.vue";
-import { History, Play, Settings } from "lucide-vue-next";
-import XIcon from "@/components/ui/icon/Icon.vue";
-import { ref, watch } from "vue";
-import { getLSData, setLSData } from "@/api/localStorage";
+import { History, Play } from "lucide-vue-next";
+import XIcon from "@/components/ui/icon/XIcon.vue";
 import { useUserStore } from "@/stores/userStore";
-import { storeToRefs } from "pinia";
 import { useSearchStations } from "@/stores/searchStations";
 import { getFlagImage } from "@/api/getFlagImage";
-import XImage from "@/components/ui/image/Image.vue";
-import XTooltip from "@/components/ui/tooltip/Tooltip.vue";
+import XImage from "@/components/ui/image/XImage.vue";
+import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 const searchStore = useSearchStations();
 const userStore = useUserStore();
 import { messages } from "@/lib/locale/locale";
+import { generateId } from "@/lib/utils/generateId";
 
 const playHandler = (station: Station) => {
   userStore.selectStation(station);
@@ -31,48 +27,49 @@ const playHandler = (station: Station) => {
 </script>
 
 <template>
-  <Dialog>
+  <dialog-main>
     <x-tooltip
       trigger-class="absolute -left-1 top-8 sm:top-6"
       content-side="right"
     >
       <template #trigger>
-        <DialogTrigger as-child>
+        <dialog-trigger as-child>
           <button>
             <x-icon :icon="History" :size="20" :stroke-width="2" />
           </button>
-        </DialogTrigger>
+        </dialog-trigger>
       </template>
       <template #content>
         <span>{{ $tc("searchBar.history") }}</span>
       </template>
     </x-tooltip>
 
-    <DialogContent
+    <dialog-content
       class="w-full max-w-[70dvw] bg-mc-2 p-1 transition-none sm:max-w-[425px]"
     >
       <div
         class="grid h-fit max-h-[80dvh] grid-rows-[auto_minmax(0,1fr)_auto] rounded bg-mc-1 sm:max-w-[425px]"
       >
-        <DialogHeader class="border-b border-mc-2 p-2 px-6 xs:p-1 xs:px-4">
-          <DialogTitle class="text-2xl text-mc-2">
+        <dialog-header class="border-b border-mc-2 p-2 px-6 xs:p-1 xs:px-4">
+          <dialog-title class="text-2xl text-mc-2">
             {{ $tc("searchBar.history") }}
-          </DialogTitle>
-          <DialogDescription></DialogDescription>
-        </DialogHeader>
+          </dialog-title>
+          <dialog-description />
+        </dialog-header>
         <div
           class="my-2 grid gap-2 overflow-y-auto overflow-x-hidden px-6 xs:px-4"
         >
           <div
             v-for="station in searchStore.historyList"
+            :key="generateId + station.stationuuid!"
             class="flex items-center gap-2"
           >
             <!-- <button @click="playHandler(station)">
               <x-icon :icon="Play" :size="22" :stroke-width="1.8" class="text-tc-1"/>
             </button> -->
             <button
-              @click="playHandler(station)"
               class="group relative flex h-8 min-w-8 overflow-hidden rounded-full bg-bgc-1 *:size-8"
+              @click="playHandler(station)"
             >
               <!-- <shadow-overlay class=" rounded-full" /> -->
               <div
@@ -124,6 +121,6 @@ const playHandler = (station: Station) => {
         </div>
         <!-- <DialogFooter class="p-6 pt-0"> </DialogFooter> -->
       </div>
-    </DialogContent>
-  </Dialog>
+    </dialog-content>
+  </dialog-main>
 </template>
