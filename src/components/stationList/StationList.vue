@@ -204,7 +204,7 @@ onMounted(() => {
       :key="station.stationuuid"
       :draggable="isDragging"
       :open="currentOpenId === station.stationuuid"
-      class="relative flex h-fit w-[19%] min-w-60 grow overflow-hidden shadow-md shadow-black/30 transition-all"
+      class="relative flex h-fit w-[19%] min-w-60 max-w-[calc(50%-0.25rem)] grow overflow-hidden shadow-md shadow-black/30 transition-all sm:max-w-full"
       @dragstart="dragStartHandler($event, station)"
       @dragend="dragEndHandler"
       @dragover="dragOverHandler($event, station)"
@@ -212,7 +212,10 @@ onMounted(() => {
       @drop="dropHandler($event, station)"
     >
       <!-- Drag Mask -->
-      <div v-if="isDragging" class="absolute left-0 top-0 z-50 h-full w-full" />
+      <div
+        v-if="isDragging"
+        class="absolute left-0 top-0 z-50 h-full w-full"
+      />
 
       <div
         :class="
@@ -231,7 +234,10 @@ onMounted(() => {
           v-if="currentFolderId"
           class="absolute bottom-0 left-0 z-10 flex h-full w-5 flex-col items-center justify-between px-[0.2rem] py-[0.05rem] opacity-60"
         >
-          <button class="" @click.stop="positionUpHandler(station)">
+          <button
+            class=""
+            @click.stop="positionUpHandler(station)"
+          >
             <x-icon
               :icon="ChevronsDown"
               :size="22"
@@ -239,7 +245,10 @@ onMounted(() => {
               class="rotatorUp rotate-90 text-tc-1 transition-transform"
             />
           </button>
-          <button class="cursor-move" @mousedown="isDragging = true">
+          <button
+            class="cursor-move"
+            @mousedown="isDragging = true"
+          >
             <x-icon
               :icon="GripVertical"
               :size="23"
@@ -247,7 +256,10 @@ onMounted(() => {
               class="text-tc-1"
             />
           </button>
-          <button class="" @click.stop="positionDownHandler(station)">
+          <button
+            class=""
+            @click.stop="positionDownHandler(station)"
+          >
             <x-icon
               :icon="ChevronsDown"
               :size="22"
@@ -323,7 +335,11 @@ onMounted(() => {
                 class="hover:text-c-1 h-8 w-full min-w-8 justify-start gap-2 p-0 px-2"
                 @click="removeFromFavorites(station, key)"
               >
-                <x-icon :icon="Check" :size="20" :stroke-width="2" />
+                <x-icon
+                  :icon="Check"
+                  :size="20"
+                  :stroke-width="2"
+                />
                 <p class="w-fit text-tc-1">
                   {{ favoriteStations[key].name }}
                 </p>
@@ -335,7 +351,11 @@ onMounted(() => {
                 class="hover:text-c-1 h-8 w-full min-w-8 justify-start gap-2 p-0 px-2"
                 @click="addToFavorites(station, key)"
               >
-                <x-icon :icon="Plus" :size="20" :stroke-width="2" />
+                <x-icon
+                  :icon="Plus"
+                  :size="20"
+                  :stroke-width="2"
+                />
                 <p class="text-tc-1">
                   {{ favoriteStations[key].name }}
                 </p>
@@ -389,12 +409,13 @@ onMounted(() => {
 
         <!-- Logo -->
         <div
-          class="pointer-events-none absolute right-1 top-6 z-0 size-24 select-none overflow-hidden rounded-full opacity-25"
+          class="pointer-events-none absolute right-2 top-4 z-10 size-[6.5rem] select-none overflow-hidden rounded-full opacity-100"
         >
+          <div class="absolute inset-0 z-0 bg-mc-1 opacity-100" />
           <x-image
             :src="station.favicon"
             :alt="station.name"
-            class="size-24 mix-blend-overlay"
+            class="absolute inset-0 z-10 size-[6.5rem] object-cover opacity-40"
           />
         </div>
 
@@ -403,7 +424,7 @@ onMounted(() => {
         <!-- animate-[fadeIn_100ms_ease-out_200ms_forwards] -->
 
         <!-- Station Name -->
-        <x-tooltip trigger-class="z-10 w-full">
+        <x-tooltip trigger-class="z-20 w-full">
           <template #trigger>
             <h2 class="-my-1 truncate text-nowrap px-3 text-center text-tc-1">
               {{ removeMetadata(station.name || "Unknown station") }}
@@ -414,9 +435,9 @@ onMounted(() => {
           </template>
         </x-tooltip>
 
-        <div
-          class="absolute left-0 top-[0.4rem] h-6 w-full bg-gradient-to-r via-mc-1 opacity-70"
-        />
+        <div class="absolute left-0 top-[0.4rem] h-6 w-full">
+          <div class="h-full w-full bg-gradient-to-r via-mc-1 opacity-80" />
+        </div>
 
         <div class="z-10 mb-1 flex w-fit justify-center gap-2">
           <!-- Station Select -->
@@ -501,7 +522,11 @@ onMounted(() => {
                     class="flex items-start gap-1 *:text-tc-2"
                   >
                     <p>{{ station.clickcount }}</p>
-                    <x-icon :icon="Star" :size="18" :stroke-width="1.6" />
+                    <x-icon
+                      :icon="Star"
+                      :size="18"
+                      :stroke-width="1.6"
+                    />
                   </div>
                 </template>
                 <template #content>
@@ -516,7 +541,11 @@ onMounted(() => {
                     class="flex items-start gap-1 *:text-tc-1"
                   >
                     <p>{{ station.votes }}</p>
-                    <x-icon :icon="ThumbsUp" :size="18" :stroke-width="1.6" />
+                    <x-icon
+                      :icon="ThumbsUp"
+                      :size="18"
+                      :stroke-width="1.6"
+                    />
                   </div>
                 </template>
                 <template #content>
@@ -570,7 +599,10 @@ onMounted(() => {
               {{ $t("stationCard.streamSource") }}
             </a>
           </div>
-          <div v-if="station.tags" class="mt-1 flex flex-wrap gap-1">
+          <div
+            v-if="station.tags"
+            class="mt-1 flex flex-wrap gap-1"
+          >
             <div
               v-for="tag in station.tags.split(',').splice(0, 20)"
               :key="tag"

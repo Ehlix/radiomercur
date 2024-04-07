@@ -21,8 +21,7 @@
     "radix-vue": "^1.5.3",
     "tailwindcss-animate": "^1.0.7",
     "vue": "^3.4.21",
-    "vue-i18n": "9.10.2",
-    "vue-router": "^4.3.0"
+    "vue-i18n": "9.10.2"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.8.0",

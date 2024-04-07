@@ -58,7 +58,10 @@ const uiSwitchHandler = (event: WheelEvent) => {
 </script>
 
 <template>
-  <div ref="SwipeEl" :class="cn('relative h-full w-full', props.class)">
+  <div
+    ref="SwipeEl"
+    :class="cn('relative h-full w-full', props.class)"
+  >
     <div class="absolute flex h-full w-full flex-col gap-2">
       <!-- Shell -->
       <div

@@ -76,6 +76,8 @@ export default {
       },
     },
     screens: {
+      '2xl': { max: "1555px" },
+      // => @media (max-width: 1555px) { ... }
       xl: { max: "1279px" },
       // => @media (max-width: 1279px) { ... }
 

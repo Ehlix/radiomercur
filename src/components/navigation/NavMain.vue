@@ -2,8 +2,8 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import PlayerMain from "@/components/player/PlayerMain.vue";
 import ShadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
-import logoMain from "@/components/logo/logoMain.vue";
 import SettingsMain from "@/components/settings/SettingsMain.vue";
+import AboutMain from "@/components/about/AboutMain.vue";
 
 const nav = ref<Element | null>(null);
 const scrollVisible = ref(false);
@@ -28,14 +28,19 @@ onUnmounted(() => {
 
 <template>
   <header class="z-50 flex h-fit w-full items-center justify-center">
-    <nav ref="nav" class="flex h-full w-full gap-2">
+    <nav
+      ref="nav"
+      class="flex h-full w-full gap-2"
+    >
       <!-- Logo -->
       <div
         class="relative flex h-full w-[10%] min-w-[10%] items-center justify-center overflow-hidden rounded bg-mc-2"
       >
         <shadow-overlay />
-        <h1 class="hidden">Radio Mercur</h1>
-        <logo-main class="size-20" />
+        <h1 class="hidden">
+          Radio Mercur
+        </h1>
+        <about-main />
       </div>
       <!-- Player -->
       <div class="relative h-fit w-full overflow-hidden rounded bg-mc-1">

@@ -7,12 +7,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { computed, ref, watchEffect } from "vue";
+import { computed, ref, watchEffect, type HTMLAttributes } from "vue";
 import { messages } from "@/lib/locale/locale";
 
 const props = defineProps<{
   countryCode?: CountryCodes | "all";
   userLocale: "en" | "ru";
+  class?: HTMLAttributes["class"];
 }>();
 const selected = ref<CountryCodes | "all">(props.countryCode || "all");
 const countries = computed(() =>
@@ -31,9 +32,18 @@ watchEffect(() => {
 </script>
 
 <template>
-  <select-main v-model="selected" name="countries">
-    <select-trigger class="text-tc-4">
-      <select-value placeholder="All countries" class="font-medium" />
+  <select-main
+    v-model="selected"
+    name="countries"
+  >
+    <select-trigger
+      class="text-tc-4"
+      :class="props.class"
+    >
+      <select-value
+        placeholder="All countries"
+        class="font-medium"
+      />
     </select-trigger>
     <select-content>
       <select-group class="text-tc-4">

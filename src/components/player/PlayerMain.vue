@@ -127,7 +127,10 @@ watch([volume], () => {
 </script>
 
 <template>
-  <collapsible-main v-model:open="infoIsOpen" class="relative h-fit p-2">
+  <collapsible-main
+    v-model:open="infoIsOpen"
+    class="relative h-fit p-2"
+  >
     <!-- Visualization -->
     <player-visual
       v-if="player && selectedStation"
@@ -214,13 +217,43 @@ watch([volume], () => {
       </div>
       <div class="flex h-8 items-center gap-2 text-red-500">
         <!-- Error status -->
-        <p v-if="loadingError" class="sm:hidden">! Connection Error !</p>
+        <p
+          v-if="loadingError"
+          class="sm:hidden"
+        >
+          ! Connection Error !
+        </p>
         <!-- Volume -->
-        <div class="relative ml-auto w-fit xs:hidden" @wheel="wheelHandler">
-          <button class="absolute left-0 top-0 z-10" @click="muteToggle()">
-            <x-icon :stroke-width="1.8" :size="22" :icon="showIcon" />
-          </button>
-          <x-slider v-model="volume" :max="MAX_VOLUME" :step="1" />
+        <div
+          class="relative ml-auto w-fit xs:hidden"
+          @wheel="wheelHandler"
+        >
+          <x-tooltip
+            trigger-class="absolute left-0 top-0 z-10"
+            content-side="left"
+          >
+            <template #trigger>
+              <dialog-trigger as-child>
+                <button @click="muteToggle()">
+                  <x-icon
+                    :stroke-width="1.8"
+                    :size="22"
+                    :icon="showIcon"
+                  />
+                </button>
+              </dialog-trigger>
+            </template>
+            <template #content>
+              <span>{{
+                `${$t("buttons.mute")} / ${$t("buttons.volume")}`
+              }}</span>
+            </template>
+          </x-tooltip>
+          <x-slider
+            v-model="volume"
+            :max="MAX_VOLUME"
+            :step="1"
+          />
         </div>
       </div>
     </div>
@@ -237,7 +270,11 @@ watch([volume], () => {
                 class="flex items-start gap-1 *:text-tc-2"
               >
                 <p>{{ selectedStation?.clickcount }}</p>
-                <x-icon :icon="Star" :size="18" :stroke-width="1.6" />
+                <x-icon
+                  :icon="Star"
+                  :size="18"
+                  :stroke-width="1.6"
+                />
               </div>
             </template>
             <template #content>
@@ -252,7 +289,11 @@ watch([volume], () => {
                 class="flex items-start gap-1 *:text-teal-500"
               >
                 <p>{{ selectedStation?.votes }}</p>
-                <x-icon :icon="ThumbsUp" :size="18" :stroke-width="1.6" />
+                <x-icon
+                  :icon="ThumbsUp"
+                  :size="18"
+                  :stroke-width="1.6"
+                />
               </div>
             </template>
             <template #content>
@@ -323,7 +364,10 @@ watch([volume], () => {
           </template>
         </x-tooltip>
         <!-- Tags -->
-        <div v-if="selectedStation?.tags" class="mt-2 flex flex-wrap gap-1">
+        <div
+          v-if="selectedStation?.tags"
+          class="mt-2 flex flex-wrap gap-1"
+        >
           <div
             v-for="tag in selectedStation.tags.split(',').splice(0, 10)"
             :key="tag"

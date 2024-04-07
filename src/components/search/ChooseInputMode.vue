@@ -24,9 +24,18 @@ watchEffect(() => {
 </script>
 
 <template>
-  <select-main v-model="selected" name="mode">
-    <select-trigger class="text-tc-4" :class="props.class">
-      <select-value placeholder="Search by" class="font-medium" />
+  <select-main
+    v-model="selected"
+    name="mode"
+  >
+    <select-trigger
+      class="text-tc-4"
+      :class="props.class"
+    >
+      <select-value
+        placeholder="Search by"
+        class="font-medium"
+      />
     </select-trigger>
     <select-content>
       <select-group class="text-tc-4">

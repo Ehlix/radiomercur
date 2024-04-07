@@ -16,9 +16,17 @@ export const useUserStore = defineStore("userStations", () => {
   const playerVisualMode = ref<"1" | "2">("1");
 
   const lsData = getLSData();
-  favoriteStations.value = lsData?.favoritesStations || {
-    default: { name: "default", stations: [] },
-  };
+
+  const favoriteStationFromLS = lsData?.favoritesStations;
+  favoriteStationFromLS &&
+    (favoriteStations.value = {
+      ...favoriteStationFromLS,
+      default: {
+        name: "default",
+        stations: favoriteStationFromLS?.default?.stations || [],
+      },
+    });
+
   const localeFromLS = lsData?.userSettings?.language;
   const localeFromNav =
     window.navigator.language === "ru-RU" || window.navigator.language === "ru"
@@ -190,6 +198,7 @@ export const useUserStore = defineStore("userStations", () => {
     },
     {
       deep: true,
+      immediate: true,
     },
   );
 

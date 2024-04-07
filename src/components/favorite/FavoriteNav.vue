@@ -63,7 +63,10 @@ watchEffect(() => {
   <div class="flex w-full justify-between px-2">
     <div class="flex w-full items-center gap-2">
       <div class="w-72">
-        <select-main v-model="selectedFolder" name="folders">
+        <select-main
+          v-model="selectedFolder"
+          name="folders"
+        >
           <select-trigger class="text-tc-4">
             <div class="flex items-center justify-center gap-2">
               <x-icon
@@ -72,13 +75,20 @@ watchEffect(() => {
                 :size="24"
                 :stroke-width="1.5"
               />
-              <select-value placeholder="Folders" class="font-medium" />
+              <select-value
+                placeholder="Folders"
+                class="font-medium"
+              />
             </div>
           </select-trigger>
           <select-content>
             <select-group class="text-tc-4">
               <!-- <SelectLabel>Countries</SelectLabel> -->
-              <div v-for="key in keys" :key="key" class="flex gap-2">
+              <div
+                v-for="key in keys"
+                :key="key"
+                class="flex gap-2"
+              >
                 <select-item :value="key">
                   {{
                     `(${favoriteStations[key].stations.length}) ${favoriteStations[key].name}`

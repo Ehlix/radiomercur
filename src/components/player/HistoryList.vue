@@ -35,7 +35,11 @@ const playHandler = (station: Station) => {
       <template #trigger>
         <dialog-trigger as-child>
           <button>
-            <x-icon :icon="History" :size="20" :stroke-width="2" />
+            <x-icon
+              :icon="History"
+              :size="20"
+              :stroke-width="2"
+            />
           </button>
         </dialog-trigger>
       </template>
@@ -83,7 +87,11 @@ const playHandler = (station: Station) => {
                 />
               </div>
 
-              <x-image :src="station.favicon" :alt="station.name" class="z-0" />
+              <x-image
+                :src="station.favicon"
+                :alt="station.name"
+                class="z-0"
+              />
             </button>
             <x-tooltip>
               <template #trigger>

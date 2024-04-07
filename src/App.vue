@@ -4,11 +4,15 @@ import DoublePanel from "@/components/doublePanel/DoublePanel.vue";
 import FavoriteMain from "@/components/favorite/FavoriteMain.vue";
 import SearchMain from "@/components/search/SearchMain.vue";
 import { useUserStore } from "./stores/userStore";
+import { onMounted, ref } from "vue";
 
 const userStore = useUserStore();
-const panel = userStore.favoriteStations["default"].stations.length
-  ? "left"
-  : "right";
+const panel = ref<"left" | "right">("right");
+onMounted(() => {
+  panel.value = userStore.favoriteStations["default"].stations.length
+    ? "left"
+    : "right";
+});
 </script>
 
 <template>

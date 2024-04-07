@@ -121,9 +121,9 @@ watch([debSearch, currentTab], () => {
           </div>
         </collapsible-content>
       </collapsible> -->
-    <div class="flex w-full items-center gap-2">
+    <div class="flex w-full items-center gap-2 sm:flex-col">
       <choose-input-mode
-        class="w-fit min-w-24"
+        class="w-fit min-w-24 sm:order-2 sm:w-full"
         @current-select="updateCurrentTab($event)"
       />
       <div class="relative w-full">
@@ -148,7 +148,7 @@ watch([debSearch, currentTab], () => {
           :icon="X"
           :size="32"
           :stroke-width="1.5"
-          class="absolute inset-y-0 end-1.5 flex cursor-pointer items-center justify-center px-1 text-tc-4 transition-all hover:opacity-60"
+          class="absolute inset-y-0 end-1 flex cursor-pointer items-center justify-center px-1 text-tc-4 transition-all hover:opacity-60"
           @click="() => (searchInput = '')"
         />
       </div>
@@ -176,7 +176,11 @@ watch([debSearch, currentTab], () => {
                 class="size-8 min-w-5 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
                 @click="changeOrder('clickcount')"
               >
-                <x-icon :icon="Star" :size="21" :stroke-width="2" />
+                <x-icon
+                  :icon="Star"
+                  :size="21"
+                  :stroke-width="2"
+                />
               </x-button>
             </template>
             <template #content>
@@ -191,7 +195,11 @@ watch([debSearch, currentTab], () => {
                 class="size-8 min-w-8 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
                 @click="changeOrder('votes')"
               >
-                <x-icon :icon="ThumbsUp" :size="21" :stroke-width="2" />
+                <x-icon
+                  :icon="ThumbsUp"
+                  :size="21"
+                  :stroke-width="2"
+                />
               </x-button>
             </template>
             <template #content>
@@ -246,6 +254,7 @@ watch([debSearch, currentTab], () => {
       <choose-country
         :user-locale="userStore.locale"
         :country-code="filters.countryCode || undefined"
+        class="sm:order-first"
         @change-country-code="(e) => changeCountryCode(e)"
       />
     </div>

@@ -16,9 +16,8 @@ import { useUserStore } from "@/stores/userStore";
 import { storeToRefs } from "pinia";
 
 const themeClasses: ThemeClasses = {
-  defaultLight: "default-light",
+  default: "default",
   defaultDark: "default-dark",
-  apollo: "apollo",
   greyScale: "grey-scale",
   pastelLight: "pastel-light",
   vavilon: "vavilon",
@@ -27,16 +26,12 @@ const themeClasses: ThemeClasses = {
 
 const themeList: ThemeObj[] = [
   {
-    name: "default light",
-    value: "defaultLight",
+    name: "default",
+    value: "default",
   },
   {
     name: "default dark",
     value: "defaultDark",
-  },
-  {
-    name: "apollo",
-    value: "apollo",
   },
   {
     name: "pastel light",

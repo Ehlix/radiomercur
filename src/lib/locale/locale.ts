@@ -1,6 +1,11 @@
 const EN = {
   leftPanelName: "Favorite stations",
   rightPanelName: "Search stations",
+  about: {
+    title: "Radio Mercur",
+    description: "Radio Mercur",
+    source: "Source code",
+  },
   serverNoConnection: {
     title: "Main server offline",
     description: "Try again later",
@@ -16,13 +21,14 @@ const EN = {
     changePage: "Change the page",
   },
   searchBar: {
-    placeholder: "Search by name | Search by genre",
-    name: "Name",
-    genre: "Genre | Genres",
-    history: "History",
-    defaultCountry: "All countries",
-    descendingOrder: "Descending order",
     ascendingOrder: "Ascending order",
+    descendingOrder: "Descending order",
+    defaultCountry: "All countries",
+    history: "History",
+    genre: "Genre | Genres",
+    name: "Name",
+    noResults: "No results",
+    placeholder: "Search by name | Search by genre",
   },
   settingsBar: {
     title: "Settings",
@@ -96,6 +102,8 @@ const EN = {
     clearAll: "Clear all",
     delete: "Delete",
     first: "First",
+    mute: "Mute",
+    volume: "Volume",
     next: "Next",
     prev: "Previous",
     reload: "Reload",
@@ -103,6 +111,7 @@ const EN = {
     removeFavorite: "Remove from favorites",
     save: "Save",
     search: "Search",
+    total: "Total: {count}",
   },
   countries: {
     AF: "Afghanistan",
@@ -352,6 +361,11 @@ const EN = {
 const RU = {
   leftPanelName: "Избранные станции",
   rightPanelName: "Найти станцию",
+  about: {
+    title: "Radio Mercur",
+    description: "Radio Mercur",
+    source: "Исходный код",
+  },
   serverNoConnection: {
     title: "Сервер не отвечает",
     description: "Попробуйте перезагрузить страницу",
@@ -367,13 +381,14 @@ const RU = {
     changePage: "Перейти на страницу",
   },
   searchBar: {
-    placeholder: "Поиск по названию | Поиск по жанру",
-    name: "Название | Названию",
-    genre: "Жанр | Жанры",
-    history: "История",
+    ascendingOrder: "По возрастанию",
     defaultCountry: "Все страны",
     descendingOrder: "По убыванию",
-    ascendingOrder: "По возрастанию",
+    history: "История",
+    genre: "Жанр | Жанры",
+    name: "Название | Названию",
+    noResults: "Ничего не найдено",
+    placeholder: "Поиск по названию | Поиск по жанру",
   },
   settingsBar: {
     title: "Настройки",
@@ -445,6 +460,8 @@ const RU = {
     clearAll: "Очистить все",
     delete: "Удалить",
     first: "В начало",
+    mute: "Отключить звук",
+    volume: "Включить звук",
     next: "Далее",
     prev: "Назад",
     reset: "Сбросить",
@@ -452,6 +469,7 @@ const RU = {
     removeFavorite: "Удалить из избранного",
     save: "Сохранить",
     search: "Поиск",
+    total: "Всего: {count}",
   },
   countries: {
     AF: "Афганистан",

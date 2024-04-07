@@ -30,6 +30,9 @@ watchEffect(() => {
     :src="newImage || '/logo.svg'"
     :alt="alt || 'image'"
     :class="cn(props.class)"
+  >
+  <logo-main
+    v-else
+    :class="cn(props.class)"
   />
-  <logo-main v-else :class="cn(props.class)" />
 </template>

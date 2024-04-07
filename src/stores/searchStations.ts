@@ -13,6 +13,7 @@ export const useSearchStations = defineStore("searchStations", () => {
   const historyList = ref<Station[]>([]);
   const filters = ref<SearchFilters>({});
   const downloadProgress = ref(0);
+  const loading = ref(false);
   const currentPage = ref(0);
   const canLoadMore = ref(false);
   const OFFSET = 30;
@@ -39,7 +40,7 @@ export const useSearchStations = defineStore("searchStations", () => {
     }
   };
 
-  const searchStations = (filters: SearchFilters) => {
+  const apiRequest = (filters: SearchFilters) => {
     if (!baseUrl.value || !mainServerIsActive.value) {
       return;
     }
@@ -55,20 +56,20 @@ export const useSearchStations = defineStore("searchStations", () => {
       hidebroken: true,
       offset: OFFSET * currentPage.value,
     };
+    loading.value = true;
     getAllStations(baseUrl.value, dataParams, setDownloadProgress).then(
       async (res) => {
         if (!res) {
           await setBaseUrl();
-          return searchStations(filters);
+          return apiRequest(filters);
         }
         if (res.length < OFFSET) {
           canLoadMore.value = false;
         } else {
           canLoadMore.value = true;
         }
-
         stationsList.value = res;
-        // console.log(res);
+        loading.value = false;
       },
     );
   };
@@ -87,7 +88,7 @@ export const useSearchStations = defineStore("searchStations", () => {
     currentPage.value = 0;
     canLoadMore.value = true;
     filters.value = newFilters;
-    searchStations(newFilters);
+    apiRequest(newFilters);
   };
 
   const getMoreStations = (mode: "up" | "down" | "first") => {
@@ -110,7 +111,7 @@ export const useSearchStations = defineStore("searchStations", () => {
     if (mode === "first") {
       currentPage.value = 0;
     }
-    searchStations(filters.value);
+    apiRequest(filters.value);
   };
 
   watch(downloadProgress, () => {
@@ -163,6 +164,7 @@ export const useSearchStations = defineStore("searchStations", () => {
     downloadProgress,
     getStations,
     getMoreStations,
+    loading,
     historyList,
     mainServerIsActive,
     searchStoreReset,

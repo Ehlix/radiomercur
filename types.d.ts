@@ -90,6 +90,7 @@ type SearchFilters = {
 };
 
 type Theme =
+  | "default"
   | "defaultLight"
   | "defaultDark"
   | "darkContrast"

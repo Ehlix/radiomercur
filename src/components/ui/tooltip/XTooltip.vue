@@ -23,7 +23,10 @@ const props = defineProps<{
 <template>
   <TooltipProvider>
     <TooltipMain>
-      <TooltipTrigger :class="props.triggerClass" class="cursor-default">
+      <TooltipTrigger
+        :class="props.triggerClass"
+        class="cursor-default"
+      >
         <slot name="trigger" />
       </TooltipTrigger>
       <TooltipContent

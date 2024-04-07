@@ -31,6 +31,7 @@ const stationsList = computed(() => {
 
 const selectFolder = (folderID: string) => {
   currentFolderID.value = folderID;
+  currentPage.value = 1;
 };
 
 const selectStationHandler = (station: Station) => {
@@ -179,6 +180,7 @@ const updateStation = ({
       <change-page
         :disabled="totalStationCount <= STATIONS_PER_PAGE"
         :current-page="currentPage"
+        :total-pages="totalPageCount"
         @change-page="changePageHandler($event)"
       />
       <x-button

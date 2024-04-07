@@ -16,8 +16,9 @@ import DialogClose from "../ui/dialog/DialogClose.vue";
 import { ref, watchEffect } from "vue";
 
 const props = defineProps<{
-  currentPage: number;
   disabled?: boolean;
+  currentPage: number;
+  totalPages: number;
 }>();
 
 const emits = defineEmits<{
@@ -56,7 +57,9 @@ watchEffect(() => {
       >
         <dialog-header class="border-b border-mc-2 px-2 pt-2">
           <dialog-title class="text-2xl text-mc-2">
-            {{ $t("favoriteBar.changePage") }}
+            {{
+              `${$t("favoriteBar.changePage")} (${$t("buttons.total", { count: totalPages }).toLowerCase()})`
+            }}
           </dialog-title>
           <dialog-description>
             <div class="flex gap-2 py-2">
@@ -75,13 +78,6 @@ watchEffect(() => {
                   :stroke-width="1.5"
                   class="absolute inset-y-[0.15rem] start-[0.29rem] flex items-center justify-center px-1 text-tc-4"
                 />
-                <!-- <x-icon
-                  @click="() => (inputValue = '')"
-                  :icon="X"
-                  :size="32"
-                  :stroke-width="1.5"
-                  class="absolute inset-y-0 end-1 flex cursor-pointer items-center justify-center px-1 text-tc-4 transition-all hover:opacity-60"
-                /> -->
               </div>
             </div>
           </dialog-description>

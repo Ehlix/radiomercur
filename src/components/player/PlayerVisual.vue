@@ -100,7 +100,7 @@ const first = () => {
   ctx.beginPath();
   ctx.lineWidth = 2;
   for (let i = 0; i < maxX; i += stepX) {
-    ctx.lineTo(i, maxY * 2 - bottomYCache2[i] + maxY);
+    ctx.lineTo(i, maxY * 2 - bottomYCache2[i]);
   }
   ctx.stroke();
 

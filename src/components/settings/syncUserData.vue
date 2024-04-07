@@ -174,7 +174,10 @@ onUnmounted(() => {
               <h3 class="text-base text-mc-2">
                 {{ $tc("syncUserData.uploadDescription") }}
               </h3>
-              <p v-if="errorMessage" class="absolute bottom-2 text-red-500">
+              <p
+                v-if="errorMessage"
+                class="absolute bottom-2 text-red-500"
+              >
                 {{ $t("syncUserData.errorMessage") }}
               </p>
             </x-button>

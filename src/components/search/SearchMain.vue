@@ -7,6 +7,8 @@ import { ref, watch } from "vue";
 import XProgress from "@/components/ui/progress/XProgress.vue";
 import XButton from "../ui/button/XButton.vue";
 import { getLSData } from "@/api/localStorage";
+import XIcon from "../ui/icon/XIcon.vue";
+import { Disc3, Frown } from "lucide-vue-next";
 
 const searchStore = useSearchStations();
 const userStore = useUserStore();
@@ -73,7 +75,19 @@ watch([() => searchStore.stationsList], () => {
     </div>
     <!-- Stations -->
     <div class="grow">
+      <div
+        v-if="searchStore.loading"
+        class="z-40 flex h-full w-full animate-fade-in items-center justify-center rounded"
+      >
+        <x-icon
+          :icon="Disc3"
+          :size="72"
+          :stroke-width="1.2"
+          class="animate-spin text-bgc-1"
+        />
+      </div>
       <station-list
+        v-else
         :show-extended-info="true"
         :stations-list="searchStore.stationsList"
         :favorite-stations="userStore.favoriteStations"
@@ -82,16 +96,32 @@ watch([() => searchStore.stationsList], () => {
         @add-station-to-favorites="userStore.addToFavorite($event)"
         @remove-station-from-favorites="userStore.removeFromFavorite($event)"
       />
+      <div
+        v-if="!searchStore.loading && !searchStore.stationsList.length"
+        class="w-full px-2 py-4 text-center text-xl text-tc-1"
+      >
+        <x-icon
+          :icon="Frown"
+          :size="28"
+          :stroke-width="1.2"
+          class="mr-1 inline"
+        />
+        {{ $t("searchBar.noResults") }}
+      </div>
     </div>
     <!-- Pagination -->
     <div
-      v-if="searchStore.stationsList.length"
+      v-if="true"
       class="flex h-fit w-full justify-between gap-2 px-2 pb-2 *:h-8 *:w-full"
     >
-      <x-button :disabled="!searchStore.currentPage" @click="prevPage">
+      <x-button
+        :disabled="!searchStore.currentPage || searchStore.loading"
+        @click="prevPage"
+      >
         {{ $t("buttons.prev") }}
       </x-button>
       <x-button
+        :disabled="searchStore.loading"
         :class="{
           hidden: searchStore.currentPage < 2,
         }"
@@ -99,7 +129,10 @@ watch([() => searchStore.stationsList], () => {
       >
         {{ $t("buttons.first") }}
       </x-button>
-      <x-button :disabled="!searchStore.canLoadMore" @click="nextPage">
+      <x-button
+        :disabled="!searchStore.canLoadMore || searchStore.loading"
+        @click="nextPage"
+      >
         {{ $t("buttons.next") }}
       </x-button>
     </div>
