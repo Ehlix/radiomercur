@@ -60,3 +60,7 @@ export const setLSData = (LSNewData: LocalStorageData) => {
     setLocalStorage("localStorageData", LSNewData);
   }
 };
+
+export const clearLSData = () => {
+  localStorage.removeItem("localStorageData");
+}

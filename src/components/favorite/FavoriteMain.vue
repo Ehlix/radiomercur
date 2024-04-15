@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSearchStations } from "@/stores/searchStations";
+import { useSearchStore } from "@/stores/searchStore";
 import { useUserStore } from "@/stores/userStore";
 import FavoriteNav from "./FavoriteNav.vue";
 import StationList from "../stationList/StationList.vue";
@@ -9,10 +9,10 @@ import XIcon from "../ui/icon/XIcon.vue";
 import ChangePage from "./ChangePage.vue";
 import { ChevronsRight } from "lucide-vue-next";
 
-const searchStore = useSearchStations();
+const searchStore = useSearchStore();
 const userStore = useUserStore();
 
-const STATIONS_PER_PAGE = 30;
+const STATIONS_PER_PAGE = 60;
 const el = ref<HTMLElement | null>(null);
 const currentFolderID = ref<string>("default");
 const currentPage = ref<number>(1);
@@ -23,10 +23,12 @@ const totalPageCount = computed(() => {
   return Math.ceil(totalStationCount.value / STATIONS_PER_PAGE);
 });
 const stationsList = computed(() => {
-  return userStore.favoriteStations[currentFolderID.value].stations.slice(
-    (currentPage.value - 1) * STATIONS_PER_PAGE,
-    currentPage.value * STATIONS_PER_PAGE,
-  );
+  return [
+    ...userStore.favoriteStations[currentFolderID.value].stations.slice(
+      (currentPage.value - 1) * STATIONS_PER_PAGE,
+      currentPage.value * STATIONS_PER_PAGE,
+    ),
+  ];
 });
 
 const selectFolder = (folderID: string) => {
@@ -138,6 +140,7 @@ const updateStation = ({
     </div>
     <div class="grow">
       <station-list
+        v-if="stationsList"
         :show-update-button="true"
         :current-folder-id="currentFolderID"
         :show-extended-info="true"

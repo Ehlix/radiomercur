@@ -65,7 +65,7 @@ const uiSwitchHandler = (event: WheelEvent) => {
     <div class="absolute flex h-full w-full flex-col gap-2">
       <!-- Shell -->
       <div
-        class="flex h-full w-full gap-2 overflow-hidden transition-all *:transition-all"
+        class="flex h-full w-full gap-2 overflow-hidden "
       >
         <!-- Left panel -->
         <div class="grow overflow-hidden rounded">
@@ -95,7 +95,7 @@ const uiSwitchHandler = (event: WheelEvent) => {
         <!-- Right panel -->
         <div
           :class="
-            cn('w-[calc(90%-0.5rem)] shrink-0 overflow-hidden ', {
+            cn('w-[calc(90%-0.5rem)] shrink-0 overflow-hidden transition-all', {
               'w-[10%]': !currentRightPanel,
             })
           "

@@ -10,8 +10,9 @@ import {
 import XButton from "@/components/ui/button/XButton.vue";
 import { FolderSync, FileDown, FileUp } from "lucide-vue-next";
 import XIcon from "@/components/ui/icon/XIcon.vue";
+import DeleteAlert from "../favorite/DeleteAlert.vue";
 import { onUnmounted, ref } from "vue";
-import { getLSData, setLSData } from "@/api/localStorage";
+import { getLSData, setLSData, clearLSData } from "@/api/localStorage";
 import { useDropZone } from "@vueuse/core";
 import { cn } from "@/lib/utils/twMerge";
 
@@ -104,6 +105,15 @@ const { isOverDropZone } = useDropZone(dropZoneRef, {
   dataTypes: ["text/plain", "text/csv"],
 });
 
+const clearData = (event: boolean) => {
+  if (!event) {
+    return;
+  }
+  clearLSData();
+  window.location.reload();
+};
+
+
 onUnmounted(() => {
   errorMessage.value = false;
 });
@@ -134,11 +144,11 @@ onUnmounted(() => {
           </dialog-title>
           <dialog-description />
         </dialog-header>
-        <div class="grid gap-2 overflow-y-auto p-8 xs:p-4">
-          <div class="grid grid-cols-2 gap-8 *:aspect-square *:gap-2 md:gap-4">
+        <div class="grid gap-8 overflow-y-auto p-8 xs:p-4">
+          <div class="grid grid-cols-2 gap-8 md:gap-4">
             <x-button
               variant="ghost"
-              class="flex h-full w-full flex-col items-center justify-start whitespace-normal rounded border border-mc-2 p-4 pt-10 sm:py-10 xs:py-16"
+              class="flex h-full w-full flex-col items-center justify-start whitespace-normal rounded border border-mc-2 p-4 py-10 xs:py-16"
               @click="downloadData"
             >
               <x-icon
@@ -151,7 +161,6 @@ onUnmounted(() => {
                 {{ $tc("syncUserData.downloadDescription") }}
               </h3>
             </x-button>
-
             <x-button
               ref="dropZoneRef"
               variant="ghost"
@@ -182,6 +191,19 @@ onUnmounted(() => {
               </p>
             </x-button>
           </div>
+          <delete-alert
+            :title="$t('syncUserData.clearDataConfirm')"
+            @delete="clearData($event)"
+          >
+            <template #default>
+              <x-button
+                variant="destructive"
+                class="w-full min-w-full"
+              >
+                {{ $t('syncUserData.clearData') }}
+              </x-button>
+            </template>
+          </delete-alert>
         </div>
         <!-- <DialogFooter class="p-6 pt-0"></DialogFooter> -->
       </div>

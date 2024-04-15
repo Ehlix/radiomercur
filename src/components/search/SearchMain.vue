@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSearchStations } from "@/stores/searchStations";
+import { useSearchStore } from "@/stores/searchStore";
 import { useUserStore } from "@/stores/userStore";
 import SearchBar from "./SearchBar.vue";
 import StationList from "../stationList/StationList.vue";
@@ -10,7 +10,7 @@ import { getLSData } from "@/api/localStorage";
 import XIcon from "../ui/icon/XIcon.vue";
 import { Disc3, Frown } from "lucide-vue-next";
 
-const searchStore = useSearchStations();
+const searchStore = useSearchStore();
 const userStore = useUserStore();
 const currentTab = ref<string>("name");
 
@@ -98,13 +98,13 @@ watch([() => searchStore.stationsList], () => {
       />
       <div
         v-if="!searchStore.loading && !searchStore.stationsList.length"
-        class="w-full px-2 py-4 text-center text-xl text-tc-1"
+        class="flex w-full animate-fade-in items-center justify-center px-2 py-4 text-center text-2xl font-normal text-bgc-1"
       >
         <x-icon
           :icon="Frown"
           :size="28"
-          :stroke-width="1.2"
-          class="mr-1 inline"
+          :stroke-width="2"
+          class="mr-1 inline text-bgc-1"
         />
         {{ $t("searchBar.noResults") }}
       </div>

@@ -19,6 +19,7 @@ const EN = {
     renameFolderPlaceholder: "Enter new folder name",
     enterPage: "Enter the page",
     changePage: "Change the page",
+    defaultFolder: "My stations",
   },
   searchBar: {
     ascendingOrder: "Ascending order",
@@ -52,6 +53,8 @@ const EN = {
     downloadDescription:
       "Download .txt file with your settings and favorite stations",
     errorMessage: "File reading error",
+    clearData: "Clear data",
+    clearDataConfirm: "Are you sure you want to clear all data?",
   },
   stationCard: {
     homepage: "Home page",
@@ -60,6 +63,7 @@ const EN = {
     clickCount: "Clicks today",
     votes: "Total votes",
     updateData: "Update station data",
+    extendedInfo: "Extended information",
   },
   genres: {
     All: "All genres",
@@ -379,6 +383,7 @@ const RU = {
     renameFolderPlaceholder: "Введите новое название папки",
     enterPage: "Введите номер страницы",
     changePage: "Перейти на страницу",
+    defaultFolder: "Мои станции",
   },
   searchBar: {
     ascendingOrder: "По возрастанию",
@@ -410,6 +415,8 @@ const RU = {
     uploadDescription: "Загрузить .txt файл настроек, нажмите или перетащите",
     downloadDescription: "Скачать .txt файл с настройками и станциями",
     errorMessage: "Ошибка чтения файла.",
+    clearData: "Очистить данные",
+    clearDataConfirm: "Вы уверены, что хотите очистить данные?",
   },
   stationCard: {
     homepage: "Страница станции",
@@ -418,6 +425,7 @@ const RU = {
     clickCount: "Клики за день",
     votes: "Голоса всего",
     updateData: "Обновить данные по станции",
+    extendedInfo: "Полная информация",
   },
   genres: {
     "All genres": "Все жанры",

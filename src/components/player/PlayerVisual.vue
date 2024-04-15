@@ -83,26 +83,26 @@ const first = () => {
   }
   ctx.stroke();
 
-  ctx.beginPath();
-  ctx.lineWidth = 2;
-  for (let i = 0; i < maxX; i += stepX) {
-    ctx.lineTo(i, maxY * 2 - topYCache[i]);
-  }
-  ctx.stroke();
+  // ctx.beginPath();
+  // ctx.lineWidth = 2;
+  // for (let i = 0; i < maxX; i += stepX) {
+  //   ctx.lineTo(i, maxY * 2 - topYCache[i]);
+  // }
+  // ctx.stroke();
 
-  ctx.beginPath();
-  ctx.lineWidth = 4;
-  for (let i = 0; i < maxX; i += stepX) {
-    ctx.lineTo(i, maxY + frequencyData[i]);
-  }
-  ctx.stroke();
+  // ctx.beginPath();
+  // ctx.lineWidth = 4;
+  // for (let i = 0; i < maxX; i += stepX) {
+  //   ctx.lineTo(i, maxY + frequencyData[i]);
+  // }
+  // ctx.stroke();
 
-  ctx.beginPath();
-  ctx.lineWidth = 2;
-  for (let i = 0; i < maxX; i += stepX) {
-    ctx.lineTo(i, maxY * 2 - bottomYCache2[i]);
-  }
-  ctx.stroke();
+  // ctx.beginPath();
+  // ctx.lineWidth = 2;
+  // for (let i = 0; i < maxX; i += stepX) {
+  //   ctx.lineTo(i, maxY * 2 - bottomYCache2[i]);
+  // }
+  // ctx.stroke();
 
   animationDisableId.value = requestAnimationFrame(first);
 };
@@ -139,8 +139,8 @@ const second = () => {
     ctx.fillStyle = color1;
     ctx.fillRect(i, topYCache[i], stepX, 4);
     ctx.fillRect(i, maxY - frequencyData[i], stepX, frequencyData[i]);
-    ctx.fillRect(i, maxY + frequencyData[i], stepX, frequencyData[i] * -1);
-    ctx.fillRect(i, maxY * 2 - topYCache[i] + 4, stepX, -4);
+    // ctx.fillRect(i, maxY + frequencyData[i], stepX, frequencyData[i] * -1);
+    // ctx.fillRect(i, maxY * 2 - topYCache[i] + 4, stepX, -4);
   }
   animationDisableId.value = requestAnimationFrame(second);
 };

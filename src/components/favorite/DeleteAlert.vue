@@ -8,12 +8,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import XIcon from "@/components/ui/icon/XIcon.vue";
-import { Delete } from "lucide-vue-next";
 import DialogClose from "../ui/dialog/DialogClose.vue";
+import type { HTMLAttributes } from "vue";
 
 const props = defineProps<{
-  folderName: string;
+  title: string;
+  class?: HTMLAttributes["class"];
 }>();
 
 const emits = defineEmits<{
@@ -23,13 +23,8 @@ const emits = defineEmits<{
 
 <template>
   <dialog-main>
-    <dialog-trigger class="group flex w-10 items-center justify-center rounded">
-      <x-icon
-        :icon="Delete"
-        class="text-tc-4 transition-all group-hover:text-red-500"
-        :size="18"
-        :stroke-width="2"
-      />
+    <dialog-trigger :class="props.class">
+      <slot />
     </dialog-trigger>
     <dialog-content class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
       <div
@@ -37,7 +32,7 @@ const emits = defineEmits<{
       >
         <dialog-header class="border-b border-mc-2 px-8 pt-2 xs:px-4">
           <dialog-title class="text-2xl text-mc-2">
-            {{ $t("favoriteBar.deleteFolder", [`"${props.folderName}"`]) }}
+            {{ props.title }}
           </dialog-title>
           <DialogDescription />
         </dialog-header>

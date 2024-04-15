@@ -1,4 +1,4 @@
-import { ref, watch } from "vue";
+import { ref, shallowRef, watch } from "vue";
 import { defineStore, storeToRefs } from "pinia";
 import { getAllStations } from "@/api/getStations";
 import { useBaseUrl } from "./baseUrl";
@@ -6,17 +6,17 @@ import type { AxiosProgressEvent } from "axios";
 import { watchOnce } from "@vueuse/core";
 import { getLSData, setLSData } from "@/api/localStorage";
 
-export const useSearchStations = defineStore("searchStations", () => {
+export const useSearchStore = defineStore("searchStations", () => {
   const { baseUrl, mainServerIsActive } = storeToRefs(useBaseUrl());
   const { setBaseUrl, baseUrlReload } = useBaseUrl();
-  const stationsList = ref<Station[]>([]);
-  const historyList = ref<Station[]>([]);
+  const stationsList = shallowRef<Station[]>([]);
+  const historyList = shallowRef<Station[]>([]);
   const filters = ref<SearchFilters>({});
   const downloadProgress = ref(0);
   const loading = ref(false);
   const currentPage = ref(0);
   const canLoadMore = ref(false);
-  const OFFSET = 30;
+  const OFFSET = 60;
 
   const lsData = getLSData();
   historyList.value = lsData?.historyStations || [];
@@ -68,7 +68,7 @@ export const useSearchStations = defineStore("searchStations", () => {
         } else {
           canLoadMore.value = true;
         }
-        stationsList.value = res;
+        stationsList.value.length && (stationsList.value = res);
         loading.value = false;
       },
     );
@@ -155,13 +155,13 @@ export const useSearchStations = defineStore("searchStations", () => {
   );
 
   return {
-    filters,
     addToHistory,
     baseUrlReload,
     canLoadMore,
     currentPage,
     clearSearch,
     downloadProgress,
+    filters,
     getStations,
     getMoreStations,
     loading,

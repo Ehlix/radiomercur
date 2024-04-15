@@ -2,39 +2,25 @@
 import { computed, ref, watch, nextTick } from "vue";
 import { storeToRefs } from "pinia";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
-import { messages } from "@/lib/locale/locale";
 import { cn } from "@/lib/utils/twMerge";
-import { getFlagImage } from "@/api/getFlagImage";
 import { useUserStore } from "@/stores/userStore";
 import XImage from "@/components/ui/image/XImage.vue";
 import XSlider from "@/components/ui/slider/XSlider.vue";
+import ExtendedInfo from "@/components/stationList/ExtendedInfo.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import PlayerVisual from "./PlayerVisual.vue";
 import HistoryList from "./HistoryList.vue";
-import {
-  CollapsibleMain,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
-  ChevronDown,
-  Play,
-  Pause,
-  ThumbsUp,
-  Star,
-  Volume1,
-  Volume2,
-  VolumeX,
-} from "lucide-vue-next";
+import AddToFavoriteComponent from "../stationList/AddToFavorite.vue";
+import { Play, Pause, Volume1, Volume2, VolumeX } from "lucide-vue-next";
 
-const { selectedStation, locale, playerVisualMode } =
+const { selectedStation, favoriteStations, locale, playerVisualMode } =
   storeToRefs(useUserStore());
+const { addToFavorite, removeFromFavorite } = useUserStore();
 const player = ref<HTMLAudioElement | null>(null);
 const paused = ref<boolean>(true);
 const loading = ref<boolean>(false);
 const loadingError = ref<boolean>(false);
-const infoIsOpen = ref(false);
 const streamLink = ref<string | undefined>();
 const volume = ref([100]);
 const muteCache = ref([100]);
@@ -127,10 +113,7 @@ watch([volume], () => {
 </script>
 
 <template>
-  <collapsible-main
-    v-model:open="infoIsOpen"
-    class="relative h-fit p-2"
-  >
+  <div class="relative h-fit p-2">
     <!-- Visualization -->
     <player-visual
       v-if="player && selectedStation"
@@ -142,7 +125,7 @@ watch([volume], () => {
     >
       <!-- BG Logo -->
       <div
-        class="pointer-events-none absolute left-4 top-2 z-30 size-28 overflow-hidden rounded-full opacity-20"
+        class="pointer-events-none absolute left-4 top-2 z-10 size-28 overflow-hidden rounded-full opacity-20"
       >
         <x-image
           :src="selectedStation?.favicon"
@@ -150,29 +133,35 @@ watch([volume], () => {
           class="size-28 mix-blend-overlay"
         />
       </div>
-      <!-- History -->
-      <history-list />
-      <!-- Extra Info Trigger -->
-      <div class="absolute -left-[0.42rem] top-[4.1rem] sm:top-[3.2rem]">
-        <collapsible-trigger
-          :disabled="!selectedStation"
-          class="w-5 transition-all disabled:opacity-20"
-        >
-          <x-icon
-            :icon="ChevronDown"
-            :size="23"
-            :stroke-width="2"
-            :class="
-              cn('transition-all', {
-                'rotate-180 ': infoIsOpen,
-              })
-            "
+      <div
+        class="absolute -left-1 z-50 flex h-full flex-col items-center justify-between"
+      >
+        <!-- History -->
+        <history-list />
+        <!-- Add To Favorites -->
+        <add-to-favorite-component
+          v-if="selectedStation"
+          :station="selectedStation"
+          :favorite-stations="favoriteStations"
+          :size="20"
+          @add-station-to-favorites="addToFavorite($event)"
+          @remove-station-from-favorites="removeFromFavorite($event)"
+        />
+        <!-- Extra Info Trigger -->
+        <div class="">
+          <ExtendedInfo
+            v-if="selectedStation"
+            :station="selectedStation"
+            :locale="locale"
+            :size="20"
+            class="text-tc-1"
           />
-        </collapsible-trigger>
+        </div>
       </div>
+
       <!-- Station name -->
       <div
-        class="z-10 flex h-[1.35rem] w-full items-center justify-center gap-2 sm:h-5"
+        class="z-40 flex h-[1.35rem] w-full items-center justify-center gap-2 sm:h-5"
       >
         <div
           v-if="selectedStation"
@@ -233,15 +222,13 @@ watch([volume], () => {
             content-side="left"
           >
             <template #trigger>
-              <dialog-trigger as-child>
-                <button @click="muteToggle()">
-                  <x-icon
-                    :stroke-width="1.8"
-                    :size="22"
-                    :icon="showIcon"
-                  />
-                </button>
-              </dialog-trigger>
+              <button @click="muteToggle()">
+                <x-icon
+                  :stroke-width="1.8"
+                  :size="22"
+                  :icon="showIcon"
+                />
+              </button>
             </template>
             <template #content>
               <span>{{
@@ -258,127 +245,7 @@ watch([volume], () => {
       </div>
     </div>
     <!-- Extra Info -->
-    <collapsible-content>
-      <div class="relative z-20 flex flex-col">
-        <div class="h-10" />
-        <!-- Popularity -->
-        <div class="flex gap-2">
-          <x-tooltip trigger-class="">
-            <template #trigger>
-              <div
-                v-show="selectedStation?.clickcount"
-                class="flex items-start gap-1 *:text-tc-2"
-              >
-                <p>{{ selectedStation?.clickcount }}</p>
-                <x-icon
-                  :icon="Star"
-                  :size="18"
-                  :stroke-width="1.6"
-                />
-              </div>
-            </template>
-            <template #content>
-              {{ $t("stationCard.clickCount") }}
-            </template>
-          </x-tooltip>
-
-          <x-tooltip>
-            <template #trigger>
-              <div
-                v-show="selectedStation?.votes"
-                class="flex items-start gap-1 *:text-teal-500"
-              >
-                <p>{{ selectedStation?.votes }}</p>
-                <x-icon
-                  :icon="ThumbsUp"
-                  :size="18"
-                  :stroke-width="1.6"
-                />
-              </div>
-            </template>
-            <template #content>
-              {{ $t("stationCard.votes") }}
-            </template>
-          </x-tooltip>
-        </div>
-        <!-- Codec -->
-        <div v-if="selectedStation?.codec">
-          {{ selectedStation.codec + " " + (selectedStation.bitrate || "") }}
-        </div>
-        <!-- Geo -->
-        <div>{{ selectedStation?.geo_lat }}</div>
-        <!-- Home Page -->
-        <div>
-          <a
-            v-if="selectedStation?.homepage"
-            :href="selectedStation.homepage"
-            target="_blank"
-            class="text-tc-2 transition-all hover:text-hc-2"
-          >
-            {{ $t("stationCard.homepage") }}
-          </a>
-        </div>
-        <!-- Stream Source -->
-        <div>
-          <a
-            v-if="selectedStation?.url_resolved || selectedStation?.url"
-            :href="selectedStation.url_resolved || selectedStation.url"
-            target="_blank"
-            class="text-tc-2 transition-all hover:text-hc-2"
-          >
-            {{ $t("stationCard.streamSource") }}
-          </a>
-        </div>
-        <!-- Flag ana Country Name -->
-        <x-tooltip trigger-class="w-fit">
-          <template #trigger>
-            <div
-              v-if="selectedStation?.countrycode"
-              class="my-1 flex items-center gap-1 overflow-clip"
-            >
-              <x-image
-                :src="getFlagImage(selectedStation?.countrycode)"
-                class="h-5 w-8"
-              />
-              <p class="truncate text-nowrap">
-                <!-- {{ countriesList[station.countrycode] }} -->
-
-                {{
-                  // @ts-expect-error
-                  messages[locale || "en"]?.countries[
-                    selectedStation?.countrycode
-                  ] || ""
-                }}
-              </p>
-            </div>
-          </template>
-          <template #content>
-            <div>
-              {{
-                messages[locale || "en"]?.countries[
-                  // @ts-expect-error
-                  selectedStation?.countrycode
-                ] || ""
-              }}
-            </div>
-          </template>
-        </x-tooltip>
-        <!-- Tags -->
-        <div
-          v-if="selectedStation?.tags"
-          class="mt-2 flex flex-wrap gap-1"
-        >
-          <div
-            v-for="tag in selectedStation.tags.split(',').splice(0, 10)"
-            :key="tag"
-            class="rounded-sm border border-tc-3 px-1 text-sm capitalize text-tc-3"
-          >
-            {{ tag }}
-          </div>
-        </div>
-      </div>
-    </collapsible-content>
-  </collapsible-main>
+  </div>
   <audio
     ref="player"
     :src="streamLink"

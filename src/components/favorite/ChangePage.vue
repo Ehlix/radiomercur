@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import XButton from "@/components/ui/button/XButton.vue";
 import {
   DialogMain,
   DialogContent,
@@ -40,15 +39,10 @@ watchEffect(() => {
   <dialog-main>
     <dialog-trigger
       :disabled="props.disabled ?? false"
-      class="group flex w-fit items-center justify-center rounded"
+      class="flex h-8 w-5 min-w-8 items-center justify-center gap-1 bg-mc-1 px-2 text-mc-2 hover:bg-mc-1 hover:text-hc-2 disabled:opacity-50 xs:min-w-5"
+      @click="inputValue = props.currentPage"
     >
-      <x-button
-        :disabled="props.disabled ?? false"
-        class="flex h-8 w-5 min-w-8 justify-center gap-1 bg-mc-1 px-2 text-mc-2 hover:bg-mc-1 hover:text-hc-2 xs:min-w-5"
-        @click="inputValue = props.currentPage"
-      >
-        {{ props.currentPage }}
-      </x-button>
+      {{ props.currentPage }}
     </dialog-trigger>
     <dialog-content class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
       <form
@@ -65,7 +59,7 @@ watchEffect(() => {
             <div class="flex gap-2 py-2">
               <div class="relative w-full">
                 <x-input
-                  v-model.trim="inputValue"
+                  v-model.trim.number="inputValue"
                   name="searchInput"
                   type="number"
                   maxlength="25"

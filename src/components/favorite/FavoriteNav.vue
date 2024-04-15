@@ -12,7 +12,7 @@ import XIcon from "@/components/ui/icon/XIcon.vue";
 import DeleteAlert from "./DeleteAlert.vue";
 import AddFolder from "./AddFolder.vue";
 import RenameFolder from "./RenameFolder.vue";
-import { Folder } from "lucide-vue-next";
+import { Folder, Delete } from "lucide-vue-next";
 
 const props = defineProps<{
   currentFolderId: string;
@@ -91,7 +91,7 @@ watchEffect(() => {
               >
                 <select-item :value="key">
                   {{
-                    `(${favoriteStations[key].stations.length}) ${favoriteStations[key].name}`
+                    `(${favoriteStations[key].stations.length}) ${key !== "default" ? favoriteStations[key].name : $t("favoriteBar.defaultFolder")}`
                   }}
                 </select-item>
                 <rename-folder
@@ -101,9 +101,19 @@ watchEffect(() => {
                 />
                 <delete-alert
                   v-if="key !== 'default'"
-                  :folder-name="favoriteStations[key].name"
+                  :title="$t('favoriteBar.deleteFolder', [favoriteStations[key].name])"
+                  class="group flex w-10 items-center justify-center rounded"
                   @delete="deleteFolder($event, key)"
-                />
+                >
+                  <template #default>
+                    <x-icon
+                      :icon="Delete"
+                      class="text-tc-4 transition-all group-hover:text-red-500"
+                      :size="18"
+                      :stroke-width="2"
+                    />
+                  </template>
+                </delete-alert>
               </div>
             </select-group>
           </select-content>

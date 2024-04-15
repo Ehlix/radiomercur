@@ -24,9 +24,6 @@
   --hover-color-3: #d5d8dc;
   --shadow-color-1: #00000050;
   --shadow-color-2: #00000070;
-  --opacity-color-1: #3498db;
-  --scroll-background: #34495e;
-  --scroll-thumb: #44616e;
   &.default-dark {
     --background-color-1: #141314;
     --main-color-1: #29222f;
@@ -41,9 +38,6 @@
     --hover-color-3: #b3b3b3;
     --shadow-color-1: #00000050;
     --shadow-color-2: #00000070;
-    --opacity-color-1: #00aaff;
-    --scroll-background: #29222f;
-    --scroll-thumb: #3e3546;
   }
   &.pastel-light {
     --background-color-1: #e8e8e8;
@@ -59,28 +53,6 @@
     --hover-color-3: #d0d5d8;
     --shadow-color-1: #00000050;
     --shadow-color-2: #00000070;
-    --opacity-color-1: #c69b9f;
-    --scroll-background: #7f7fad;
-    --scroll-thumb: #8493c0;
-  }
-  &.grey-scale {
-    --background-color-1: #2b2b2b;
-    --main-color-1: #6b6b6b;
-    --main-color-2: #a8a8a8;
-    --main-color-3: #585858;
-    --text-color-1: #cfcfcf;
-    --text-color-2: #000000;
-    --text-color-3: #4b4b4b;
-    --text-color-4: #d4d4d4;
-    --hover-color-1: #8b8b8b;
-    --hover-color-2: #b5b5b5;
-    --hover-color-3: #3f3f3f;
-    --shadow-color-1: #00000055;
-    --shadow-color-2: #00000075;
-    --opacity-color-1: #4c4c4c;
-    --scroll-background: #6b6b6b;
-    --scroll-thumb: #8b8b8b;
-    filter: grayscale(0.7);
   }
   &.dark-contrast {
     --background-color-1: #ffffff;
@@ -96,27 +68,6 @@
     --hover-color-3: #656565;
     --shadow-color-1: #00000050;
     --shadow-color-2: #00000070;
-    --opacity-color-1: #00aaff;
-    --scroll-background: #000000;
-    --scroll-thumb: #838383;
-  }
-  &.vavilon {
-    --background-color-1: #ff6b6b;
-    --main-color-1: #ffd166;
-    --main-color-2: #0ac090;
-    --main-color-3: #8aa5ae;
-    --text-color-1: #082f6a;
-    --text-color-2: #03c994;
-    --text-color-3: #2a90b1;
-    --text-color-4: #ffd166;
-    --hover-color-1: #fede91;
-    --hover-color-2: #0cca9e;
-    --hover-color-3: #91b1bc;
-    --shadow-color-1: #00000050;
-    --shadow-color-2: #00000070;
-    --opacity-color-1: #118ab2;
-    --scroll-background: #ffd166;
-    --scroll-thumb: #06d6a0;
   }
 }
 
@@ -144,8 +95,8 @@
 
 body {
   width: 100%;
-  min-height: 100vh;
-  max-height: 100vh;
+  min-height: 100dvh;
+  max-height: 100dvh;
   overflow-x: hidden;
   color: var(--text-color-1);
   background: var(--background-color-1);
@@ -187,7 +138,7 @@ h2 {
   width: 7px;
 }
 * {
-  scrollbar-color: var(--hover-color-1) var(--scroll-background);
+  scrollbar-color: var(--hover-color-1) var(--main-color-1);
   scrollbar-width: thin;
 }
 
@@ -198,7 +149,7 @@ h2 {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--scroll-background);
+  background: var(--main-color-1);
   /*@apply bg-opacity-0 bg-t-main;*/
   /* цвет зоны отслеживания */
 }
@@ -212,7 +163,7 @@ h2 {
 }
 
 input[type="number"] {
-  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 input::-webkit-outer-spin-button,

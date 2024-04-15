@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { Search } from "lucide-vue-next";
 import { cn } from "@/lib/utils/twMerge";
 import type { HTMLAttributes } from "vue";
 
 type Props = {
-  icon: typeof Search;
+  icon: any;
   size?: number;
   strokeWidth?: number;
   class?: HTMLAttributes["class"];

@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import XButton from "@/components/ui/button/XButton.vue";
 import { Settings } from "lucide-vue-next";
@@ -18,9 +19,7 @@ import { storeToRefs } from "pinia";
 const themeClasses: ThemeClasses = {
   default: "default",
   defaultDark: "default-dark",
-  greyScale: "grey-scale",
   pastelLight: "pastel-light",
-  vavilon: "vavilon",
   darkContrast: "dark-contrast",
 };
 
@@ -40,14 +39,6 @@ const themeList: ThemeObj[] = [
   {
     name: "Hight contrast",
     value: "darkContrast",
-  },
-  {
-    name: "grey scale",
-    value: "greyScale",
-  },
-  {
-    name: "vavilon",
-    value: "vavilon",
   },
 ];
 const ls = getLSData();
