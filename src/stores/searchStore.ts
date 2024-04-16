@@ -112,6 +112,7 @@ export const useSearchStore = defineStore("searchStations", () => {
     if (mode === "first") {
       currentPage.value = 0;
     }
+    stationsList.value = [];
     apiRequest(filters.value);
   };
 
