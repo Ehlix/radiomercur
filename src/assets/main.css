@@ -121,7 +121,7 @@ body {
 }
 
 #app {
-  @apply flex h-screen w-full;
+  @apply flex h-dvh w-full;
 }
 
 h1 {

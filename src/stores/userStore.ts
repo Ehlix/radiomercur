@@ -1,12 +1,12 @@
 import { ref, watch } from "vue";
 import { defineStore, storeToRefs } from "pinia";
 import { getStationInfoById } from "@/api/getStations";
-import { useBaseUrl } from "./baseUrl";
+import { useBaseUrlsStore } from "./baseUrlsStore";
 import { getLSData, setLSData } from "@/api/localStorage";
 import { generateId } from "@/lib/utils/generateId";
 
 export const useUserStore = defineStore("userStations", () => {
-  const { baseUrl } = storeToRefs(useBaseUrl());
+  const { baseUrl } = storeToRefs(useBaseUrlsStore());
   const favoriteStations = ref<FavoriteStations>({
     default: { name: "default", stations: [] },
   });

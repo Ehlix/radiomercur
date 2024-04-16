@@ -87,7 +87,7 @@ watch([() => searchStore.stationsList], () => {
         />
       </div>
       <station-list
-        v-else
+        v-if="!searchStore.loading && !searchStore.downloadProgress && searchStore.stationsList.length"
         :show-extended-info="true"
         :stations-list="searchStore.stationsList"
         :favorite-stations="userStore.favoriteStations"

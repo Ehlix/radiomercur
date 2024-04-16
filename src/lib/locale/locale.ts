@@ -59,7 +59,7 @@ const EN = {
   stationCard: {
     homepage: "Home page",
     streamSource: "Stream source",
-    addToFavorites: "Add to favorites",
+    addToFavorites: "Add station {0} to folder:",
     clickCount: "Clicks today",
     votes: "Total votes",
     updateData: "Update station data",
@@ -421,7 +421,7 @@ const RU = {
   stationCard: {
     homepage: "Страница станции",
     streamSource: "Аудио источник",
-    addToFavorites: "Добавить в избранное",
+    addToFavorites: "Добавить станцию {0} в папку:",
     clickCount: "Клики за день",
     votes: "Голоса всего",
     updateData: "Обновить данные по станции",

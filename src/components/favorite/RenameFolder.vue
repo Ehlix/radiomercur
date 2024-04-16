@@ -39,7 +39,7 @@ const addHandler = () => {
       class="group flex w-fit items-center justify-center rounded"
     >
       <x-button
-        class="group flex h-8 w-8 min-w-8 justify-center bg-mc-3 p-0 hover:bg-white/0"
+        class="group flex h-8 w-8 min-w-8 justify-center bg-white/0 p-0 hover:bg-white/0"
         @click="inputValue = props.folderName"
       >
         <x-icon

@@ -125,7 +125,7 @@ watch([volume], () => {
     >
       <!-- BG Logo -->
       <div
-        class="pointer-events-none absolute left-4 top-2 z-10 size-28 overflow-hidden rounded-full opacity-20"
+        class="pointer-events-none absolute left-4 top-2 z-10 size-28 overflow-hidden rounded-full opacity-40"
       >
         <x-image
           :src="selectedStation?.favicon"
@@ -139,24 +139,46 @@ watch([volume], () => {
         <!-- History -->
         <history-list />
         <!-- Add To Favorites -->
-        <add-to-favorite-component
-          v-if="selectedStation"
-          :station="selectedStation"
-          :favorite-stations="favoriteStations"
-          :size="20"
-          @add-station-to-favorites="addToFavorite($event)"
-          @remove-station-from-favorites="removeFromFavorite($event)"
-        />
+        <x-tooltip
+          trigger-class=""
+          content-side="right"
+        >
+          <template #trigger>
+            <add-to-favorite-component
+              v-if="selectedStation"
+              :station="selectedStation"
+              :favorite-stations="favoriteStations"
+              :size="20"
+              @add-station-to-favorites="addToFavorite($event)"
+              @remove-station-from-favorites="removeFromFavorite($event)"
+            />
+          </template>
+          <template #content>
+            <span>{{
+              `${$t("buttons.addFavorite")}`
+            }}</span>
+          </template>
+        </x-tooltip>
         <!-- Extra Info Trigger -->
-        <div class="">
-          <ExtendedInfo
-            v-if="selectedStation"
-            :station="selectedStation"
-            :locale="locale"
-            :size="20"
-            class="text-tc-1"
-          />
-        </div>
+        <x-tooltip
+          trigger-class=""
+          content-side="right"
+        >
+          <template #trigger>
+            <ExtendedInfo
+              v-if="selectedStation"
+              :station="selectedStation"
+              :locale="locale"
+              :size="20"
+              class="text-tc-1"
+            />
+          </template>
+          <template #content>
+            <span>{{
+              `${$t("stationCard.extendedInfo")}`
+            }}</span>
+          </template>
+        </x-tooltip>
       </div>
 
       <!-- Station name -->

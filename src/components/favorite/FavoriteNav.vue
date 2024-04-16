@@ -87,33 +87,35 @@ watchEffect(() => {
               <div
                 v-for="key in keys"
                 :key="key"
-                class="flex gap-2"
+                class="flex gap-2 relative"
               >
                 <select-item :value="key">
                   {{
                     `(${favoriteStations[key].stations.length}) ${key !== "default" ? favoriteStations[key].name : $t("favoriteBar.defaultFolder")}`
                   }}
                 </select-item>
-                <rename-folder
-                  v-if="key !== 'default'"
-                  :folder-name="favoriteStations[key].name"
-                  @rename-folder="renameFolderHandler(key, $event)"
-                />
-                <delete-alert
-                  v-if="key !== 'default'"
-                  :title="$t('favoriteBar.deleteFolder', [favoriteStations[key].name])"
-                  class="group flex w-10 items-center justify-center rounded"
-                  @delete="deleteFolder($event, key)"
-                >
-                  <template #default>
-                    <x-icon
-                      :icon="Delete"
-                      class="text-tc-4 transition-all group-hover:text-red-500"
-                      :size="18"
-                      :stroke-width="2"
-                    />
-                  </template>
-                </delete-alert>
+                <div class="absolute right-0 top-0 flex w-fit h-full">
+                  <rename-folder
+                    v-if="key !== 'default'"
+                    :folder-name="favoriteStations[key].name"
+                    @rename-folder="renameFolderHandler(key, $event)"
+                  />
+                  <delete-alert
+                    v-if="key !== 'default'"
+                    :title="$t('favoriteBar.deleteFolder', [favoriteStations[key].name])"
+                    class="group flex w-10 items-center justify-center rounded"
+                    @delete="deleteFolder($event, key)"
+                  >
+                    <template #default>
+                      <x-icon
+                        :icon="Delete"
+                        class="text-tc-4 transition-all group-hover:text-red-500"
+                        :size="18"
+                        :stroke-width="2"
+                      />
+                    </template>
+                  </delete-alert>
+                </div>
               </div>
             </select-group>
           </select-content>

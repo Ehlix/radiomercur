@@ -1,14 +1,14 @@
 import { ref, shallowRef, watch } from "vue";
 import { defineStore, storeToRefs } from "pinia";
 import { getAllStations } from "@/api/getStations";
-import { useBaseUrl } from "./baseUrl";
+import { useBaseUrlsStore } from "./baseUrlsStore";
 import type { AxiosProgressEvent } from "axios";
 import { watchOnce } from "@vueuse/core";
 import { getLSData, setLSData } from "@/api/localStorage";
 
 export const useSearchStore = defineStore("searchStations", () => {
-  const { baseUrl, mainServerIsActive } = storeToRefs(useBaseUrl());
-  const { setBaseUrl, baseUrlReload } = useBaseUrl();
+  const { baseUrl, mainServerIsActive } = storeToRefs(useBaseUrlsStore());
+  const { setBaseUrl, baseUrlReload } = useBaseUrlsStore();
   const stationsList = shallowRef<Station[]>([]);
   const historyList = shallowRef<Station[]>([]);
   const filters = ref<SearchFilters>({});
@@ -68,7 +68,7 @@ export const useSearchStore = defineStore("searchStations", () => {
         } else {
           canLoadMore.value = true;
         }
-        stationsList.value.length && (stationsList.value = res);
+        !stationsList.value.length && (stationsList.value = res);
         loading.value = false;
       },
     );
@@ -83,6 +83,7 @@ export const useSearchStore = defineStore("searchStations", () => {
     }
     historyList.value.unshift(station);
   };
+
   const getStations = (newFilters: SearchFilters) => {
     stationsList.value = [];
     currentPage.value = 0;

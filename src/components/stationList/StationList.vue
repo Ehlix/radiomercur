@@ -240,6 +240,24 @@ onMounted(() => {
             )
           "
         >
+          <x-tooltip
+            content-side="left"
+          >
+            <template #trigger>
+              <add-to-favorite
+                :station="station"
+                :favorite-stations="favoriteStations"
+                class="size-4.5 absolute right-0 top-0 z-30"
+                @add-station-to-favorites="addToFavorites($event)"
+                @remove-station-from-favorites="removeFromFavorites($event)"
+              />
+            </template>
+            <template #content>
+              <span>{{
+                `${$t("buttons.addFavorite")}`
+              }}</span>
+            </template>
+          </x-tooltip>
           <add-to-favorite
             :station="station"
             :favorite-stations="favoriteStations"

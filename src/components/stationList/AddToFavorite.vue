@@ -60,7 +60,7 @@ const removeFromFavorites = (station: Station, folderID: string) => {
         :icon="ListPlus"
         :size="size || 18"
         :stroke-width="2"
-        class=""
+        class="min-h-5"
       />
     </dialog-trigger>
     <dialog-content class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
@@ -72,7 +72,7 @@ const removeFromFavorites = (station: Station, folderID: string) => {
         >
           <dialog-title class="text-2xl text-mc-2">
             <h2 class="-my-1 truncate text-wrap px-3 text-center text-tc-1">
-              {{ removeMetadata(station.name || "Unknown station") }}
+              {{ $t("stationCard.addToFavorites", [`"${removeMetadata(station.name || "Unknown station")}"`]) }}
             </h2>
           </dialog-title>
           <dialog-description />
