@@ -87,14 +87,14 @@ watchEffect(() => {
               <div
                 v-for="key in keys"
                 :key="key"
-                class="flex gap-2 relative"
+                class="relative flex gap-2"
               >
                 <select-item :value="key">
                   {{
                     `(${favoriteStations[key].stations.length}) ${key !== "default" ? favoriteStations[key].name : $t("favoriteBar.defaultFolder")}`
                   }}
                 </select-item>
-                <div class="absolute right-0 top-0 flex w-fit h-full">
+                <div class="absolute right-0 top-0 flex h-full w-fit">
                   <rename-folder
                     v-if="key !== 'default'"
                     :folder-name="favoriteStations[key].name"
@@ -102,7 +102,11 @@ watchEffect(() => {
                   />
                   <delete-alert
                     v-if="key !== 'default'"
-                    :title="$t('favoriteBar.deleteFolder', [favoriteStations[key].name])"
+                    :title="
+                      $t('favoriteBar.deleteFolder', [
+                        favoriteStations[key].name,
+                      ])
+                    "
                     class="group flex w-10 items-center justify-center rounded"
                     @delete="deleteFolder($event, key)"
                   >

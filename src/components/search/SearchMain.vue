@@ -2,17 +2,28 @@
 import { useSearchStore } from "@/stores/searchStore";
 import { useUserStore } from "@/stores/userStore";
 import SearchBar from "./SearchBar.vue";
-import StationList from "../stationList/StationList.vue";
 import { ref, watch } from "vue";
 import XProgress from "@/components/ui/progress/XProgress.vue";
 import XButton from "../ui/button/XButton.vue";
-import { getLSData } from "@/api/localStorage";
+import { getLSData } from "@/lib/api/localStorage";
 import XIcon from "../ui/icon/XIcon.vue";
 import { Disc3, Frown } from "lucide-vue-next";
+import { defineAsyncComponent } from "vue";
+const AddToFavorite = defineAsyncComponent(
+  () => import("../stationList/AddToFavorite.vue"),
+);
+const ExtendedInfo = defineAsyncComponent(
+  () => import("../stationList/ExtendedInfo.vue"),
+);
+const StationList = defineAsyncComponent(
+  () => import("../stationList/StationList.vue"),
+);
 
 const searchStore = useSearchStore();
 const userStore = useUserStore();
 const currentTab = ref<string>("name");
+const dialogOpen = ref<"favorite" | "info" | false>(false);
+const toDialogStation = ref<Station | null>(null);
 
 const ls = getLSData();
 const defaultFilters: SearchFilters = {
@@ -45,6 +56,11 @@ const firstPage = () => {
   searchStore.getMoreStations("first");
 };
 
+const openDialogHandler = (station: Station, mode: "favorite" | "info") => {
+  toDialogStation.value = station;
+  dialogOpen.value = mode;
+};
+
 const el = ref<HTMLElement | null>(null);
 
 watch([() => searchStore.stationsList], () => {
@@ -60,6 +76,20 @@ watch([() => searchStore.stationsList], () => {
     ref="el"
     class="relative flex h-full w-full flex-col gap-2 overflow-x-hidden overflow-y-scroll rounded bg-mc-1"
   >
+    <!-- Add To Favorite -->
+    <add-to-favorite
+      v-if="dialogOpen === 'favorite' && toDialogStation"
+      :open="dialogOpen === 'favorite'"
+      :station="toDialogStation"
+      @close="(toDialogStation = null), (dialogOpen = false)"
+    />
+    <!-- Extended info dialog -->
+    <ExtendedInfo
+      v-if="dialogOpen === 'info' && toDialogStation"
+      :open="dialogOpen === 'info'"
+      :station="toDialogStation"
+      @close="(toDialogStation = null), (dialogOpen = false)"
+    />
     <!-- Progress bar -->
     <x-progress
       :model-value="searchStore.downloadProgress"
@@ -87,14 +117,12 @@ watch([() => searchStore.stationsList], () => {
         />
       </div>
       <station-list
-        v-if="!searchStore.loading && !searchStore.downloadProgress && searchStore.stationsList.length"
-        :show-extended-info="true"
+        v-if="!searchStore.loading && searchStore.stationsList.length"
         :stations-list="searchStore.stationsList"
-        :favorite-stations="userStore.favoriteStations"
         :user-locale="userStore.locale"
         @select-station="selectStationHandler"
-        @add-station-to-favorites="userStore.addToFavorite($event)"
-        @remove-station-from-favorites="userStore.removeFromFavorite($event)"
+        @open-add-to-favorite="openDialogHandler($event, 'favorite')"
+        @open-extended-info="openDialogHandler($event, 'info')"
       />
       <div
         v-if="!searchStore.loading && !searchStore.stationsList.length"

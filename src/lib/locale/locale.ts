@@ -724,17 +724,7 @@ const RU = {
   },
 };
 
-type Messages = {
-  [key in Locale]:
-    | typeof RU
-    | (typeof EN & {
-        countries: {
-          [key in CountryCodes]: string;
-        };
-      });
-};
-
-export const messages: Messages = {
+export const messages = {
   en: EN,
   ru: RU,
 };

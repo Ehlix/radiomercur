@@ -2,12 +2,23 @@
 import { useSearchStore } from "@/stores/searchStore";
 import { useUserStore } from "@/stores/userStore";
 import FavoriteNav from "./FavoriteNav.vue";
-import StationList from "../stationList/StationList.vue";
-import { computed, nextTick, ref } from "vue";
+import { computed, defineAsyncComponent, nextTick, ref } from "vue";
 import XButton from "../ui/button/XButton.vue";
 import XIcon from "../ui/icon/XIcon.vue";
 import ChangePage from "./ChangePage.vue";
 import { ChevronsRight } from "lucide-vue-next";
+const AddToFavorite = defineAsyncComponent(
+  () => import("../stationList/AddToFavorite.vue"),
+);
+const ExtendedInfo = defineAsyncComponent(
+  () => import("../stationList/ExtendedInfo.vue"),
+);
+const StationList = defineAsyncComponent(
+  () => import("../stationList/StationList.vue"),
+);
+// const StationCard = defineAsyncComponent(
+//   () => import("../stationList/StationCard.vue"),
+// );
 
 const searchStore = useSearchStore();
 const userStore = useUserStore();
@@ -23,13 +34,13 @@ const totalPageCount = computed(() => {
   return Math.ceil(totalStationCount.value / STATIONS_PER_PAGE);
 });
 const stationsList = computed(() => {
-  return [
-    ...userStore.favoriteStations[currentFolderID.value].stations.slice(
-      (currentPage.value - 1) * STATIONS_PER_PAGE,
-      currentPage.value * STATIONS_PER_PAGE,
-    ),
-  ];
+  return userStore.favoriteStations[currentFolderID.value].stations.slice(
+    (currentPage.value - 1) * STATIONS_PER_PAGE,
+    currentPage.value * STATIONS_PER_PAGE,
+  );
 });
+const dialogOpen = ref<"favorite" | "info" | false>(false);
+const toDialogStation = ref<Station | null>(null);
 
 const selectFolder = (folderID: string) => {
   currentFolderID.value = folderID;
@@ -60,13 +71,14 @@ const deleteFolderHandler = (folderId: string) => {
 const replaceHandler = ({
   stationOne,
   stationTwo,
-  folderID,
 }: {
   stationOne: Station;
   stationTwo: Station;
-  folderID: string;
 }) => {
-  userStore.replaceFavoriteStations({ stationOne, stationTwo }, folderID);
+  userStore.replaceFavoriteStations(
+    { stationOne, stationTwo },
+    currentFolderID.value,
+  );
 };
 
 const renameFolder = (event: { folderID: string; name: string }) => {
@@ -112,14 +124,26 @@ const changePageHandler = (event: number) => {
   // el.value?.scrollTo(0, 0);
 };
 
-const updateStation = ({
-  station,
-  folderID,
-}: {
-  station: Station;
-  folderID: string;
-}) => {
-  userStore.updateStationInFavoriteAndSelect(station, folderID, true);
+const updateStation = (station: Station) => {
+  userStore.updateStationInFavoriteAndSelect(
+    station,
+    currentFolderID.value,
+    true,
+  );
+};
+
+const positionHandler = (station: Station, mode: "up" | "down") => {
+  const value = { station, folderID: currentFolderID.value };
+  if (mode === "up") {
+    return userStore.stationPositionUp(value);
+  }
+  if (mode === "down") {
+    return userStore.stationPositionDown(value);
+  }
+};
+const openDialogHandler = (station: Station, mode: "favorite" | "info") => {
+  toDialogStation.value = station;
+  dialogOpen.value = mode;
 };
 </script>
 
@@ -128,6 +152,20 @@ const updateStation = ({
     ref="el"
     class="relative flex h-full w-full flex-col gap-2 overflow-x-hidden overflow-y-scroll rounded bg-mc-1 py-2"
   >
+    <!-- Add To Favorite -->
+    <add-to-favorite
+      v-if="dialogOpen === 'favorite' && toDialogStation"
+      :open="dialogOpen === 'favorite'"
+      :station="toDialogStation"
+      @close="(toDialogStation = null), (dialogOpen = false)"
+    />
+    <!-- Extended info dialog -->
+    <ExtendedInfo
+      v-if="dialogOpen === 'info' && toDialogStation"
+      :open="dialogOpen === 'info'"
+      :station="toDialogStation"
+      @close="(toDialogStation = null), (dialogOpen = false)"
+    />
     <div>
       <favorite-nav
         :current-folder-id="currentFolderID"
@@ -140,19 +178,15 @@ const updateStation = ({
     </div>
     <div class="grow">
       <station-list
-        v-if="stationsList"
         :show-update-button="true"
-        :current-folder-id="currentFolderID"
-        :show-extended-info="true"
-        :favorite-stations="userStore.favoriteStations"
         :stations-list="stationsList"
         :user-locale="userStore.locale"
         @select-station="selectStationHandler"
-        @add-station-to-favorites="userStore.addToFavorite($event)"
-        @remove-station-from-favorites="userStore.removeFromFavorite($event)"
+        @open-add-to-favorite="openDialogHandler($event, 'favorite')"
+        @open-extended-info="openDialogHandler($event, 'info')"
         @replace-stations="replaceHandler($event)"
-        @position-up="userStore.stationPositionUp($event)"
-        @position-down="userStore.stationPositionDown($event)"
+        @position-up="positionHandler($event, 'up')"
+        @position-down="positionHandler($event, 'down')"
         @update-fav-data="updateStation($event)"
       />
     </div>

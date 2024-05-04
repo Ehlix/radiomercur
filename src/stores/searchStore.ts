@@ -1,10 +1,10 @@
 import { ref, shallowRef, watch } from "vue";
 import { defineStore, storeToRefs } from "pinia";
-import { getAllStations } from "@/api/getStations";
+import { getAllStations } from "@/lib/api/getStations";
 import { useBaseUrlsStore } from "./baseUrlsStore";
 import type { AxiosProgressEvent } from "axios";
 import { watchOnce } from "@vueuse/core";
-import { getLSData, setLSData } from "@/api/localStorage";
+import { getLSData, setLSData } from "@/lib/api/localStorage";
 
 export const useSearchStore = defineStore("searchStations", () => {
   const { baseUrl, mainServerIsActive } = storeToRefs(useBaseUrlsStore());
@@ -41,7 +41,7 @@ export const useSearchStore = defineStore("searchStations", () => {
   };
 
   const apiRequest = (filters: SearchFilters) => {
-    if (!baseUrl.value || !mainServerIsActive.value) {
+    if (!baseUrl.value || !mainServerIsActive.value || loading.value) {
       return;
     }
     const dataParams: DataParams = {
@@ -68,7 +68,25 @@ export const useSearchStore = defineStore("searchStations", () => {
         } else {
           canLoadMore.value = true;
         }
-        !stationsList.value.length && (stationsList.value = res);
+        const filteredRes = res.map((station) => ({
+          bitrate: station.bitrate || 0,
+          clickcount: station.clickcount || 0,
+          codec: station.codec || "",
+          country: station.country || "",
+          countrycode: station.countrycode || "",
+          favicon: station.favicon || "",
+          homepage: station.homepage || "",
+          language: station.language || "",
+          languagecodes: station.languagecodes || "",
+          name: station.name || "",
+          state: station.state || "",
+          stationuuid: station.stationuuid || "",
+          tags: station.tags || "",
+          url: station.url || "",
+          url_resolved: station.url_resolved || "",
+          votes: station.votes || 0,
+        }));
+        stationsList.value = filteredRes;
         loading.value = false;
       },
     );
@@ -85,7 +103,6 @@ export const useSearchStore = defineStore("searchStations", () => {
   };
 
   const getStations = (newFilters: SearchFilters) => {
-    stationsList.value = [];
     currentPage.value = 0;
     canLoadMore.value = true;
     filters.value = newFilters;
@@ -112,7 +129,6 @@ export const useSearchStore = defineStore("searchStations", () => {
     if (mode === "first") {
       currentPage.value = 0;
     }
-    stationsList.value = [];
     apiRequest(filters.value);
   };
 

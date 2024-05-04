@@ -64,15 +64,13 @@ const uiSwitchHandler = (event: WheelEvent) => {
   >
     <div class="absolute flex h-full w-full flex-col gap-2">
       <!-- Shell -->
-      <div
-        class="flex h-full w-full gap-2 overflow-hidden "
-      >
+      <div class="flex h-full w-full gap-2 overflow-hidden">
         <!-- Left panel -->
-        <div class="grow overflow-hidden rounded">
+        <div class="grow overflow-hidden rounded bg-mc-1">
           <div class="relative h-full w-full overflow-x-hidden">
             <shadow-overlay class="z-50" />
             <button
-              class="absolute left-0 top-0 z-40 flex h-full w-full items-center justify-center bg-mc-1 transition hover:bg-hc-1"
+              class="absolute left-0 top-0 z-40 flex h-full w-full items-center justify-center transition-colors hover:bg-hc-1"
               :class="{
                 'closed text-mc-1 hover:bg-mc-1 hover:text-hc-1':
                   !currentRightPanel && !leftAnimation,
@@ -85,8 +83,11 @@ const uiSwitchHandler = (event: WheelEvent) => {
               </div>
             </button>
             <div
-              v-show="!currentRightPanel"
-              class="h-full w-full overflow-hidden"
+              :class="
+                cn('hidden h-full w-full overflow-hidden', {
+                  'show-delay flex': !currentRightPanel,
+                })
+              "
             >
               <slot name="left-panel" />
             </div>
@@ -95,15 +96,18 @@ const uiSwitchHandler = (event: WheelEvent) => {
         <!-- Right panel -->
         <div
           :class="
-            cn('w-[calc(90%-0.5rem)] shrink-0 overflow-hidden transition-all', {
-              'w-[10%]': !currentRightPanel,
-            })
+            cn(
+              'w-[calc(90%-0.5rem)] shrink-0 overflow-hidden rounded bg-mc-1 transition-all',
+              {
+                'w-[10%]': !currentRightPanel,
+              },
+            )
           "
         >
           <div class="relative z-50 h-full w-full overflow-x-hidden rounded">
             <shadow-overlay class="z-50" />
             <button
-              class="absolute left-0 top-0 z-40 flex h-full w-full items-center justify-center bg-mc-1 transition hover:bg-hc-1"
+              class="absolute left-0 top-0 z-40 flex h-full w-full items-center justify-center transition-colors hover:bg-hc-1"
               :class="{
                 'closed text-mc-1 hover:bg-mc-1 hover:text-hc-1':
                   currentRightPanel && !rightAnimation,
@@ -116,8 +120,11 @@ const uiSwitchHandler = (event: WheelEvent) => {
               </div>
             </button>
             <div
-              v-show="currentRightPanel"
-              class="h-full w-full overflow-hidden"
+              :class="
+                cn('hidden h-full w-full overflow-hidden', {
+                  'show-delay flex': currentRightPanel,
+                })
+              "
             >
               <slot name="right-panel" />
             </div>
@@ -150,7 +157,7 @@ const uiSwitchHandler = (event: WheelEvent) => {
 
 <style scoped>
 .closed {
-  animation: 300ms fade-out-hidden linear forwards;
+  animation: 100ms fade-out-hidden linear forwards;
 }
 
 @keyframes fade-out-hidden {
@@ -160,6 +167,22 @@ const uiSwitchHandler = (event: WheelEvent) => {
   100% {
     display: none;
     visibility: hidden;
+  }
+}
+
+.show-delay {
+  animation: 310ms show-delay linear forwards;
+}
+
+@keyframes show-delay {
+  0% {
+    display: none;
+  }
+  99% {
+    display: none;
+  }
+  100% {
+    display: flex;
   }
 }
 </style>

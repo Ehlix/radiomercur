@@ -1,22 +1,33 @@
+0
 <script setup lang="ts">
-import { computed, ref, watch, nextTick } from "vue";
+import { computed, ref, watch, nextTick, defineAsyncComponent } from "vue";
 import { storeToRefs } from "pinia";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 import { cn } from "@/lib/utils/twMerge";
 import { useUserStore } from "@/stores/userStore";
 import XImage from "@/components/ui/image/XImage.vue";
 import XSlider from "@/components/ui/slider/XSlider.vue";
-import ExtendedInfo from "@/components/stationList/ExtendedInfo.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import PlayerVisual from "./PlayerVisual.vue";
 import HistoryList from "./HistoryList.vue";
-import AddToFavoriteComponent from "../stationList/AddToFavorite.vue";
-import { Play, Pause, Volume1, Volume2, VolumeX } from "lucide-vue-next";
+import {
+  Play,
+  Pause,
+  Volume1,
+  Volume2,
+  VolumeX,
+  ListPlus,
+  Info,
+} from "lucide-vue-next";
+const AddToFavorite = defineAsyncComponent(
+  () => import("../stationList/AddToFavorite.vue"),
+);
+const ExtendedInfo = defineAsyncComponent(
+  () => import("../stationList/ExtendedInfo.vue"),
+);
 
-const { selectedStation, favoriteStations, locale, playerVisualMode } =
-  storeToRefs(useUserStore());
-const { addToFavorite, removeFromFavorite } = useUserStore();
+const { selectedStation, playerVisualMode } = storeToRefs(useUserStore());
 const player = ref<HTMLAudioElement | null>(null);
 const paused = ref<boolean>(true);
 const loading = ref<boolean>(false);
@@ -26,6 +37,7 @@ const volume = ref([100]);
 const muteCache = ref([100]);
 const MAX_VOLUME = 100;
 const MIN_VOLUME = 0;
+const dialogOpen = ref<"favorite" | "info" | false>(false);
 
 const showIcon = computed(() => {
   if (volume.value[0] === 0) {
@@ -139,48 +151,64 @@ watch([volume], () => {
         <!-- History -->
         <history-list />
         <!-- Add To Favorites -->
-        <x-tooltip
-          trigger-class=""
-          content-side="right"
+        <button
+          v-if="selectedStation"
+          class="h-5"
+          @click="dialogOpen = 'favorite'"
         >
-          <template #trigger>
-            <add-to-favorite-component
-              v-if="selectedStation"
-              :station="selectedStation"
-              :favorite-stations="favoriteStations"
-              :size="20"
-              @add-station-to-favorites="addToFavorite($event)"
-              @remove-station-from-favorites="removeFromFavorite($event)"
-            />
-          </template>
-          <template #content>
-            <span>{{
-              `${$t("buttons.addFavorite")}`
-            }}</span>
-          </template>
-        </x-tooltip>
+          <x-tooltip
+            trigger-class=""
+            content-side="right"
+          >
+            <template #trigger>
+              <add-to-favorite
+                v-if="dialogOpen === 'favorite'"
+                :station="selectedStation"
+                :open="dialogOpen === 'favorite'"
+                @close="dialogOpen = false"
+              />
+              <x-icon
+                :icon="ListPlus"
+                :size="20"
+                :stroke-width="2"
+                class="cursor-pointer"
+              />
+            </template>
+            <template #content>
+              <span>{{ `${$t("buttons.addFavorite")}` }}</span>
+            </template>
+          </x-tooltip>
+        </button>
         <!-- Extra Info Trigger -->
-        <x-tooltip
-          trigger-class=""
-          content-side="right"
+        <button
+          v-if="selectedStation"
+          class="h-5"
+          @click="dialogOpen = 'info'"
         >
-          <template #trigger>
-            <ExtendedInfo
-              v-if="selectedStation"
-              :station="selectedStation"
-              :locale="locale"
-              :size="20"
-              class="text-tc-1"
-            />
-          </template>
-          <template #content>
-            <span>{{
-              `${$t("stationCard.extendedInfo")}`
-            }}</span>
-          </template>
-        </x-tooltip>
+          <x-tooltip
+            trigger-class=""
+            content-side="right"
+          >
+            <template #trigger>
+              <x-icon
+                :icon="Info"
+                :size="20"
+                :stroke-width="2"
+                class="cursor-pointer"
+              />
+              <extended-info
+                v-if="dialogOpen === 'info'"
+                :station="selectedStation"
+                :open="dialogOpen === 'info'"
+                @close="dialogOpen = false"
+              />
+            </template>
+            <template #content>
+              <span>{{ `${$t("stationCard.extendedInfo")}` }}</span>
+            </template>
+          </x-tooltip>
+        </button>
       </div>
-
       <!-- Station name -->
       <div
         class="z-40 flex h-[1.35rem] w-full items-center justify-center gap-2 sm:h-5"
@@ -267,13 +295,13 @@ watch([volume], () => {
       </div>
     </div>
     <!-- Extra Info -->
+    <audio
+      ref="player"
+      :src="streamLink"
+      crossorigin="anonymous"
+      @change="togglePlay()"
+      @canplay="autoPlay()"
+      @error="errorHandler()"
+    />
   </div>
-  <audio
-    ref="player"
-    :src="streamLink"
-    crossorigin="anonymous"
-    @change="togglePlay()"
-    @canplay="autoPlay()"
-    @error="errorHandler()"
-  />
 </template>

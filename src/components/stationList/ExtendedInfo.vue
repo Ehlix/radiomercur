@@ -5,49 +5,45 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { ThumbsUp, Star, Info } from "lucide-vue-next";
-import { getFlagImage } from "@/api/getFlagImage";
+import { ThumbsUp, Star } from "lucide-vue-next";
+import { getFlagImage } from "@/lib/api/getFlagImage";
 import XImage from "@/components/ui/image/XImage.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
-import { type HTMLAttributes } from "vue";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 import { messages } from "@/lib/locale/locale";
 
 defineProps<{
   station: Station;
+  open: boolean;
   locale?: "en" | "ru";
-  size?: number;
-  class?: HTMLAttributes["class"];
 }>();
+
+const emits = defineEmits<{
+  (e: "close"): void;
+}>();
+
+const close = () => {
+  emits("close");
+};
 </script>
 
 <template>
-  <dialog-main>
-    <dialog-trigger
-      as-child
-      class="cursor-pointer"
-      :class="$props.class"
-    >
-      <x-icon
-        :icon="Info"
-        :size="size ?? 22"
-        :stroke-width="2"
-        class="text-tc-1"
-      />
-    </dialog-trigger>
+  <dialog-main
+    :open="open"
+    @update:open="close"
+  >
     <dialog-content class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
       <div
         class="min-h-58 grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] rounded bg-mc-1 sm:max-w-[425px]"
       >
         <dialog-header
-          class="z-10 truncate text-wrap border-b border-mc-2 bg-mc-1 p-2 px-10 xs:p-1 xs:px-6"
+          class="truncate text-wrap border-b border-mc-2 bg-mc-1 p-2 px-10 xs:p-1 xs:px-6"
         >
-          <dialog-title class="text-2xl text-mc-2">
-            <h2 class="-my-1 truncate text-wrap px-3 text-center text-tc-1">
-              {{ removeMetadata(station.name || "Unknown station") }}
-            </h2>
+          <dialog-title
+            class="-my-1 truncate text-wrap px-3 text-center text-2xl text-mc-2"
+          >
+            {{ removeMetadata(station.name || "Unknown station") }}
           </dialog-title>
           <dialog-description />
         </dialog-header>

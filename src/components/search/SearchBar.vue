@@ -46,7 +46,7 @@ const changeOrder = (order: ParamsOrder) => {
   filters.value.order = order;
 };
 
-const changeCountryCode = (payload: CountryCodes | "all") => {
+const changeCountryCode = (payload: string) => {
   if (payload === "all") {
     filters.value.countryCode = undefined;
   } else {

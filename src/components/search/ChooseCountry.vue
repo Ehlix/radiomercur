@@ -11,11 +11,11 @@ import { computed, ref, watchEffect, type HTMLAttributes } from "vue";
 import { messages } from "@/lib/locale/locale";
 
 const props = defineProps<{
-  countryCode?: CountryCodes | "all";
+  countryCode?: string;
   userLocale: "en" | "ru";
   class?: HTMLAttributes["class"];
 }>();
-const selected = ref<CountryCodes | "all">(props.countryCode || "all");
+const selected = ref<string>(props.countryCode || "all");
 const countries = computed(() =>
   Object.entries(messages[props.userLocale].countries).sort((a, b) => {
     return a[1] < b[1] ? -1 : 1;
@@ -23,7 +23,7 @@ const countries = computed(() =>
 );
 
 const emits = defineEmits<{
-  (e: "changeCountryCode", value: CountryCodes | "all"): void;
+  (e: "changeCountryCode", value: string): void;
 }>();
 
 watchEffect(() => {

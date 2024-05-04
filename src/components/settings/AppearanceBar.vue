@@ -12,7 +12,7 @@ import XButton from "@/components/ui/button/XButton.vue";
 import { Settings } from "lucide-vue-next";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import { ref, watch } from "vue";
-import { getLSData, setLSData } from "@/api/localStorage";
+import { getLSData, setLSData } from "@/lib/api/localStorage";
 import { useUserStore } from "@/stores/userStore";
 import { storeToRefs } from "pinia";
 

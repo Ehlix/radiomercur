@@ -7,6 +7,8 @@ const props = defineProps<{
   src: string | undefined | null;
   alt?: string;
   class?: HTMLAttributes["class"];
+  height?: number;
+  width?: number;
 }>();
 
 const newImage = ref<string>();
@@ -33,6 +35,9 @@ watch(
     :src="newImage"
     :alt="alt || 'image'"
     :class="cn(props.class)"
+    :height="height || image.height"
+    :width="width || image.width"
+    loading="lazy"
   >
   <logo-main
     v-else

@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import NavMain from "@/components/navigation/NavMain.vue";
 import DoublePanel from "@/components/doublePanel/DoublePanel.vue";
-import FavoriteMain from "@/components/favorite/FavoriteMain.vue";
-import SearchMain from "@/components/search/SearchMain.vue";
 import { useUserStore } from "./stores/userStore";
 import { ref } from "vue";
+import { defineAsyncComponent } from "vue";
+const FavoriteMain = defineAsyncComponent(
+  () => import("@/components/favorite/FavoriteMain.vue"),
+);
+const SearchMain = defineAsyncComponent(
+  () => import("@/components/search/SearchMain.vue"),
+);
 
 const userStore = useUserStore();
 const panel = ref<"left" | "right">("right");

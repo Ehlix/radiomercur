@@ -12,7 +12,7 @@ import { FolderSync, FileDown, FileUp } from "lucide-vue-next";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import DeleteAlert from "../favorite/DeleteAlert.vue";
 import { onUnmounted, ref } from "vue";
-import { getLSData, setLSData, clearLSData } from "@/api/localStorage";
+import { getLSData, setLSData, clearLSData } from "@/lib/api/localStorage";
 import { useDropZone } from "@vueuse/core";
 import { cn } from "@/lib/utils/twMerge";
 
@@ -113,7 +113,6 @@ const clearData = (event: boolean) => {
   window.location.reload();
 };
 
-
 onUnmounted(() => {
   errorMessage.value = false;
 });
@@ -200,7 +199,7 @@ onUnmounted(() => {
                 variant="destructive"
                 class="w-full min-w-full"
               >
-                {{ $t('syncUserData.clearData') }}
+                {{ $t("syncUserData.clearData") }}
               </x-button>
             </template>
           </delete-alert>

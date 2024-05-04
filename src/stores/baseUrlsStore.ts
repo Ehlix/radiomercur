@@ -1,6 +1,6 @@
 import { ref, watch } from "vue";
 import { defineStore } from "pinia";
-import { getBaseUrls } from "@/api/getBaseUrls";
+import { getBaseUrls } from "@/lib/api/getBaseUrls";
 
 export const useBaseUrlsStore = defineStore("baseUrl", () => {
   const mainServerIsActive = ref(true);

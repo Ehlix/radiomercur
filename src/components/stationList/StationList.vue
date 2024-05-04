@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { cn } from "@/lib/utils/twMerge";
-import { getFlagImage } from "@/api/getFlagImage";
+import { getFlagImage } from "@/lib/api/getFlagImage";
 import { messages } from "@/lib/locale/locale";
 import { onMounted, ref, type HTMLAttributes } from "vue";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 import xButton from "@/components/ui/button/XButton.vue";
-import XImage from "@/components/ui/image/XImage.vue";
-import XIcon from "@/components/ui/icon/XIcon.vue";
 import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
-import ExtendedInfo from "./ExtendedInfo.vue";
-import AddToFavorite from "./AddToFavorite.vue";
+import XIcon from "@/components/ui/icon/XIcon.vue";
+import XImage from "@/components/ui/image/XImage.vue";
 import {
   Play,
   ThumbsUp,
@@ -17,39 +15,39 @@ import {
   GripVertical,
   ChevronsDown,
   RefreshCcw,
+  ListPlus,
+  Info,
 } from "lucide-vue-next";
+// import { defineAsyncComponent } from "vue";
+// const XTooltip = defineAsyncComponent(
+//   () => import("@/components/ui/tooltip/XTooltip.vue"),
+// );
+// const XImage = defineAsyncComponent(() => import("@/components/ui/image/XImage.vue"));
+// const XIcon = defineAsyncComponent(() => import("@/components/ui/icon/XIcon.vue"));
 
 const props = defineProps<{
   stationsList: Station[];
-  favoriteStations: FavoriteStations;
   class?: HTMLAttributes["class"];
   userLocale?: "en" | "ru";
-  showExtendedInfo?: boolean;
-  currentFolderId?: string | null;
   showUpdateButton?: boolean;
 }>();
 
 const emits = defineEmits<{
   (e: "selectStation", station: Station): void;
-  (e: "addStationToFavorites", stationAndId: StationAndId): void;
-  (e: "removeStationFromFavorites", stationAndId: StationAndId): void;
-  (e: "positionUp", stationAndId: StationAndId): void;
-  (e: "positionDown", stationAndId: StationAndId): void;
+  // (e: "addStationToFavorites", stationAndId: StationAndId): void;
+  // (e: "removeStationFromFavorites", stationAndId: StationAndId): void;
+  (e: "positionUp", station: Station): void;
+  (e: "positionDown", station: Station): void;
+  (e: "openAddToFavorite", station: Station): void;
+  (e: "openExtendedInfo", station: Station): void;
   (
     e: "replaceStations",
     stations: {
       stationOne: Station;
       stationTwo: Station;
-      folderID: string;
     },
   ): void;
-  (
-    e: "updateFavData",
-    value: {
-      station: Station;
-      folderID: string;
-    },
-  ): void;
+  (e: "updateFavData", station: Station): void;
 }>();
 
 const selectStation = (station: Station) => {
@@ -101,51 +99,32 @@ const dropHandler = (e: DragEvent, station: Station) => {
     "right-drag-preview",
   );
   isDragging.value = false;
-  if (dragTarget.value && station && props.currentFolderId) {
+  if (dragTarget.value && station) {
     emits("replaceStations", {
       stationOne: dragTarget.value,
       stationTwo: station,
-      folderID: props.currentFolderId,
     });
   }
   dragTarget.value = null;
 };
 
 const positionUpHandler = (station: Station) => {
-  if (!props.currentFolderId) {
-    return;
-  }
-  emits("positionUp", {
-    station,
-    folderID: props.currentFolderId,
-  });
+  emits("positionUp", station);
 };
 const positionDownHandler = (station: Station) => {
-  if (!props.currentFolderId) {
-    return;
-  }
-  emits("positionDown", {
-    station,
-    folderID: props.currentFolderId,
-  });
+  emits("positionDown", station);
 };
 
 const updateStationData = (station: Station) => {
-  if (!props.currentFolderId) {
-    return;
-  }
-  const value = {
-    folderID: props.currentFolderId,
-    station,
-  };
-  emits("updateFavData", value);
+  emits("updateFavData", station);
 };
 
-const addToFavorites = (value: StationAndId) => {
-  emits("addStationToFavorites", value);
+const openAddToFavoriteModal = (station: Station) => {
+  emits("openAddToFavorite", station);
 };
-const removeFromFavorites = (value: StationAndId) => {
-  emits("removeStationFromFavorites", value);
+
+const openExtendedInfo = (station: Station) => {
+  emits("openExtendedInfo", station);
 };
 
 onMounted(() => {
@@ -161,14 +140,20 @@ onMounted(() => {
     ref="el"
     tag="div"
     name="list"
-    :class="cn('flex h-fit w-full flex-wrap gap-2 px-2', props.class)"
+    :class="
+      cn(
+        'grid h-fit w-full grid-cols-5 gap-2 px-2 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 sm:grid-cols-1',
+        props.class,
+      )
+    "
   >
     <div
       v-for="station in props.stationsList"
+      v-cloak
       :key="station.stationuuid"
       :draggable="isDragging"
       :open="currentOpenId === station.stationuuid"
-      class="item-list relative flex h-fit w-[19%] min-w-60 max-w-[calc(50%-0.25rem)] grow overflow-hidden shadow-md shadow-black/30 transition-all sm:max-w-full"
+      class="item-list relative w-full overflow-hidden shadow-md shadow-black/30 transition-all"
       @dragstart="dragStartHandler($event, station)"
       @dragend="dragEndHandler"
       @dragover="dragOverHandler($event, station)"
@@ -186,7 +171,7 @@ onMounted(() => {
           cn(
             'relative flex h-[6.4rem] w-full select-text flex-col justify-start  gap-2 rounded bg-gradient-to-br from-hc-1 to-mc-1 p-2 transition-opacity',
             {
-              'pl-6': currentFolderId,
+              'pl-6': showUpdateButton,
               'opacity-20':
                 station.stationuuid === dragTarget?.stationuuid && isDragging,
             },
@@ -195,7 +180,7 @@ onMounted(() => {
       >
         <!-- Dragger -->
         <div
-          v-if="currentFolderId"
+          v-if="showUpdateButton"
           class="absolute bottom-0 left-0 z-10 flex h-full w-5 flex-col items-center justify-between px-[0.2rem] py-[0.05rem] opacity-60"
         >
           <button
@@ -233,41 +218,30 @@ onMounted(() => {
           </button>
         </div>
         <!-- Add To Favorites -->
-        <div
+        <button
           :class="
             cn(
-              'absolute right-0 top-0 z-30 size-8 overflow-hidden rounded-tr border-b-2 border-t-2 border-mc-2 bg-mc-2 transition-all duration-300 [clip-path:polygon(0%_0%,100%_0%,100%_100%,50%_50%)] hover:size-9',
+              'absolute right-0 top-0 z-30 size-9 overflow-hidden rounded-tr border-b-2 border-t-2 border-mc-2 bg-mc-2 transition-all duration-300 [clip-path:polygon(0%_0%,100%_0%,100%_100%,50%_50%)] hover:size-10',
             )
           "
+          @click="openAddToFavoriteModal(station)"
         >
-          <x-tooltip
-            content-side="left"
-          >
+          <x-tooltip content-side="left">
             <template #trigger>
-              <add-to-favorite
-                :station="station"
-                :favorite-stations="favoriteStations"
-                class="size-4.5 absolute right-0 top-0 z-30"
-                @add-station-to-favorites="addToFavorites($event)"
-                @remove-station-from-favorites="removeFromFavorites($event)"
+              <x-icon
+                :icon="ListPlus"
+                :size="18"
+                :stroke-width="2"
+                class="size-4.5 absolute right-0 top-0 z-30 min-h-5 cursor-pointer"
               />
             </template>
             <template #content>
-              <span>{{
-                `${$t("buttons.addFavorite")}`
-              }}</span>
+              <span>{{ `${$t("buttons.addFavorite")}` }}</span>
             </template>
           </x-tooltip>
-          <add-to-favorite
-            :station="station"
-            :favorite-stations="favoriteStations"
-            class="size-4.5 absolute right-0 top-0 z-30"
-            @add-station-to-favorites="addToFavorites($event)"
-            @remove-station-from-favorites="removeFromFavorites($event)"
-          />
-        </div>
+        </button>
 
-        <div class="absolute bottom-1 right-1 z-20 flex h-6 items-center gap-1">
+        <div class="absolute bottom-1 right-1 z-20 flex h-6 items-center gap-2">
           <!-- Update station data -->
           <x-tooltip
             v-if="showUpdateButton"
@@ -276,14 +250,14 @@ onMounted(() => {
             <template #trigger>
               <x-button
                 variant="ghost"
-                class="w-8 min-w-8 p-0 opacity-60 hover:bg-white/0"
+                class="w-6 min-w-6 p-0 opacity-60 hover:bg-white/0"
+                @click="updateStationData(station)"
               >
                 <x-icon
                   :icon="RefreshCcw"
-                  :size="22"
+                  :size="20"
                   :stroke-width="2"
                   class="text-tc-1"
-                  @click="updateStationData(station)"
                 />
               </x-button>
             </template>
@@ -294,11 +268,18 @@ onMounted(() => {
           <!-- Extended Info -->
           <x-tooltip content-side="left">
             <template #trigger>
-              <extended-info
-                :station="station"
-                :locale="userLocale"
-                class="opacity-60 hover:bg-white/0"
-              />
+              <x-button
+                variant="ghost"
+                class="w-6 min-w-6 p-0 opacity-60 hover:bg-white/0"
+                @click="openExtendedInfo(station)"
+              >
+                <x-icon
+                  :icon="Info"
+                  :size="20"
+                  :stroke-width="2"
+                  class="text-tc-1"
+                />
+              </x-button>
             </template>
             <template #content>
               {{ $t("stationCard.extendedInfo") }}
@@ -312,7 +293,9 @@ onMounted(() => {
           <div class="absolute inset-0 z-0 bg-mc-1 opacity-100" />
           <x-image
             :src="station.favicon"
-            :alt="station.name"
+            :height="6"
+            :width="6"
+            alt="logo"
             class="absolute inset-0 z-10 size-[6rem] object-cover opacity-40"
           />
         </div>
@@ -355,14 +338,16 @@ onMounted(() => {
                   <x-image
                     :src="getFlagImage(station.countrycode)"
                     class="h-5 w-8"
+                    :height="5"
+                    :width="8"
                   />
                 </div>
               </template>
               <template #content>
                 <div>
                   {{
+                    // @ts-expect-error
                     messages[props.userLocale || "en"]?.countries[
-                      // @ts-expect-error
                       station.countrycode
                     ] || ""
                   }}
@@ -451,5 +436,9 @@ onMounted(() => {
 .list-leave-active {
   opacity: 0;
   position: absolute;
+}
+
+[v-cloak] {
+  display: none !important;
 }
 </style>

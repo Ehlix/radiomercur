@@ -2,7 +2,7 @@
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 import { Play } from "lucide-vue-next";
 import { messages } from "@/lib/locale/locale";
-import { getFlagImage } from "@/api/getFlagImage";
+import { getFlagImage } from "@/lib/api/getFlagImage";
 import XImage from "@/components/ui/image/XImage.vue";
 import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
@@ -60,10 +60,7 @@ const playHandler = (station: Station) => {
         <div>
           {{
             // @ts-expect-error
-            messages[userLocale || "en"]?.countries[
-              // @ts-expect-error
-              station.countrycode
-            ] || ""
+            messages[userLocale || "en"]?.countries[station.countrycode] || ""
           }}
         </div>
       </template>

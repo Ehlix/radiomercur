@@ -63,4 +63,4 @@ export const setLSData = (LSNewData: LocalStorageData) => {
 
 export const clearLSData = () => {
   localStorage.removeItem("localStorageData");
-}
+};

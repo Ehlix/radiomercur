@@ -13,67 +13,61 @@ import XIcon from "@/components/ui/icon/XIcon.vue";
 import { type HTMLAttributes } from "vue";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 import { cn } from "@/lib/utils/twMerge";
+import { useUserStore } from "@/stores/userStore";
+import { storeToRefs } from "pinia";
 
 const props = defineProps<{
   station: Station;
-  favoriteStations: FavoriteStations;
-  size?: number;
-  class?: HTMLAttributes["class"];
-  contentSide?: "left" | "right";
+  open: boolean;
 }>();
 
 const emits = defineEmits<{
-  (e: "addStationToFavorites", stationAndId: StationAndId): void;
-  (e: "removeStationFromFavorites", stationAndId: StationAndId): void;
+  (e: "close"): void;
 }>();
 
+const userStore = useUserStore();
+const { favoriteStations } = storeToRefs(useUserStore());
+
 const checkStationInFavorites = (station: Station, folderID: string) => {
-  if (props.favoriteStations[folderID]) {
-    return props.favoriteStations[folderID].stations.some(
+  if (favoriteStations.value[folderID]) {
+    return favoriteStations.value[folderID].stations.some(
       (s) => s.stationuuid === station.stationuuid,
     );
   }
 };
 
 const addToFavorites = (station: Station, folderID: string) => {
-  emits("addStationToFavorites", {
-    station,
-    folderID,
-  });
+  userStore.addToFavorite({ station, folderID });
 };
 const removeFromFavorites = (station: Station, folderID: string) => {
-  emits("removeStationFromFavorites", {
-    station,
-    folderID,
-  });
+  userStore.removeFromFavorite({ station, folderID });
+};
+
+const close = () => {
+  emits("close");
 };
 </script>
 
 <template>
-  <dialog-main>
-    <dialog-trigger
-      as-child
-      class="cursor-pointer"
-      :class="cn($props.class)"
-    >
-      <x-icon
-        :icon="ListPlus"
-        :size="size || 18"
-        :stroke-width="2"
-        class="min-h-5"
-      />
-    </dialog-trigger>
+  <dialog-main
+    :open="props.open"
+    @update:open="close"
+  >
     <dialog-content class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
       <div
         class="min-h-58 grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] rounded bg-mc-1 sm:max-w-[425px]"
       >
         <dialog-header
-          class="z-10 truncate text-wrap border-b border-mc-2 bg-mc-1 p-2 px-10 xs:p-1 xs:px-6"
+          class="truncate text-wrap border-b border-mc-2 bg-mc-1 p-2 px-10 xs:p-1 xs:px-6"
         >
-          <dialog-title class="text-2xl text-mc-2">
-            <h2 class="-my-1 truncate text-wrap px-3 text-center text-tc-1">
-              {{ $t("stationCard.addToFavorites", [`"${removeMetadata(station.name || "Unknown station")}"`]) }}
-            </h2>
+          <dialog-title
+            class="-my-1 truncate text-wrap px-3 text-center text-xl text-mc-2"
+          >
+            {{
+              $t("stationCard.addToFavorites", [
+                `"${removeMetadata(station.name || "Unknown station")}"`,
+              ])
+            }}
           </dialog-title>
           <dialog-description />
         </dialog-header>

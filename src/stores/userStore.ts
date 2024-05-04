@@ -1,8 +1,8 @@
 import { ref, watch } from "vue";
 import { defineStore, storeToRefs } from "pinia";
-import { getStationInfoById } from "@/api/getStations";
+import { getStationInfoById } from "@/lib/api/getStations";
 import { useBaseUrlsStore } from "./baseUrlsStore";
-import { getLSData, setLSData } from "@/api/localStorage";
+import { getLSData, setLSData } from "@/lib/api/localStorage";
 import { generateId } from "@/lib/utils/generateId";
 
 export const useUserStore = defineStore("userStations", () => {
