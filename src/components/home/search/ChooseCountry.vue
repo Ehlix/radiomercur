@@ -36,17 +36,14 @@ watchEffect(() => {
     v-model="selected"
     name="countries"
   >
-    <select-trigger
-      class="text-tc-4"
-      :class="props.class"
-    >
+    <select-trigger :class="props.class">
       <select-value
         placeholder="All countries"
         class="font-medium"
       />
     </select-trigger>
     <select-content>
-      <select-group class="text-tc-4">
+      <select-group>
         <!-- <SelectLabel>Countries</SelectLabel> -->
         <select-item value="all">
           {{ $t("searchBar.defaultCountry") }}

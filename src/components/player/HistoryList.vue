@@ -10,21 +10,17 @@ import {
 import { History } from "lucide-vue-next";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import { useUserStore } from "@/stores/userStore";
-import { useSearchStore } from "@/stores/searchStore";
-import { generateId } from "@/lib/utils/generateId";
 import HistoryCard from "./HistoryCard.vue";
 import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import { type HTMLAttributes } from "vue";
-const searchStore = useSearchStore();
-const userStore = useUserStore();
+const { selectStation, historyList, locale } = useUserStore();
 
 defineProps<{
   class?: HTMLAttributes["class"];
 }>();
 
 const playHandler = (station: Station) => {
-  userStore.selectStation(station);
-  searchStore.addToHistory(station);
+  selectStation(station);
 };
 </script>
 
@@ -65,9 +61,9 @@ const playHandler = (station: Station) => {
           class="my-2 grid gap-2 overflow-y-auto overflow-x-hidden px-6 xs:px-4"
         >
           <history-card
-            v-for="station in searchStore.historyList"
-            :key="station.stationuuid + generateId()"
-            :user-locale="userStore.locale"
+            v-for="station in historyList"
+            :key="station.stationuuid"
+            :user-locale="locale"
             :station="station"
             @play-handler="playHandler"
           />

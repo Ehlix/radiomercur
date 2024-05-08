@@ -1,25 +1,23 @@
 import { ref, shallowRef, watch } from "vue";
-import { defineStore, storeToRefs } from "pinia";
 import { getAllStations } from "@/lib/api/getStations";
 import { useBaseUrlsStore } from "./baseUrlsStore";
 import type { AxiosProgressEvent } from "axios";
 import { watchOnce } from "@vueuse/core";
 import { getLSData, setLSData } from "@/lib/api/localStorage";
+import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 
-export const useSearchStore = defineStore("searchStations", () => {
-  const { baseUrl, mainServerIsActive } = storeToRefs(useBaseUrlsStore());
+export const useSearchStore = () => {
+  const { baseUrl, mainServerIsActive } = useBaseUrlsStore();
   const { setBaseUrl, baseUrlReload } = useBaseUrlsStore();
   const stationsList = shallowRef<Station[]>([]);
-  const historyList = shallowRef<Station[]>([]);
   const filters = ref<SearchFilters>({});
   const downloadProgress = ref(0);
   const loading = ref(false);
   const currentPage = ref(0);
   const canLoadMore = ref(false);
-  const OFFSET = 60;
+  const OFFSET = 35;
 
   const lsData = getLSData();
-  historyList.value = lsData?.historyStations || [];
   filters.value = lsData?.searchFilters || {};
 
   const clearSearch = () => {
@@ -31,7 +29,6 @@ export const useSearchStore = defineStore("searchStations", () => {
     currentPage.value = 0;
     canLoadMore.value = true;
     downloadProgress.value = 0;
-    historyList.value = [];
   };
 
   const setDownloadProgress = (event: AxiosProgressEvent) => {
@@ -78,7 +75,7 @@ export const useSearchStore = defineStore("searchStations", () => {
           homepage: station.homepage || "",
           language: station.language || "",
           languagecodes: station.languagecodes || "",
-          name: station.name || "",
+          name: removeMetadata(station.name) || "Unknown station",
           state: station.state || "",
           stationuuid: station.stationuuid || "",
           tags: station.tags || "",
@@ -90,16 +87,6 @@ export const useSearchStore = defineStore("searchStations", () => {
         loading.value = false;
       },
     );
-  };
-
-  const addToHistory = (station: Station) => {
-    if (
-      historyList.value.length &&
-      historyList.value[0].stationuuid === station.stationuuid
-    ) {
-      return;
-    }
-    historyList.value.unshift(station);
   };
 
   const getStations = (newFilters: SearchFilters) => {
@@ -145,19 +132,6 @@ export const useSearchStore = defineStore("searchStations", () => {
   });
 
   watch(
-    [historyList],
-    () => {
-      if (historyList.value.length > 70) {
-        historyList.value.splice(49);
-      }
-      setLSData({ historyStations: historyList.value });
-    },
-    {
-      deep: true,
-    },
-  );
-
-  watch(
     [filters],
     () => {
       setLSData({
@@ -173,7 +147,6 @@ export const useSearchStore = defineStore("searchStations", () => {
   );
 
   return {
-    addToHistory,
     baseUrlReload,
     canLoadMore,
     currentPage,
@@ -183,9 +156,8 @@ export const useSearchStore = defineStore("searchStations", () => {
     getStations,
     getMoreStations,
     loading,
-    historyList,
     mainServerIsActive,
     searchStoreReset,
     stationsList,
   };
-});
+};

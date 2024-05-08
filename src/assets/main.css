@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -101,6 +102,7 @@ body {
   color: var(--text-color-1);
   background: var(--background-color-1);
   font-family:
+    Gabarito,
     Inter,
     -apple-system,
     BlinkMacSystemFont,

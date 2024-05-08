@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import XButton from "@/components/ui/button/XButton.vue";
 import {
   DialogMain,
   DialogContent,
@@ -11,76 +10,67 @@ import {
 } from "@/components/ui/dialog";
 import XInput from "@/components/ui/input/XInput.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
-import { FolderPen, FolderPlus, X } from "lucide-vue-next";
-import DialogClose from "../ui/dialog/DialogClose.vue";
-import { ref } from "vue";
+import { Milestone } from "lucide-vue-next";
+import DialogClose from "@/components/ui/dialog/DialogClose.vue";
+import { ref, watchEffect } from "vue";
 
-const emits = defineEmits<{
-  (e: "addFolder", value: string): void;
+const props = defineProps<{
+  disabled?: boolean;
+  currentPage: number;
+  totalPages: number;
 }>();
 
-const inputValue = ref<string>("");
+const emits = defineEmits<{
+  (e: "changePage", value: number): void;
+}>();
 
-const addHandler = () => {
-  if (!inputValue.value) {
-    return;
-  }
-  emits("addFolder", inputValue.value);
-  inputValue.value = "";
+const inputValue = ref<number>(props.currentPage);
+
+const saveHandler = () => {
+  emits("changePage", inputValue.value);
 };
+
+watchEffect(() => {
+  inputValue.value = props.currentPage;
+});
 </script>
 
 <template>
   <dialog-main>
     <dialog-trigger
-      class="group flex w-fit items-center justify-center rounded"
+      :disabled="props.disabled ?? false"
+      class="flex h-8 w-5 min-w-8 items-center justify-center gap-1 bg-mc-1 px-2 text-mc-2 hover:bg-mc-1 hover:text-hc-2 disabled:opacity-50 xs:min-w-5"
+      @click="inputValue = props.currentPage"
     >
-      <x-button
-        class="flex h-8 min-w-10 justify-center gap-1 bg-mc-3 px-2 hover:bg-hc-3"
-      >
-        <x-icon
-          :icon="FolderPlus"
-          class="text-mc-4 transition-all"
-          :size="24"
-          :stroke-width="1.5"
-        />
-        <span class="xs:hidden">
-          {{ $t("favoriteBar.newFolder") }}
-        </span>
-      </x-button>
+      {{ props.currentPage }}
     </dialog-trigger>
     <dialog-content class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
       <form
         class="grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] rounded bg-mc-1 sm:max-w-[425px]"
-        @submit.prevent="addHandler"
+        @click.prevent="saveHandler"
       >
         <dialog-header class="border-b border-mc-2 px-2 pt-2">
           <dialog-title class="text-2xl text-mc-2">
-            {{ $t("favoriteBar.addNewFolder") }}
+            {{
+              `${$t("favoriteBar.changePage")} (${$t("buttons.total", { count: totalPages }).toLowerCase()})`
+            }}
           </dialog-title>
           <dialog-description>
             <div class="flex gap-2 py-2">
               <div class="relative w-full">
                 <x-input
-                  v-model.trim="inputValue"
+                  v-model.trim.number="inputValue"
                   name="searchInput"
-                  type="text"
+                  type="number"
                   maxlength="25"
-                  :placeholder="$t('favoriteBar.addFolderPlaceholder')"
+                  :placeholder="$t('favoriteBar.enterPage')"
                   class="border-0 px-10 text-tc-4 focus-visible:text-tc-4"
                 />
                 <x-icon
-                  :icon="FolderPen"
+                  :icon="Milestone"
                   :size="30"
                   :stroke-width="1.5"
                   class="absolute inset-y-[0.15rem] start-[0.29rem] flex items-center justify-center px-1 text-tc-4"
-                />
-                <x-icon
-                  :icon="X"
-                  :size="32"
-                  :stroke-width="1.5"
-                  class="absolute inset-y-0 end-1 flex cursor-pointer items-center justify-center px-1 text-tc-4 transition-all hover:opacity-60"
-                  @click="() => (inputValue = '')"
                 />
               </div>
             </div>
@@ -93,13 +83,11 @@ const addHandler = () => {
           >
             {{ $t("buttons.cancel") }}
           </dialog-close>
-          <dialog-close type="submit">
+          <DialogClose type="submit">
             {{ $t("buttons.save") }}
-          </dialog-close>
+          </DialogClose>
         </dialog-footer>
       </form>
     </dialog-content>
   </dialog-main>
 </template>
-
-<style scoped></style>

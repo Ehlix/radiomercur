@@ -5,16 +5,12 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { ListPlus, Plus, Check } from "lucide-vue-next";
+import { Plus, Check } from "lucide-vue-next";
 import xButton from "@/components/ui/button/XButton.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
-import { type HTMLAttributes } from "vue";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
-import { cn } from "@/lib/utils/twMerge";
 import { useUserStore } from "@/stores/userStore";
-import { storeToRefs } from "pinia";
 
 const props = defineProps<{
   station: Station;
@@ -25,8 +21,7 @@ const emits = defineEmits<{
   (e: "close"): void;
 }>();
 
-const userStore = useUserStore();
-const { favoriteStations } = storeToRefs(useUserStore());
+const { favoriteStations, addToFavorite, removeFromFavorite } = useUserStore();
 
 const checkStationInFavorites = (station: Station, folderID: string) => {
   if (favoriteStations.value[folderID]) {
@@ -37,10 +32,10 @@ const checkStationInFavorites = (station: Station, folderID: string) => {
 };
 
 const addToFavorites = (station: Station, folderID: string) => {
-  userStore.addToFavorite({ station, folderID });
+  addToFavorite({ station, folderID });
 };
 const removeFromFavorites = (station: Station, folderID: string) => {
-  userStore.removeFromFavorite({ station, folderID });
+  removeFromFavorite({ station, folderID });
 };
 
 const close = () => {

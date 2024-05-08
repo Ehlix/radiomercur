@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import ChooseCountry from "@/components/search/ChooseCountry.vue";
-import XIcon from "../ui/icon/XIcon.vue";
+import ChooseCountry from "@/components/home/search/ChooseCountry.vue";
+import XIcon from "@/components/ui/icon/XIcon.vue";
 import XInput from "@/components/ui/input/XInput.vue";
 import XSwitch from "@/components/ui/switch/XSwitch.vue";
 import xButton from "@/components/ui/button/XButton.vue";
 import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
-import ChooseInputMode from "@/components/search/ChooseInputMode.vue";
+import ChooseInputMode from "@/components/home/search/ChooseInputMode.vue";
 import { useDebounce } from "@vueuse/core";
 import {
   Search,
@@ -92,35 +92,6 @@ watch([debSearch, currentTab], () => {
 
 <template>
   <div class="flex w-full flex-col gap-2">
-    <!-- <collapsible v-model:open="genresIsOpen">
-        <div class="relative flex w-full items-center gap-2">
-          <collapsible-trigger
-            class="flex h-8 w-14 items-center justify-center rounded-full bg-mc-3 p-1 text-tc-4 transition hover:bg-hc-3"
-          >
-            <span>
-              <x-icon :icon="BookAudio" />
-            </span>
-          </collapsible-trigger>
-        </div>
-        <collapsible-content class="mt-2 h-fit text-base text-tc-4">
-          <div
-            class="grid grid-cols-7 gap-2 lg:grid-cols-6 md:grid-cols-5 sm:grid-cols-3"
-          >
-            <button
-              v-for="genre in genresList"
-              @click="
-                () => {
-                  genresIsOpen = false;
-                  searchInput = genre.name;
-                }
-              "
-              class="aspect-square rounded bg-mc-3"
-            >
-              {{ $t(`genres.${genre.name}`) }}
-            </button>
-          </div>
-        </collapsible-content>
-      </collapsible> -->
     <div class="flex w-full items-center gap-2 sm:flex-col">
       <choose-input-mode
         class="w-fit min-w-24 sm:order-2 sm:w-full"
@@ -252,7 +223,7 @@ watch([debSearch, currentTab], () => {
         </div>
       </div>
       <choose-country
-        :user-locale="userStore.locale"
+        :user-locale="userStore.locale.value"
         :country-code="filters.countryCode || undefined"
         class="sm:order-first"
         @change-country-code="(e) => changeCountryCode(e)"

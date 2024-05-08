@@ -28,17 +28,14 @@ watchEffect(() => {
     v-model="selected"
     name="mode"
   >
-    <select-trigger
-      class="text-tc-4"
-      :class="props.class"
-    >
+    <select-trigger :class="props.class">
       <select-value
         placeholder="Search by"
         class="font-medium"
       />
     </select-trigger>
     <select-content>
-      <select-group class="text-tc-4">
+      <select-group>
         <!-- <SelectLabel>Countries</SelectLabel> -->
         <select-item value="name">
           {{ $t("searchBar.name") }}

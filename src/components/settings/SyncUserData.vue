@@ -10,7 +10,7 @@ import {
 import XButton from "@/components/ui/button/XButton.vue";
 import { FolderSync, FileDown, FileUp } from "lucide-vue-next";
 import XIcon from "@/components/ui/icon/XIcon.vue";
-import DeleteAlert from "../favorite/DeleteAlert.vue";
+import DeleteAlert from "@/components/home/DeleteAlert.vue";
 import { onUnmounted, ref } from "vue";
 import { getLSData, setLSData, clearLSData } from "@/lib/api/localStorage";
 import { useDropZone } from "@vueuse/core";

@@ -1,8 +1,8 @@
 import { ref, watch } from "vue";
-import { defineStore } from "pinia";
 import { getBaseUrls } from "@/lib/api/getBaseUrls";
+import { createGlobalState } from "@vueuse/core";
 
-export const useBaseUrlsStore = defineStore("baseUrl", () => {
+export const useBaseUrlsStore = createGlobalState(() => {
   const mainServerIsActive = ref(true);
   const allBaseUrls = ref<BaseURL[]>([]);
   const baseUrl = ref<BaseURL>(undefined);

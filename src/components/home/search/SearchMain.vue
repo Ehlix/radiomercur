@@ -4,20 +4,16 @@ import { useUserStore } from "@/stores/userStore";
 import SearchBar from "./SearchBar.vue";
 import { ref, watch } from "vue";
 import XProgress from "@/components/ui/progress/XProgress.vue";
-import XButton from "../ui/button/XButton.vue";
+import XButton from "@/components/ui/button/XButton.vue";
 import { getLSData } from "@/lib/api/localStorage";
-import XIcon from "../ui/icon/XIcon.vue";
+import XIcon from "@/components/ui/icon/XIcon.vue";
 import { Disc3, Frown } from "lucide-vue-next";
 import { defineAsyncComponent } from "vue";
 const AddToFavorite = defineAsyncComponent(
-  () => import("../stationList/AddToFavorite.vue"),
+  () => import("../AddToFavorite.vue"),
 );
-const ExtendedInfo = defineAsyncComponent(
-  () => import("../stationList/ExtendedInfo.vue"),
-);
-const StationList = defineAsyncComponent(
-  () => import("../stationList/StationList.vue"),
-);
+const ExtendedInfo = defineAsyncComponent(() => import("../ExtendedInfo.vue"));
+const SearchList = defineAsyncComponent(() => import("./SearchLIst.vue"));
 
 const searchStore = useSearchStore();
 const userStore = useUserStore();
@@ -33,7 +29,6 @@ const defaultFilters: SearchFilters = {
 
 const selectStationHandler = (station: Station) => {
   userStore.selectStation(station);
-  searchStore.addToHistory(station);
 };
 
 const currentTabHandler = (payload: string) => {
@@ -42,18 +37,6 @@ const currentTabHandler = (payload: string) => {
 
 const filtersHandler = (payload: SearchFilters) => {
   searchStore.getStations(payload);
-};
-
-const nextPage = () => {
-  searchStore.getMoreStations("up");
-};
-
-const prevPage = () => {
-  searchStore.getMoreStations("down");
-};
-
-const firstPage = () => {
-  searchStore.getMoreStations("first");
 };
 
 const openDialogHandler = (station: Station, mode: "favorite" | "info") => {
@@ -72,7 +55,7 @@ watch([() => searchStore.stationsList], () => {
 
 <template>
   <div
-    v-if="searchStore.mainServerIsActive"
+    v-if="searchStore.mainServerIsActive.value"
     ref="el"
     class="relative flex h-full w-full flex-col gap-2 overflow-x-hidden overflow-y-scroll rounded bg-mc-1"
   >
@@ -88,11 +71,12 @@ watch([() => searchStore.stationsList], () => {
       v-if="dialogOpen === 'info' && toDialogStation"
       :open="dialogOpen === 'info'"
       :station="toDialogStation"
+      :locale="userStore.locale.value"
       @close="(toDialogStation = null), (dialogOpen = false)"
     />
     <!-- Progress bar -->
     <x-progress
-      :model-value="searchStore.downloadProgress"
+      :model-value="searchStore.downloadProgress.value"
       class="fixed left-0 top-[6.5rem] h-2 w-full p-[0.1rem] sm:top-[5.5rem]"
     />
     <!-- Navigation -->
@@ -106,7 +90,7 @@ watch([() => searchStore.stationsList], () => {
     <!-- Stations -->
     <div class="grow">
       <div
-        v-if="searchStore.loading"
+        v-if="searchStore.loading.value"
         class="z-40 flex h-full w-full animate-fade-in items-center justify-center rounded"
       >
         <x-icon
@@ -116,16 +100,19 @@ watch([() => searchStore.stationsList], () => {
           class="animate-spin text-bgc-1"
         />
       </div>
-      <station-list
-        v-if="!searchStore.loading && searchStore.stationsList.length"
-        :stations-list="searchStore.stationsList"
-        :user-locale="userStore.locale"
+      <search-list
+        v-if="
+          !searchStore.loading.value && searchStore.stationsList.value.length
+        "
+        :stations-list="searchStore.stationsList.value"
         @select-station="selectStationHandler"
         @open-add-to-favorite="openDialogHandler($event, 'favorite')"
         @open-extended-info="openDialogHandler($event, 'info')"
       />
       <div
-        v-if="!searchStore.loading && !searchStore.stationsList.length"
+        v-if="
+          !searchStore.loading.value && !searchStore.stationsList.value.length
+        "
         class="flex w-full animate-fade-in items-center justify-center px-2 py-4 text-center text-2xl font-normal text-bgc-1"
       >
         <x-icon
@@ -143,23 +130,23 @@ watch([() => searchStore.stationsList], () => {
       class="flex h-fit w-full justify-between gap-2 px-2 pb-2 *:h-8 *:w-full"
     >
       <x-button
-        :disabled="!searchStore.currentPage || searchStore.loading"
-        @click="prevPage"
+        :disabled="!searchStore.currentPage.value || searchStore.loading.value"
+        @click="searchStore.getMoreStations('down')"
       >
         {{ $t("buttons.prev") }}
       </x-button>
       <x-button
-        :disabled="searchStore.loading"
+        :disabled="searchStore.loading.value"
         :class="{
-          hidden: searchStore.currentPage < 2,
+          hidden: searchStore.currentPage.value < 2,
         }"
-        @click="firstPage"
+        @click="searchStore.getMoreStations('first')"
       >
         {{ $t("buttons.first") }}
       </x-button>
       <x-button
-        :disabled="!searchStore.canLoadMore || searchStore.loading"
-        @click="nextPage"
+        :disabled="!searchStore.canLoadMore.value || searchStore.loading.value"
+        @click="searchStore.getMoreStations('up')"
       >
         {{ $t("buttons.next") }}
       </x-button>
@@ -180,14 +167,3 @@ watch([() => searchStore.stationsList], () => {
     </x-button>
   </div>
 </template>
-
-<style scoped>
-/* .fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter,
-.fade-leave-active {
-  opacity: 0;
-} */
-</style>

@@ -7,7 +7,7 @@ const props = defineProps<DialogCloseProps>();
 <template>
   <DialogClose
     v-bind="props"
-    class="text-md inline-flex h-9 w-full items-center justify-center whitespace-nowrap rounded-md bg-mc-2 font-medium transition hover:bg-hc-2"
+    class="text-md inline-flex h-9 w-full items-center justify-center whitespace-nowrap rounded-md bg-mc-2 text-base font-medium text-mc-1 transition hover:bg-hc-2"
   >
     <slot />
   </DialogClose>

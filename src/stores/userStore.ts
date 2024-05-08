@@ -1,21 +1,24 @@
-import { ref, watch } from "vue";
-import { defineStore, storeToRefs } from "pinia";
+import { ref, shallowRef, watch } from "vue";
 import { getStationInfoById } from "@/lib/api/getStations";
 import { useBaseUrlsStore } from "./baseUrlsStore";
 import { getLSData, setLSData } from "@/lib/api/localStorage";
 import { generateId } from "@/lib/utils/generateId";
+import { createGlobalState } from "@vueuse/core";
 
-export const useUserStore = defineStore("userStations", () => {
-  const { baseUrl } = storeToRefs(useBaseUrlsStore());
+export const useUserStore = createGlobalState(() => {
+  const { baseUrl } = useBaseUrlsStore();
   const favoriteStations = ref<FavoriteStations>({
     default: { name: "default", stations: [] },
   });
   const selectedStation = ref<Station>();
+  const historyList = shallowRef<Station[]>([]);
   const locale = ref<"en" | "ru">("en");
   const borders = ref<"rounded" | "square">("rounded");
   const playerVisualMode = ref<"1" | "2">("1");
 
   const lsData = getLSData();
+
+  historyList.value = lsData?.historyStations || [];
 
   const favoriteStationFromLS = lsData?.favoritesStations;
   favoriteStationFromLS &&
@@ -45,8 +48,19 @@ export const useUserStore = defineStore("userStations", () => {
   const playerVisualModeFromLS = lsData?.userSettings?.playerVisualMode;
   playerVisualMode.value = playerVisualModeFromLS === "2" ? "2" : "1";
 
+  const addToHistory = (station: Station) => {
+    if (
+      historyList.value.length &&
+      historyList.value[0]?.name === station.name
+    ) {
+      return;
+    }
+    historyList.value.unshift(station);
+  };
+
   const selectStation = (station: Station) => {
     selectedStation.value = { ...station };
+    addToHistory(station);
   };
 
   const changeLocale = (newLocale: "en" | "ru") => {
@@ -227,6 +241,19 @@ export const useUserStore = defineStore("userStations", () => {
     },
   );
 
+  watch(
+    [historyList],
+    () => {
+      if (historyList.value.length > 70) {
+        historyList.value.splice(49);
+      }
+      setLSData({ historyStations: historyList.value });
+    },
+    {
+      deep: true,
+    },
+  );
+
   return {
     addToFavorite,
     borders,
@@ -237,6 +264,7 @@ export const useUserStore = defineStore("userStations", () => {
     createFavoriteStationsFolder,
     deleteFavoriteStationsFolder,
     favoriteStations,
+    historyList,
     playerVisualMode,
     renameFolder,
     removeFromFavorite,

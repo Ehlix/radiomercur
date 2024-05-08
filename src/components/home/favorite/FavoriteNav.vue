@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import { computed, ref, watch, watchEffect } from "vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
-import DeleteAlert from "./DeleteAlert.vue";
+import DeleteAlert from "../DeleteAlert.vue";
 import AddFolder from "./AddFolder.vue";
 import RenameFolder from "./RenameFolder.vue";
 import { Folder, Delete } from "lucide-vue-next";
@@ -67,11 +67,11 @@ watchEffect(() => {
           v-model="selectedFolder"
           name="folders"
         >
-          <select-trigger class="text-tc-4">
+          <select-trigger>
             <div class="flex items-center justify-center gap-2">
               <x-icon
                 :icon="Folder"
-                class="text-tc-4"
+                class="text-mc-1"
                 :size="24"
                 :stroke-width="1.5"
               />
@@ -113,7 +113,7 @@ watchEffect(() => {
                     <template #default>
                       <x-icon
                         :icon="Delete"
-                        class="text-tc-4 transition-all group-hover:text-red-500"
+                        class="text-mc-1 transition-all group-hover:text-red-500"
                         :size="18"
                         :stroke-width="2"
                       />

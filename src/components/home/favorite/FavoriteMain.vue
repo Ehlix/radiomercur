@@ -1,40 +1,35 @@
 <script setup lang="ts">
-import { useSearchStore } from "@/stores/searchStore";
 import { useUserStore } from "@/stores/userStore";
 import FavoriteNav from "./FavoriteNav.vue";
 import { computed, defineAsyncComponent, nextTick, ref } from "vue";
-import XButton from "../ui/button/XButton.vue";
-import XIcon from "../ui/icon/XIcon.vue";
+import XButton from "@/components/ui/button/XButton.vue";
+import XIcon from "@/components/ui/icon/XIcon.vue";
 import ChangePage from "./ChangePage.vue";
 import { ChevronsRight } from "lucide-vue-next";
 const AddToFavorite = defineAsyncComponent(
-  () => import("../stationList/AddToFavorite.vue"),
+  () => import("../AddToFavorite.vue"),
 );
-const ExtendedInfo = defineAsyncComponent(
-  () => import("../stationList/ExtendedInfo.vue"),
-);
-const StationList = defineAsyncComponent(
-  () => import("../stationList/StationList.vue"),
-);
+const ExtendedInfo = defineAsyncComponent(() => import("../ExtendedInfo.vue"));
+const FavoriteList = defineAsyncComponent(() => import("./FavoriteList.vue"));
 // const StationCard = defineAsyncComponent(
 //   () => import("../stationList/StationCard.vue"),
 // );
 
-const searchStore = useSearchStore();
 const userStore = useUserStore();
 
-const STATIONS_PER_PAGE = 60;
+const STATIONS_PER_PAGE = 35;
 const el = ref<HTMLElement | null>(null);
 const currentFolderID = ref<string>("default");
 const currentPage = ref<number>(1);
 const totalStationCount = computed(() => {
-  return userStore.favoriteStations[currentFolderID.value].stations.length;
+  return userStore.favoriteStations.value[currentFolderID.value].stations
+    .length;
 });
 const totalPageCount = computed(() => {
   return Math.ceil(totalStationCount.value / STATIONS_PER_PAGE);
 });
 const stationsList = computed(() => {
-  return userStore.favoriteStations[currentFolderID.value].stations.slice(
+  return userStore.favoriteStations.value[currentFolderID.value].stations.slice(
     (currentPage.value - 1) * STATIONS_PER_PAGE,
     currentPage.value * STATIONS_PER_PAGE,
   );
@@ -49,7 +44,6 @@ const selectFolder = (folderID: string) => {
 
 const selectStationHandler = (station: Station) => {
   userStore.updateStationInFavoriteAndSelect(station, currentFolderID.value);
-  searchStore.addToHistory(station);
 };
 
 const newFolderHandler = (name: string) => {
@@ -164,12 +158,13 @@ const openDialogHandler = (station: Station, mode: "favorite" | "info") => {
       v-if="dialogOpen === 'info' && toDialogStation"
       :open="dialogOpen === 'info'"
       :station="toDialogStation"
+      :locale="userStore.locale.value"
       @close="(toDialogStation = null), (dialogOpen = false)"
     />
     <div>
       <favorite-nav
         :current-folder-id="currentFolderID"
-        :favorite-stations="userStore.favoriteStations"
+        :favorite-stations="userStore.favoriteStations.value"
         @change-current-folder="selectFolder($event)"
         @create-new-folder="newFolderHandler($event)"
         @delete-folder-by-id="deleteFolderHandler($event)"
@@ -177,10 +172,8 @@ const openDialogHandler = (station: Station, mode: "favorite" | "info") => {
       />
     </div>
     <div class="grow">
-      <station-list
-        :show-update-button="true"
+      <favorite-list
         :stations-list="stationsList"
-        :user-locale="userStore.locale"
         @select-station="selectStationHandler"
         @open-add-to-favorite="openDialogHandler($event, 'favorite')"
         @open-extended-info="openDialogHandler($event, 'info')"
@@ -192,7 +185,7 @@ const openDialogHandler = (station: Station, mode: "favorite" | "info") => {
     </div>
     <!-- Pagination -->
     <div
-      v-if="userStore.favoriteStations[currentFolderID].stations.length"
+      v-if="userStore.favoriteStations.value[currentFolderID].stations.length"
       class="flex h-fit w-full justify-between gap-2 px-2 *:h-8"
     >
       <x-button

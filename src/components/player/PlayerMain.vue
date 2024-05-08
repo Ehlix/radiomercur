@@ -1,7 +1,6 @@
 0
 <script setup lang="ts">
 import { computed, ref, watch, nextTick, defineAsyncComponent } from "vue";
-import { storeToRefs } from "pinia";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 import { cn } from "@/lib/utils/twMerge";
 import { useUserStore } from "@/stores/userStore";
@@ -21,13 +20,13 @@ import {
   Info,
 } from "lucide-vue-next";
 const AddToFavorite = defineAsyncComponent(
-  () => import("../stationList/AddToFavorite.vue"),
+  () => import("../home/AddToFavorite.vue"),
 );
 const ExtendedInfo = defineAsyncComponent(
-  () => import("../stationList/ExtendedInfo.vue"),
+  () => import("../home/ExtendedInfo.vue"),
 );
 
-const { selectedStation, playerVisualMode } = storeToRefs(useUserStore());
+const { selectedStation, playerVisualMode } = useUserStore();
 const player = ref<HTMLAudioElement | null>(null);
 const paused = ref<boolean>(true);
 const loading = ref<boolean>(false);

@@ -12,7 +12,7 @@ import XButton from "@/components/ui/button/XButton.vue";
 import XInput from "@/components/ui/input/XInput.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import { FolderPen, Pen, X } from "lucide-vue-next";
-import DialogClose from "../ui/dialog/DialogClose.vue";
+import DialogClose from "@/components/ui/dialog/DialogClose.vue";
 import { ref } from "vue";
 
 const props = defineProps<{
@@ -44,7 +44,7 @@ const addHandler = () => {
       >
         <x-icon
           :icon="Pen"
-          class="text-tc-4 transition-all group-hover:text-mc-2"
+          class="text-mc-1 transition-all group-hover:text-tc-1"
           :size="20"
           :stroke-width="1.5"
         />

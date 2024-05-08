@@ -14,7 +14,6 @@ import XIcon from "@/components/ui/icon/XIcon.vue";
 import { ref, watch } from "vue";
 import { getLSData, setLSData } from "@/lib/api/localStorage";
 import { useUserStore } from "@/stores/userStore";
-import { storeToRefs } from "pinia";
 
 const themeClasses: ThemeClasses = {
   default: "default",
@@ -59,7 +58,7 @@ const currentTheme = ref<Theme>(ls?.userSettings?.colorTheme || "defaultLight");
 // };
 
 const { changeLocale, changeBorders, changePlayerVisualMode } = useUserStore();
-const { borders, playerVisualMode } = storeToRefs(useUserStore());
+const { borders, playerVisualMode } = useUserStore();
 
 watch(
   currentTheme,

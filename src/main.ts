@@ -1,7 +1,6 @@
 import "./assets/main.css";
 
 import { createApp } from "vue";
-import { createPinia } from "pinia";
 import { createI18n } from "vue-i18n";
 import { messages } from "@/lib/locale/locale";
 import App from "./App.vue";
@@ -9,13 +8,11 @@ import { inject } from "@vercel/analytics";
 
 const app = createApp(App);
 
-app.use(createPinia());
-
 import { useUserStore } from "@/stores/userStore";
-const userStore = useUserStore();
+const { locale } = useUserStore();
 
 const i18n = createI18n({
-  locale: userStore.locale,
+  locale: locale.value,
   messages,
 });
 
