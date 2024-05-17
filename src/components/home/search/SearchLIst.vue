@@ -5,12 +5,6 @@ import { type HTMLAttributes } from "vue";
 import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import XImage from "@/components/ui/image/XImage.vue";
 import { Play, ThumbsUp, Star, ListPlus, Info } from "lucide-vue-next";
-// import { defineAsyncComponent } from "vue";
-// const XTooltip = defineAsyncComponent(
-//   () => import("@/components/ui/tooltip/XTooltip.vue"),
-// );
-// const XImage = defineAsyncComponent(() => import("@/components/ui/image/XImage.vue"));
-// const XIcon = defineAsyncComponent(() => import("@/components/ui/icon/XIcon.vue"));
 
 const props = defineProps<{
   stationsList: Station[];
@@ -106,21 +100,6 @@ const openExtendedInfo = (station: Station) => {
             {{ station.name }}
           </h2>
         </button>
-        <!-- Logo -->
-        <!-- <div
-          :class="cn('pointer-events-none absolute left-6 top-4 z-10 size-[6rem] select-none overflow-hidden rounded-full opacity-100', {
-            'ml-4': showUpdateButton,
-          })"
-        >
-          <div class="absolute inset-0 z-0 bg-mc-1 opacity-100" />
-          <x-image
-            :src="station.favicon"
-            :height="6"
-            :width="6"
-            alt="logo"
-            class="absolute inset-0 z-10 size-[6rem] object-cover opacity-40"
-          />
-        </div> -->
         <!-- Station Info -->
         <div class="flex h-full items-center justify-between gap-2 sm:flex-col">
           <!-- Station Popularity -->

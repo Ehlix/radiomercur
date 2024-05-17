@@ -35,15 +35,18 @@ export const useUserStore = createGlobalState(() => {
     window.navigator.language === "ru-RU" || window.navigator.language === "ru"
       ? "ru"
       : "en";
-
   locale.value = localeFromLS
     ? localeFromLS === "ru"
       ? "ru"
       : "en"
     : localeFromNav;
 
-  const borderFromLS = lsData?.userSettings?.borders;
-  borders.value = borderFromLS === "square" ? "square" : "rounded";
+  const borderFromLS =
+    lsData?.userSettings?.borders === "square" ? "square" : "rounded";
+  borders.value = borderFromLS;
+  document.body.classList.add(
+    borderFromLS === "square" ? "not-rounded" : "rounded",
+  );
 
   const playerVisualModeFromLS = lsData?.userSettings?.playerVisualMode;
   playerVisualMode.value = playerVisualModeFromLS === "2" ? "2" : "1";
@@ -55,7 +58,12 @@ export const useUserStore = createGlobalState(() => {
     ) {
       return;
     }
-    historyList.value.unshift(station);
+    const newHistory = [station, ...historyList.value];
+    if (newHistory.length > 70) {
+      newHistory.splice(49);
+    }
+    historyList.value = newHistory;
+    setLSData({ historyStations: newHistory });
   };
 
   const selectStation = (station: Station) => {
@@ -65,10 +73,12 @@ export const useUserStore = createGlobalState(() => {
 
   const changeLocale = (newLocale: "en" | "ru") => {
     locale.value = newLocale;
+    setLSData({ userSettings: { language: newLocale } });
   };
 
   const changePlayerVisualMode = (newMode: "1" | "2") => {
     playerVisualMode.value = newMode;
+    setLSData({ userSettings: { playerVisualMode: newMode } });
   };
 
   const updateStationInFavoriteAndSelect = (
@@ -127,6 +137,12 @@ export const useUserStore = createGlobalState(() => {
 
   const changeBorders = (mode: typeof borders.value) => {
     borders.value = mode;
+    setLSData({ userSettings: { borders: mode } });
+    if (mode === "square") {
+      document.body.classList.add("not-rounded");
+    } else {
+      document.body.classList.remove("not-rounded");
+    }
   };
 
   const replaceFavoriteStations = (
@@ -192,6 +208,7 @@ export const useUserStore = createGlobalState(() => {
       name,
       stations: [],
     };
+    return id;
   };
 
   const deleteFavoriteStationsFolder = (folderID: string) => {
@@ -201,10 +218,6 @@ export const useUserStore = createGlobalState(() => {
     delete favoriteStations.value[folderID];
   };
 
-  watch([playerVisualMode], () => {
-    setLSData({ userSettings: { playerVisualMode: playerVisualMode.value } });
-  });
-
   watch(
     [favoriteStations],
     () => {
@@ -213,44 +226,6 @@ export const useUserStore = createGlobalState(() => {
     {
       deep: true,
       immediate: true,
-    },
-  );
-
-  watch(
-    [locale],
-    () => {
-      setLSData({ userSettings: { language: locale.value } });
-    },
-    {
-      immediate: true,
-    },
-  );
-
-  watch(
-    [borders],
-    () => {
-      setLSData({ userSettings: { borders: borders.value } });
-      if (borders.value === "square") {
-        document.body.classList.add("not-rounded");
-      } else {
-        document.body.classList.remove("not-rounded");
-      }
-    },
-    {
-      immediate: true,
-    },
-  );
-
-  watch(
-    [historyList],
-    () => {
-      if (historyList.value.length > 70) {
-        historyList.value.splice(49);
-      }
-      setLSData({ historyStations: historyList.value });
-    },
-    {
-      deep: true,
     },
   );
 

@@ -1,4 +1,4 @@
-import { ref, shallowRef, watch } from "vue";
+import { ref, shallowRef } from "vue";
 import { getAllStations } from "@/lib/api/getStations";
 import { useBaseUrlsStore } from "./baseUrlsStore";
 import type { AxiosProgressEvent } from "axios";
@@ -33,7 +33,8 @@ export const useSearchStore = () => {
 
   const setDownloadProgress = (event: AxiosProgressEvent) => {
     if (event.total) {
-      downloadProgress.value = Math.round((event.loaded * 100) / event.total);
+      const progress = Math.round((event.loaded * 100) / event.total);
+      downloadProgress.value = progress === 100 ? 0 : progress;
     }
   };
 
@@ -93,6 +94,7 @@ export const useSearchStore = () => {
     currentPage.value = 0;
     canLoadMore.value = true;
     filters.value = newFilters;
+    setFiltersToLS(newFilters);
     apiRequest(newFilters);
   };
 
@@ -119,32 +121,18 @@ export const useSearchStore = () => {
     apiRequest(filters.value);
   };
 
-  watch(downloadProgress, () => {
-    // console.log("progress: ", downloadProgress.value);
-    if (downloadProgress.value === 100) {
-      downloadProgress.value = 0;
-    }
-  });
-
   watchOnce(baseUrl, () => {
-    const ls = getLSData();
-    getStations(ls?.searchFilters || {});
+    getStations(filters.value);
   });
 
-  watch(
-    [filters],
-    () => {
-      setLSData({
-        searchFilters: {
-          highQualityOnly: filters.value.highQualityOnly ?? false,
-          reverse: filters.value.reverse ?? true,
-        },
-      });
-    },
-    {
-      deep: true,
-    },
-  );
+  const setFiltersToLS = (newFilters: SearchFilters) => {
+    setLSData({
+      searchFilters: {
+        highQualityOnly: newFilters.highQualityOnly ?? false,
+        reverse: newFilters.reverse ?? true,
+      },
+    });
+  };
 
   return {
     baseUrlReload,

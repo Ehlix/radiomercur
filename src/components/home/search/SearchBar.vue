@@ -56,17 +56,8 @@ const changeCountryCode = (payload: string) => {
 
 const updateCurrentTab = (payload: string) => {
   currentTab.value = payload;
+  emits("currentTab", payload);
 };
-
-watch(
-  [currentTab],
-  () => {
-    emits("currentTab", currentTab.value);
-  },
-  {
-    immediate: true,
-  },
-);
 
 watch(
   [filters],

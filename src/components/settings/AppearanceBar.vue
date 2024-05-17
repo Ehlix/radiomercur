@@ -11,7 +11,7 @@ import {
 import XButton from "@/components/ui/button/XButton.vue";
 import { Settings } from "lucide-vue-next";
 import XIcon from "@/components/ui/icon/XIcon.vue";
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { getLSData, setLSData } from "@/lib/api/localStorage";
 import { useUserStore } from "@/stores/userStore";
 
@@ -42,35 +42,20 @@ const themeList: ThemeObj[] = [
 ];
 const ls = getLSData();
 
-const currentTheme = ref<Theme>(ls?.userSettings?.colorTheme || "defaultLight");
-
-// const thisCurrentTheme = (theme: Theme) => {
-//   const classes = document.documentElement.classList;
-//   if (
-//     (theme === "defaultLight" && classes.length === 0) ||
-//     classes.contains(themeClasses[theme])
-//   ) {
-//     return true;
-//   } else if (classes.contains(themeClasses[theme])) {
-//     return true;
-//   }
-//   return false;
-// };
+const currentTheme = ref<Theme>(ls?.userSettings?.colorTheme ?? "default");
+if (ls?.userSettings?.colorTheme) {
+  document.documentElement.className =
+    themeClasses[ls.userSettings.colorTheme] || "";
+}
 
 const { changeLocale, changeBorders, changePlayerVisualMode } = useUserStore();
 const { borders, playerVisualMode } = useUserStore();
 
-watch(
-  currentTheme,
-  (theme: Theme) => {
-    document.documentElement.className = themeClasses[theme] || "";
-    currentTheme.value = theme;
-    setLSData({ userSettings: { colorTheme: theme } });
-  },
-  {
-    immediate: true,
-  },
-);
+const changeThemeHandler = (theme: Theme) => {
+  currentTheme.value = theme;
+  document.documentElement.className = themeClasses[theme] || "";
+  setLSData({ userSettings: { colorTheme: theme } });
+};
 </script>
 
 <template>
@@ -105,7 +90,7 @@ watch(
               variant="reversed"
               :disabled="currentTheme === theme.value"
               class="capitalize"
-              @click="currentTheme = theme.value"
+              @click="changeThemeHandler(theme.value)"
             >
               {{ theme.name }}
             </x-button>

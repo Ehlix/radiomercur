@@ -6,18 +6,16 @@ import XButton from "@/components/ui/button/XButton.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import ChangePage from "./ChangePage.vue";
 import { ChevronsRight } from "lucide-vue-next";
+import { watch } from "vue";
 const AddToFavorite = defineAsyncComponent(
   () => import("../AddToFavorite.vue"),
 );
 const ExtendedInfo = defineAsyncComponent(() => import("../ExtendedInfo.vue"));
 const FavoriteList = defineAsyncComponent(() => import("./FavoriteList.vue"));
-// const StationCard = defineAsyncComponent(
-//   () => import("../stationList/StationCard.vue"),
-// );
 
 const userStore = useUserStore();
 
-const STATIONS_PER_PAGE = 35;
+const STATIONS_PER_PAGE = 2;
 const el = ref<HTMLElement | null>(null);
 const currentFolderID = ref<string>("default");
 const currentPage = ref<number>(1);
@@ -29,30 +27,27 @@ const totalPageCount = computed(() => {
   return Math.ceil(totalStationCount.value / STATIONS_PER_PAGE);
 });
 const stationsList = computed(() => {
-  return userStore.favoriteStations.value[currentFolderID.value].stations.slice(
+  const stations =
+    userStore.favoriteStations.value[currentFolderID.value].stations;
+  if (!stations.length) {
+    return stations;
+  }
+  return stations.slice(
     (currentPage.value - 1) * STATIONS_PER_PAGE,
     currentPage.value * STATIONS_PER_PAGE,
   );
 });
 const dialogOpen = ref<"favorite" | "info" | false>(false);
-const toDialogStation = ref<Station | null>(null);
-
-const selectFolder = (folderID: string) => {
-  currentFolderID.value = folderID;
-  currentPage.value = 1;
-};
+const stationToDialog = ref<Station | null>(null);
 
 const selectStationHandler = (station: Station) => {
   userStore.updateStationInFavoriteAndSelect(station, currentFolderID.value);
 };
 
 const newFolderHandler = (name: string) => {
-  userStore.createFavoriteStationsFolder(name);
-  const searchFolderId = Object.values(
-    userStore.favoriteStations,
-  ).findLastIndex((folder) => folder.name === name);
-  const id = Object.keys(userStore.favoriteStations)[searchFolderId];
-  selectFolder(id);
+  const id = userStore.createFavoriteStationsFolder(name);
+  currentFolderID.value = id;
+  currentPage.value = 1;
 };
 
 const deleteFolderHandler = (folderId: string) => {
@@ -136,9 +131,13 @@ const positionHandler = (station: Station, mode: "up" | "down") => {
   }
 };
 const openDialogHandler = (station: Station, mode: "favorite" | "info") => {
-  toDialogStation.value = station;
+  stationToDialog.value = station;
   dialogOpen.value = mode;
 };
+
+watch(currentFolderID, () => {
+  currentPage.value = 1;
+});
 </script>
 
 <template>
@@ -148,24 +147,23 @@ const openDialogHandler = (station: Station, mode: "favorite" | "info") => {
   >
     <!-- Add To Favorite -->
     <add-to-favorite
-      v-if="dialogOpen === 'favorite' && toDialogStation"
+      v-if="dialogOpen === 'favorite' && stationToDialog"
       :open="dialogOpen === 'favorite'"
-      :station="toDialogStation"
-      @close="(toDialogStation = null), (dialogOpen = false)"
+      :station="stationToDialog"
+      @close="(stationToDialog = null), (dialogOpen = false)"
     />
     <!-- Extended info dialog -->
     <ExtendedInfo
-      v-if="dialogOpen === 'info' && toDialogStation"
+      v-if="dialogOpen === 'info' && stationToDialog"
       :open="dialogOpen === 'info'"
-      :station="toDialogStation"
+      :station="stationToDialog"
       :locale="userStore.locale.value"
-      @close="(toDialogStation = null), (dialogOpen = false)"
+      @close="(stationToDialog = null), (dialogOpen = false)"
     />
     <div>
       <favorite-nav
-        :current-folder-id="currentFolderID"
+        v-model="currentFolderID"
         :favorite-stations="userStore.favoriteStations.value"
-        @change-current-folder="selectFolder($event)"
         @create-new-folder="newFolderHandler($event)"
         @delete-folder-by-id="deleteFolderHandler($event)"
         @rename-folder="renameFolder($event)"
@@ -182,12 +180,17 @@ const openDialogHandler = (station: Station, mode: "favorite" | "info") => {
         @position-down="positionHandler($event, 'down')"
         @update-fav-data="updateStation($event)"
       />
+      <div
+        v-if="
+          !userStore.favoriteStations.value[currentFolderID].stations.length
+        "
+        class="flex h-full w-full items-center justify-center px-2 py-4 text-center text-2xl font-semibold text-bgc-1"
+      >
+        {{ $t("favoriteBar.empty") }}
+      </div>
     </div>
     <!-- Pagination -->
-    <div
-      v-if="userStore.favoriteStations.value[currentFolderID].stations.length"
-      class="flex h-fit w-full justify-between gap-2 px-2 *:h-8"
-    >
+    <div class="flex h-fit w-full justify-between gap-2 px-2 *:h-8">
       <x-button
         :disabled="currentPage === 1"
         class="w-10 min-w-8 p-0 xs:min-w-5"

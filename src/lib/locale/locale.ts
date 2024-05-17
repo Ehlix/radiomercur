@@ -20,6 +20,7 @@ const EN = {
     enterPage: "Enter the page",
     changePage: "Change the page",
     defaultFolder: "My stations",
+    empty: "Empty",
   },
   searchBar: {
     ascendingOrder: "Ascending order",
@@ -384,6 +385,7 @@ const RU = {
     enterPage: "Введите номер страницы",
     changePage: "Перейти на страницу",
     defaultFolder: "Мои станции",
+    empty: "Пусто",
   },
   searchBar: {
     ascendingOrder: "По возрастанию",

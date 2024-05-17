@@ -1,4 +1,4 @@
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { getBaseUrls } from "@/lib/api/getBaseUrls";
 import { createGlobalState } from "@vueuse/core";
 
@@ -7,21 +7,14 @@ export const useBaseUrlsStore = createGlobalState(() => {
   const allBaseUrls = ref<BaseURL[]>([]);
   const baseUrl = ref<BaseURL>(undefined);
 
-  getBaseUrls().then((hosts) => {
+  getBaseUrls().then(async (hosts) => {
     if (!hosts) {
       return (mainServerIsActive.value = false);
     }
     allBaseUrls.value = hosts;
-  });
-
-  watch([allBaseUrls, baseUrl], () => {
-    if (allBaseUrls.value.length && !baseUrl.value) {
-      setBaseUrl();
+    while (!baseUrl.value && hosts.length) {
+      await setBaseUrl();
     }
-  });
-
-  watch(mainServerIsActive, () => {
-    !mainServerIsActive.value && console.log("Main server offline");
   });
 
   const setBaseUrl = async () => {

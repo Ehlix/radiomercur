@@ -11,6 +11,7 @@ import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import PlayerVisual from "./PlayerVisual.vue";
 import HistoryList from "./HistoryList.vue";
 import {
+  Disc3,
   Play,
   Pause,
   Volume1,
@@ -239,14 +240,16 @@ watch([volume], () => {
         >
           <!-- Play -->
           <button
+            :disabled="loading"
             class="pointer-events-auto flex size-12 items-center justify-center rounded-full border-2 border-tc-1 stroke-[0.1rem] p-1 transition-all sm:size-10"
             @click="togglePlay()"
           >
             <x-icon
-              :icon="paused ? Play : Pause"
+              :icon="loading ? Disc3 : paused ? Play : Pause"
               :class="
-                cn('size-8 transition-transform hover:scale-110', {
-                  'translate-x-[0.11rem]': paused,
+                cn('size-8 transition-transform', {
+                  'translate-x-[0.11rem]': !loading && paused,
+                  'animate-spin': loading,
                 })
               "
             />

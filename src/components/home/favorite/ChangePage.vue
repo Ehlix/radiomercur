@@ -12,7 +12,7 @@ import XInput from "@/components/ui/input/XInput.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import { Milestone } from "lucide-vue-next";
 import DialogClose from "@/components/ui/dialog/DialogClose.vue";
-import { ref, watchEffect } from "vue";
+import { ref } from "vue";
 
 const props = defineProps<{
   disabled?: boolean;
@@ -29,10 +29,6 @@ const inputValue = ref<number>(props.currentPage);
 const saveHandler = () => {
   emits("changePage", inputValue.value);
 };
-
-watchEffect(() => {
-  inputValue.value = props.currentPage;
-});
 </script>
 
 <template>

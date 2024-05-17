@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { computed, ref, watch, watchEffect } from "vue";
+import { computed } from "vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import DeleteAlert from "../DeleteAlert.vue";
 import AddFolder from "./AddFolder.vue";
@@ -15,18 +15,12 @@ import RenameFolder from "./RenameFolder.vue";
 import { Folder, Delete } from "lucide-vue-next";
 
 const props = defineProps<{
-  currentFolderId: string;
   favoriteStations: FavoriteStations;
 }>();
 
-const selectedFolder = ref<string>(props.currentFolderId);
-
-watch([() => props.currentFolderId], () => {
-  selectedFolder.value = props.currentFolderId;
-});
+const model = defineModel<string>();
 
 const emits = defineEmits<{
-  (e: "changeCurrentFolder", folderID: string): void;
   (e: "createNewFolder", name: string): void;
   (e: "deleteFolderById", FolderId: string): void;
   (e: "renameFolder", folderData: { folderID: string; name: string }): void;
@@ -53,10 +47,6 @@ const renameFolderHandler = (folderID: string, name: string) => {
   }
   emits("renameFolder", { folderID: folderID, name: name });
 };
-
-watchEffect(() => {
-  emits("changeCurrentFolder", selectedFolder.value);
-});
 </script>
 
 <template>
@@ -64,7 +54,7 @@ watchEffect(() => {
     <div class="flex w-full items-center gap-2">
       <div class="w-72">
         <select-main
-          v-model="selectedFolder"
+          v-model="model"
           name="folders"
         >
           <select-trigger>

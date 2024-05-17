@@ -67,6 +67,12 @@ const playHandler = (station: Station) => {
             :station="station"
             @play-handler="playHandler"
           />
+          <div
+            v-if="!historyList.length"
+            class="flex w-full items-center justify-center px-2 py-4 text-center text-lg font-semibold text-mc-2"
+          >
+            {{ $tc("favoriteBar.empty") }}
+          </div>
         </div>
         <!-- <DialogFooter class="p-6 pt-0"> </DialogFooter> -->
       </div>

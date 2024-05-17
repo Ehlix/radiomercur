@@ -23,7 +23,7 @@ export const getLSData = (): LocalStorageData | null => {
         },
         userSettings: {
           borders: ls.userSettings?.borders === "square" ? "square" : "rounded",
-          colorTheme: ls.userSettings?.colorTheme ?? "defaultLight",
+          colorTheme: ls.userSettings?.colorTheme ?? "default",
           language:
             ls.userSettings?.language === "en" ||
             ls.userSettings?.language === "ru"
