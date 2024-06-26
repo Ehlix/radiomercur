@@ -1,5 +1,5 @@
 import { ref, shallowRef, watch } from "vue";
-import { getStationInfoById } from "@/lib/api/getStations";
+import { getStationInfoById } from "@/lib/api/stations";
 import { useBaseUrlsStore } from "./baseUrlsStore";
 import { getLSData, setLSData } from "@/lib/api/localStorage";
 import { generateId } from "@/lib/utils/generateId";

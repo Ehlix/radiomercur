@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ThumbsUp, Star } from "lucide-vue-next";
-import { getFlagImage } from "@/lib/api/getFlagImage";
+import { getFlagImage } from "@/lib/api/flagImage";
 import XImage from "@/components/ui/image/XImage.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
@@ -35,7 +35,7 @@ const close = () => {
   >
     <dialog-content class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
       <div
-        class="min-h-58 grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] rounded bg-mc-1 sm:max-w-[425px]"
+        class="min-h-58 grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden rounded bg-mc-1 sm:max-w-[425px]"
       >
         <dialog-header
           class="truncate text-wrap border-b border-mc-2 bg-mc-1 p-2 px-10 xs:p-1 xs:px-6"

@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const BASE_HTTP = "http://all.api.radio-browser.info/json";
+// const BASE_HTTP = "http://all.api.radio-browser.info/json";
 const BASE_HTTPS_1 = "https://de1.api.radio-browser.info/json";
 const BASE_HTTPS_2 = "https://at1.api.radio-browser.info/json";
 
-const baseUrls = [BASE_HTTP, BASE_HTTPS_1, BASE_HTTPS_2];
+const baseUrls = [BASE_HTTPS_1, BASE_HTTPS_2];
 
 // export const getBaseUrls = async (): Promise<BaseURL[] | null> => {
 //   try {
@@ -49,25 +49,3 @@ export const getBaseUrls = async (): Promise<BaseURL[] | null> => {
     return null;
   }
 };
-
-// export const getBaseUrls = (): Promise<BaseURL[] | undefined> => {
-//   axios({
-//     method: "GET",
-//     baseURL: ALL_BASE_HTTP,
-//     url: "/servers",
-//   })
-//     .then((result) => {
-//       const servers = result.data;
-//       return Promise.resolve(
-//         servers.map((server: { name?: string }) => {
-//           if (server.name) {
-//             return `https://${server.name}/json`;
-//           }
-//         }),
-//       );
-//     })
-//     .catch((error) => {
-//       console.log(error.message);
-//     });
-//   return Promise.resolve([]);
-// };

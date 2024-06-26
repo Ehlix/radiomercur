@@ -15,7 +15,7 @@ const FavoriteList = defineAsyncComponent(() => import("./FavoriteList.vue"));
 
 const userStore = useUserStore();
 
-const STATIONS_PER_PAGE = 2;
+const STATIONS_PER_PAGE = 35;
 const el = ref<HTMLElement | null>(null);
 const currentFolderID = ref<string>("default");
 const currentPage = ref<number>(1);

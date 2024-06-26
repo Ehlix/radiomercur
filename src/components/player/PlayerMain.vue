@@ -1,4 +1,3 @@
-0
 <script setup lang="ts">
 import { computed, ref, watch, nextTick, defineAsyncComponent } from "vue";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
@@ -148,6 +147,13 @@ watch([volume], () => {
       <div
         class="absolute -left-1 z-50 flex h-full flex-col items-center justify-between"
       >
+        <!-- Error status -->
+        <p
+          v-if="loadingError"
+          class="absolute bottom-0 left-8 text-nowrap text-red-500 sm:hidden"
+        >
+          ! Connection Error !
+        </p>
         <!-- History -->
         <history-list />
         <!-- Add To Favorites -->
@@ -169,7 +175,7 @@ watch([volume], () => {
               />
               <x-icon
                 :icon="ListPlus"
-                :size="20"
+                :size="22"
                 :stroke-width="2"
                 class="cursor-pointer"
               />
@@ -211,7 +217,7 @@ watch([volume], () => {
       </div>
       <!-- Station name -->
       <div
-        class="z-40 flex h-[1.35rem] w-full items-center justify-center gap-2 sm:h-5"
+        class="z-40 flex h-[1.35rem] w-full items-center justify-center gap-2 pl-6 sm:h-5"
       >
         <div
           v-if="selectedStation"
@@ -240,30 +246,29 @@ watch([volume], () => {
         >
           <!-- Play -->
           <button
+            v-show="!loading"
             :disabled="loading"
             class="pointer-events-auto flex size-12 items-center justify-center rounded-full border-2 border-tc-1 stroke-[0.1rem] p-1 transition-all sm:size-10"
             @click="togglePlay()"
           >
             <x-icon
-              :icon="loading ? Disc3 : paused ? Play : Pause"
+              :icon="paused ? Play : Pause"
               :class="
                 cn('size-8 transition-transform', {
                   'translate-x-[0.11rem]': !loading && paused,
-                  'animate-spin': loading,
                 })
               "
             />
           </button>
+          <x-icon
+            v-show="loading"
+            :icon="Disc3"
+            :stroke-width="1"
+            class="size-14 animate-spin sm:size-12"
+          />
         </div>
       </div>
       <div class="flex h-8 items-center gap-2 text-red-500">
-        <!-- Error status -->
-        <p
-          v-if="loadingError"
-          class="sm:hidden"
-        >
-          ! Connection Error !
-        </p>
         <!-- Volume -->
         <div
           class="relative ml-auto w-fit xs:hidden"

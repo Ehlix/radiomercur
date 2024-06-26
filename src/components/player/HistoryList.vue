@@ -13,6 +13,7 @@ import { useUserStore } from "@/stores/userStore";
 import HistoryCard from "./HistoryCard.vue";
 import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import { type HTMLAttributes } from "vue";
+
 const { selectStation, historyList, locale } = useUserStore();
 
 defineProps<{

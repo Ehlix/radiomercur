@@ -2,7 +2,7 @@
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 import { Play } from "lucide-vue-next";
 import { messages } from "@/lib/locale/locale";
-import { getFlagImage } from "@/lib/api/getFlagImage";
+import { getFlagImage } from "@/lib/api/flagImage";
 import XImage from "@/components/ui/image/XImage.vue";
 import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";

@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { getBaseUrls } from "@/lib/api/getBaseUrls";
+import { getBaseUrls } from "@/lib/api/baseUrls";
 import { createGlobalState } from "@vueuse/core";
 
 export const useBaseUrlsStore = createGlobalState(() => {

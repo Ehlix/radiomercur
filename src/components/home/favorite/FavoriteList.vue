@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { cn } from "@/lib/utils/twMerge";
-import { getFlagImage } from "@/lib/api/getFlagImage";
+import { getFlagImage } from "@/lib/api/flagImage";
 import { onMounted, onUnmounted, ref, type HTMLAttributes } from "vue";
 import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import XImage from "@/components/ui/image/XImage.vue";
@@ -159,7 +159,7 @@ onUnmounted(() => {
       <div
         :class="
           cn(
-            'flex h-10 w-full select-text items-center justify-start gap-2 rounded bg-hc-1 p-2 transition-opacity sm:h-24 sm:p-1',
+            'flex h-10 w-full select-text items-center justify-start gap-2 rounded bg-hc-1 p-2 py-1 transition-opacity sm:h-16 sm:flex-wrap sm:gap-0.5 sm:p-1 sm:pr-6',
             {
               'opacity-20':
                 station.stationuuid === dragTarget?.stationuuid && isDragging,
@@ -168,7 +168,7 @@ onUnmounted(() => {
         "
       >
         <div
-          class="flex h-full items-center gap-2 sm:flex-col-reverse sm:justify-between"
+          class="flex h-full items-center gap-2 sm:h-6 sm:justify-between sm:gap-1"
         >
           <!-- Add To Favorites -->
           <x-tooltip content-side="left">
@@ -178,8 +178,8 @@ onUnmounted(() => {
                 @click="openAddToFavoriteModal(station)"
               >
                 <ListPlus
-                  :size="22"
-                  :stroke-width="2"
+                  :size="25"
+                  :stroke-width="1.8"
                 />
               </button>
             </template>
@@ -225,17 +225,16 @@ onUnmounted(() => {
         </div>
         <!-- Play -->
         <button
-          class="group flex h-full w-full items-center justify-start truncate"
+          class="group flex h-full w-full items-center justify-start truncate sm:order-first sm:h-8 sm:min-w-full"
           @click="selectStation(station)"
         >
           <Play
-            :size="30"
             :stroke-width="1.5"
-            class="-ml-1 min-w-8 transition-transform group-hover:scale-105"
+            class="-ml-1 size-8 min-w-8 transition-transform group-hover:scale-105 sm:size-10"
           />
           <!-- Station Name -->
           <h2
-            class="-ml-1 w-full truncate text-nowrap px-3 text-start text-tc-1 sm:max-h-full sm:text-wrap sm:text-base"
+            class="-ml-1 w-full truncate text-nowrap px-3 text-start uppercase text-tc-1 sm:max-h-6 sm:text-wrap sm:text-base"
           >
             {{ station.name }}
           </h2>
@@ -255,7 +254,9 @@ onUnmounted(() => {
             class="absolute inset-0 z-10 size-[6rem] object-cover opacity-40"
           />
         </div> -->
-        <div class="flex h-full items-center justify-between gap-2 sm:flex-col">
+        <div
+          class="flex h-full items-center justify-between gap-2 sm:ml-auto sm:h-4"
+        >
           <!-- Station Popularity -->
           <div
             v-show="station.clickcount"
@@ -288,7 +289,9 @@ onUnmounted(() => {
           </div>
         </div>
         <!-- Dragger -->
-        <div class="flex h-full opacity-60 sm:flex-col sm:justify-between">
+        <div
+          class="right-0 top-0 flex h-full opacity-60 sm:absolute sm:flex-col sm:justify-between sm:py-0"
+        >
           <button
             class=""
             @click.stop="positionUpHandler(station)"

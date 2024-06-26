@@ -12,7 +12,7 @@ const props = defineProps<{
 }>();
 
 const newImage = ref<string>();
-const image: HTMLImageElement | null = new Image();
+const image: HTMLImageElement = new Image();
 
 watch(
   () => props.src,
