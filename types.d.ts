@@ -50,6 +50,8 @@ type Station = {
   url: string;
   url_resolved: string;
   votes: number;
+  geo_lat?: number;
+  geo_long?: number;
 };
 
 type ParamsOrder =
@@ -79,12 +81,13 @@ type NonNegativeInteger<T extends number> = number extends T
     : T;
 
 type DataParams = {
-  name: string;
+  name?: string;
   nameExact?: boolean;
   country?: string;
   countrycode?: string;
   language?: string;
   languageExact?: boolean;
+  has_geo_info?: boolean,
   bitrateMin?: number;
   bitrateMax?: number;
   tag?: string;
@@ -93,8 +96,8 @@ type DataParams = {
   order?: ParamsOrder;
   reverse?: boolean;
   hidebroken?: boolean;
-  limit: number;
-  offset: number;
+  limit?: number;
+  offset?: number;
 };
 
 type SearchFilters = {

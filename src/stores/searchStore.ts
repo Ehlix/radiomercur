@@ -1,14 +1,14 @@
-import { ref, shallowRef } from "vue";
+import { ref, shallowRef, watch } from "vue";
 import { getAllStations } from "@/lib/api/stations";
 import { useBaseUrlsStore } from "./baseUrlsStore";
 import type { AxiosProgressEvent } from "axios";
-import { watchOnce } from "@vueuse/core";
+import { createGlobalState, watchOnce } from "@vueuse/core";
 import { getLSData, setLSData } from "@/lib/api/localStorage";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 
-export const useSearchStore = () => {
-  const { baseUrl, mainServerIsActive } = useBaseUrlsStore();
-  const { setBaseUrl, baseUrlReload } = useBaseUrlsStore();
+export const useSearchStore = createGlobalState(() => {
+  const { baseUrl, mainServerIsActive, setBaseUrl, baseUrlReload } =
+    useBaseUrlsStore();
   const stationsList = shallowRef<Station[]>([]);
   const filters = ref<SearchFilters>({});
   const downloadProgress = ref(0);
@@ -76,7 +76,7 @@ export const useSearchStore = () => {
           homepage: station.homepage || "",
           language: station.language || "",
           languagecodes: station.languagecodes || "",
-          name: removeMetadata(station.name) || "Unknown station",
+          name: station.name ? removeMetadata(station.name) : "Unknown station",
           state: station.state || "",
           stationuuid: station.stationuuid || "",
           tags: station.tags || "",
@@ -134,6 +134,14 @@ export const useSearchStore = () => {
     });
   };
 
+  watch([downloadProgress, loading], () => {
+    if (!loading.value) {
+      downloadProgress.value = 0;
+    }
+    if (downloadProgress.value >= 95) {
+      downloadProgress.value = 0;
+    }
+  });
   return {
     baseUrlReload,
     canLoadMore,
@@ -148,4 +156,4 @@ export const useSearchStore = () => {
     searchStoreReset,
     stationsList,
   };
-};
+});

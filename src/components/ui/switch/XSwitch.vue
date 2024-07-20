@@ -37,7 +37,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
     <div
       :class="
         cn(
-          ' absolute right-[0.5rem] font-semibold text-mc-1 transition-transform',
+          'absolute right-[0.5rem] font-semibold text-mc-1 transition-transform',
           {
             'translate-x-8': props.checked,
           },
@@ -49,7 +49,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
     <div
       :class="
         cn(
-          'absolute left-[0.3rem]  font-semibold text-mc-1 transition-transform ',
+          'absolute left-[0.3rem] font-semibold text-mc-1 transition-transform',
           {
             '-translate-x-7': !props.checked,
           },

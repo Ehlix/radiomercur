@@ -26,7 +26,7 @@ const ExtendedInfo = defineAsyncComponent(
   () => import("../home/ExtendedInfo.vue"),
 );
 
-const { selectedStation, playerVisualMode } = useUserStore();
+const { selectedStation, playerVisualMode, locale } = useUserStore();
 const player = ref<HTMLAudioElement | null>(null);
 const paused = ref<boolean>(true);
 const loading = ref<boolean>(false);
@@ -206,6 +206,7 @@ watch([volume], () => {
                 v-if="dialogOpen === 'info'"
                 :station="selectedStation"
                 :open="dialogOpen === 'info'"
+                :locale="locale"
                 @close="dialogOpen = false"
               />
             </template>
@@ -217,7 +218,7 @@ watch([volume], () => {
       </div>
       <!-- Station name -->
       <div
-        class="z-40 flex h-[1.35rem] w-full items-center justify-center gap-2 pl-6 sm:h-5"
+        class="z-40 flex h-[1.35rem] w-full items-center justify-center gap-2 px-6 sm:h-5"
       >
         <div
           v-if="selectedStation"

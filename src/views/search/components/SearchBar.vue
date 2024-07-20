@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import ChooseCountry from "@/components/home/search/ChooseCountry.vue";
+import ChooseCountry from "./ChooseCountry.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import XInput from "@/components/ui/input/XInput.vue";
 import XSwitch from "@/components/ui/switch/XSwitch.vue";
 import xButton from "@/components/ui/button/XButton.vue";
 import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
-import ChooseInputMode from "@/components/home/search/ChooseInputMode.vue";
+import ChooseInputMode from "./ChooseInputMode.vue";
 import { useDebounce } from "@vueuse/core";
 import {
   Search,

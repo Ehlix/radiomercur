@@ -5,7 +5,7 @@ const getStations = async (
   url: string,
   dataParams: DataParams,
   downloadProgressFn?: (progressEvent: AxiosProgressEvent) => void,
-): Promise<Station[] | null> => {
+): Promise<StationResponse[] | null> => {
   const controller = new AbortController();
 
   try {

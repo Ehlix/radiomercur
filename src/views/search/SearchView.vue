@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useSearchStore } from "@/stores/searchStore";
 import { useUserStore } from "@/stores/userStore";
-import SearchBar from "./SearchBar.vue";
+import SearchBar from "./components/SearchBar.vue";
 import { ref, watch } from "vue";
 import XProgress from "@/components/ui/progress/XProgress.vue";
 import XButton from "@/components/ui/button/XButton.vue";
@@ -10,10 +10,14 @@ import XIcon from "@/components/ui/icon/XIcon.vue";
 import { Disc3, Frown } from "lucide-vue-next";
 import { defineAsyncComponent } from "vue";
 const AddToFavorite = defineAsyncComponent(
-  () => import("../AddToFavorite.vue"),
+  () => import("@/components/home/AddToFavorite.vue"),
 );
-const ExtendedInfo = defineAsyncComponent(() => import("../ExtendedInfo.vue"));
-const SearchList = defineAsyncComponent(() => import("./SearchLIst.vue"));
+const ExtendedInfo = defineAsyncComponent(
+  () => import("@/components/home/ExtendedInfo.vue"),
+);
+const SearchList = defineAsyncComponent(
+  () => import("./components/SearchLIst.vue"),
+);
 
 const searchStore = useSearchStore();
 const userStore = useUserStore();
@@ -57,7 +61,7 @@ watch([() => searchStore.stationsList], () => {
   <div
     v-if="searchStore.mainServerIsActive.value"
     ref="el"
-    class="relative flex h-full w-full flex-col gap-2 overflow-x-hidden overflow-y-scroll rounded bg-mc-1"
+    class="home relative flex h-full w-full flex-col gap-2 overflow-x-hidden overflow-y-scroll rounded bg-mc-1"
   >
     <!-- Add To Favorite -->
     <add-to-favorite
