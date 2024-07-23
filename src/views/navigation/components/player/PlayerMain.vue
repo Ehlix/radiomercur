@@ -18,14 +18,18 @@ import {
   VolumeX,
   ListPlus,
   Info,
+  MapPin,
 } from "lucide-vue-next";
+import { useMapStore } from "@/stores/mapStore";
+import { useRouter } from "vue-router";
 const AddToFavorite = defineAsyncComponent(
-  () => import("../home/AddToFavorite.vue"),
+  () => import("@/components/home/AddToFavorite.vue"),
 );
 const ExtendedInfo = defineAsyncComponent(
-  () => import("../home/ExtendedInfo.vue"),
+  () => import("@/components/home/ExtendedInfo.vue"),
 );
 
+const { selectStation } = useMapStore();
 const { selectedStation, playerVisualMode, locale } = useUserStore();
 const player = ref<HTMLAudioElement | null>(null);
 const paused = ref<boolean>(true);
@@ -104,6 +108,15 @@ const muteToggle = () => {
   } else {
     muteCache.value = volume.value;
     volume.value = [0];
+  }
+};
+
+const router = useRouter();
+
+const goToMap = () => {
+  if (selectedStation.value?.geo_lat && selectedStation.value?.geo_long) {
+    selectStation(selectedStation.value);
+    router.push("/map");
   }
 };
 
@@ -234,10 +247,37 @@ watch([volume], () => {
             "
           />
         </div>
-        <p class="w-fit truncate text-nowrap text-lg">
+        <p class="w-fit truncate text-nowrap text-lg uppercase">
           {{ removeMetadata(selectedStation?.name || "Radio Mercur") }}
         </p>
       </div>
+      <!-- Go to map -->
+      <button
+        v-if="
+          selectedStation &&
+            selectedStation?.geo_lat &&
+            selectedStation?.geo_long
+        "
+        class="absolute right-0 top-0 z-40 flex h-5 w-6 items-center justify-center rounded bg-mc-1"
+        @click="goToMap"
+      >
+        <x-tooltip
+          trigger-class="w-full cursor-pointer items-center flex justify-end"
+          content-side="left"
+        >
+          <template #trigger>
+            <x-icon
+              :icon="MapPin"
+              :size="20"
+              :stroke-width="2.5"
+              class="text-tc-1"
+            />
+          </template>
+          <template #content>
+            <span>{{ `${$t("buttons.toMap")}` }}</span>
+          </template>
+        </x-tooltip>
+      </button>
       <!-- Controls -->
       <div
         class="pointer-events-none absolute flex h-full w-full items-start gap-2 pt-[1.56rem] sm:pt-[1.5rem]"

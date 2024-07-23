@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
-import PlayerMain from "@/components/player/PlayerMain.vue";
+import PlayerMain from "./components/player/PlayerMain.vue";
 import ShadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
-import SettingsMain from "@/components/settings/SettingsMain.vue";
+import SettingsMain from "./components/settings/SettingsMain.vue";
 import AboutMain from "@/components/about/AboutMain.vue";
 
 const nav = ref<Element | null>(null);

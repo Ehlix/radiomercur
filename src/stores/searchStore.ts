@@ -83,6 +83,8 @@ export const useSearchStore = createGlobalState(() => {
           url: station.url || "",
           url_resolved: station.url_resolved || "",
           votes: station.votes || 0,
+          geo_lat: station.geo_lat || undefined,
+          geo_long: station.geo_long || undefined,
         }));
         stationsList.value = filteredRes;
         loading.value = false;

@@ -41,7 +41,7 @@ const close = () => {
           class="truncate text-wrap border-b border-mc-2 bg-mc-1 p-2 px-10 xs:p-1 xs:px-6"
         >
           <dialog-title
-            class="-my-1 truncate text-wrap px-3 text-center text-2xl text-mc-2"
+            class="-my-1 truncate text-wrap px-3 text-center text-2xl uppercase text-mc-2"
           >
             {{ removeMetadata(station.name || "Unknown station") }}
           </dialog-title>

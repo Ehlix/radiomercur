@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
-import NavMain from "@/components/navigation/NavMain.vue";
+import NavView from "@/views/navigation/NavView.vue";
 import ShadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
 import { cn } from "./lib/utils/twMerge";
 
@@ -24,7 +24,7 @@ const variants = [
   <div
     class="container relative flex h-full max-h-[100dvh] w-full select-none flex-col gap-2 overflow-hidden p-2 py-2"
   >
-    <nav-main />
+    <nav-view />
     <div class="flex h-full w-full gap-2 overflow-hidden">
       <div
         class="flex h-full w-20 min-w-20 flex-col gap-2 md:w-14 md:min-w-14 sm:w-10 sm:min-w-10"
@@ -42,6 +42,7 @@ const variants = [
             )
           "
         >
+          <shadow-overlay />
           <div class="-rotate-90 whitespace-nowrap text-xl font-medium">
             {{ $t(variant.name) }}
           </div>

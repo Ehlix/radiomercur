@@ -3,10 +3,11 @@ import { getAllStations } from "@/lib/api/stations";
 import { useBaseUrlsStore } from "./baseUrlsStore";
 import type { AxiosProgressEvent } from "axios";
 import { createGlobalState, watchOnce } from "@vueuse/core";
-// import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
+import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 
 export const useMapStore = createGlobalState(() => {
   const { baseUrl, mainServerIsActive, setBaseUrl } = useBaseUrlsStore();
+  const selectedStation = shallowRef<Station>();
   const stationsList = shallowRef<Station[]>([]);
   const downloadProgress = ref(0);
   const loading = ref(false);
@@ -37,44 +38,44 @@ export const useMapStore = createGlobalState(() => {
           await setBaseUrl();
           return apiRequest();
         }
-        // const filteredRes = res.map((station) => {
-        //   // let lat: number | undefined = station.geo_lat;
-        //   // let long = station.geo_long;
-        //   // if (!lat || !long) {
-        //   //   const code = station.countrycode;
-        //   //   if (!code) {
-        //   //     lat = undefined;
-        //   //     long = undefined;
-        //   //   } else {
-        //   //     const coords = findCoords(code);
-        //   //     lat = coords?.lat;
-        //   //     long = coords?.long;
-        //   //   }
-        //   // }
-        //   return {
-        //     bitrate: station.bitrate || 0,
-        //     clickcount: station.clickcount || 0,
-        //     codec: station.codec || "",
-        //     country: station.country || "",
-        //     countrycode: station.countrycode || "",
-        //     favicon: station.favicon || "",
-        //     homepage: station.homepage || "",
-        //     language: station.language || "",
-        //     languagecodes: station.languagecodes || "",
-        //     name: station.name
-        //       ? removeMetadata(station.name)
-        //       : "Unknown station",
-        //     state: station.state || "",
-        //     stationuuid: station.stationuuid || "",
-        //     tags: station.tags || "",
-        //     url: station.url || "",
-        //     url_resolved: station.url_resolved || "",
-        //     votes: station.votes || 0,
-        //     geo_lat: station.geo_lat,
-        //     geo_long: station.geo_long,
-        //   };
-        // });
-        stationsList.value = res as Station[];
+        const filteredRes = res.map((station) => {
+          // let lat: number | undefined = station.geo_lat;
+          // let long = station.geo_long;
+          // if (!lat || !long) {
+          //   const code = station.countrycode;
+          //   if (!code) {
+          //     lat = undefined;
+          //     long = undefined;
+          //   } else {
+          //     const coords = findCoords(code);
+          //     lat = coords?.lat;
+          //     long = coords?.long;
+          //   }
+          // }
+          return {
+            bitrate: station.bitrate || 0,
+            clickcount: station.clickcount || 0,
+            codec: station.codec || "",
+            country: station.country || "",
+            countrycode: station.countrycode || "",
+            favicon: station.favicon || "",
+            homepage: station.homepage || "",
+            language: station.language || "",
+            languagecodes: station.languagecodes || "",
+            name: station.name
+              ? removeMetadata(station.name)
+              : "Unknown station",
+            state: station.state || "",
+            stationuuid: station.stationuuid || "",
+            tags: station.tags || "",
+            url: station.url || "",
+            url_resolved: station.url_resolved || "",
+            votes: station.votes || 0,
+            geo_lat: station.geo_lat,
+            geo_long: station.geo_long,
+          };
+        });
+        stationsList.value = filteredRes;
         loading.value = false;
       },
     );
@@ -88,6 +89,10 @@ export const useMapStore = createGlobalState(() => {
     getStations();
   });
 
+  const selectStation = (station: Station) => {
+    selectedStation.value = station;
+  };
+
   watch([downloadProgress, loading], () => {
     if (!loading.value) {
       downloadProgress.value = 0;
@@ -97,6 +102,8 @@ export const useMapStore = createGlobalState(() => {
     }
   });
   return {
+    selectedStation,
+    selectStation,
     stationsList,
     getStations,
     downloadProgress,
