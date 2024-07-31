@@ -114,7 +114,6 @@ const initiateMap = () => {
       geolocateControl: false,
       dragRotate: false,
       pitchWithRotate: false,
-      touchZoomRotate: false,
     }),
   );
   map.value?.on("click", mapClickHandler);
