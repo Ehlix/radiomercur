@@ -10,10 +10,10 @@ import XIcon from "@/components/ui/icon/XIcon.vue";
 import { Disc3, Frown } from "lucide-vue-next";
 import { defineAsyncComponent } from "vue";
 const AddToFavorite = defineAsyncComponent(
-  () => import("@/components/home/AddToFavorite.vue"),
+  () => import("@/components/modals/AddToFavorite.vue"),
 );
 const ExtendedInfo = defineAsyncComponent(
-  () => import("@/components/home/ExtendedInfo.vue"),
+  () => import("@/components/modals/ExtendedInfo.vue"),
 );
 const SearchList = defineAsyncComponent(
   () => import("./components/SearchLIst.vue"),

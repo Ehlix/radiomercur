@@ -8,10 +8,10 @@ import ChangePage from "./components/ChangePage.vue";
 import { ChevronsRight } from "lucide-vue-next";
 import { watch } from "vue";
 const AddToFavorite = defineAsyncComponent(
-  () => import("@/components/home/AddToFavorite.vue"),
+  () => import("@/components/modals/AddToFavorite.vue"),
 );
 const ExtendedInfo = defineAsyncComponent(
-  () => import("@/components/home/ExtendedInfo.vue"),
+  () => import("@/components/modals/ExtendedInfo.vue"),
 );
 const FavoriteList = defineAsyncComponent(
   () => import("./components/FavoriteList.vue"),

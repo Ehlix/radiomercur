@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
-import NavView from "@/views/navigation/NavView.vue";
 import ShadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
+import NavView from "@/views/navigation/NavView.vue";
+import { RouterLink, RouterView } from "vue-router";
 import { cn } from "./lib/utils/twMerge";
 
 const variants = [

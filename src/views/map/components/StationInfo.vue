@@ -9,16 +9,19 @@ import { messages } from "@/lib/locale/locale";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 import { useMapStore } from "@/stores/mapStore";
 import { useUserStore } from "@/stores/userStore";
-import { ListPlus, Play, Star, ThumbsUp, ZoomIn } from "lucide-vue-next";
+import { Info, ListPlus, Play, Star, ThumbsUp, ZoomIn } from "lucide-vue-next";
 import { defineAsyncComponent, ref } from "vue";
 const AddToFavorite = defineAsyncComponent(
-  () => import("@/components/home/AddToFavorite.vue"),
+  () => import("@/components/modals/AddToFavorite.vue"),
+);
+const ExtendedInfo = defineAsyncComponent(
+  () => import("@/components/modals/ExtendedInfo.vue"),
 );
 
 const { locale, selectStation } = useUserStore();
 const { selectedStation } = useMapStore();
 
-const dialogOpen = ref<"favorite" | false>(false);
+const dialogOpen = ref<"favorite" | "info" | false>(false);
 
 const emits = defineEmits({
   zoomIn: () => true,
@@ -33,16 +36,42 @@ const zoomIn = () => {
   <!-- Station Info -->
   <div
     v-if="selectedStation"
-    class="absolute left-2 top-2 z-40 flex h-fit min-h-56 w-72 flex-col gap-2 rounded bg-mc-1 p-2"
+    class="absolute inset-2 z-40 flex h-fit min-h-56 w-72 flex-col gap-2 overflow-hidden rounded bg-mc-1 p-2 sm:inset-0 sm:max-h-28 sm:min-h-28 sm:w-full sm:rounded-none"
   >
     <shadow-overlay />
-    <p class="w-full truncate text-nowrap text-lg uppercase">
+    <!-- Name -->
+    <p
+      class="flex w-full items-center gap-2 truncate text-nowrap text-lg uppercase"
+    >
+      <x-image
+        :src="getFlagImage(selectedStation.countrycode)"
+        class="hidden h-5 w-8 sm:flex"
+      />
       {{ removeMetadata(selectedStation?.name || "Unknown") }}
+      <!-- Extended Info -->
+      <x-button
+        class="ml-auto hidden w-8 min-w-8 max-w-8 p-0 sm:flex"
+        variant="ghost"
+        @click="dialogOpen = 'info'"
+      >
+        <extended-info
+          :open="dialogOpen === 'info'"
+          :station="selectedStation"
+          :locale="locale"
+          @close="dialogOpen = false"
+        />
+        <x-icon
+          :icon="Info"
+          :size="22"
+          :stroke-width="2"
+          class="cursor-pointer"
+        />
+      </x-button>
     </p>
     <div class="relative z-10 flex grow flex-col gap-2">
       <!-- Logo -->
       <div
-        class="absolute right-0 top-0 z-0 size-[8rem] select-none overflow-hidden opacity-70"
+        class="absolute right-0 top-0 z-0 size-[8rem] select-none overflow-hidden opacity-70 sm:hidden"
       >
         <div class="absolute inset-0 z-0 bg-mc-1" />
         <x-image
@@ -51,19 +80,21 @@ const zoomIn = () => {
           class="absolute inset-0 size-[8rem] object-cover"
         />
       </div>
-      <div class="relative z-20 flex flex-col">
+      <div class="relative z-20 flex flex-col sm:flex-row sm:gap-4">
         <!-- Codec -->
         <div v-if="selectedStation?.codec">
           {{ selectedStation.codec + " " + (selectedStation.bitrate || "") }}
         </div>
         <!-- Popularity -->
-        <div class="flex flex-col gap-1">
+        <div class="flex flex-col gap-1 sm:flex-row">
           <div
             :v-if="selectedStation?.clickcount"
             class="flex items-start gap-1"
           >
-            <p>
-              {{ $t("stationCard.clickCount") }}:
+            <p class="text-tc-2">
+              <span class="text-tc-2 sm:hidden">
+                {{ $t("stationCard.clickCount") }}:
+              </span>
               <span class="text-tc-2">
                 {{ selectedStation?.clickcount }}
               </span>
@@ -79,8 +110,10 @@ const zoomIn = () => {
             v-show="selectedStation?.votes"
             class="flex items-start gap-1"
           >
-            <p class="text-tc-1">
-              {{ $t("stationCard.votes") }}:
+            <p>
+              <span class="text-tc-1 sm:hidden">
+                {{ $t("stationCard.votes") }}:
+              </span>
               <span class="text-tc-1">
                 {{ selectedStation?.votes }}
               </span>
@@ -94,7 +127,7 @@ const zoomIn = () => {
           </div>
         </div>
         <!-- Home Page -->
-        <div>
+        <div class="sm:hidden">
           <a
             v-if="selectedStation?.homepage"
             :href="selectedStation.homepage"
@@ -105,7 +138,7 @@ const zoomIn = () => {
           </a>
         </div>
         <!-- Stream Source -->
-        <div>
+        <div class="sm:hidden">
           <a
             v-if="selectedStation?.url_resolved || selectedStation?.url"
             :href="selectedStation.url_resolved || selectedStation.url"
@@ -117,8 +150,8 @@ const zoomIn = () => {
         </div>
         <!-- Flag ana Country Name -->
         <div
-          v-if="selectedStation?.countrycode"
-          class="my-1 flex items-center gap-1 overflow-clip"
+          v-if="selectedStation.countrycode"
+          class="my-1 flex items-center gap-1 overflow-clip sm:hidden"
         >
           <x-image
             :src="getFlagImage(selectedStation?.countrycode)"
@@ -138,7 +171,7 @@ const zoomIn = () => {
         <!-- Tags -->
         <div
           v-if="selectedStation?.tags"
-          class="mt-2 flex flex-wrap gap-1 pb-1 pt-2"
+          class="mt-2 flex flex-wrap gap-1 pb-1 pt-2 sm:hidden"
         >
           <div
             v-for="tag in selectedStation.tags.split(',').splice(0, 10)"
@@ -159,7 +192,7 @@ const zoomIn = () => {
           <template #trigger>
             <x-button
               v-if="selectedStation"
-              class="min-w-6"
+              class="h-10 min-w-10 max-w-10 p-0 sm:h-8 sm:min-w-8 sm:max-w-8"
               @click="dialogOpen = 'favorite'"
             >
               <add-to-favorite
@@ -187,7 +220,7 @@ const zoomIn = () => {
         >
           <template #trigger>
             <x-button
-              class="z-10 mt-auto w-full"
+              class="z-10 mt-auto h-10 w-full p-0 sm:h-8"
               @click="() => selectedStation && selectStation(selectedStation)"
             >
               <x-icon
@@ -209,7 +242,7 @@ const zoomIn = () => {
         >
           <template #trigger>
             <x-button
-              class="min-w-6"
+              class="h-10 min-w-10 max-w-10 p-0 sm:h-8 sm:min-w-8 sm:max-w-8"
               @click="zoomIn"
             >
               <x-icon

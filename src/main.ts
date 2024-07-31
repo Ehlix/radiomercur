@@ -1,10 +1,10 @@
-import "./assets/main.css";
+import { messages } from "@/lib/locale/locale";
+import { useUserStore } from "@/stores/userStore";
+import { inject } from "@vercel/analytics";
 import { createApp } from "vue";
 import { createI18n } from "vue-i18n";
-import { messages } from "@/lib/locale/locale";
-import { inject } from "@vercel/analytics";
 import App from "./App.vue";
-import { useUserStore } from "@/stores/userStore";
+import "./assets/main.css";
 import router from "./router";
 
 const app = createApp(App);

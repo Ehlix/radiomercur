@@ -3,7 +3,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 import PlayerMain from "./components/player/PlayerMain.vue";
 import ShadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
 import SettingsMain from "./components/settings/SettingsMain.vue";
-import AboutMain from "@/components/about/AboutMain.vue";
+import AboutMain from "@/components/modals/AboutMain.vue";
 
 const nav = ref<Element | null>(null);
 const scrollVisible = ref(false);

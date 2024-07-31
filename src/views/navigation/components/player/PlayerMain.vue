@@ -23,10 +23,10 @@ import {
 import { useMapStore } from "@/stores/mapStore";
 import { useRouter } from "vue-router";
 const AddToFavorite = defineAsyncComponent(
-  () => import("@/components/home/AddToFavorite.vue"),
+  () => import("@/components/modals/AddToFavorite.vue"),
 );
 const ExtendedInfo = defineAsyncComponent(
-  () => import("@/components/home/ExtendedInfo.vue"),
+  () => import("@/components/modals/ExtendedInfo.vue"),
 );
 
 const { selectStation } = useMapStore();
