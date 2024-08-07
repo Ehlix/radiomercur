@@ -3,7 +3,7 @@ import * as mt from "@maptiler/sdk";
 import "@maptiler/sdk/dist/maptiler-sdk.css";
 import XButton from "@/components/ui/button/XButton.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
-import globalConfig from "@/globalConfig";
+import globalConfig from "@/lib/config/global";
 import { calculateDistance } from "@/lib/utils/calculateDistance";
 import { useMapStore } from "@/stores/mapStore";
 import { useDebounceFn } from "@vueuse/core";

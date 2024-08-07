@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-undef
-const animate = require("tailwindcss-animate");
+import animate from "tailwindcss-animate";
+import plugin from "tailwindcss/plugin";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -76,7 +77,7 @@ export default {
       },
     },
     screens: {
-      '2xl': { max: "1555px" },
+      "2xl": { max: "1555px" },
       // => @media (max-width: 1555px) { ... }
       xl: { max: "1279px" },
       // => @media (max-width: 1279px) { ... }
@@ -94,5 +95,44 @@ export default {
       // => @media (max-width: 400px) { ... }
     },
   },
-  plugins: [animate],
+  plugins: [
+    animate,
+    plugin(
+      function ({ matchUtilities, theme }) {
+        matchUtilities(
+          {
+            "content-visibility": (value) => {
+              return {
+                "content-visibility": value,
+              };
+            },
+          },
+          {
+            values: theme("contentVisibility"),
+          },
+        );
+        matchUtilities(
+          {
+            "contain-intrinsic-size": (value) => {
+              return {
+                "contain-intrinsic-size": value,
+              };
+            },
+          },
+          {
+            values: theme("containIntrinsicSize"),
+          },
+        );
+      },
+      {
+        theme: {
+          contentVisibility: {
+            auto: "auto",
+            hidden: "hidden",
+            visible: "visible",
+          },
+        },
+      },
+    ),
+  ],
 };

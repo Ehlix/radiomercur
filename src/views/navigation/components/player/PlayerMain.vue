@@ -6,7 +6,7 @@ import { useUserStore } from "@/stores/userStore";
 import XImage from "@/components/ui/image/XImage.vue";
 import XSlider from "@/components/ui/slider/XSlider.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
-import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
+import XButton from "@/components/ui/button/XButton.vue";
 import PlayerVisual from "./PlayerVisual.vue";
 import HistoryList from "./HistoryList.vue";
 import {
@@ -125,7 +125,6 @@ watch(selectedStation, () => {
   loading.value = false;
   loadingError.value = false;
   togglePlay();
-  // chevronIsOpen.value = false;
 });
 
 watch([volume], () => {
@@ -158,7 +157,7 @@ watch([volume], () => {
         />
       </div>
       <div
-        class="absolute -left-1 z-50 flex h-full flex-col items-center justify-between"
+        class="absolute -left-1 z-50 flex h-full flex-col items-center justify-between gap-2 sm:-left-2 sm:gap-0.5"
       >
         <!-- Error status -->
         <p
@@ -170,64 +169,46 @@ watch([volume], () => {
         <!-- History -->
         <history-list />
         <!-- Add To Favorites -->
-        <button
+        <x-button
           v-if="selectedStation"
-          class="h-5"
+          variant="ghost"
+          size="icon"
           @click="dialogOpen = 'favorite'"
         >
-          <x-tooltip
-            trigger-class=""
-            content-side="right"
-          >
-            <template #trigger>
-              <add-to-favorite
-                v-if="dialogOpen === 'favorite'"
-                :station="selectedStation"
-                :open="dialogOpen === 'favorite'"
-                @close="dialogOpen = false"
-              />
-              <x-icon
-                :icon="ListPlus"
-                :size="22"
-                :stroke-width="2"
-                class="cursor-pointer"
-              />
-            </template>
-            <template #content>
-              <span>{{ `${$t("buttons.addFavorite")}` }}</span>
-            </template>
-          </x-tooltip>
-        </button>
+          <add-to-favorite
+            v-if="dialogOpen === 'favorite'"
+            :station="selectedStation"
+            :open="dialogOpen === 'favorite'"
+            @close="dialogOpen = false"
+          />
+          <x-icon
+            :icon="ListPlus"
+            :size="22"
+            :stroke-width="2"
+            class="cursor-pointer"
+          />
+        </x-button>
         <!-- Extra Info Trigger -->
-        <button
+        <x-button
           v-if="selectedStation"
-          class="h-5"
+          variant="ghost"
+          size="icon"
           @click="dialogOpen = 'info'"
         >
-          <x-tooltip
-            trigger-class=""
-            content-side="right"
-          >
-            <template #trigger>
-              <x-icon
-                :icon="Info"
-                :size="20"
-                :stroke-width="2"
-                class="cursor-pointer"
-              />
-              <extended-info
-                v-if="dialogOpen === 'info'"
-                :station="selectedStation"
-                :open="dialogOpen === 'info'"
-                :locale="locale"
-                @close="dialogOpen = false"
-              />
-            </template>
-            <template #content>
-              <span>{{ `${$t("stationCard.extendedInfo")}` }}</span>
-            </template>
-          </x-tooltip>
-        </button>
+          <x-icon
+            :icon="Info"
+            :size="20"
+            :stroke-width="2"
+            class="cursor-pointer"
+          />
+          <extended-info
+            v-if="dialogOpen === 'info'"
+            :station="selectedStation"
+            :open="dialogOpen === 'info'"
+            :locale="locale"
+            @close="dialogOpen = false"
+          />
+        </x-button>
       </div>
       <!-- Station name -->
       <div
@@ -252,32 +233,24 @@ watch([volume], () => {
         </p>
       </div>
       <!-- Go to map -->
-      <button
+      <x-button
         v-if="
           selectedStation &&
             selectedStation?.geo_lat &&
             selectedStation?.geo_long
         "
-        class="absolute right-0 top-0 z-40 flex h-5 w-6 items-center justify-center rounded bg-mc-1"
+        variant="ghost"
+        size="icon"
+        class="absolute right-0 top-0 z-40 flex h-5 w-6 min-w-6 max-w-6 items-center justify-center rounded bg-mc-1"
         @click="goToMap"
       >
-        <x-tooltip
-          trigger-class="w-full cursor-pointer items-center flex justify-end"
-          content-side="left"
-        >
-          <template #trigger>
-            <x-icon
-              :icon="MapPin"
-              :size="20"
-              :stroke-width="2.5"
-              class="text-tc-1"
-            />
-          </template>
-          <template #content>
-            <span>{{ `${$t("buttons.toMap")}` }}</span>
-          </template>
-        </x-tooltip>
-      </button>
+        <x-icon
+          :icon="MapPin"
+          :size="20"
+          :stroke-width="2.5"
+          class="text-tc-1"
+        />
+      </x-button>
       <!-- Controls -->
       <div
         class="pointer-events-none absolute flex h-full w-full items-start gap-2 pt-[1.56rem] sm:pt-[1.5rem]"
@@ -286,10 +259,11 @@ watch([volume], () => {
           class="relative z-10 flex h-full w-full items-center justify-center"
         >
           <!-- Play -->
-          <button
+          <x-button
             v-show="!loading"
+            variant="ghost"
             :disabled="loading"
-            class="pointer-events-auto flex size-12 items-center justify-center rounded-full border-2 border-tc-1 stroke-[0.1rem] p-1 transition-all sm:size-10"
+            class="pointer-events-auto size-12 min-w-12 max-w-12 rounded-full border-2 stroke-[0.1rem] p-1 sm:size-10 sm:min-w-10 sm:max-w-10 sm:p-0.5"
             @click="togglePlay()"
           >
             <x-icon
@@ -300,7 +274,7 @@ watch([volume], () => {
                 })
               "
             />
-          </button>
+          </x-button>
           <x-icon
             v-show="loading"
             :icon="Disc3"
@@ -309,40 +283,33 @@ watch([volume], () => {
           />
         </div>
       </div>
-      <div class="flex h-8 items-center gap-2 text-red-500">
+      <div class="flex h-8 items-center text-red-500">
         <!-- Volume -->
         <div
           class="relative ml-auto w-fit xs:hidden"
           @wheel="wheelHandler"
         >
-          <x-tooltip
-            trigger-class="absolute left-0 top-0 z-10"
-            content-side="left"
+          <x-button
+            variant="ghost"
+            size="icon"
+            class="absolute -left-1 top-0 z-10 h-5 overflow-hidden rounded-full"
+            @click="muteToggle()"
           >
-            <template #trigger>
-              <button @click="muteToggle()">
-                <x-icon
-                  :stroke-width="1.8"
-                  :size="22"
-                  :icon="showIcon"
-                />
-              </button>
-            </template>
-            <template #content>
-              <span>{{
-                `${$t("buttons.mute")} / ${$t("buttons.volume")}`
-              }}</span>
-            </template>
-          </x-tooltip>
+            <x-icon
+              :stroke-width="1.8"
+              :size="22"
+              :icon="showIcon"
+            />
+          </x-button>
           <x-slider
             v-model="volume"
             :max="MAX_VOLUME"
             :step="1"
+            class="pb-2"
           />
         </div>
       </div>
     </div>
-    <!-- Extra Info -->
     <audio
       ref="player"
       :src="streamLink"

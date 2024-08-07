@@ -117,15 +117,20 @@ watch([() => searchStore.stationsList], () => {
         v-if="
           !searchStore.loading.value && !searchStore.stationsList.value.length
         "
-        class="flex w-full animate-fade-in items-center justify-center px-2 py-4 text-center text-2xl font-normal text-bgc-1"
+        class="flex w-full animate-fade-in flex-col items-center justify-center gap-2 px-2 py-4 text-center text-2xl font-normal text-bgc-1"
       >
-        <x-icon
-          :icon="Frown"
-          :size="28"
-          :stroke-width="2"
-          class="mr-1 inline text-bgc-1"
-        />
-        {{ $t("searchBar.noResults") }}
+        <div>
+          <x-icon
+            :icon="Frown"
+            :size="28"
+            :stroke-width="2"
+            class="mr-1 inline text-bgc-1"
+          />
+          {{ $t("searchBar.noResults") }}
+        </div>
+        <x-button @click="searchStore.getStations(searchStore.filters.value)">
+          {{ $t("buttons.reload") }}
+        </x-button>
       </div>
     </div>
     <!-- Pagination -->

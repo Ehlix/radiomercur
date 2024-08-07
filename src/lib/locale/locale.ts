@@ -1,6 +1,6 @@
 const EN = {
-  leftPanelName: "Favorite stations",
-  rightPanelName: "Search stations",
+  favorite: "Favorites",
+  search: "Search",
   map: "Map",
   about: {
     title: "Radio Mercur",
@@ -368,8 +368,8 @@ const EN = {
 };
 
 const RU = {
-  leftPanelName: "Избранные станции",
-  rightPanelName: "Найти станцию",
+  favorite: "Избранные",
+  search: "Поиск",
   map: "Карта",
   about: {
     title: "Radio Mercur",

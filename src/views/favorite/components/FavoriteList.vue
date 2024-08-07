@@ -4,6 +4,8 @@ import { getFlagImage } from "@/lib/api/flagImage";
 import { onMounted, onUnmounted, ref, type HTMLAttributes } from "vue";
 import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import XImage from "@/components/ui/image/XImage.vue";
+import XIcon from "@/components/ui/icon/XIcon.vue";
+import XButton from "@/components/ui/button/XButton.vue";
 import {
   Play,
   ThumbsUp,
@@ -171,52 +173,48 @@ onUnmounted(() => {
           class="flex h-full items-center gap-2 sm:h-6 sm:justify-between sm:gap-1"
         >
           <!-- Add To Favorites -->
-          <x-tooltip content-side="left">
+          <x-tooltip
+            content-side="left"
+            trigger-class="cursor-pointer"
+          >
             <template #trigger>
-              <button
-                class="flex items-center"
+              <ListPlus
+                :size="25"
+                :stroke-width="1.8"
                 @click="openAddToFavoriteModal(station)"
-              >
-                <ListPlus
-                  :size="25"
-                  :stroke-width="1.8"
-                />
-              </button>
+              />
             </template>
             <template #content>
               <span>{{ `${$t("buttons.addFavorite")}` }}</span>
             </template>
           </x-tooltip>
           <!-- Update station data -->
-          <x-tooltip content-side="left">
+          <x-tooltip
+            content-side="left"
+            trigger-class="cursor-pointer"
+          >
             <template #trigger>
-              <button
-                class="flex items-center"
+              <RefreshCw
+                :size="22"
+                :stroke-width="2"
                 @click="updateStationData(station)"
-              >
-                <RefreshCw
-                  :size="22"
-                  :stroke-width="2"
-                />
-              </button>
+              />
             </template>
             <template #content>
               {{ $t("stationCard.updateData") }}
             </template>
           </x-tooltip>
           <!-- Extended Info -->
-          <x-tooltip content-side="left">
+          <x-tooltip
+            content-side="left"
+            trigger-class="cursor-pointer"
+          >
             <template #trigger>
-              <button
-                variant="ghost"
-                class="flex items-center"
+              <Info
+                :size="22"
+                :stroke-width="2"
                 @click="openExtendedInfo(station)"
-              >
-                <Info
-                  :size="22"
-                  :stroke-width="2"
-                />
-              </button>
+              />
             </template>
             <template #content>
               {{ $t("stationCard.extendedInfo") }}
@@ -224,8 +222,9 @@ onUnmounted(() => {
           </x-tooltip>
         </div>
         <!-- Play -->
-        <button
-          class="group flex h-full w-full items-center justify-start truncate sm:order-first sm:h-8 sm:min-w-full"
+        <x-button
+          variant="ghost"
+          class="group flex h-full w-full justify-start px-1 sm:order-first sm:h-8 sm:min-w-full"
           @click="selectStation(station)"
         >
           <Play
@@ -234,15 +233,15 @@ onUnmounted(() => {
           />
           <!-- Station Name -->
           <h2
-            class="-ml-1 w-full truncate text-nowrap px-3 text-start uppercase text-tc-1 sm:max-h-6 sm:text-wrap sm:text-base"
+            class="-ml-1 w-fit truncate text-nowrap px-3 text-start uppercase text-tc-1 sm:max-h-6 sm:text-wrap sm:text-base"
           >
             {{ station.name }}
           </h2>
-        </button>
+        </x-button>
         <!-- Logo -->
         <!-- <div
           :class="cn('pointer-events-none absolute left-6 top-4 z-10 size-[6rem] select-none overflow-hidden rounded-full opacity-100', {
-            'ml-4': showUpdateButton,
+            'ml-4': showUpdatex-button,
           })"
         >
           <div class="absolute inset-0 z-0 bg-mc-1 opacity-100" />
@@ -254,18 +253,18 @@ onUnmounted(() => {
             class="absolute inset-0 z-10 size-[6rem] object-cover opacity-40"
           />
         </div> -->
-        <div
-          class="flex h-full items-center justify-between gap-2 sm:ml-auto sm:h-4"
-        >
+        <div class="ml-auto flex h-full w-fit items-center gap-2 sm:h-4">
           <!-- Station Popularity -->
           <div
             v-show="station.clickcount"
             class="flex w-full items-start justify-end gap-1 *:text-tc-2"
           >
             <p>{{ station.clickcount }}</p>
-            <Star
+            <x-icon
+              :icon="Star"
               :size="18"
               :stroke-width="1.6"
+              class="w-6 min-w-6 max-w-6"
             />
           </div>
           <div
@@ -273,18 +272,20 @@ onUnmounted(() => {
             class="flex min-w-16 items-start justify-end gap-1 *:text-tc-1"
           >
             <p>{{ station.votes }}</p>
-            <ThumbsUp
+            <x-icon
+              :icon="ThumbsUp"
               :size="18"
               :stroke-width="1.6"
+              class="w-6 min-w-6 max-w-6"
             />
           </div>
           <!-- Station Flag -->
-          <div class="flex w-full items-center justify-end">
+          <div class="flex w-fit items-center justify-end">
             <x-image
               :src="getFlagImage(station.countrycode)"
+              :height="20"
+              :width="40"
               class="h-5 min-h-5 w-8 min-w-8"
-              :height="5"
-              :width="8"
             />
           </div>
         </div>
@@ -292,8 +293,9 @@ onUnmounted(() => {
         <div
           class="right-0 top-0 flex h-full opacity-60 sm:absolute sm:flex-col sm:justify-between sm:py-0"
         >
-          <button
-            class=""
+          <x-button
+            variant="ghost"
+            size="icon"
             @click.stop="positionUpHandler(station)"
           >
             <ChevronsDown
@@ -301,9 +303,10 @@ onUnmounted(() => {
               :stroke-width="2"
               class="rotate-180 text-tc-1"
             />
-          </button>
-          <button
-            class=""
+          </x-button>
+          <x-button
+            variant="ghost"
+            size="icon"
             @click.stop="positionDownHandler(station)"
           >
             <ChevronsDown
@@ -311,8 +314,10 @@ onUnmounted(() => {
               :stroke-width="2"
               class="text-tc-1"
             />
-          </button>
-          <button
+          </x-button>
+          <x-button
+            variant="ghost"
+            size="icon"
             class="-mr-2 cursor-move sm:hidden"
             @mousedown="isDragging = true"
           >
@@ -321,7 +326,7 @@ onUnmounted(() => {
               :stroke-width="1.8"
               class="text-tc-1"
             />
-          </button>
+          </x-button>
         </div>
       </div>
     </div>

@@ -14,14 +14,14 @@ export const buttonVariants = cva(
           "border border-zinc-200 bg-white hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-800 dark:hover:text-zinc-50",
         reversed:
           "bg-mc-3 text-mc-1 hover:bg-hc-3 disabled:opacity-100 disabled:bg-mc-2 tracking-wide",
-        ghost: "hover:bg-hc-1 hover:text-hc-1",
+        ghost: "",
         link: "text-zinc-900  underline-offset-4 hover:underline dark:text-zinc-50",
       },
       size: {
         default: "h-8 min-w-20 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
-        icon: "h-10 w-10",
+        icon: "h-8 w-8 p-0 min-w-8 max-w-8",
       },
     },
     defaultVariants: {

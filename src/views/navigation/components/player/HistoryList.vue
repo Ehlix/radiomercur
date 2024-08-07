@@ -59,7 +59,7 @@ const playHandler = (station: Station) => {
           <dialog-description />
         </dialog-header>
         <div
-          class="my-2 grid gap-2 overflow-y-auto overflow-x-hidden px-6 xs:px-4"
+          class="contain-inline-size-[100dvh] my-2 grid gap-2 overflow-y-auto overflow-x-hidden px-6 content-visibility-auto xs:px-4"
         >
           <history-card
             v-for="station in historyList"

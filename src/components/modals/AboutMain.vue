@@ -42,7 +42,7 @@ import logoMain from "@/components/logo/logoMain.vue";
             <a
               href="https://github.com/ehlix/radiomercur"
               target="_blank"
-              class="text-base font-semibold text-mc-2 transition-all hover:text-hc-2"
+              class="text-base font-semibold text-mc-2 transition-colors hover:text-hc-2"
             >
               {{ $t("about.source") }}
             </a>

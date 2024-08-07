@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import ShadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
 import NavView from "@/views/navigation/NavView.vue";
-import { RouterLink, RouterView } from "vue-router";
+import { RouterLink, RouterView, useRoute } from "vue-router";
 import { cn } from "./lib/utils/twMerge";
 
+const route = useRoute();
 const variants = [
   {
-    name: "rightPanelName",
+    name: "search",
     path: "/",
   },
   {
-    name: "leftPanelName",
+    name: "favorite",
     path: "/favorite",
   },
   {
@@ -35,9 +36,9 @@ const variants = [
           :to="variant.path"
           :class="
             cn(
-              'text-tx-1 relative flex h-full w-full items-center justify-center rounded bg-mc-1 transition-colors hover:bg-hc-1',
+              'text-tx-1 relative flex h-full w-full items-center justify-center truncate rounded bg-mc-1 transition-colors hover:bg-hc-1',
               {
-                'hover:bg-bg-3 bg-mc-3 text-mc-1': $route.path === variant.path,
+                'hover:bg-bg-3 bg-mc-3 text-mc-1': route.path === variant.path,
               },
             )
           "

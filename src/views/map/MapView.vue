@@ -6,10 +6,12 @@ import { useBaseUrlsStore } from "@/stores/baseUrlsStore";
 import { useMapStore } from "@/stores/mapStore";
 import { Disc3 } from "lucide-vue-next";
 import { defineAsyncComponent } from "vue";
+import { useRouter } from "vue-router";
 const WorldMap = defineAsyncComponent(
   () => import("./components/WorldMap.vue"),
 );
 
+const router = useRouter();
 const { stationsList, getStations, downloadProgress, loading } = useMapStore();
 const { mainServerIsActive } = useBaseUrlsStore();
 !stationsList.value.length && getStations();
@@ -45,7 +47,7 @@ const { mainServerIsActive } = useBaseUrlsStore();
         <p class="mb-2 text-center text-xl text-tc-1">
           {{ $t("serverNoConnection.description") }}
         </p>
-        <x-button @click="() => $router.go(0)">
+        <x-button @click="() => router.go(0)">
           {{ $t("buttons.reload") }}
         </x-button>
       </div>
