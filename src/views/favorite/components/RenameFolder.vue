@@ -14,23 +14,16 @@ import XIcon from "@/components/ui/icon/XIcon.vue";
 import { FolderPen, Pen, X } from "lucide-vue-next";
 import DialogClose from "@/components/ui/dialog/DialogClose.vue";
 import { ref } from "vue";
+import { useFavoriteStore } from "../favoriteStore";
 
 const props = defineProps<{
   folderName: string;
+  folderId: string;
 }>();
 
-const emits = defineEmits<{
-  (e: "renameFolder", value: string): void;
-}>();
+const { renameFolder } = useFavoriteStore();
 
 const inputValue = ref<string>(props.folderName);
-
-const addHandler = () => {
-  if (!inputValue.value) {
-    return;
-  }
-  emits("renameFolder", inputValue.value);
-};
 </script>
 
 <template>
@@ -53,7 +46,9 @@ const addHandler = () => {
     <dialog-content class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
       <form
         class="grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] rounded bg-mc-1 sm:max-w-[425px]"
-        @submit.prevent="addHandler"
+        @submit.prevent="
+          renameFolder({ name: inputValue, folderId: props.folderId })
+        "
       >
         <dialog-header class="border-b border-mc-2 px-2 pt-2">
           <dialog-title class="text-2xl text-mc-2">

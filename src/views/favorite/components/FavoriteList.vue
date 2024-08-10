@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { cn } from "@/lib/utils/twMerge";
 import { getFlagImage } from "@/lib/api/flagImage";
-import { onMounted, onUnmounted, ref, type HTMLAttributes } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import XImage from "@/components/ui/image/XImage.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
@@ -16,37 +16,17 @@ import {
   Info,
   RefreshCw,
 } from "lucide-vue-next";
-// import { defineAsyncComponent } from "vue";
-// const XTooltip = defineAsyncComponent(
-//   () => import("@/components/ui/tooltip/XTooltip.vue"),
-// );
-// const XImage = defineAsyncComponent(() => import("@/components/ui/image/XImage.vue"));
-// const XIcon = defineAsyncComponent(() => import("@/components/ui/icon/XIcon.vue"));
+import { useFavoriteStore } from "../favoriteStore";
 
-const props = defineProps<{
-  stationsList: Station[];
-  class?: HTMLAttributes["class"];
-}>();
+const {
+  stationsList,
+  updateStation,
+  replaceHandler,
+  selectStationHandler,
+  openDialogHandler,
+  positionHandler,
+} = useFavoriteStore();
 
-const emits = defineEmits<{
-  (e: "selectStation", station: Station): void;
-  (e: "positionUp", station: Station): void;
-  (e: "positionDown", station: Station): void;
-  (e: "openAddToFavorite", station: Station): void;
-  (e: "openExtendedInfo", station: Station): void;
-  (
-    e: "replaceStations",
-    stations: {
-      stationOne: Station;
-      stationTwo: Station;
-    },
-  ): void;
-  (e: "updateFavData", station: Station): void;
-}>();
-
-const selectStation = (station: Station) => {
-  emits("selectStation", station);
-};
 const el = ref<HTMLElement | null>(null);
 const isDragging = ref(false);
 const dragTarget = ref<Station | null>(null);
@@ -64,10 +44,10 @@ const dragOverHandler = (e: DragEvent, station: Station) => {
   if (dragTarget.value?.stationuuid === station.stationuuid) {
     return;
   }
-  const stationOneIndex = props.stationsList.findIndex(
+  const stationOneIndex = stationsList.value.findIndex(
     (s) => s.stationuuid === dragTarget.value?.stationuuid,
   );
-  const stationTwoIndex = props.stationsList.findIndex(
+  const stationTwoIndex = stationsList.value.findIndex(
     (s) => s.stationuuid === station.stationuuid,
   );
   if (stationOneIndex > stationTwoIndex) {
@@ -93,31 +73,12 @@ const dropHandler = (e: DragEvent, station: Station) => {
   );
   isDragging.value = false;
   if (dragTarget.value && station) {
-    emits("replaceStations", {
+    replaceHandler({
       stationOne: dragTarget.value,
       stationTwo: station,
     });
   }
   dragTarget.value = null;
-};
-
-const positionUpHandler = (station: Station) => {
-  emits("positionUp", station);
-};
-const positionDownHandler = (station: Station) => {
-  emits("positionDown", station);
-};
-
-const updateStationData = (station: Station) => {
-  emits("updateFavData", station);
-};
-
-const openAddToFavoriteModal = (station: Station) => {
-  emits("openAddToFavorite", station);
-};
-
-const openExtendedInfo = (station: Station) => {
-  emits("openExtendedInfo", station);
 };
 
 onMounted(() => {
@@ -135,14 +96,14 @@ onUnmounted(() => {
 
 <template>
   <transition-group
-    v-if="stationsList.length"
+    v-if="stationsList"
     ref="el"
     tag="div"
     name="list"
     class="flex h-fit w-full flex-col gap-2 px-2"
   >
     <div
-      v-for="station in props.stationsList"
+      v-for="station in stationsList"
       :key="station.stationuuid"
       :draggable="isDragging"
       class="item-list relative w-full transition-all"
@@ -181,7 +142,7 @@ onUnmounted(() => {
               <ListPlus
                 :size="25"
                 :stroke-width="1.8"
-                @click="openAddToFavoriteModal(station)"
+                @click="openDialogHandler(station, 'favorite')"
               />
             </template>
             <template #content>
@@ -197,7 +158,7 @@ onUnmounted(() => {
               <RefreshCw
                 :size="22"
                 :stroke-width="2"
-                @click="updateStationData(station)"
+                @click="updateStation(station)"
               />
             </template>
             <template #content>
@@ -213,7 +174,7 @@ onUnmounted(() => {
               <Info
                 :size="22"
                 :stroke-width="2"
-                @click="openExtendedInfo(station)"
+                @click="openDialogHandler(station, 'info')"
               />
             </template>
             <template #content>
@@ -225,7 +186,7 @@ onUnmounted(() => {
         <x-button
           variant="ghost"
           class="group flex h-full w-full justify-start px-1 sm:order-first sm:h-8 sm:min-w-full"
-          @click="selectStation(station)"
+          @click="selectStationHandler(station)"
         >
           <Play
             :stroke-width="1.5"
@@ -238,21 +199,6 @@ onUnmounted(() => {
             {{ station.name }}
           </h2>
         </x-button>
-        <!-- Logo -->
-        <!-- <div
-          :class="cn('pointer-events-none absolute left-6 top-4 z-10 size-[6rem] select-none overflow-hidden rounded-full opacity-100', {
-            'ml-4': showUpdatex-button,
-          })"
-        >
-          <div class="absolute inset-0 z-0 bg-mc-1 opacity-100" />
-          <x-image
-            :src="station.favicon"
-            :height="6"
-            :width="6"
-            alt="logo"
-            class="absolute inset-0 z-10 size-[6rem] object-cover opacity-40"
-          />
-        </div> -->
         <div class="ml-auto flex h-full w-fit items-center gap-2 sm:h-4">
           <!-- Station Popularity -->
           <div
@@ -296,7 +242,7 @@ onUnmounted(() => {
           <x-button
             variant="ghost"
             size="icon"
-            @click.stop="positionUpHandler(station)"
+            @click.stop="positionHandler(station, 'up')"
           >
             <ChevronsDown
               :size="22"
@@ -307,7 +253,7 @@ onUnmounted(() => {
           <x-button
             variant="ghost"
             size="icon"
-            @click.stop="positionDownHandler(station)"
+            @click.stop="positionHandler(station, 'down')"
           >
             <ChevronsDown
               :size="22"

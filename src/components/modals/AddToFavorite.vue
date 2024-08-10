@@ -31,11 +31,11 @@ const checkStationInFavorites = (station: Station, folderID: string) => {
   }
 };
 
-const addToFavorites = (station: Station, folderID: string) => {
-  addToFavorite({ station, folderID });
+const addToFavorites = (station: Station, folderId: string) => {
+  addToFavorite({ station, folderId });
 };
-const removeFromFavorites = (station: Station, folderID: string) => {
-  removeFromFavorite({ station, folderID });
+const removeFromFavorites = (station: Station, folderId: string) => {
+  removeFromFavorite({ station, folderId });
 };
 
 const close = () => {

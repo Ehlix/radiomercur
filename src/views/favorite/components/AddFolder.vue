@@ -14,18 +14,12 @@ import XIcon from "@/components/ui/icon/XIcon.vue";
 import { FolderPen, FolderPlus, X } from "lucide-vue-next";
 import DialogClose from "@/components/ui/dialog/DialogClose.vue";
 import { ref } from "vue";
+import { useFavoriteStore } from "../favoriteStore";
 
-const emits = defineEmits<{
-  (e: "addFolder", value: string): void;
-}>();
-
+const { createNewFolder } = useFavoriteStore();
 const inputValue = ref<string>("");
 
-const addHandler = () => {
-  if (!inputValue.value) {
-    return;
-  }
-  emits("addFolder", inputValue.value);
+const clearInput = () => {
   inputValue.value = "";
 };
 </script>
@@ -37,6 +31,7 @@ const addHandler = () => {
     >
       <x-button
         class="flex h-8 min-w-10 justify-center gap-1 bg-mc-3 px-2 text-sm hover:bg-hc-3"
+        @click="clearInput"
       >
         <x-icon
           :icon="FolderPlus"
@@ -52,7 +47,7 @@ const addHandler = () => {
     <dialog-content class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
       <form
         class="grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] rounded bg-mc-1 sm:max-w-[425px]"
-        @submit.prevent="addHandler"
+        @submit.prevent="createNewFolder(inputValue)"
       >
         <dialog-header class="border-b border-mc-2 px-2 pt-2">
           <dialog-title class="text-2xl text-mc-2">

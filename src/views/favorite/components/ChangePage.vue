@@ -13,42 +13,32 @@ import XIcon from "@/components/ui/icon/XIcon.vue";
 import { Milestone } from "lucide-vue-next";
 import DialogClose from "@/components/ui/dialog/DialogClose.vue";
 import { ref } from "vue";
+import { useFavoriteStore } from "../favoriteStore";
 
-const props = defineProps<{
-  disabled?: boolean;
-  currentPage: number;
-  totalPages: number;
-}>();
+const { currentPage, STATIONS_PER_PAGE, totalStationCount } =
+  useFavoriteStore();
 
-const emits = defineEmits<{
-  (e: "changePage", value: number): void;
-}>();
-
-const inputValue = ref<number>(props.currentPage);
-
-const saveHandler = () => {
-  emits("changePage", inputValue.value);
-};
+const inputValue = ref<number>(currentPage.value);
 </script>
 
 <template>
   <dialog-main>
     <dialog-trigger
-      :disabled="props.disabled ?? false"
+      :disabled="totalStationCount <= STATIONS_PER_PAGE"
       class="flex h-8 w-5 min-w-8 items-center justify-center gap-1 bg-mc-1 px-2 text-mc-2 hover:bg-mc-1 hover:text-hc-2 disabled:opacity-50 xs:min-w-5"
-      @click="inputValue = props.currentPage"
+      @click="inputValue = currentPage"
     >
-      {{ props.currentPage }}
+      {{ currentPage }}
     </dialog-trigger>
     <dialog-content class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
       <form
         class="grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] rounded bg-mc-1 sm:max-w-[425px]"
-        @click.prevent="saveHandler"
+        @click.prevent=""
       >
         <dialog-header class="border-b border-mc-2 px-2 pt-2">
           <dialog-title class="text-2xl text-mc-2">
             {{
-              `${$t("favoriteBar.changePage")} (${$t("buttons.total", { count: totalPages }).toLowerCase()})`
+              `${$t("favoriteBar.changePage")} (${$t("buttons.total", { count: totalStationCount / STATIONS_PER_PAGE }).toLowerCase()})`
             }}
           </dialog-title>
           <dialog-description>

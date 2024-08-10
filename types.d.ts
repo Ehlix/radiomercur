@@ -154,5 +154,5 @@ type LocalStorageData = {
 
 type StationAndId = {
   station: Station;
-  folderID: string;
+  folderId: string;
 };

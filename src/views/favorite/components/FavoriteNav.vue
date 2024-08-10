@@ -13,40 +13,12 @@ import DeleteAlert from "@/components/modals/DeleteAlert.vue";
 import AddFolder from "./AddFolder.vue";
 import RenameFolder from "./RenameFolder.vue";
 import { Folder, Delete } from "lucide-vue-next";
+import { useUserStore } from "@/stores/userStore";
+import { useFavoriteStore } from "../favoriteStore";
 
-const props = defineProps<{
-  favoriteStations: FavoriteStations;
-}>();
-
-const model = defineModel<string>();
-
-const emits = defineEmits<{
-  (e: "createNewFolder", name: string): void;
-  (e: "deleteFolderById", FolderId: string): void;
-  (e: "renameFolder", folderData: { folderID: string; name: string }): void;
-}>();
-
-const keys = computed(() => Object.keys(props.favoriteStations));
-
-const addNewFolder = (name: string) => {
-  if (!name) {
-    return;
-  }
-  emits("createNewFolder", name);
-};
-
-const deleteFolder = (status: boolean, folderID: string) => {
-  if (status) {
-    emits("deleteFolderById", folderID);
-  }
-};
-
-const renameFolderHandler = (folderID: string, name: string) => {
-  if (!name || !folderID) {
-    return;
-  }
-  emits("renameFolder", { folderID: folderID, name: name });
-};
+const { deleteFolder, currentFolderId } = useFavoriteStore();
+const { favoriteStations } = useUserStore();
+const allFoldersId = computed(() => Object.keys(favoriteStations.value));
 </script>
 
 <template>
@@ -54,7 +26,7 @@ const renameFolderHandler = (folderID: string, name: string) => {
     <div class="flex w-full items-center gap-2">
       <div class="w-72">
         <select-main
-          v-model="model"
+          v-model="currentFolderId"
           name="folders"
         >
           <select-trigger>
@@ -75,7 +47,7 @@ const renameFolderHandler = (folderID: string, name: string) => {
             <select-group class="text-tc-4">
               <!-- <SelectLabel>Countries</SelectLabel> -->
               <div
-                v-for="key in keys"
+                v-for="key in allFoldersId"
                 :key="key"
                 class="relative flex gap-2"
               >
@@ -88,7 +60,7 @@ const renameFolderHandler = (folderID: string, name: string) => {
                   <rename-folder
                     v-if="key !== 'default'"
                     :folder-name="favoriteStations[key].name"
-                    @rename-folder="renameFolderHandler(key, $event)"
+                    :folder-id="key"
                   />
                   <delete-alert
                     v-if="key !== 'default'"
@@ -98,7 +70,7 @@ const renameFolderHandler = (folderID: string, name: string) => {
                       ])
                     "
                     class="group flex w-10 items-center justify-center rounded"
-                    @delete="deleteFolder($event, key)"
+                    @delete="$event && deleteFolder(key)"
                   >
                     <template #default>
                       <x-icon
@@ -115,7 +87,7 @@ const renameFolderHandler = (folderID: string, name: string) => {
           </select-content>
         </select-main>
       </div>
-      <add-folder @add-folder="addNewFolder($event)" />
+      <add-folder />
     </div>
   </div>
 </template>
