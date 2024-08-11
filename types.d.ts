@@ -87,7 +87,7 @@ type DataParams = {
   countrycode?: string;
   language?: string;
   languageExact?: boolean;
-  has_geo_info?: boolean,
+  has_geo_info?: boolean;
   bitrateMin?: number;
   bitrateMax?: number;
   tag?: string;

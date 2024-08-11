@@ -2,7 +2,6 @@
 import XButton from "@/components/ui/button/XButton.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import XImage from "@/components/ui/image/XImage.vue";
-import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import ShadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
 import { getFlagImage } from "@/lib/api/flagImage";
 import { messages } from "@/lib/locale/locale";
@@ -50,6 +49,7 @@ const zoomIn = () => {
       {{ removeMetadata(selectedStation?.name || "Unknown") }}
       <!-- Extended Info -->
       <x-button
+        v-tooltip="$t('button.extendedInfo')"
         class="ml-auto hidden w-8 min-w-8 max-w-8 p-0 sm:flex"
         variant="ghost"
         @click="dialogOpen = 'info'"
@@ -185,78 +185,51 @@ const zoomIn = () => {
       <!-- Controls -->
       <div class="z-10 mt-auto flex justify-between gap-2">
         <!-- Add To Favorites -->
-        <x-tooltip
-          trigger-class=""
-          content-side="right"
+        <x-button
+          v-if="selectedStation"
+          v-tooltip="$t('buttons.addFavorite')"
+          class="h-10 min-w-10 max-w-10 p-0 sm:h-8 sm:min-w-8 sm:max-w-8"
+          @click="dialogOpen = 'favorite'"
         >
-          <template #trigger>
-            <x-button
-              v-if="selectedStation"
-              class="h-10 min-w-10 max-w-10 p-0 sm:h-8 sm:min-w-8 sm:max-w-8"
-              @click="dialogOpen = 'favorite'"
-            >
-              <add-to-favorite
-                v-if="dialogOpen === 'favorite'"
-                :station="selectedStation"
-                :open="dialogOpen === 'favorite'"
-                @close="dialogOpen = false"
-              />
-              <x-icon
-                :icon="ListPlus"
-                :size="22"
-                :stroke-width="2"
-                class="cursor-pointer"
-              />
-            </x-button>
-          </template>
-          <template #content>
-            <span>{{ `${$t("buttons.addFavorite")}` }}</span>
-          </template>
-        </x-tooltip>
+          <add-to-favorite
+            v-if="dialogOpen === 'favorite'"
+            :station="selectedStation"
+            :open="dialogOpen === 'favorite'"
+            @close="dialogOpen = false"
+          />
+          <x-icon
+            :icon="ListPlus"
+            :size="22"
+            :stroke-width="2"
+            class="cursor-pointer"
+          />
+        </x-button>
         <!-- Play -->
-        <x-tooltip
-          trigger-class="w-full"
-          content-side="top"
+        <x-button
+          v-tooltip="$t('buttons.play')"
+          class="z-10 mt-auto h-10 w-full p-0 sm:h-8"
+          @click="() => selectedStation && selectStation(selectedStation)"
         >
-          <template #trigger>
-            <x-button
-              class="z-10 mt-auto h-10 w-full p-0 sm:h-8"
-              @click="() => selectedStation && selectStation(selectedStation)"
-            >
-              <x-icon
-                :icon="Play"
-                :size="22"
-                :stroke-width="2"
-                class="cursor-pointer"
-              />
-            </x-button>
-          </template>
-          <template #content>
-            <span>{{ `${$t("buttons.play")}` }}</span>
-          </template>
-        </x-tooltip>
+          <x-icon
+            :icon="Play"
+            :size="22"
+            :stroke-width="2"
+            class="cursor-pointer"
+          />
+        </x-button>
         <!-- Zoom In -->
-        <x-tooltip
-          trigger-class=""
-          content-side="left"
+        <x-button
+          t-tooltip="$t('buttons.zoomIn')"
+          class="h-10 min-w-10 max-w-10 p-0 sm:h-8 sm:min-w-8 sm:max-w-8"
+          @click="zoomIn"
         >
-          <template #trigger>
-            <x-button
-              class="h-10 min-w-10 max-w-10 p-0 sm:h-8 sm:min-w-8 sm:max-w-8"
-              @click="zoomIn"
-            >
-              <x-icon
-                :icon="ZoomIn"
-                :size="22"
-                :stroke-width="2"
-                class="cursor-pointer"
-              />
-            </x-button>
-          </template>
-          <template #content>
-            <span>{{ `${$t("buttons.zoomIn")}` }}</span>
-          </template>
-        </x-tooltip>
+          <x-icon
+            :icon="ZoomIn"
+            :size="22"
+            :stroke-width="2"
+            class="cursor-pointer"
+          />
+        </x-button>
       </div>
     </div>
   </div>

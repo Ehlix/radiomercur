@@ -2,7 +2,6 @@
 import XButton from "@/components/ui/button/XButton.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import XImage from "@/components/ui/image/XImage.vue";
-import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import { getFlagImage } from "@/lib/api/flagImage";
 import { Info, ListPlus, Play, Star, ThumbsUp } from "lucide-vue-next";
 import { useSearchStore } from "../searchStore";
@@ -24,37 +23,29 @@ const { stationsList, openDialog, selectStation } = useSearchStore();
           class="flex h-full items-center gap-2 sm:h-6 sm:justify-between sm:gap-1"
         >
           <!-- Add To Favorites -->
-          <x-tooltip
-            content-side="left"
-            trigger-class="cursor-pointer"
+          <x-button
+            v-tooltip="$t('buttons.addFavorite')"
+            variant="ghost"
+            size="icon"
           >
-            <template #trigger>
-              <ListPlus
-                :size="25"
-                :stroke-width="1.8"
-                @click="openDialog(station, 'favorite')"
-              />
-            </template>
-            <template #content>
-              <span>{{ `${$t("buttons.addFavorite")}` }}</span>
-            </template>
-          </x-tooltip>
+            <ListPlus
+              :size="25"
+              :stroke-width="1.8"
+              @click="openDialog(station, 'favorite')"
+            />
+          </x-button>
           <!-- Extended Info -->
-          <x-tooltip
-            content-side="left"
-            trigger-class="cursor-pointer"
+          <x-button
+            v-tooltip="$t('stationCard.extendedInfo')"
+            variant="ghost"
+            size="icon"
+            @click="openDialog(station, 'info')"
           >
-            <template #trigger>
-              <Info
-                :size="22"
-                :stroke-width="2"
-                @click="openDialog(station, 'info')"
-              />
-            </template>
-            <template #content>
-              {{ $t("stationCard.extendedInfo") }}
-            </template>
-          </x-tooltip>
+            <Info
+              :size="22"
+              :stroke-width="2"
+            />
+          </x-button>
         </div>
         <!-- Play -->
         <x-button

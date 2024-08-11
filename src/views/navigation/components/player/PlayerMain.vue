@@ -95,10 +95,10 @@ const errorHandler = () => {
 
 const wheelHandler = (event: WheelEvent) => {
   if (event.deltaY < 0) {
-    volume.value = [Math.min(volume.value[0] + 10, MAX_VOLUME)];
+    volume.value = [Math.min(volume.value[0] + 2, MAX_VOLUME)];
   }
   if (event.deltaY > 0) {
-    volume.value = [Math.max(volume.value[0] - 10, MIN_VOLUME)];
+    volume.value = [Math.max(volume.value[0] - 2, MIN_VOLUME)];
   }
 };
 
@@ -171,6 +171,7 @@ watch([volume], () => {
         <!-- Add To Favorites -->
         <x-button
           v-if="selectedStation"
+          v-tooltip:right="$t('buttons.addFavorite')"
           variant="ghost"
           size="icon"
           @click="dialogOpen = 'favorite'"
@@ -191,6 +192,7 @@ watch([volume], () => {
         <!-- Extra Info Trigger -->
         <x-button
           v-if="selectedStation"
+          v-tooltip="$t('stationCard.extendedInfo')"
           variant="ghost"
           size="icon"
           @click="dialogOpen = 'info'"
@@ -286,21 +288,24 @@ watch([volume], () => {
       <div class="flex h-8 items-center text-red-500">
         <!-- Volume -->
         <div
+          v-tooltip:left="volume"
           class="relative ml-auto w-fit xs:hidden"
           @wheel="wheelHandler"
         >
-          <x-button
-            variant="ghost"
-            size="icon"
-            class="absolute -left-1 top-0 z-10 h-5 overflow-hidden rounded-full"
-            @click="muteToggle()"
-          >
-            <x-icon
-              :stroke-width="1.8"
-              :size="22"
-              :icon="showIcon"
-            />
-          </x-button>
+          <div class="absolute -left-1 -top-0.5 z-10">
+            <x-button
+              variant="ghost"
+              size="icon"
+              class="h-5 rounded-full"
+              @click="muteToggle()"
+            >
+              <x-icon
+                :stroke-width="1.8"
+                :size="22"
+                :icon="showIcon"
+              />
+            </x-button>
+          </div>
           <x-slider
             v-model="volume"
             :max="MAX_VOLUME"

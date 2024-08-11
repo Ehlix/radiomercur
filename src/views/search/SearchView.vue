@@ -46,7 +46,7 @@ watch(stationsList, () => {
     ref="el"
     class="home relative flex h-full w-full flex-col gap-2 overflow-x-hidden overflow-y-scroll rounded bg-mc-1"
   >
-    <!-- Add To Favorite -->
+    <!-- Add To Favorite dialog -->
     <add-to-favorite
       v-if="openedDialog === 'favorite' && stationInDialog"
       :open="openedDialog === 'favorite'"

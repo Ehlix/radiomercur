@@ -4,7 +4,6 @@ import { Play } from "lucide-vue-next";
 import { messages } from "@/lib/locale/locale";
 import { getFlagImage } from "@/lib/api/flagImage";
 import XImage from "@/components/ui/image/XImage.vue";
-import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 
 defineProps<{
@@ -48,36 +47,24 @@ const playHandler = (station: Station) => {
         class="z-0"
       />
     </button>
-    <x-tooltip>
-      <template #trigger>
-        <x-image
-          v-if="station.countrycode"
-          :src="getFlagImage(station.countrycode)"
-          class="h-5 w-8 min-w-8"
-        />
-      </template>
-      <template #content>
-        <div>
-          {{
-            // @ts-expect-error
-            messages[userLocale || "en"]?.countries[station.countrycode] || ""
-          }}
-        </div>
-      </template>
-    </x-tooltip>
-
-    <x-tooltip>
-      <template #trigger>
-        <h2
-          class="w-[50dvw] truncate text-nowrap text-left text-base xs:w-[60dvw]"
-        >
-          {{ removeMetadata(station.name || "Unknown station") }}
-        </h2>
-      </template>
-      <template #content>
-        {{ station.name || "Unknown station" }}
-      </template>
-    </x-tooltip>
+    <div
+      v-if="station.countrycode"
+      v-tooltip="
+        // @ts-expect-error
+        messages[userLocale || 'en']?.countries[station.countrycode] || ''
+      "
+    >
+      <x-image
+        :src="getFlagImage(station.countrycode)"
+        class="h-5 w-8 min-w-8"
+      />
+    </div>
+    <h2
+      v-tooltip="station.name || 'Unknown station'"
+      class="w-[50dvw] truncate text-nowrap text-left text-base xs:w-[60dvw]"
+    >
+      {{ removeMetadata(station.name || "Unknown station") }}
+    </h2>
   </div>
 </template>
 

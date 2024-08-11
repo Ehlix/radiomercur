@@ -11,7 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import XSwitch from "@/components/ui/switch/XSwitch.vue";
-import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import { useDebounce } from "@vueuse/core";
 import {
   ArrowDownNarrowWide,
@@ -144,87 +143,62 @@ watch([debSearch, currentTab], () => {
 
         <!-- Star/Likes filter -->
         <div class="flex items-center gap-2 text-tc-1">
-          <x-tooltip>
-            <template #trigger>
-              <x-button
-                :disabled="filters.order !== 'votes'"
-                :variant="'ghost'"
-                class="size-8 min-w-5 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
-                @click="changeOrder('clickcount')"
-              >
-                <x-icon
-                  :icon="Star"
-                  :size="21"
-                  :stroke-width="2"
-                />
-              </x-button>
-            </template>
-            <template #content>
-              {{ $t("stationCard.clickCount") }}
-            </template>
-          </x-tooltip>
-          <x-tooltip>
-            <template #trigger>
-              <x-button
-                :disabled="filters.order === 'votes'"
-                :variant="'ghost'"
-                class="size-8 min-w-8 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
-                @click="changeOrder('votes')"
-              >
-                <x-icon
-                  :icon="ThumbsUp"
-                  :size="21"
-                  :stroke-width="2"
-                />
-              </x-button>
-            </template>
-            <template #content>
-              {{ $t("stationCard.votes") }}
-            </template>
-          </x-tooltip>
+          <x-button
+            v-tooltip="$t('stationCard.clickCount')"
+            :variant="'ghost'"
+            class="size-8 min-w-5 p-0 px-1 *:text-tc-3"
+            :class="filters.order !== 'votes' ? 'bg-mc-3 *:text-mc-1' : ''"
+            @click="changeOrder('clickcount')"
+          >
+            <x-icon
+              :icon="Star"
+              :size="21"
+              :stroke-width="2"
+            />
+          </x-button>
+          <x-button
+            v-tooltip="$t('stationCard.votes')"
+            :variant="'ghost'"
+            class="size-8 min-w-8 p-0 px-1 *:text-tc-3"
+            :class="filters.order === 'votes' ? 'bg-mc-3 *:text-mc-1' : ''"
+            @click="changeOrder('votes')"
+          >
+            <x-icon
+              :icon="ThumbsUp"
+              :size="21"
+              :stroke-width="2"
+            />
+          </x-button>
         </div>
 
         <!-- Reverse order -->
         <div class="flex items-center gap-2 text-tc-1">
-          <x-tooltip>
-            <template #trigger>
-              <x-button
-                :disabled="filters.reverse"
-                :variant="'ghost'"
-                class="size-8 min-w-5 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
-                @click="reverseSearch(true)"
-              >
-                <x-icon
-                  :icon="ArrowDownWideNarrow"
-                  :size="21"
-                  :stroke-width="2"
-                />
-              </x-button>
-            </template>
-            <template #content>
-              {{ $t("searchBar.descendingOrder") }}
-            </template>
-          </x-tooltip>
-
-          <x-tooltip>
-            <template #trigger>
-              <x-button
-                :disabled="!filters.reverse"
-                :variant="'ghost'"
-                class="size-8 min-w-8 p-0 px-1 *:text-tc-3 disabled:bg-mc-3 disabled:opacity-100 *:disabled:text-mc-1"
-                @click="reverseSearch(false)"
-              >
-                <x-icon
-                  :icon="ArrowDownNarrowWide"
-                  :size="21"
-                  :stroke-width="2"
-                />
-              </x-button>
-            </template>
-            <template #content>
-              {{ $t("searchBar.ascendingOrder") }}
-            </template>
-          </x-tooltip>
+          <x-button
+            v-tooltip="$t('searchBar.descendingOrder')"
+            :variant="'ghost'"
+            class="size-8 min-w-5 p-0 px-1 *:text-tc-3"
+            :class="filters.reverse ? 'bg-mc-3 *:text-mc-1' : ''"
+            @click="reverseSearch(true)"
+          >
+            <x-icon
+              :icon="ArrowDownWideNarrow"
+              :size="21"
+              :stroke-width="2"
+            />
+          </x-button>
+          <x-button
+            v-tooltip="$t('searchBar.ascendingOrder')"
+            :variant="'ghost'"
+            class="size-8 min-w-8 p-0 px-1 *:text-tc-3"
+            :class="!filters.reverse ? 'bg-mc-3 *:text-mc-1' : ''"
+            @click="reverseSearch(false)"
+          >
+            <x-icon
+              :icon="ArrowDownNarrowWide"
+              :size="21"
+              :stroke-width="2"
+            />
+          </x-button>
         </div>
       </div>
       <choose-country

@@ -11,7 +11,6 @@ import { History } from "lucide-vue-next";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import { useUserStore } from "@/stores/userStore";
 import HistoryCard from "./HistoryCard.vue";
-import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
 import { type HTMLAttributes } from "vue";
 
 const { selectStation, historyList, locale } = useUserStore();
@@ -27,24 +26,18 @@ const playHandler = (station: Station) => {
 
 <template>
   <dialog-main>
-    <x-tooltip
-      :trigger-class="$props.class"
-      content-side="right"
+    <dialog-trigger
+      as-child
+      class="flex w-8 cursor-pointer items-center justify-center"
     >
-      <template #trigger>
-        <dialog-trigger as-child>
-          <x-icon
-            :icon="History"
-            :size="20"
-            :stroke-width="2"
-            class="cursor-pointer"
-          />
-        </dialog-trigger>
-      </template>
-      <template #content>
-        <span>{{ $tc("searchBar.history") }}</span>
-      </template>
-    </x-tooltip>
+      <div v-tooltip:bottom="$t('searchBar.history')">
+        <x-icon
+          :icon="History"
+          :size="20"
+          :stroke-width="2"
+        />
+      </div>
+    </dialog-trigger>
 
     <dialog-content
       class="w-full max-w-[70dvw] bg-mc-2 p-1 transition-none sm:max-w-[425px]"

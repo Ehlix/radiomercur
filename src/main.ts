@@ -6,9 +6,12 @@ import { createI18n } from "vue-i18n";
 import App from "./App.vue";
 import "./assets/main.css";
 import router from "./router";
+import { tooltip } from "./directives/tooltip";
 
-const app = createApp(App);
+export const app = createApp(App);
 app.use(router);
+
+app.directive("tooltip", tooltip);
 
 const { locale } = useUserStore();
 
