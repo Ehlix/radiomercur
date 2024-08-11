@@ -1,23 +1,25 @@
 <script setup lang="ts">
 import {
-  SelectMain,
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectMain,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { computed, ref, watchEffect, type HTMLAttributes } from "vue";
 import { messages } from "@/lib/locale/locale";
+import { useUserStore } from "@/stores/userStore";
+import { computed, ref, watchEffect, type HTMLAttributes } from "vue";
 
 const props = defineProps<{
   countryCode?: string;
-  userLocale: "en" | "ru";
   class?: HTMLAttributes["class"];
 }>();
+
+const { locale } = useUserStore();
 const selected = ref<string>(props.countryCode || "all");
 const countries = computed(() =>
-  Object.entries(messages[props.userLocale].countries).sort((a, b) => {
+  Object.entries(messages[locale.value].countries).sort((a, b) => {
     return a[1] < b[1] ? -1 : 1;
   }),
 );

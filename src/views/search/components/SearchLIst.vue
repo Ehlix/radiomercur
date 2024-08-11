@@ -1,40 +1,19 @@
 <script setup lang="ts">
-import { getFlagImage } from "@/lib/api/flagImage";
-import { type HTMLAttributes } from "vue";
-import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
-import XImage from "@/components/ui/image/XImage.vue";
 import XButton from "@/components/ui/button/XButton.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
-import { Play, ThumbsUp, Star, ListPlus, Info } from "lucide-vue-next";
+import XImage from "@/components/ui/image/XImage.vue";
+import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
+import { getFlagImage } from "@/lib/api/flagImage";
+import { Info, ListPlus, Play, Star, ThumbsUp } from "lucide-vue-next";
+import { useSearchStore } from "../searchStore";
 
-const props = defineProps<{
-  stationsList: Station[];
-  class?: HTMLAttributes["class"];
-}>();
-
-const emits = defineEmits<{
-  (e: "selectStation", station: Station): void;
-  (e: "openAddToFavorite", station: Station): void;
-  (e: "openExtendedInfo", station: Station): void;
-}>();
-
-const selectStation = (station: Station) => {
-  emits("selectStation", station);
-};
-
-const openAddToFavoriteModal = (station: Station) => {
-  emits("openAddToFavorite", station);
-};
-
-const openExtendedInfo = (station: Station) => {
-  emits("openExtendedInfo", station);
-};
+const { stationsList, openDialog, selectStation } = useSearchStore();
 </script>
 
 <template>
   <div class="flex h-fit w-full flex-col gap-2 px-2">
     <div
-      v-for="station in props.stationsList"
+      v-for="station in stationsList"
       :key="station.stationuuid"
       class="item-list relative w-full"
     >
@@ -53,7 +32,7 @@ const openExtendedInfo = (station: Station) => {
               <ListPlus
                 :size="25"
                 :stroke-width="1.8"
-                @click="openAddToFavoriteModal(station)"
+                @click="openDialog(station, 'favorite')"
               />
             </template>
             <template #content>
@@ -69,7 +48,7 @@ const openExtendedInfo = (station: Station) => {
               <Info
                 :size="22"
                 :stroke-width="2"
-                @click="openExtendedInfo(station)"
+                @click="openDialog(station, 'info')"
               />
             </template>
             <template #content>

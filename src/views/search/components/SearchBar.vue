@@ -1,82 +1,69 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import ChooseCountry from "./ChooseCountry.vue";
+import xButton from "@/components/ui/button/XButton.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import XInput from "@/components/ui/input/XInput.vue";
+import {
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectMain,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import XSwitch from "@/components/ui/switch/XSwitch.vue";
-import xButton from "@/components/ui/button/XButton.vue";
 import XTooltip from "@/components/ui/tooltip/XTooltip.vue";
-import ChooseInputMode from "./ChooseInputMode.vue";
 import { useDebounce } from "@vueuse/core";
 import {
-  Search,
-  X,
-  ArrowDownWideNarrow,
   ArrowDownNarrowWide,
+  ArrowDownWideNarrow,
+  Search,
   Star,
   ThumbsUp,
+  X,
 } from "lucide-vue-next";
-import { useUserStore } from "@/stores/userStore";
+import { ref, watch } from "vue";
+import { useSearchStore } from "../searchStore";
+import ChooseCountry from "./ChooseCountry.vue";
 
-const props = defineProps<{
-  downloadProgress?: number | null | undefined;
-  defaultFilters?: SearchFilters;
-}>();
-const emits = defineEmits<{
-  (e: "currentTab", payload: string): void;
-  (e: "filters", payload: SearchFilters): void;
-}>();
+const { filters, updateFilters } = useSearchStore();
+const searchInput = ref<InstanceType<typeof XInput> | null>(null);
+const searchValue = ref<string>();
+const debSearch = useDebounce(searchValue, 500);
+const currentTab = ref<"name" | "genres">("name");
 
-const userStore = useUserStore();
-const searchInput = ref<string>();
-const debSearch = useDebounce(searchInput, 500);
-const currentTab = ref<string>("name");
-const filters = ref<SearchFilters>({ ...props.defaultFilters } || {});
-// const genresIsOpen = ref(false);
-
-const hqOnly = (payload: boolean) => {
-  filters.value.highQualityOnly = payload;
+const hqOnly = (highQualityOnly: boolean) => {
+  updateFilters({ highQualityOnly });
 };
 
-const reverseSearch = (payload: boolean) => {
-  filters.value.reverse = payload;
+const reverseSearch = (reverse: boolean) => {
+  updateFilters({ reverse });
 };
 
 const changeOrder = (order: ParamsOrder) => {
-  filters.value.order = order;
+  updateFilters({ order });
 };
 
-const changeCountryCode = (payload: string) => {
-  if (payload === "all") {
-    filters.value.countryCode = undefined;
+const changeCountryCode = (countryCode: string) => {
+  if (countryCode === "all") {
+    updateFilters({ countryCode: undefined });
   } else {
-    filters.value.countryCode = payload;
+    updateFilters({ countryCode });
   }
 };
 
-const updateCurrentTab = (payload: string) => {
-  currentTab.value = payload;
-  emits("currentTab", payload);
+const searchInputFocus = () => {
+  searchInput.value?.input?.focus();
 };
 
-watch(
-  [filters],
-  () => {
-    // console.log('searchbar');
-    emits("filters", filters.value);
-  },
-  {
-    deep: true,
-  },
-);
+const clearSearch = () => {
+  searchValue.value = "";
+};
 
 watch([debSearch, currentTab], () => {
   if (currentTab.value === "name") {
-    filters.value = { ...filters.value, name: debSearch.value, tag: "" };
+    updateFilters({ name: debSearch.value, tag: "" });
   } else if (currentTab.value === "genres") {
-    const newName = "";
-    const newTags = debSearch.value;
-    filters.value = { ...filters.value, name: newName, tag: newTags };
+    updateFilters({ name: "", tag: debSearch.value });
   }
 });
 </script>
@@ -84,13 +71,34 @@ watch([debSearch, currentTab], () => {
 <template>
   <div class="flex w-full flex-col gap-2">
     <div class="flex w-full items-center gap-2 sm:flex-col">
-      <choose-input-mode
-        class="w-fit min-w-24 sm:order-2 sm:w-full"
-        @current-select="updateCurrentTab($event)"
-      />
+      <!-- Input Mode -->
+      <select-main
+        v-model="currentTab"
+        name="mode"
+      >
+        <select-trigger class="w-fit min-w-24 sm:order-2 sm:w-full">
+          <select-value
+            placeholder="Search by"
+            class="font-medium"
+          />
+        </select-trigger>
+        <select-content>
+          <select-group>
+            <!-- <SelectLabel>Countries</SelectLabel> -->
+            <select-item value="name">
+              {{ $t("searchBar.name") }}
+            </select-item>
+            <select-item value="genres">
+              {{ $tc("searchBar.genre", 1) }}
+            </select-item>
+          </select-group>
+        </select-content>
+      </select-main>
+      <!-- Search Input -->
       <div class="relative w-full">
         <x-input
-          v-model.trim="searchInput"
+          ref="searchInput"
+          v-model.trim="searchValue"
           name="searchInput"
           type="text"
           :placeholder="
@@ -102,17 +110,23 @@ watch([debSearch, currentTab], () => {
         />
         <x-icon
           :icon="Search"
-          :size="34"
-          :stroke-width="1.5"
-          class="absolute inset-y-0 start-[0.15rem] flex items-center justify-center px-1 text-tc-4"
-        />
-        <x-icon
-          :icon="X"
           :size="32"
           :stroke-width="1.5"
-          class="absolute inset-y-0 end-1 flex cursor-pointer items-center justify-center px-1 text-tc-4 transition-all hover:opacity-60"
-          @click="() => (searchInput = '')"
+          class="absolute inset-y-0 flex items-center justify-center pl-2 pr-0 text-tc-4"
+          @click="searchInputFocus"
         />
+        <x-button
+          variant="ghost"
+          class="absolute inset-y-0 end-0 min-w-12 max-w-12 p-2.5"
+          @click.prevent="clearSearch"
+        >
+          <x-icon
+            :icon="X"
+            :size="32"
+            :stroke-width="1.5"
+            class="text-tc-4"
+          />
+        </x-button>
       </div>
     </div>
     <div class="flex items-center gap-2 text-sm sm:flex-col">
@@ -214,7 +228,6 @@ watch([debSearch, currentTab], () => {
         </div>
       </div>
       <choose-country
-        :user-locale="userStore.locale.value"
         :country-code="filters.countryCode || undefined"
         class="sm:order-first"
         @change-country-code="(e) => changeCountryCode(e)"

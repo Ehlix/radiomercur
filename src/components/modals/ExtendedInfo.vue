@@ -12,12 +12,14 @@ import XImage from "@/components/ui/image/XImage.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 import { messages } from "@/lib/locale/locale";
+import { useUserStore } from "@/stores/userStore";
 
 defineProps<{
   station: Station;
   open: boolean;
-  locale?: "en" | "ru";
 }>();
+
+const { locale } = useUserStore();
 
 const emits = defineEmits<{
   (e: "close"): void;

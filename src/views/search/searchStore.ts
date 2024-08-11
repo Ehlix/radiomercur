@@ -1,24 +1,49 @@
-import { ref, shallowRef, watch } from "vue";
-import { getAllStations } from "@/lib/api/stations";
-import { useBaseUrlsStore } from "./baseUrlsStore";
-import type { AxiosProgressEvent } from "axios";
-import { createGlobalState, watchOnce } from "@vueuse/core";
 import { getLSData, setLSData } from "@/lib/api/localStorage";
+import { getAllStations } from "@/lib/api/stations";
 import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
+import { useUserStore } from "@/stores/userStore";
+import { createGlobalState, watchOnce } from "@vueuse/core";
+import type { AxiosProgressEvent } from "axios";
+import { ref, shallowRef, watch } from "vue";
+import { useBaseUrlsStore } from "../../stores/baseUrlsStore";
 
 export const useSearchStore = createGlobalState(() => {
   const { baseUrl, mainServerIsActive, setBaseUrl, baseUrlReload } =
     useBaseUrlsStore();
-  const stationsList = shallowRef<Station[]>([]);
-  const filters = ref<SearchFilters>({});
-  const downloadProgress = ref(0);
+  const userStore = useUserStore();
+  const OFFSET = 35;
   const loading = ref(false);
   const currentPage = ref(0);
   const canLoadMore = ref(false);
-  const OFFSET = 35;
+  const downloadProgress = ref(0);
+  const filters = shallowRef<SearchFilters>({});
+  const stationsList = shallowRef<Station[]>([]);
+  const openedDialog = ref<"favorite" | "info" | false>(false);
+  const stationInDialog = ref<Station | null>(null);
 
   const lsData = getLSData();
-  filters.value = lsData?.searchFilters || {};
+  const defaultFilters: SearchFilters = {
+    highQualityOnly: lsData?.searchFilters?.highQualityOnly ?? false,
+    reverse: lsData?.searchFilters?.reverse ?? true,
+  };
+  filters.value = { ...defaultFilters };
+
+  watch(filters, () => {
+    getStations(filters.value);
+  });
+
+  const updateFilters = (newFilters: Partial<SearchFilters>) => {
+    filters.value = { ...filters.value, ...newFilters };
+  };
+
+  const selectStation = (station: Station) => {
+    userStore.selectStation(station);
+  };
+
+  const openDialog = (station: Station, mode: "favorite" | "info") => {
+    stationInDialog.value = station;
+    openedDialog.value = mode;
+  };
 
   const clearSearch = () => {
     stationsList.value = [];
@@ -92,6 +117,15 @@ export const useSearchStore = createGlobalState(() => {
     );
   };
 
+  const setFiltersToLS = (newFilters: SearchFilters) => {
+    setLSData({
+      searchFilters: {
+        highQualityOnly: newFilters.highQualityOnly ?? false,
+        reverse: newFilters.reverse ?? true,
+      },
+    });
+  };
+
   const getStations = (newFilters: SearchFilters) => {
     currentPage.value = 0;
     canLoadMore.value = true;
@@ -127,15 +161,6 @@ export const useSearchStore = createGlobalState(() => {
     getStations(filters.value);
   });
 
-  const setFiltersToLS = (newFilters: SearchFilters) => {
-    setLSData({
-      searchFilters: {
-        highQualityOnly: newFilters.highQualityOnly ?? false,
-        reverse: newFilters.reverse ?? true,
-      },
-    });
-  };
-
   watch([downloadProgress, loading], () => {
     if (!loading.value) {
       downloadProgress.value = 0;
@@ -157,5 +182,11 @@ export const useSearchStore = createGlobalState(() => {
     mainServerIsActive,
     searchStoreReset,
     stationsList,
+    defaultFilters,
+    selectStation,
+    openDialog,
+    openedDialog,
+    stationInDialog,
+    updateFilters,
   };
 });
