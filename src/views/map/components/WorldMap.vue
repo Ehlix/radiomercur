@@ -1,23 +1,16 @@
 <script setup lang="ts">
-import * as mt from "@maptiler/sdk";
-import "@maptiler/sdk/dist/maptiler-sdk.css";
 import XButton from "@/components/ui/button/XButton.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import globalConfig from "@/lib/config/global";
 import { calculateDistance } from "@/lib/utils/calculateDistance";
 import { useMapStore } from "@/stores/mapStore";
+import * as mt from "@maptiler/sdk";
+import "@maptiler/sdk/dist/maptiler-sdk.css";
 import { useDebounceFn } from "@vueuse/core";
 import GeoJSON, { type GeoJsonProperties } from "geojson";
 import { Home, Minus, Plus } from "lucide-vue-next";
-import {
-  defineAsyncComponent,
-  markRaw,
-  onMounted,
-  onUnmounted,
-  shallowRef,
-  watch,
-} from "vue";
-const StationInfo = defineAsyncComponent(() => import("./StationInfo.vue"));
+import { markRaw, onMounted, onUnmounted, shallowRef, watch } from "vue";
+import StationInfo from "./StationInfo.vue";
 
 const { stationsList, selectedStation, selectStation, getStations } =
   useMapStore();

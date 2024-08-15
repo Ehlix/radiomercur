@@ -6,7 +6,7 @@ import { getFlagImage } from "@/lib/api/flagImage";
 import { Info, ListPlus, Play, Star, ThumbsUp } from "lucide-vue-next";
 import { useSearchStore } from "../searchStore";
 
-const { stationsList, openDialog, selectStation } = useSearchStore();
+const { filters, stationsList, openDialog, selectStation } = useSearchStore();
 </script>
 
 <template>
@@ -55,7 +55,7 @@ const { stationsList, openDialog, selectStation } = useSearchStore();
         >
           <Play
             :stroke-width="1.5"
-            class="-ml-1 size-8 min-w-8 transition-transform group-hover:scale-105 sm:size-10"
+            class="-ml-1 size-8 min-w-8 transition-transform group-hover:scale-105 sm:-ml-2.5 sm:size-10"
           />
           <!-- Station Name -->
           <h2
@@ -70,7 +70,10 @@ const { stationsList, openDialog, selectStation } = useSearchStore();
         >
           <!-- Station Popularity -->
           <div
-            v-show="station.clickcount"
+            v-show="
+              (station.clickcount ?? filters.order === 'clickcount') ||
+                !filters.order
+            "
             class="flex w-full items-start justify-end gap-1 *:text-tc-2"
           >
             <p>{{ station.clickcount }}</p>
@@ -82,7 +85,7 @@ const { stationsList, openDialog, selectStation } = useSearchStore();
             />
           </div>
           <div
-            v-show="station.votes"
+            v-show="station.votes ?? filters.order === 'votes'"
             class="ml-2 flex min-w-16 items-start justify-end gap-1 *:text-tc-1"
           >
             <p>{{ station.votes }}</p>

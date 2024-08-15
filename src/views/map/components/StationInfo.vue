@@ -35,21 +35,20 @@ const zoomIn = () => {
   <!-- Station Info -->
   <div
     v-if="selectedStation"
-    class="absolute inset-2 z-40 flex h-fit min-h-56 w-72 flex-col gap-2 overflow-hidden rounded bg-mc-1 p-2 sm:inset-0 sm:max-h-28 sm:min-h-28 sm:w-full sm:rounded-none"
+    class="absolute inset-2 z-40 flex h-fit min-h-56 w-72 flex-col gap-2 overflow-hidden rounded bg-mc-1 p-2 sm:inset-0 sm:max-h-28 sm:min-h-28 sm:w-full sm:gap-1 sm:rounded-none"
   >
     <shadow-overlay />
     <!-- Name -->
-    <p
-      class="flex w-full items-center gap-2 truncate text-nowrap text-lg uppercase"
-    >
+    <div class="flex w-full items-center gap-2">
       <x-image
         :src="getFlagImage(selectedStation.countrycode)"
         class="hidden h-5 w-8 sm:flex"
       />
-      {{ removeMetadata(selectedStation?.name || "Unknown") }}
+      <h2 class="truncate text-nowrap text-lg uppercase">
+        {{ removeMetadata(selectedStation?.name || "Unknown") }}
+      </h2>
       <!-- Extended Info -->
       <x-button
-        v-tooltip="$t('button.extendedInfo')"
         class="ml-auto hidden w-8 min-w-8 max-w-8 p-0 sm:flex"
         variant="ghost"
         @click="dialogOpen = 'info'"
@@ -57,7 +56,6 @@ const zoomIn = () => {
         <extended-info
           :open="dialogOpen === 'info'"
           :station="selectedStation"
-          :locale="locale"
           @close="dialogOpen = false"
         />
         <x-icon
@@ -67,7 +65,7 @@ const zoomIn = () => {
           class="cursor-pointer"
         />
       </x-button>
-    </p>
+    </div>
     <div class="relative z-10 flex grow flex-col gap-2">
       <!-- Logo -->
       <div
@@ -186,8 +184,6 @@ const zoomIn = () => {
       <div class="z-10 mt-auto flex justify-between gap-2">
         <!-- Add To Favorites -->
         <x-button
-          v-if="selectedStation"
-          v-tooltip="$t('buttons.addFavorite')"
           class="h-10 min-w-10 max-w-10 p-0 sm:h-8 sm:min-w-8 sm:max-w-8"
           @click="dialogOpen = 'favorite'"
         >
@@ -206,7 +202,6 @@ const zoomIn = () => {
         </x-button>
         <!-- Play -->
         <x-button
-          v-tooltip="$t('buttons.play')"
           class="z-10 mt-auto h-10 w-full p-0 sm:h-8"
           @click="() => selectedStation && selectStation(selectedStation)"
         >
@@ -219,7 +214,6 @@ const zoomIn = () => {
         </x-button>
         <!-- Zoom In -->
         <x-button
-          t-tooltip="$t('buttons.zoomIn')"
           class="h-10 min-w-10 max-w-10 p-0 sm:h-8 sm:min-w-8 sm:max-w-8"
           @click="zoomIn"
         >

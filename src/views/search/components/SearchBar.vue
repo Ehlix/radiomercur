@@ -78,10 +78,10 @@ watch([debSearch, currentTab], () => {
         <select-trigger class="w-fit min-w-24 sm:order-2 sm:w-full">
           <select-value
             placeholder="Search by"
-            class="font-medium"
+            class="font-semibold"
           />
         </select-trigger>
-        <select-content>
+        <select-content class="min-w-20">
           <select-group>
             <!-- <SelectLabel>Countries</SelectLabel> -->
             <select-item value="name">
@@ -131,15 +131,18 @@ watch([debSearch, currentTab], () => {
     <div class="flex items-center gap-2 text-sm sm:flex-col">
       <div class="flex gap-2">
         <!-- Quality -->
-        <div
-          class="flex items-center gap-2 whitespace-nowrap text-nowrap font-medium text-tc-1 xs:whitespace-normal"
+        <x-button
+          class="flex w-24 justify-start p-0"
+          variant="ghost"
+          @click="() => hqOnly(!filters.highQualityOnly)"
         >
-          <x-switch
-            :checked="filters.highQualityOnly"
-            @update:checked="hqOnly"
-          />
-          HQ Only
-        </div>
+          <div
+            class="flex w-full flex-col items-center justify-center text-wrap text-sm font-semibold leading-none text-tc-3"
+          >
+            HQ <span class="text-xs font-semibold">only</span>
+          </div>
+          <x-switch :checked="filters.highQualityOnly" />
+        </x-button>
 
         <!-- Star/Likes filter -->
         <div class="flex items-center gap-2 text-tc-1">
@@ -203,7 +206,7 @@ watch([debSearch, currentTab], () => {
       </div>
       <choose-country
         :country-code="filters.countryCode || undefined"
-        class="sm:order-first"
+        class="pr-2.5 font-semibold sm:order-first"
         @change-country-code="(e) => changeCountryCode(e)"
       />
     </div>

@@ -37,7 +37,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
     <div
       :class="
         cn(
-          'absolute right-[0.5rem] font-semibold text-mc-1 transition-transform',
+          'absolute right-[0.4rem] font-semibold text-mc-1 transition-transform',
           {
             'translate-x-8': props.checked,
           },
@@ -49,7 +49,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
     <div
       :class="
         cn(
-          'absolute left-[0.3rem] font-semibold text-mc-1 transition-transform',
+          'absolute left-[0.37rem] font-semibold text-mc-1 transition-transform',
           {
             '-translate-x-7': !props.checked,
           },
@@ -61,7 +61,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
     <SwitchThumb
       :class="
         cn(
-          'pointer-events-none block h-7 w-2 rounded-sm bg-mc-1 shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-8 data-[state=unchecked]:translate-x-1',
+          'pointer-events-none block h-7 w-2 rounded-sm bg-mc-1 shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-9 data-[state=unchecked]:translate-x-1',
         )
       "
     />

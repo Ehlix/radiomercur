@@ -6,6 +6,7 @@ import { useSearchStore } from "@/views/search/searchStore";
 import { Disc3, Frown } from "lucide-vue-next";
 import { defineAsyncComponent, ref, watch } from "vue";
 import SearchBar from "./components/SearchBar.vue";
+import { useRouter } from "vue-router";
 const AddToFavorite = defineAsyncComponent(
   () => import("@/components/modals/AddToFavorite.vue"),
 );
@@ -23,7 +24,6 @@ const {
   filters,
   getStations,
   canLoadMore,
-  baseUrlReload,
   currentPage,
   getMoreStations,
   mainServerIsActive,
@@ -32,6 +32,10 @@ const {
   stationInDialog,
   downloadProgress,
 } = useSearchStore();
+
+const router = useRouter();
+
+const reloadHandler = () => [router.go(0)];
 
 watch(stationsList, () => {
   if (el.value) {
@@ -140,7 +144,7 @@ watch(stationsList, () => {
     <p class="mb-2 text-center text-xl text-tc-1">
       {{ $t("serverNoConnection.description") }}
     </p>
-    <x-button @click="baseUrlReload">
+    <x-button @click="reloadHandler">
       {{ $t("buttons.reload") }}
     </x-button>
   </div>

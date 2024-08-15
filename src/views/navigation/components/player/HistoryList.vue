@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import {
-  DialogMain,
   DialogContent,
   DialogDescription,
   DialogHeader,
+  DialogMain,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { History } from "lucide-vue-next";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import { useUserStore } from "@/stores/userStore";
-import HistoryCard from "./HistoryCard.vue";
+import { History } from "lucide-vue-next";
 import { type HTMLAttributes } from "vue";
+import HistoryCard from "./HistoryCard.vue";
 
-const { selectStation, historyList, locale } = useUserStore();
+const { selectStation, historyList } = useUserStore();
 
 defineProps<{
   class?: HTMLAttributes["class"];
@@ -57,7 +57,6 @@ const playHandler = (station: Station) => {
           <history-card
             v-for="station in historyList"
             :key="station.stationuuid"
-            :user-locale="locale"
             :station="station"
             @play-handler="playHandler"
           />

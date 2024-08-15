@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { computed, ref, watch, nextTick, defineAsyncComponent } from "vue";
-import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
-import { cn } from "@/lib/utils/twMerge";
-import { useUserStore } from "@/stores/userStore";
+import XButton from "@/components/ui/button/XButton.vue";
+import XIcon from "@/components/ui/icon/XIcon.vue";
 import XImage from "@/components/ui/image/XImage.vue";
 import XSlider from "@/components/ui/slider/XSlider.vue";
-import XIcon from "@/components/ui/icon/XIcon.vue";
-import XButton from "@/components/ui/button/XButton.vue";
-import PlayerVisual from "./PlayerVisual.vue";
-import HistoryList from "./HistoryList.vue";
+import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
+import { cn } from "@/lib/utils/twMerge";
+import { useMapStore } from "@/stores/mapStore";
+import { useUserStore } from "@/stores/userStore";
 import {
   Disc3,
-  Play,
+  Info,
+  ListPlus,
+  MapPin,
   Pause,
+  Play,
   Volume1,
   Volume2,
   VolumeX,
-  ListPlus,
-  Info,
-  MapPin,
 } from "lucide-vue-next";
-import { useMapStore } from "@/stores/mapStore";
+import { computed, defineAsyncComponent, nextTick, ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import HistoryList from "./HistoryList.vue";
+import PlayerVisual from "./PlayerVisual.vue";
 const AddToFavorite = defineAsyncComponent(
   () => import("@/components/modals/AddToFavorite.vue"),
 );
@@ -30,7 +30,7 @@ const ExtendedInfo = defineAsyncComponent(
 );
 
 const { selectStation } = useMapStore();
-const { selectedStation, playerVisualMode, locale } = useUserStore();
+const { selectedStation, playerVisualMode } = useUserStore();
 const player = ref<HTMLAudioElement | null>(null);
 const paused = ref<boolean>(true);
 const loading = ref<boolean>(false);
@@ -207,7 +207,6 @@ watch([volume], () => {
             v-if="dialogOpen === 'info'"
             :station="selectedStation"
             :open="dialogOpen === 'info'"
-            :locale="locale"
             @close="dialogOpen = false"
           />
         </x-button>
@@ -288,7 +287,7 @@ watch([volume], () => {
       <div class="flex h-8 items-center text-red-500">
         <!-- Volume -->
         <div
-          v-tooltip:left="volume"
+          v-tooltip:left="volume + '%'"
           class="relative ml-auto w-fit xs:hidden"
           @wheel="wheelHandler"
         >

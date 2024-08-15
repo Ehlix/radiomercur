@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useUserStore } from "@/stores/userStore";
-import FavoriteNav from "./components/FavoriteNav.vue";
-import { defineAsyncComponent, ref } from "vue";
 import XButton from "@/components/ui/button/XButton.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
-import ChangePage from "./components/ChangePage.vue";
+import { useUserStore } from "@/stores/userStore";
 import { ChevronsRight } from "lucide-vue-next";
+import { defineAsyncComponent, ref } from "vue";
+import ChangePage from "./components/ChangePage.vue";
+import FavoriteNav from "./components/FavoriteNav.vue";
 import { useFavoriteStore } from "./favoriteStore";
 const AddToFavorite = defineAsyncComponent(
   () => import("@/components/modals/AddToFavorite.vue"),
@@ -52,7 +52,6 @@ const scrollUp = () => {
       v-if="openedDialog === 'info' && stationToDialog"
       :open="openedDialog === 'info'"
       :station="stationToDialog"
-      :locale="userStore.locale.value"
       @close="(stationToDialog = null), (openedDialog = false)"
     />
     <div>
