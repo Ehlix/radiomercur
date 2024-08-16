@@ -78,7 +78,7 @@ watch([debSearch, currentTab], () => {
         <select-trigger class="w-fit min-w-24 sm:order-2 sm:w-full">
           <select-value
             placeholder="Search by"
-            class="font-semibold"
+            class="font-medium"
           />
         </select-trigger>
         <select-content class="min-w-20">
@@ -206,7 +206,7 @@ watch([debSearch, currentTab], () => {
       </div>
       <choose-country
         :country-code="filters.countryCode || undefined"
-        class="pr-2.5 font-semibold sm:order-first"
+        class="pr-2.5 sm:order-first"
         @change-country-code="(e) => changeCountryCode(e)"
       />
     </div>

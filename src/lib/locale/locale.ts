@@ -398,9 +398,9 @@ const RU = {
     descendingOrder: "По убыванию",
     history: "История",
     genre: "Жанр | Жанры",
-    name: "Название | Названию",
+    name: "Имя",
     noResults: "Ничего не найдено",
-    placeholder: "Поиск по названию | Поиск по жанру",
+    placeholder: "Поиск по имени | Поиск по жанру",
   },
   settingsBar: {
     title: "Настройки",
