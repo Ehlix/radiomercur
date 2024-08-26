@@ -15,7 +15,7 @@ import DialogClose from "@/components/ui/dialog/DialogClose.vue";
 import { ref } from "vue";
 import { useFavoriteStore } from "../favoriteStore";
 
-const { currentPage, STATIONS_PER_PAGE, totalStationCount } =
+const { currentPage, changePageHandler, STATIONS_PER_PAGE, totalStationCount } =
   useFavoriteStore();
 
 const inputValue = ref<number>(currentPage.value);
@@ -33,7 +33,7 @@ const inputValue = ref<number>(currentPage.value);
     <dialog-content class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
       <form
         class="grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] rounded bg-mc-1 sm:max-w-[425px]"
-        @click.prevent=""
+        @submit.prevent="changePageHandler(inputValue)"
       >
         <dialog-header class="border-b border-mc-2 px-2 pt-2">
           <dialog-title class="text-2xl text-mc-2">

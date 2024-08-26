@@ -72,6 +72,7 @@ export const useFavoriteStore = createGlobalState(() => {
         currentPage.value = totalPageCount.value;
       } else {
         currentPage.value++;
+        console.log("next");
       }
     }
   };

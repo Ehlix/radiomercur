@@ -73,7 +73,7 @@ const scrollUp = () => {
       <x-button
         :disabled="currentPage === 1"
         class="w-10 min-w-8 p-0 xs:min-w-5"
-        @click="prevPage('min'), scrollUp"
+        @click="prevPage('min'), scrollUp()"
       >
         <x-icon
           :icon="ChevronsRight"
@@ -85,7 +85,7 @@ const scrollUp = () => {
       <x-button
         :disabled="currentPage === 1"
         class="w-full xs:min-w-8"
-        @click="prevPage, scrollUp"
+        @click="prevPage(), scrollUp()"
       >
         {{ $t("buttons.prev") }}
       </x-button>
@@ -93,7 +93,7 @@ const scrollUp = () => {
       <x-button
         :disabled="totalStationCount < currentPage * STATIONS_PER_PAGE"
         class="w-full xs:min-w-8"
-        @click="nextPage, scrollUp"
+        @click="nextPage(), scrollUp()"
       >
         {{ $t("buttons.next") }}
       </x-button>
