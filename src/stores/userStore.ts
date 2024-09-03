@@ -97,12 +97,12 @@ export const useUserStore = createGlobalState(() => {
             }
             return s;
           });
-          !notSelect && (selectedStation.value = res[0]);
+          !notSelect && selectStation(res[0]);
           return;
         }
       });
     }
-    !notSelect && (selectedStation.value = station);
+    !notSelect && selectStation(station);
   };
 
   const addToFavorite = ({ station, folderId }: StationAndId) => {
