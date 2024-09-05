@@ -265,7 +265,7 @@ watch([volume], () => {
             v-show="!loading"
             variant="ghost"
             :disabled="loading"
-            class="pointer-events-auto size-12 min-w-12 max-w-12 rounded-full border-2 stroke-[0.1rem] p-1 sm:size-10 sm:min-w-10 sm:max-w-10 sm:p-0.5"
+            class="pointer-events-auto size-12 min-w-12 max-w-12 rounded-full border-2 border-tc-1 stroke-[0.1rem] p-1 sm:size-10 sm:min-w-10 sm:max-w-10 sm:p-0.5"
             @click="togglePlay()"
           >
             <x-icon

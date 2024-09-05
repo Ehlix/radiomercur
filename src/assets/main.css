@@ -1,3 +1,4 @@
+@import "./colors.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,67 +9,6 @@
   box-sizing: border-box;
   margin: 0;
   font-weight: normal;
-}
-
-:root {
-  --background-color-1: #1a1928;
-  --main-color-1: #34495e;
-  --main-color-2: #ef5a4a;
-  --main-color-3: #95a5a6;
-  --text-color-1: #ecf0f1;
-  --text-color-2: #fd8966;
-  --text-color-3: #bdc3c7;
-  --text-color-4: #ffffff;
-  --hover-color-1: #44616e;
-  --hover-color-2: #fa7566;
-  --hover-color-3: #d5d8dc;
-  --shadow-color-1: #00000050;
-  --shadow-color-2: #00000070;
-  &.default-dark {
-    --background-color-1: #141314;
-    --main-color-1: #29222f;
-    --main-color-2: #f57852;
-    --main-color-3: #8c8c8c;
-    --text-color-1: #f1e4e4;
-    --text-color-2: #f48032;
-    --text-color-3: #b7b7b7;
-    --text-color-4: #f1e4e4;
-    --hover-color-1: #3e3546;
-    --hover-color-2: #fd8966;
-    --hover-color-3: #b3b3b3;
-    --shadow-color-1: #00000050;
-    --shadow-color-2: #00000070;
-  }
-  &.pastel-light {
-    --background-color-1: #e8e8e8;
-    --main-color-1: #7d7dab;
-    --main-color-2: #9dbbd1;
-    --main-color-3: #bdc3c7;
-    --text-color-1: #ffffff;
-    --text-color-2: #d68189;
-    --text-color-3: #c4c4c4;
-    --text-color-4: #42426c;
-    --hover-color-1: #9595c1;
-    --hover-color-2: #adcae1;
-    --hover-color-3: #d0d5d8;
-    --shadow-color-1: #00000050;
-    --shadow-color-2: #00000070;
-  }
-  &.dark-contrast {
-    --background-color-1: #ffffff;
-    --main-color-1: #000000;
-    --main-color-2: #bebebe;
-    --main-color-3: #838383;
-    --text-color-1: #ffffff;
-    --text-color-2: #ffffff;
-    --text-color-3: #555555;
-    --text-color-4: #000000;
-    --hover-color-1: #181818;
-    --hover-color-2: #afafaf;
-    --hover-color-3: #656565;
-    --shadow-color-1: #00000050;
-    --shadow-color-2: #00000070;
-  }
 }
 
 .not-rounded {
@@ -139,7 +79,7 @@ h2 {
   width: 7px;
 }
 * {
-  scrollbar-color: var(--hover-color-1) var(--main-color-1);
+  scrollbar-color: var(--scrollbar-color) var(--main-color-1);
   scrollbar-width: thin;
 }
 

@@ -65,7 +65,7 @@ const EN = {
     clickCount: "Clicks today",
     votes: "Total votes",
     updateData: "Update station data",
-    extendedInfo: "Extended information",
+    extendedInfo: "Info",
   },
   genres: {
     All: "All genres",
@@ -432,7 +432,7 @@ const RU = {
     clickCount: "Клики за день",
     votes: "Голоса всего",
     updateData: "Обновить данные по станции",
-    extendedInfo: "Полная информация",
+    extendedInfo: "О станции",
   },
   genres: {
     "All genres": "Все жанры",
