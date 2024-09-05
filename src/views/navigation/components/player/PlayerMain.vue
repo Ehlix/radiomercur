@@ -30,13 +30,13 @@ const ExtendedInfo = defineAsyncComponent(
 );
 
 const { selectStation } = useMapStore();
-const { selectedStation, playerVisualMode } = useUserStore();
+const { selectedStation, playerVisualMode, volume, updateVolumeLsData } =
+  useUserStore();
 const player = ref<HTMLAudioElement | null>(null);
 const paused = ref<boolean>(true);
 const loading = ref<boolean>(false);
 const loadingError = ref<boolean>(false);
 const streamLink = ref<string | undefined>();
-const volume = ref([100]);
 const muteCache = ref([100]);
 const MAX_VOLUME = 100;
 const MIN_VOLUME = 0;
@@ -131,6 +131,7 @@ watch([volume], () => {
   if (!player.value) {
     return;
   }
+  updateVolumeLsData();
   player.value.volume = volume.value[0] / 100;
 });
 </script>

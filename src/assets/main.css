@@ -101,7 +101,8 @@ body {
   color: var(--text-color-1);
   background: var(--background-color-1);
   font-family:
-    "Noto Sans",
+    "PT Sans",
+    sans-serif,
     Inter,
     -apple-system,
     BlinkMacSystemFont,

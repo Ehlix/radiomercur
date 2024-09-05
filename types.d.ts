@@ -136,6 +136,7 @@ type UserSettings = {
   colorTheme?: Theme;
   language?: Locale;
   playerVisualMode?: "1" | "2";
+  volume?: number;
 };
 
 type FavObj = {

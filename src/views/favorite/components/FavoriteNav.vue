@@ -16,7 +16,7 @@ import { Folder, Delete } from "lucide-vue-next";
 import { useUserStore } from "@/stores/userStore";
 import { useFavoriteStore } from "../favoriteStore";
 
-const { deleteFolder, currentFolderId } = useFavoriteStore();
+const { deleteFolder, currentFolderId, changePageHandler } = useFavoriteStore();
 const { favoriteStations } = useUserStore();
 const allFoldersId = computed(() => Object.keys(favoriteStations.value));
 </script>
@@ -28,6 +28,7 @@ const allFoldersId = computed(() => Object.keys(favoriteStations.value));
         <select-main
           v-model="currentFolderId"
           name="folders"
+          @update:model-value="() => changePageHandler(1)"
         >
           <select-trigger>
             <div class="flex items-center justify-center gap-2">

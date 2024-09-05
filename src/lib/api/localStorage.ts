@@ -30,6 +30,7 @@ export const getLSData = (): LocalStorageData | null => {
               ? ls.userSettings?.language
               : undefined,
           playerVisualMode: ls.userSettings?.playerVisualMode ?? "1",
+          volume: ls.userSettings?.volume ?? 100,
         },
       };
       return res;

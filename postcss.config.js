@@ -5,5 +5,3 @@ export default {
     autoprefixer: {},
   },
 };
-
-//   'postcss-import': {},

@@ -10,7 +10,6 @@
   },
   "framework": "vite",
   "aliases": {
-
     "components": "@/components",
     "utils": "@/lib/utils/twMerge"
   }

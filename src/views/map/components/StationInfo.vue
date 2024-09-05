@@ -174,7 +174,7 @@ const zoomIn = () => {
           <div
             v-for="tag in selectedStation.tags.split(',').splice(0, 10)"
             :key="tag"
-            class="text-wrap rounded-sm border border-tc-3 px-1 text-sm capitalize text-tc-3"
+            class="text-wrap rounded-sm border border-tc-3 px-1.5 text-sm capitalize italic text-tc-3"
           >
             {{ tag }}
           </div>
