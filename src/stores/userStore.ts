@@ -15,11 +15,9 @@ export const useUserStore = createGlobalState(() => {
   const locale = ref<"en" | "ru">("en");
   const borders = ref<"rounded" | "square">("rounded");
   const playerVisualMode = ref<"1" | "2">("1");
-  const volume = ref([100]);
 
   const lsData = getLSData();
 
-  volume.value = [lsData?.userSettings?.volume || 100];
   historyList.value = lsData?.historyStations || [];
 
   const favoriteStationFromLS = lsData?.favoritesStations;
@@ -220,10 +218,6 @@ export const useUserStore = createGlobalState(() => {
     delete favoriteStations.value[folderId];
   };
 
-  const updateVolumeLsData = () => {
-    setLSData({ userSettings: { volume: volume.value[0] } });
-  };
-
   watch(
     [favoriteStations],
     () => {
@@ -254,8 +248,6 @@ export const useUserStore = createGlobalState(() => {
     stationPositionDown,
     selectStation,
     selectedStation,
-    volume,
     updateStationInFavoriteAndSelect,
-    updateVolumeLsData,
   };
 });

@@ -18,10 +18,18 @@ import {
   Volume2,
   VolumeX,
 } from "lucide-vue-next";
-import { computed, defineAsyncComponent, nextTick, ref, watch } from "vue";
+import {
+  computed,
+  defineAsyncComponent,
+  nextTick,
+  onMounted,
+  ref,
+  watch,
+} from "vue";
 import { useRouter } from "vue-router";
 import HistoryList from "./HistoryList.vue";
 import PlayerVisual from "./PlayerVisual.vue";
+import { getLSData, setLSData } from "@/lib/api/localStorage";
 const AddToFavorite = defineAsyncComponent(
   () => import("@/components/modals/AddToFavorite.vue"),
 );
@@ -30,13 +38,13 @@ const ExtendedInfo = defineAsyncComponent(
 );
 
 const { selectStation } = useMapStore();
-const { selectedStation, playerVisualMode, volume, updateVolumeLsData } =
-  useUserStore();
+const { selectedStation, playerVisualMode } = useUserStore();
 const player = ref<HTMLAudioElement | null>(null);
 const paused = ref<boolean>(true);
 const loading = ref<boolean>(false);
 const loadingError = ref<boolean>(false);
 const streamLink = ref<string | undefined>();
+const volume = ref([100]);
 const muteCache = ref([100]);
 const MAX_VOLUME = 100;
 const MIN_VOLUME = 0;
@@ -68,6 +76,7 @@ const togglePlay = () => {
     nextTick(() => {
       streamLink.value = selectedStation.value?.url_resolved;
       loading.value = true;
+      loadingError.value = false;
     });
   } else {
     player.value.pause();
@@ -131,8 +140,13 @@ watch([volume], () => {
   if (!player.value) {
     return;
   }
-  updateVolumeLsData();
   player.value.volume = volume.value[0] / 100;
+  setLSData({ userSettings: { volume: volume.value[0] } });
+});
+
+onMounted(() => {
+  const lsData = getLSData();
+  volume.value = [lsData?.userSettings?.volume || 100];
 });
 </script>
 
