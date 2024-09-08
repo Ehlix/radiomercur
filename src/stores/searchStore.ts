@@ -1,11 +1,10 @@
 import { getLSData, setLSData } from "@/lib/api/localStorage";
 import { getAllStations } from "@/lib/api/stations";
-import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
 import { useUserStore } from "@/stores/userStore";
 import { createGlobalState, watchOnce } from "@vueuse/core";
 import type { AxiosProgressEvent } from "axios";
-import { ref, shallowRef, watch } from "vue";
-import { useBaseUrlsStore } from "../../stores/baseUrlsStore";
+import { ref, shallowRef, watch, watchEffect } from "vue";
+import { useBaseUrlsStore } from "./baseUrlsStore";
 
 export const useSearchStore = createGlobalState(() => {
   const { baseUrl, mainServerIsActive, setBaseUrl, baseUrlReload } =
@@ -16,7 +15,7 @@ export const useSearchStore = createGlobalState(() => {
   const currentPage = ref(0);
   const canLoadMore = ref(false);
   const downloadProgress = ref(0);
-  const filters = shallowRef<SearchFilters>({});
+  const filters = ref<SearchFilters>({});
   const stationsList = shallowRef<Station[]>([]);
   const openedDialog = ref<"favorite" | "info" | false>(false);
   const stationInDialog = ref<Station | null>(null);
@@ -28,12 +27,10 @@ export const useSearchStore = createGlobalState(() => {
   };
   filters.value = { ...defaultFilters };
 
-  watch(filters, () => {
-    getStations(filters.value);
-  });
-
   const updateFilters = (newFilters: Partial<SearchFilters>) => {
-    filters.value = { ...filters.value, ...newFilters };
+    console.log("updateFilter");
+    console.log(newFilters);
+    Object.assign(filters.value, newFilters);
   };
 
   const selectStation = (station: Station) => {
@@ -63,14 +60,13 @@ export const useSearchStore = createGlobalState(() => {
     }
   };
 
-  const apiRequest = (filters: SearchFilters) => {
-    if (!baseUrl.value || !mainServerIsActive.value || loading.value) {
+  const apiRequest = async (filters: SearchFilters) => {
+    if (!baseUrl.value || !mainServerIsActive.value) {
       return;
     }
     const dataParams: DataParams = {
       name: filters.name || "",
       tag: filters.tag?.toLowerCase() || "",
-      // country: filters.country || "",
       countrycode: filters.countryCode,
       bitrateMin: filters.highQualityOnly ? 128 : 0,
       order: filters.order || "clickcount",
@@ -80,58 +76,40 @@ export const useSearchStore = createGlobalState(() => {
       offset: OFFSET * currentPage.value,
     };
     loading.value = true;
-    getAllStations(baseUrl.value, dataParams, setDownloadProgress).then(
-      async (res) => {
-        if (!res) {
-          await setBaseUrl();
-          return apiRequest(filters);
-        }
-        if (res.length < OFFSET) {
-          canLoadMore.value = false;
-        } else {
-          canLoadMore.value = true;
-        }
-        const filteredRes = res.map((station) => ({
-          bitrate: station.bitrate || 0,
-          clickcount: station.clickcount || 0,
-          codec: station.codec || "",
-          country: station.country || "",
-          countrycode: station.countrycode || "",
-          favicon: station.favicon || "",
-          homepage: station.homepage || "",
-          language: station.language || "",
-          languagecodes: station.languagecodes || "",
-          name: station.name ? removeMetadata(station.name) : "Unknown station",
-          state: station.state || "",
-          stationuuid: station.stationuuid || "",
-          tags: station.tags || "",
-          url: station.url || "",
-          url_resolved: station.url_resolved || "",
-          votes: station.votes || 0,
-          geo_lat: station.geo_lat || undefined,
-          geo_long: station.geo_long || undefined,
-        }));
-        stationsList.value = filteredRes;
-        loading.value = false;
-      },
+    const data = await getAllStations(
+      baseUrl.value,
+      dataParams,
+      setDownloadProgress,
     );
+    if (data === "aborted") {
+      return;
+    }
+    if (!data) {
+      await setBaseUrl();
+      return apiRequest(filters);
+    }
+    if (data.length < OFFSET) {
+      canLoadMore.value = false;
+    } else {
+      canLoadMore.value = true;
+    }
+    stationsList.value = data;
+    loading.value = false;
   };
 
-  const setFiltersToLS = (newFilters: SearchFilters) => {
+  const setFiltersToLS = () => {
     setLSData({
       searchFilters: {
-        highQualityOnly: newFilters.highQualityOnly ?? false,
-        reverse: newFilters.reverse ?? true,
+        highQualityOnly: filters.value.highQualityOnly ?? false,
+        reverse: filters.value.reverse ?? true,
       },
     });
   };
 
-  const getStations = (newFilters: SearchFilters) => {
+  const getStations = () => {
     currentPage.value = 0;
     canLoadMore.value = true;
-    filters.value = newFilters;
-    setFiltersToLS(newFilters);
-    apiRequest(newFilters);
+    apiRequest(filters.value);
   };
 
   const getMoreStations = (mode: "up" | "down" | "first") => {
@@ -158,7 +136,13 @@ export const useSearchStore = createGlobalState(() => {
   };
 
   watchOnce(baseUrl, () => {
-    getStations(filters.value);
+    getStations();
+  });
+
+  watchEffect(() => {
+    console.log("filters: ", filters.value);
+    setFiltersToLS();
+    getStations();
   });
 
   watch([downloadProgress, loading], () => {

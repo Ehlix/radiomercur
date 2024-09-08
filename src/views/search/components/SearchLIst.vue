@@ -4,7 +4,7 @@ import XIcon from "@/components/ui/icon/XIcon.vue";
 import XImage from "@/components/ui/image/XImage.vue";
 import { getFlagImage } from "@/lib/api/flagImage";
 import { Info, ListPlus, Play, Star, ThumbsUp } from "lucide-vue-next";
-import { useSearchStore } from "../searchStore";
+import { useSearchStore } from "../../../stores/searchStore";
 
 const { filters, stationsList, openDialog, selectStation } = useSearchStore();
 </script>

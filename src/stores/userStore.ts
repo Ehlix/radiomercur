@@ -12,44 +12,37 @@ export const useUserStore = createGlobalState(() => {
   });
   const selectedStation = ref<Station>();
   const historyList = shallowRef<Station[]>([]);
-  const locale = ref<"en" | "ru">("en");
-  const borders = ref<"rounded" | "square">("rounded");
-  const playerVisualMode = ref<"1" | "2">("1");
+  const locale = ref<UserSettings["language"]>("en");
+  const borders = ref<UserSettings["borders"]>("rounded");
+  const playerVisualMode = ref<Required<UserSettings["playerVisualMode"]>>("1");
 
   const lsData = getLSData();
 
-  historyList.value = lsData?.historyStations || [];
-
-  const favoriteStationFromLS = lsData?.favoritesStations;
-  favoriteStationFromLS &&
-    (favoriteStations.value = {
+  if (lsData) {
+    historyList.value = lsData.historyStations;
+    const favoriteStationFromLS = lsData.favoritesStations;
+    favoriteStations.value = {
       ...favoriteStationFromLS,
       default: {
         name: "default",
         stations: favoriteStationFromLS?.default?.stations || [],
       },
-    });
+    };
 
-  const localeFromLS = lsData?.userSettings?.language;
-  const localeFromNav =
-    window.navigator.language === "ru-RU" || window.navigator.language === "ru"
-      ? "ru"
-      : "en";
-  locale.value = localeFromLS
-    ? localeFromLS === "ru"
-      ? "ru"
-      : "en"
-    : localeFromNav;
+    const localeFromLS = lsData.userSettings.language;
+    const localeFromNav =
+      window.navigator.language === "ru-RU" ||
+      window.navigator.language === "ru"
+        ? "ru"
+        : "en";
+    locale.value = localeFromLS || localeFromNav;
 
-  const borderFromLS =
-    lsData?.userSettings?.borders === "square" ? "square" : "rounded";
-  borders.value = borderFromLS;
-  document.body.classList.add(
-    borderFromLS === "square" ? "not-rounded" : "rounded",
-  );
+    const borderFromLS = lsData.userSettings.borders;
+    borders.value = borderFromLS;
+    document.body.classList.add(borderFromLS);
 
-  const playerVisualModeFromLS = lsData?.userSettings?.playerVisualMode;
-  playerVisualMode.value = playerVisualModeFromLS === "2" ? "2" : "1";
+    playerVisualMode.value = lsData.userSettings.playerVisualMode;
+  }
 
   const addToHistory = (station: Station) => {
     if (
@@ -71,12 +64,14 @@ export const useUserStore = createGlobalState(() => {
     addToHistory(station);
   };
 
-  const changeLocale = (newLocale: "en" | "ru") => {
+  const changeLocale = (newLocale: UserSettings["language"]) => {
     locale.value = newLocale;
     setLSData({ userSettings: { language: newLocale } });
   };
 
-  const changePlayerVisualMode = (newMode: "1" | "2") => {
+  const changePlayerVisualMode = (
+    newMode: UserSettings["playerVisualMode"],
+  ) => {
     playerVisualMode.value = newMode;
     setLSData({ userSettings: { playerVisualMode: newMode } });
   };
@@ -161,6 +156,7 @@ export const useUserStore = createGlobalState(() => {
     const indexTwo = favoriteStations.value[folderId].stations.findIndex(
       (s) => s.stationuuid === stations.stationTwo.stationuuid,
     );
+
     const filteredFolder = favoriteStations.value[folderId].stations.filter(
       (s) =>
         s.stationuuid !== stations.stationOne.stationuuid &&
@@ -194,7 +190,9 @@ export const useUserStore = createGlobalState(() => {
     const index = favoriteStations.value[folderId].stations.findIndex(
       (s) => s.stationuuid === station.stationuuid,
     );
-    if (index === favoriteStations.value[folderId].stations.length - 1) {
+    const isBottom =
+      index === favoriteStations.value[folderId].stations.length - 1;
+    if (isBottom) {
       return;
     }
     const stationTwo = favoriteStations.value[folderId].stations[index + 1];

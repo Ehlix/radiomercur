@@ -2,15 +2,15 @@ const getLocalStorage = (key: string) => {
   return localStorage.getItem(key);
 };
 
-export const getLSData = (): LocalStorageData | null => {
+export const getLSData = (): Required<LocalStorageData> | null => {
   const lcString = getLocalStorage("localStorageData");
   if (lcString) {
     try {
       const ls = JSON.parse(lcString);
 
-      const res: LocalStorageData = {
-        favoritesStations: ls.favoritesStations,
-        historyStations: ls.historyStations,
+      const res: Required<LocalStorageData> = {
+        favoritesStations: ls.favoritesStations || [],
+        historyStations: ls.historyStations || [],
         searchFilters: {
           highQualityOnly:
             ls.searchFilters?.highQualityOnly === undefined
@@ -29,8 +29,12 @@ export const getLSData = (): LocalStorageData | null => {
             ls.userSettings?.language === "ru"
               ? ls.userSettings?.language
               : undefined,
-          playerVisualMode: ls.userSettings?.playerVisualMode ?? "1",
-          volume: ls.userSettings?.volume ?? 100,
+          playerVisualMode:
+            ls.userSettings?.playerVisualMode === "2" ? "2" : "1",
+          volume:
+            ls.userSettings?.volume <= 100 || ls.userSettings.volume >= 0
+              ? ls.userSettings.volume
+              : 100,
         },
       };
       return res;
@@ -42,11 +46,11 @@ export const getLSData = (): LocalStorageData | null => {
   return null;
 };
 
-const setLocalStorage = (key: string, value: LocalStorageData) => {
+const setLocalStorage = (key: string, value: NewLsData) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
 
-export const setLSData = (LSNewData: LocalStorageData) => {
+export const setLSData = (LSNewData: NewLsData) => {
   const LSPrevData = getLSData();
   if (LSPrevData) {
     setLocalStorage("localStorageData", {

@@ -21,7 +21,7 @@ import {
   X,
 } from "lucide-vue-next";
 import { ref, watch } from "vue";
-import { useSearchStore } from "../searchStore";
+import { useSearchStore } from "../../../stores/searchStore";
 import ChooseCountry from "./ChooseCountry.vue";
 
 const { filters, updateFilters } = useSearchStore();
@@ -31,6 +31,7 @@ const debSearch = useDebounce(searchValue, 500);
 const currentTab = ref<"name" | "genres">("name");
 
 const hqOnly = (highQualityOnly: boolean) => {
+  console.log("hq");
   updateFilters({ highQualityOnly });
 };
 

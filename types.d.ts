@@ -1,6 +1,10 @@
 type GenresList = { name: string };
 type BaseURL = string | undefined;
 
+type RecursivePartial<T> = {
+  [P in keyof T]?: RecursivePartial<T[P]>;
+};
+
 type StationResponse = {
   bitrate?: number;
   changeuuid?: string;
@@ -132,11 +136,11 @@ type ThemeObj = {
 type Locale = "en" | "ru";
 
 type UserSettings = {
-  borders?: "rounded" | "square";
-  colorTheme?: Theme;
-  language?: Locale;
-  playerVisualMode?: "1" | "2";
-  volume?: number;
+  borders: "rounded" | "square";
+  colorTheme: Theme;
+  language: Locale;
+  playerVisualMode: "1" | "2";
+  volume: number;
 };
 
 type FavObj = {
@@ -147,11 +151,13 @@ type FavObj = {
 type FavoriteStations = Record<string, FavObj> & Record<"default", FavObj>;
 
 type LocalStorageData = {
-  favoritesStations?: FavoriteStations;
-  historyStations?: Station[];
-  searchFilters?: SearchFilters;
-  userSettings?: UserSettings;
+  favoritesStations: FavoriteStations;
+  historyStations: Station[];
+  searchFilters: SearchFilters;
+  userSettings: UserSettings;
 };
+
+type NewLsData = RecursivePartial<LocalStorageData>;
 
 type StationAndId = {
   station: Station;
