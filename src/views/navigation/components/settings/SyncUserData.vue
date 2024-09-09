@@ -12,37 +12,17 @@ import { FolderSync, FileDown, FileUp } from "lucide-vue-next";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import DeleteAlert from "@/components/modals/DeleteAlert.vue";
 import { onUnmounted, ref } from "vue";
-import { getLSData, setLSData, clearLSData } from "@/lib/api/localStorage";
+import {
+  getLSData,
+  setLSData,
+  clearLSData,
+  validateLsData,
+} from "@/lib/api/localStorage";
 import { useDropZone } from "@vueuse/core";
 import { cn } from "@/lib/utils/twMerge";
 
 const dropZoneRef = ref<HTMLDivElement>();
 const errorMessage = ref<boolean>(false);
-
-const validateUploadData = (text: string) => {
-  try {
-    const data = JSON.parse(text);
-    if (!data) {
-      return;
-    }
-    const lsData: LocalStorageData = {
-      favoritesStations: data.favoritesStations || [],
-      historyStations: data.historyStations || [],
-      searchFilters: {
-        highQualityOnly: data.searchFilters?.highQualityOnly || false,
-      },
-      userSettings: {
-        borders: data?.userSettings?.borders || "rounded",
-        colorTheme: data?.userSettings?.colorTheme || "defaultLight",
-        language: data?.userSettings?.language || "en",
-      },
-    };
-    return lsData;
-  } catch (error) {
-    console.log("Upload error: ", (error as Error).message);
-    errorMessage.value = true;
-  }
-};
 
 const onDrop = (files: File[] | null) => {
   errorMessage.value = false;
@@ -52,10 +32,12 @@ const onDrop = (files: File[] | null) => {
   const reader = new FileReader();
   reader.readAsText(files[0]);
   reader.onload = () => {
-    const lsData = validateUploadData(reader.result as string);
+    const lsData = validateLsData(reader.result as string);
     if (lsData) {
       setLSData(lsData);
       window.location.reload();
+    } else {
+      errorMessage.value = true;
     }
     reader.abort();
   };
@@ -89,8 +71,9 @@ const uploadData = () => {
       return;
     }
     const text = await file.text();
-    const lsData = validateUploadData(text);
+    const lsData = validateLsData(text);
     if (!lsData) {
+      errorMessage.value = true;
       return;
     }
     setLSData(lsData);

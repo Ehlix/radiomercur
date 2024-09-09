@@ -2,7 +2,7 @@
 import XButton from "@/components/ui/button/XButton.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import XProgress from "@/components/ui/progress/XProgress.vue";
-import { useSearchStore } from "@/views/search/searchStore";
+import { useSearchStore } from "@/stores/searchStore";
 import { Disc3, Frown } from "lucide-vue-next";
 import { defineAsyncComponent, ref, watch } from "vue";
 import SearchBar from "./components/SearchBar.vue";
@@ -21,7 +21,6 @@ const el = ref<HTMLElement | null>(null);
 
 const {
   loading,
-  filters,
   getStations,
   canLoadMore,
   currentPage,
@@ -100,7 +99,7 @@ watch(stationsList, () => {
           />
           {{ $t("searchBar.noResults") }}
         </div>
-        <x-button @click="getStations(filters)">
+        <x-button @click="getStations()">
           {{ $t("buttons.reload") }}
         </x-button>
       </div>

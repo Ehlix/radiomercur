@@ -1,25 +1,53 @@
-import axios, { type AxiosProgressEvent } from "axios";
+import axios, { AxiosError, type AxiosProgressEvent } from "axios";
+import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
+
+let stationsController: AbortController | undefined;
 
 const getStations = async (
   baseUrl: string,
   url: string,
   dataParams: DataParams,
   downloadProgressFn?: (progressEvent: AxiosProgressEvent) => void,
-): Promise<StationResponse[] | null> => {
-  const controller = new AbortController();
-
+): Promise<Station[] | null | "aborted"> => {
+  stationsController?.abort();
+  stationsController = new AbortController();
   try {
     const result = await axios({
       method: "POST",
       baseURL: baseUrl,
       url: url,
       headers: { "content-type": "application/x-www-form-urlencoded" },
+      signal: stationsController?.signal,
       data: dataParams,
-      signal: controller?.signal,
       onDownloadProgress: downloadProgressFn,
     });
-    return result.data;
-  } catch (error) {
+    const data = result.data as StationResponse[];
+    const filteredRes = data.map((station) => ({
+      bitrate: station.bitrate || 0,
+      clickcount: station.clickcount || 0,
+      codec: station.codec || "",
+      country: station.country || "",
+      countrycode: station.countrycode || "",
+      favicon: station.favicon || "",
+      homepage: station.homepage || "",
+      language: station.language || "",
+      languagecodes: station.languagecodes || "",
+      name: station.name ? removeMetadata(station.name) : "Unknown station",
+      state: station.state || "",
+      stationuuid: station.stationuuid || "",
+      tags: station.tags || "",
+      url: station.url || "",
+      url_resolved: station.url_resolved || "",
+      votes: station.votes || 0,
+      geo_lat: station.geo_lat || undefined,
+      geo_long: station.geo_long || undefined,
+    }));
+    return filteredRes;
+  } catch (e) {
+    const error = e as AxiosError;
+    if (error.code === "ERR_CANCELED") {
+      return "aborted";
+    }
     return null;
   }
 };
@@ -50,22 +78,26 @@ export const getAllStationsMostVoted = (
   );
 };
 
+let stationController: AbortController | undefined;
+
 const getRequest = async (
   baseUrl: string,
   url: string,
   uploadProgressFn?: (progressEvent: AxiosProgressEvent) => void,
 ): Promise<Station[] | null> => {
+  stationController?.abort();
+  stationController = new AbortController();
   try {
     const result = await axios({
       method: "GET",
       baseURL: baseUrl,
       url: url,
+      signal: stationController.signal,
       onUploadProgress: uploadProgressFn,
     });
 
     return result.data;
   } catch (error) {
-    console.log(error);
     return null;
   }
 };

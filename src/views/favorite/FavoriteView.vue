@@ -6,7 +6,7 @@ import { ChevronsRight } from "lucide-vue-next";
 import { defineAsyncComponent, ref } from "vue";
 import ChangePage from "./components/ChangePage.vue";
 import FavoriteNav from "./components/FavoriteNav.vue";
-import { useFavoriteStore } from "./favoriteStore";
+import { useFavoriteStore } from "../../stores/favoriteStore";
 const AddToFavorite = defineAsyncComponent(
   () => import("@/components/modals/AddToFavorite.vue"),
 );

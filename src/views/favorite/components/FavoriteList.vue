@@ -15,7 +15,7 @@ import {
   Info,
   RefreshCw,
 } from "lucide-vue-next";
-import { useFavoriteStore } from "../favoriteStore";
+import { useFavoriteStore } from "../../../stores/favoriteStore";
 
 const {
   stationsList,
