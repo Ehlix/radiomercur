@@ -19,7 +19,6 @@ export const useBaseUrlsStore = createGlobalState(() => {
 
   const setBaseUrl = async () => {
     if (!mainServerIsActive.value) {
-      console.log("Servers is down");
       return;
     }
     if (baseUrl.value) {

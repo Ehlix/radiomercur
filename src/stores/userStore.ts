@@ -51,12 +51,12 @@ export const useUserStore = createGlobalState(() => {
     ) {
       return;
     }
-    const newHistory = [station, ...historyList.value];
-    if (newHistory.length > 70) {
-      newHistory.splice(49);
+    const newHistoryList = [station, ...historyList.value];
+    if (newHistoryList.length > 70) {
+      newHistoryList.splice(49);
     }
-    historyList.value = newHistory;
-    setLSData({ historyStations: newHistory });
+    historyList.value = newHistoryList;
+    setLSData({ historyStations: newHistoryList });
   };
 
   const selectStation = (station: Station) => {

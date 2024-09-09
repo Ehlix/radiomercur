@@ -31,7 +31,6 @@ const debSearch = useDebounce(searchValue, 500);
 const currentTab = ref<"name" | "genres">("name");
 
 const hqOnly = (highQualityOnly: boolean) => {
-  console.log("hq");
   updateFilters({ highQualityOnly });
 };
 

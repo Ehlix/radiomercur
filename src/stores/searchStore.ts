@@ -22,14 +22,12 @@ export const useSearchStore = createGlobalState(() => {
 
   const lsData = getLSData();
   const defaultFilters: SearchFilters = {
-    highQualityOnly: lsData?.searchFilters?.highQualityOnly ?? false,
+    highQualityOnly: lsData?.searchFilters.highQualityOnly,
     reverse: lsData?.searchFilters?.reverse ?? true,
   };
   filters.value = { ...defaultFilters };
 
   const updateFilters = (newFilters: Partial<SearchFilters>) => {
-    console.log("updateFilter");
-    console.log(newFilters);
     Object.assign(filters.value, newFilters);
   };
 
@@ -140,7 +138,6 @@ export const useSearchStore = createGlobalState(() => {
   });
 
   watchEffect(() => {
-    console.log("filters: ", filters.value);
     setFiltersToLS();
     getStations();
   });
