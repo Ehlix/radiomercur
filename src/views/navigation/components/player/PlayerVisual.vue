@@ -31,16 +31,16 @@ const first = () => {
   // Записываем в массив данные уровней частот
   analyser.getByteFrequencyData(frequencyData);
   // Задаём цвет фона
-  ctx.fillStyle = getComputedStyle(ctx.canvas).getPropertyValue(
+  ctx.fillStyle = `hsl(${getComputedStyle(ctx.canvas).getPropertyValue(
     "--main-color-1",
-  );
+  )}`;
   ctx.globalAlpha = 0.4;
   // Полупрозрачно чистим экран
   ctx.fillRect(0, 0, canvas.value.width, canvas.value.height);
 
-  ctx.strokeStyle = getComputedStyle(ctx!.canvas).getPropertyValue(
+  ctx.strokeStyle = `hsl(${getComputedStyle(ctx!.canvas).getPropertyValue(
     "--main-color-3",
-  );
+  )}`;
   ctx.beginPath();
   ctx.lineWidth = 2;
   for (let i = 0; i < maxX; i += stepX) {
@@ -111,15 +111,15 @@ const second = () => {
   if (!ctx || !canvas.value) {
     return;
   }
-  const color1 = getComputedStyle(ctx!.canvas).getPropertyValue(
+  const color1 = `hsl(${getComputedStyle(ctx!.canvas).getPropertyValue(
     "--main-color-3",
-  );
+  )})`;
   // Записываем в массив данные уровней частот
   analyser.getByteFrequencyData(frequencyData);
   // Задаём цвет фона
-  ctx.fillStyle = getComputedStyle(ctx.canvas).getPropertyValue(
+  ctx.fillStyle = `hsl(${getComputedStyle(ctx.canvas).getPropertyValue(
     "--main-color-1",
-  );
+  )})`;
   ctx.globalAlpha = 1;
   // Полупрозрачно чистим экран
   ctx.fillRect(0, 0, canvas.value.width, canvas.value.height);

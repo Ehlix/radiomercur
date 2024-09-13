@@ -3,7 +3,7 @@ import { getAllStations } from "@/lib/api/stations";
 import { useUserStore } from "@/stores/userStore";
 import { createGlobalState, watchOnce } from "@vueuse/core";
 import type { AxiosProgressEvent } from "axios";
-import { ref, shallowRef, watch, watchEffect } from "vue";
+import { ref, shallowRef, watch } from "vue";
 import { useBaseUrlsStore } from "./baseUrlsStore";
 
 export const useSearchStore = createGlobalState(() => {
@@ -137,10 +137,17 @@ export const useSearchStore = createGlobalState(() => {
     getStations();
   });
 
-  watchEffect(() => {
-    setFiltersToLS();
-    getStations();
-  });
+  watch(
+    filters,
+    () => {
+      setFiltersToLS();
+      getStations();
+    },
+    {
+      immediate: true,
+      deep: true,
+    },
+  );
 
   watch([downloadProgress, loading], () => {
     if (!loading.value) {
