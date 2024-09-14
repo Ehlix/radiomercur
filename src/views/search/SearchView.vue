@@ -4,18 +4,12 @@ import XIcon from "@/components/ui/icon/XIcon.vue";
 import XProgress from "@/components/ui/progress/XProgress.vue";
 import { useSearchStore } from "@/stores/searchStore";
 import { Disc3, Frown } from "lucide-vue-next";
-import { defineAsyncComponent, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import SearchBar from "./components/SearchBar.vue";
 import { useRouter } from "vue-router";
-const AddToFavorite = defineAsyncComponent(
-  () => import("@/components/modals/AddToFavorite.vue"),
-);
-const ExtendedInfo = defineAsyncComponent(
-  () => import("@/components/modals/ExtendedInfo.vue"),
-);
-const SearchList = defineAsyncComponent(
-  () => import("./components/SearchLIst.vue"),
-);
+import AddToFavorite from "@/components/modals/AddToFavorite.vue";
+import ExtendedInfo from "@/components/modals/ExtendedInfo.vue";
+import SearchList from "./components/SearchList.vue";
 
 const el = ref<HTMLElement | null>(null);
 
@@ -38,7 +32,7 @@ const reloadHandler = () => [router.go(0)];
 
 watch(stationsList, () => {
   if (el.value) {
-    el.value.scrollTo(0, 0);
+    el.value.scrollTo({ top: 0 });
   }
 });
 </script>

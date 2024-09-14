@@ -10,7 +10,7 @@ const { filters, stationsList, openDialog, selectStation } = useSearchStore();
 </script>
 
 <template>
-  <div class="flex h-fit w-full flex-col gap-2 px-2">
+  <div class="flex h-fit w-full animate-fade-in flex-col gap-2 px-2">
     <div
       v-for="station in stationsList"
       :key="station.stationuuid"
@@ -41,21 +41,18 @@ const { filters, stationsList, openDialog, selectStation } = useSearchStore();
             size="icon"
             @click="openDialog(station, 'info')"
           >
-            <Info
-              :size="22"
-              :stroke-width="2"
-            />
+            <Info :size="22" :stroke-width="2" />
           </x-button>
         </div>
         <!-- Play -->
         <x-button
           variant="ghost"
-          class="group h-full w-full justify-start px-1 sm:order-first sm:h-8 sm:min-w-full"
+          class="h-full w-full justify-start px-1 sm:order-first sm:h-8 sm:min-w-full"
           @click="selectStation(station)"
         >
           <Play
             :stroke-width="1.5"
-            class="-ml-1 size-8 min-w-8 transition-transform group-hover:scale-105 sm:-ml-2.5 sm:size-10"
+            class="-ml-1 size-8 min-w-8 transition-transform sm:-ml-2.5 sm:size-10"
           />
           <!-- Station Name -->
           <h2
@@ -72,7 +69,7 @@ const { filters, stationsList, openDialog, selectStation } = useSearchStore();
           <div
             v-show="
               (station.clickcount ?? filters.order === 'clickcount') ||
-                !filters.order
+              !filters.order
             "
             class="flex w-full items-start justify-end gap-1 *:text-tc-2"
           >

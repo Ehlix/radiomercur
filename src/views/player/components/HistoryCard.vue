@@ -42,11 +42,7 @@ const playHandler = (station: Station) => {
         />
       </div>
 
-      <x-image
-        :src="station.favicon"
-        :alt="station.name"
-        class="z-0"
-      />
+      <x-image :src="station.favicon" :alt="station.name" class="z-0" />
     </button>
     <div
       v-if="station.countrycode"

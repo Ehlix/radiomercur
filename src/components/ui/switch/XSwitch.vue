@@ -7,6 +7,7 @@ import {
   SwitchThumb,
   useForwardPropsEmits,
 } from "radix-vue";
+import ShadowOverlay from "../shadowOverlay/ShadowOverlay.vue";
 import { cn } from "@/common/utils/twMerge";
 
 const props = defineProps<
@@ -34,6 +35,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
       )
     "
   >
+    <shadow-overlay variant="2" />
     <div
       :class="
         cn(

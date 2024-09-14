@@ -34,15 +34,9 @@ watchEffect(() => {
 </script>
 
 <template>
-  <select-main
-    v-model="selected"
-    name="countries"
-  >
+  <select-main v-model="selected" name="countries">
     <select-trigger :class="props.class">
-      <select-value
-        placeholder="All countries"
-        class="font-medium"
-      />
+      <select-value placeholder="All countries" class="font-medium" />
     </select-trigger>
     <select-content>
       <select-group>

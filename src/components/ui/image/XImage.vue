@@ -38,10 +38,6 @@ watch(
     :height="height || image.height"
     :width="width || image.width"
     loading="lazy"
-  >
-  <logo-main
-    v-else
-    v-once
-    :class="cn(props.class)"
   />
+  <logo-main v-else v-once :class="cn(props.class)" />
 </template>

@@ -33,5 +33,5 @@ defineExpose({ input });
         props.class,
       )
     "
-  >
+  />
 </template>

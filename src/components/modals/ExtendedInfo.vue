@@ -31,10 +31,7 @@ const close = () => {
 </script>
 
 <template>
-  <dialog-main
-    :open="open"
-    @update:open="close"
-  >
+  <dialog-main :open="open" @update:open="close">
     <dialog-content class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
       <div
         class="min-h-58 grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden rounded bg-mc-1 sm:max-w-[425px]"
@@ -67,10 +64,7 @@ const close = () => {
           <div class="relative z-20 flex flex-col">
             <!-- Popularity -->
             <div class="flex flex-col gap-1">
-              <div
-                :v-if="station?.clickcount"
-                class="flex items-start gap-1"
-              >
+              <div :v-if="station?.clickcount" class="flex items-start gap-1">
                 <p>
                   {{ $t("stationCard.clickCount") }}:
                   <span class="text-tc-2">
@@ -84,10 +78,7 @@ const close = () => {
                   class="text-tc-2"
                 />
               </div>
-              <div
-                v-show="station?.votes"
-                class="flex items-start gap-1"
-              >
+              <div v-show="station?.votes" class="flex items-start gap-1">
                 <p class="text-tc-1">
                   {{ $t("stationCard.votes") }}:
                   <span class="text-tc-1">
@@ -143,15 +134,12 @@ const close = () => {
                 {{
                   // @ts-expect-error
                   messages[locale || "en"]?.countries[station?.countrycode] ||
-                    ""
+                  ""
                 }}
               </p>
             </div>
             <!-- Tags -->
-            <div
-              v-if="station?.tags"
-              class="mt-2 flex flex-wrap gap-1"
-            >
+            <div v-if="station?.tags" class="mt-2 flex flex-wrap gap-1">
               <div
                 v-for="tag in station.tags.split(',').splice(0, 10)"
                 :key="tag"

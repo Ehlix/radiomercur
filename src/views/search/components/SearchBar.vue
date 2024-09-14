@@ -71,15 +71,9 @@ watch([debSearch, currentTab], () => {
   <div class="flex w-full flex-col gap-2">
     <div class="flex w-full items-center gap-2 sm:flex-col">
       <!-- Input Mode -->
-      <select-main
-        v-model="currentTab"
-        name="mode"
-      >
+      <select-main v-model="currentTab" name="mode">
         <select-trigger class="w-fit min-w-24 sm:order-2 sm:w-full">
-          <select-value
-            placeholder="Search by"
-            class="font-medium"
-          />
+          <select-value placeholder="Search by" class="font-medium" />
         </select-trigger>
         <select-content class="min-w-20">
           <select-group>
@@ -116,15 +110,10 @@ watch([debSearch, currentTab], () => {
         />
         <x-button
           variant="ghost"
-          class="absolute inset-y-0 end-0 min-w-12 max-w-12 p-2.5"
+          class="absolute inset-y-0 -end-0.5 min-w-12 max-w-12 p-2.5"
           @click.prevent="clearSearch"
         >
-          <x-icon
-            :icon="X"
-            :size="32"
-            :stroke-width="1.5"
-            class="text-tc-4"
-          />
+          <x-icon :icon="X" :size="22" :stroke-width="1.5" class="text-tc-4" />
         </x-button>
       </div>
     </div>
@@ -150,27 +139,19 @@ watch([debSearch, currentTab], () => {
             v-tooltip="$t('stationCard.clickCount')"
             :variant="'ghost'"
             class="size-8 min-w-5 p-0 px-1 *:text-tc-3"
-            :class="filters.order !== 'votes' ? 'bg-mc-3 *:text-mc-1' : ''"
+            :class="filters.order !== 'votes' ? 'bg-mc-2 *:text-mc-1' : ''"
             @click="changeOrder('clickcount')"
           >
-            <x-icon
-              :icon="Star"
-              :size="21"
-              :stroke-width="2"
-            />
+            <x-icon :icon="Star" :size="21" :stroke-width="2" />
           </x-button>
           <x-button
             v-tooltip="$t('stationCard.votes')"
             :variant="'ghost'"
             class="size-8 min-w-8 p-0 px-1 *:text-tc-3"
-            :class="filters.order === 'votes' ? 'bg-mc-3 *:text-mc-1' : ''"
+            :class="filters.order === 'votes' ? 'bg-mc-2 *:text-mc-1' : ''"
             @click="changeOrder('votes')"
           >
-            <x-icon
-              :icon="ThumbsUp"
-              :size="21"
-              :stroke-width="2"
-            />
+            <x-icon :icon="ThumbsUp" :size="21" :stroke-width="2" />
           </x-button>
         </div>
 
@@ -180,27 +161,19 @@ watch([debSearch, currentTab], () => {
             v-tooltip="$t('searchBar.descendingOrder')"
             :variant="'ghost'"
             class="size-8 min-w-5 p-0 px-1 *:text-tc-3"
-            :class="filters.reverse ? 'bg-mc-3 *:text-mc-1' : ''"
+            :class="filters.reverse ? 'bg-mc-2 *:text-mc-1' : ''"
             @click="reverseSearch(true)"
           >
-            <x-icon
-              :icon="ArrowDownWideNarrow"
-              :size="21"
-              :stroke-width="2"
-            />
+            <x-icon :icon="ArrowDownWideNarrow" :size="21" :stroke-width="2" />
           </x-button>
           <x-button
             v-tooltip="$t('searchBar.ascendingOrder')"
             :variant="'ghost'"
             class="size-8 min-w-8 p-0 px-1 *:text-tc-3"
-            :class="!filters.reverse ? 'bg-mc-3 *:text-mc-1' : ''"
+            :class="!filters.reverse ? 'bg-mc-2 *:text-mc-1' : ''"
             @click="reverseSearch(false)"
           >
-            <x-icon
-              :icon="ArrowDownNarrowWide"
-              :size="21"
-              :stroke-width="2"
-            />
+            <x-icon :icon="ArrowDownNarrowWide" :size="21" :stroke-width="2" />
           </x-button>
         </div>
       </div>

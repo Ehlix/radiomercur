@@ -7,6 +7,7 @@ import { removeMetadata } from "@/common/utils/removeMetaDataFromName";
 import { cn } from "@/common/utils/twMerge";
 import { useMapStore } from "@/stores/mapStore";
 import { useUserStore } from "@/stores/userStore";
+import ShadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
 import {
   Disc3,
   Info,
@@ -27,8 +28,8 @@ import {
   watch,
 } from "vue";
 import { useRouter } from "vue-router";
-import HistoryList from "./HistoryList.vue";
-import PlayerVisual from "./PlayerVisual.vue";
+import HistoryList from "./components/HistoryList.vue";
+import PlayerVisual from "./components/PlayerVisual.vue";
 import { getLSData, setLSData } from "@/common/api/localStorage";
 const AddToFavorite = defineAsyncComponent(
   () => import("@/components/modals/AddToFavorite.vue"),
@@ -151,16 +152,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative h-fit p-2">
+  <div class="relative h-full w-full overflow-hidden rounded bg-mc-1 p-2">
+    <shadow-overlay />
     <!-- Visualization -->
     <player-visual
       v-if="player && selectedStation"
       :player="player"
       :mode="playerVisualMode"
     />
-    <div
-      class="relative z-20 flex h-20 w-full flex-col justify-between sm:h-16"
-    >
+    <div class="relative z-20 flex h-full w-full flex-col justify-between">
       <!-- BG Logo -->
       <div
         class="pointer-events-none absolute left-4 top-2 z-10 size-28 overflow-hidden rounded-full opacity-40"
@@ -252,8 +252,8 @@ onMounted(() => {
       <x-button
         v-if="
           selectedStation &&
-            selectedStation?.geo_lat &&
-            selectedStation?.geo_long
+          selectedStation?.geo_lat &&
+          selectedStation?.geo_long
         "
         variant="ghost"
         size="icon"
@@ -294,7 +294,7 @@ onMounted(() => {
           <x-icon
             v-show="loading"
             :icon="Disc3"
-            :stroke-width="1"
+            :stroke-width="0.8"
             class="size-14 animate-spin sm:size-12"
           />
         </div>
@@ -313,19 +313,10 @@ onMounted(() => {
               class="h-5 rounded-full"
               @click="muteToggle()"
             >
-              <x-icon
-                :stroke-width="1.8"
-                :size="22"
-                :icon="showIcon"
-              />
+              <x-icon :stroke-width="1.8" :size="22" :icon="showIcon" />
             </x-button>
           </div>
-          <x-slider
-            v-model="volume"
-            :max="MAX_VOLUME"
-            :step="1"
-            class="pb-2"
-          />
+          <x-slider v-model="volume" :max="MAX_VOLUME" :step="1" class="pb-2" />
         </div>
       </div>
     </div>
