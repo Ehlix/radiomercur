@@ -9,9 +9,9 @@ export const buttonVariants = cva(
       variant: {
         default: "bg-mc-2 text-mc-1 hover:bg-hc-2",
         destructive:
-          "bg-red-500 text-mc-1 text-base font-semibold hover:bg-red-500/90 dark:bg-red-900",
+          "bg-red-500 text-mc-1 text-base font-semibold hover:bg-red-500/90",
         outline:
-          "border border-zinc-200 bg-white hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-800 dark:hover:text-zinc-50",
+          "border border-zinc-200 bg-white hover:bg-zinc-100 hover:text-zinc-900",
         reversed:
           "bg-mc-3 text-mc-1 hover:bg-hc-3 disabled:opacity-100 disabled:bg-mc-2 tracking-wide",
         ghost: "",

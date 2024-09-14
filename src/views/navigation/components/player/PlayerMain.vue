@@ -3,8 +3,8 @@ import XButton from "@/components/ui/button/XButton.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import XImage from "@/components/ui/image/XImage.vue";
 import XSlider from "@/components/ui/slider/XSlider.vue";
-import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
-import { cn } from "@/lib/utils/twMerge";
+import { removeMetadata } from "@/common/utils/removeMetaDataFromName";
+import { cn } from "@/common/utils/twMerge";
 import { useMapStore } from "@/stores/mapStore";
 import { useUserStore } from "@/stores/userStore";
 import {
@@ -29,7 +29,7 @@ import {
 import { useRouter } from "vue-router";
 import HistoryList from "./HistoryList.vue";
 import PlayerVisual from "./PlayerVisual.vue";
-import { getLSData, setLSData } from "@/lib/api/localStorage";
+import { getLSData, setLSData } from "@/common/api/localStorage";
 const AddToFavorite = defineAsyncComponent(
   () => import("@/components/modals/AddToFavorite.vue"),
 );

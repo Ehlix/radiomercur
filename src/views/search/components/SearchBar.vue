@@ -88,7 +88,7 @@ watch([debSearch, currentTab], () => {
               {{ $t("searchBar.name") }}
             </select-item>
             <select-item value="genres">
-              {{ $tc("searchBar.genre", 1) }}
+              {{ $t("searchBar.genre", 1) }}
             </select-item>
           </select-group>
         </select-content>
@@ -102,8 +102,8 @@ watch([debSearch, currentTab], () => {
           type="text"
           :placeholder="
             currentTab === 'name'
-              ? $tc('searchBar.placeholder', 1)
-              : $tc('searchBar.placeholder', 2)
+              ? $t('searchBar.placeholder', 1)
+              : $t('searchBar.placeholder', 2)
           "
           class="border-0 px-10 text-tc-4 focus-visible:text-tc-4"
         />

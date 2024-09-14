@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { cn } from "@/lib/utils/twMerge";
-import { getFlagImage } from "@/lib/api/flagImage";
+import { cn } from "@/common/utils/twMerge";
+import { getFlagImage } from "@/common/api/flagImage";
 import { onMounted, onUnmounted, ref } from "vue";
 import XImage from "@/components/ui/image/XImage.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";

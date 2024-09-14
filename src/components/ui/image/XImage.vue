@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, type HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils/twMerge";
+import { cn } from "@/common/utils/twMerge";
 import logoMain from "@/components/logo/logoMain.vue";
 
 const props = defineProps<{

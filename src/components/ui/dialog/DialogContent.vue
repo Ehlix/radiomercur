@@ -10,7 +10,7 @@ import {
   useForwardPropsEmits,
 } from "radix-vue";
 import { X } from "lucide-vue-next";
-import { cn } from "@/lib/utils/twMerge";
+import { cn } from "@/common/utils/twMerge";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 
 const props = defineProps<

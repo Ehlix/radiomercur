@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, type HTMLAttributes } from "vue";
 import { useVModel } from "@vueuse/core";
-import { cn } from "@/lib/utils/twMerge";
+import { cn } from "@/common/utils/twMerge";
 
 const props = defineProps<{
   defaultValue?: string | number;

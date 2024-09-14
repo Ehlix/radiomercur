@@ -63,21 +63,24 @@ body {
 }
 
 #app {
-  @apply flex h-dvh w-full;
+  display: flex;
+  height: 100dvh;
+  width: full;
 }
 
 h1 {
-  @apply text-2xl;
+  font-size: theme(fontSize.2xl);
 }
 
 h2 {
-  @apply text-lg;
+  font-size: theme(fontSize.lg);
 }
 
 ::-webkit-scrollbar {
   height: 17px;
   width: 7px;
 }
+
 * {
   scrollbar-color: hsl(var(--scrollbar-color)) hsl(var(--main-color-1));
   scrollbar-width: thin;

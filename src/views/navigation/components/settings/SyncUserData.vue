@@ -17,9 +17,9 @@ import {
   setLSData,
   clearLSData,
   validateLsData,
-} from "@/lib/api/localStorage";
+} from "@/common/api/localStorage";
 import { useDropZone } from "@vueuse/core";
-import { cn } from "@/lib/utils/twMerge";
+import { cn } from "@/common/utils/twMerge";
 
 const dropZoneRef = ref<HTMLDivElement>();
 const errorMessage = ref<boolean>(false);

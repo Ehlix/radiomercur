@@ -2,7 +2,7 @@
 import ShadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
 import NavView from "@/views/navigation/NavView.vue";
 import { RouterLink, RouterView, useRoute } from "vue-router";
-import { cn } from "./lib/utils/twMerge";
+import { cn } from "./common/utils/twMerge";
 
 const route = useRoute();
 const variants = [
@@ -23,7 +23,7 @@ const variants = [
 
 <template>
   <div
-    class="container relative flex h-full max-h-[100dvh] w-full select-none flex-col gap-2 overflow-hidden p-2 py-2"
+    class="relative flex h-full max-h-[100dvh] w-full flex-col gap-2 overflow-hidden p-2 py-2"
   >
     <nav-view />
     <div class="flex h-full w-full gap-2 overflow-hidden">

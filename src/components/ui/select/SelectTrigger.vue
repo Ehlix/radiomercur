@@ -7,7 +7,7 @@ import {
   useForwardProps,
 } from "radix-vue";
 import { ChevronDown } from "lucide-vue-next";
-import { cn } from "@/lib/utils/twMerge";
+import { cn } from "@/common/utils/twMerge";
 
 const props = defineProps<
   SelectTriggerProps & { class?: HTMLAttributes["class"] }

@@ -7,11 +7,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ThumbsUp, Star } from "lucide-vue-next";
-import { getFlagImage } from "@/lib/api/flagImage";
+import { getFlagImage } from "@/common/api/flagImage";
 import XImage from "@/components/ui/image/XImage.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
-import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
-import { messages } from "@/lib/locale/locale";
+import { removeMetadata } from "@/common/utils/removeMetaDataFromName";
+import { messages } from "@/common/locale/locale";
 import { useUserStore } from "@/stores/userStore";
 
 defineProps<{

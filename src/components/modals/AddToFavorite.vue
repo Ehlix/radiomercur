@@ -9,7 +9,7 @@ import {
 import { Plus, Check } from "lucide-vue-next";
 import xButton from "@/components/ui/button/XButton.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
-import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
+import { removeMetadata } from "@/common/utils/removeMetaDataFromName";
 import { useUserStore } from "@/stores/userStore";
 
 const props = defineProps<{
