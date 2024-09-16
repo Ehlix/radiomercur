@@ -1,5 +1,5 @@
 import axios, { AxiosError, type AxiosProgressEvent } from "axios";
-import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
+import { removeMetadata } from "@/common/utils/removeMetaDataFromName";
 
 let stationsController: AbortController | undefined;
 

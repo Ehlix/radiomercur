@@ -1,10 +1,10 @@
-import { messages } from "@/lib/locale/locale";
+import { messages } from "@/common/locale/locale";
 import { useUserStore } from "@/stores/userStore";
 import { inject } from "@vercel/analytics";
 import { createApp } from "vue";
 import { createI18n } from "vue-i18n";
 import App from "./App.vue";
-import "./assets/main.css";
+import "./common/css/main.css";
 import router from "./router";
 import { tooltip } from "./directives/tooltip";
 

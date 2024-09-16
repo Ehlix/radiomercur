@@ -7,7 +7,7 @@ import {
   SliderTrack,
   useForwardPropsEmits,
 } from "radix-vue";
-import { cn } from "@/lib/utils/twMerge";
+import { cn } from "@/common/utils/twMerge";
 
 const props = defineProps<
   SliderRootProps & { class?: HTMLAttributes["class"] }

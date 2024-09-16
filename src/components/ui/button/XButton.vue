@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { Primitive, type PrimitiveProps } from "radix-vue";
 import { type ButtonVariants, buttonVariants } from ".";
-import { cn } from "@/lib/utils/twMerge";
+import { cn } from "@/common/utils/twMerge";
 
 interface Props extends PrimitiveProps {
   variant?: ButtonVariants["variant"];
@@ -12,7 +12,10 @@ interface Props extends PrimitiveProps {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  variant: "default",
+  size: "default",
   as: "button",
+  class: "",
 });
 </script>
 

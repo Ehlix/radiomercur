@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import XButton from "@/components/ui/button/XButton.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
-import globalConfig from "@/lib/config/global";
-import { calculateDistance } from "@/lib/utils/calculateDistance";
+import globalConfig from "@/common/config/global";
+import { calculateDistance } from "@/common/utils/calculateDistance";
 import { useMapStore } from "@/stores/mapStore";
 import * as mt from "@maptiler/sdk";
 import "@maptiler/sdk/dist/maptiler-sdk.css";
@@ -186,7 +186,7 @@ onUnmounted(() => {
       class="absolute right-2 top-2 z-20 flex w-fit flex-col gap-2 sm:bottom-8 sm:top-auto sm:flex-row"
     >
       <x-button
-        class="min-h-10 min-w-10 p-2 sm:min-h-8 sm:min-w-8"
+        class="min-h-10 min-w-10 p-2 *:text-bgc-1 sm:min-h-8 sm:min-w-8"
         @click="() => map?.zoomIn()"
       >
         <x-icon
@@ -197,7 +197,7 @@ onUnmounted(() => {
         />
       </x-button>
       <x-button
-        class="min-h-10 min-w-10 p-2 sm:min-h-8 sm:min-w-8"
+        class="min-h-10 min-w-10 p-2 *:text-bgc-1 sm:min-h-8 sm:min-w-8"
         @click="() => map?.zoomOut()"
       >
         <x-icon
@@ -208,7 +208,7 @@ onUnmounted(() => {
         />
       </x-button>
       <x-button
-        class="min-h-10 min-w-10 p-2 sm:min-h-8 sm:min-w-8"
+        class="min-h-10 min-w-10 p-2 *:text-bgc-1 sm:min-h-8 sm:min-w-8"
         @click="map?.zoomTo(0)"
       >
         <x-icon
@@ -220,9 +220,6 @@ onUnmounted(() => {
       </x-button>
     </div>
     <!-- Station Info -->
-    <station-info
-      v-if="selectedStation"
-      @zoom-in="zoomIn"
-    />
+    <station-info v-if="selectedStation" @zoom-in="zoomIn" />
   </div>
 </template>

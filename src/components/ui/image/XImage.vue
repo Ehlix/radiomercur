@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, type HTMLAttributes } from "vue";
-import { cn } from "@/lib/utils/twMerge";
+import { cn } from "@/common/utils/twMerge";
 import logoMain from "@/components/logo/logoMain.vue";
 
 const props = defineProps<{
@@ -38,10 +38,6 @@ watch(
     :height="height || image.height"
     :width="width || image.width"
     loading="lazy"
-  >
-  <logo-main
-    v-else
-    v-once
-    :class="cn(props.class)"
   />
+  <logo-main v-else v-once :class="cn(props.class)" />
 </template>

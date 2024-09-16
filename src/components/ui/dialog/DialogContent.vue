@@ -10,7 +10,7 @@ import {
   useForwardPropsEmits,
 } from "radix-vue";
 import { X } from "lucide-vue-next";
-import { cn } from "@/lib/utils/twMerge";
+import { cn } from "@/common/utils/twMerge";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 
 const props = defineProps<
@@ -46,12 +46,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
       <DialogClose
         class="absolute right-2 top-2 rounded-sm opacity-70 ring-offset-tc-1 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-mc-2 disabled:pointer-events-none data-[state=open]:bg-mc-2 data-[state=open]:text-mc-2"
       >
-        <x-icon
-          :icon="X"
-          :size="20"
-          :stroke-width="2.5"
-          class="text-mc-2"
-        />
+        <x-icon :icon="X" :size="20" :stroke-width="2.5" class="text-mc-2" />
         <span class="sr-only">Close</span>
       </DialogClose>
     </DialogContent>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { cn } from "@/lib/utils/twMerge";
-import { getFlagImage } from "@/lib/api/flagImage";
+import { cn } from "@/common/utils/twMerge";
+import { getFlagImage } from "@/common/api/flagImage";
 import { onMounted, onUnmounted, ref } from "vue";
 import XImage from "@/components/ui/image/XImage.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
@@ -15,7 +15,7 @@ import {
   Info,
   RefreshCw,
 } from "lucide-vue-next";
-import { useFavoriteStore } from "../../../stores/favoriteStore";
+import { useFavoriteStore } from "@/stores/favoriteStore";
 
 const {
   stationsList,
@@ -115,13 +115,13 @@ onUnmounted(() => {
       <!-- Drag Mask -->
       <div
         v-if="isDragging"
-        class="absolute left-0 top-0 z-50 h-full w-full"
+        class="absolute left-0 top-0 z-50 h-[calc(100%+0.5rem)] w-full"
       />
 
       <div
         :class="
           cn(
-            'flex h-10 w-full select-text items-center justify-start gap-2 rounded bg-hc-1 p-2 py-1 transition-opacity sm:h-16 sm:flex-wrap sm:gap-0.5 sm:p-1 sm:pr-6',
+            'flex h-10 w-full animate-fade-in select-text items-center justify-start gap-2 rounded bg-hc-1 p-2 py-1 transition-opacity sm:h-16 sm:flex-wrap sm:gap-0.5 sm:p-1 sm:pr-6',
             {
               'opacity-20':
                 station.stationuuid === dragTarget?.stationuuid && isDragging,
@@ -139,10 +139,7 @@ onUnmounted(() => {
             size="icon"
             @click="openDialogHandler(station, 'favorite')"
           >
-            <ListPlus
-              :size="25"
-              :stroke-width="1.8"
-            />
+            <ListPlus :size="25" :stroke-width="1.8" />
           </x-button>
           <!-- Update station data -->
           <x-button
@@ -151,10 +148,7 @@ onUnmounted(() => {
             size="icon"
             @click="updateStation(station)"
           >
-            <RefreshCw
-              :size="22"
-              :stroke-width="2"
-            />
+            <RefreshCw :size="22" :stroke-width="2" />
           </x-button>
           <!-- Extended Info -->
           <x-button
@@ -163,21 +157,18 @@ onUnmounted(() => {
             size="icon"
             @click="openDialogHandler(station, 'info')"
           >
-            <Info
-              :size="22"
-              :stroke-width="2"
-            />
+            <Info :size="22" :stroke-width="2" />
           </x-button>
         </div>
         <!-- Play -->
         <x-button
           variant="ghost"
-          class="group flex h-full w-full justify-start px-1 sm:order-first sm:h-8 sm:min-w-full"
+          class="flex h-full w-full justify-start px-1 sm:order-first sm:h-8 sm:min-w-full"
           @click="selectStationHandler(station)"
         >
           <Play
             :stroke-width="1.5"
-            class="-ml-1 size-8 min-w-8 transition-transform group-hover:scale-105 sm:size-10"
+            class="-ml-1 size-8 min-w-8 transition-transform sm:size-10"
           />
           <!-- Station Name -->
           <h2
@@ -242,11 +233,7 @@ onUnmounted(() => {
             size="icon"
             @click.stop="positionHandler(station, 'down')"
           >
-            <ChevronsDown
-              :size="22"
-              :stroke-width="2"
-              class="text-tc-1"
-            />
+            <ChevronsDown :size="22" :stroke-width="2" class="text-tc-1" />
           </x-button>
           <x-button
             variant="ghost"
@@ -254,11 +241,7 @@ onUnmounted(() => {
             class="-mr-2 cursor-move sm:hidden"
             @mousedown="isDragging = true"
           >
-            <GripVertical
-              :size="25"
-              :stroke-width="1.8"
-              class="text-tc-1"
-            />
+            <GripVertical :size="25" :stroke-width="1.8" class="text-tc-1" />
           </x-button>
         </div>
       </div>
@@ -266,7 +249,7 @@ onUnmounted(() => {
   </transition-group>
 </template>
 
-<style scoped>
+<style scoped lang="postcss">
 .top-drag-preview {
   @apply pt-6;
 }

@@ -9,7 +9,7 @@ import {
   useForwardPropsEmits,
 } from "radix-vue";
 import { SelectScrollDownButton, SelectScrollUpButton } from ".";
-import { cn } from "@/lib/utils/twMerge";
+import { cn } from "@/common/utils/twMerge";
 
 defineOptions({
   inheritAttrs: false,
@@ -19,6 +19,7 @@ const props = withDefaults(
   defineProps<SelectContentProps & { class?: HTMLAttributes["class"] }>(),
   {
     position: "popper",
+    class: "",
   },
 );
 const emits = defineEmits<SelectContentEmits>();

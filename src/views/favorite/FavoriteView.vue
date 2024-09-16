@@ -31,7 +31,7 @@ const {
 const el = ref<HTMLElement | null>(null);
 
 const scrollUp = () => {
-  el.value?.scrollTo(0, 0);
+  el.value?.scrollTo({ top: 0 });
 };
 </script>
 

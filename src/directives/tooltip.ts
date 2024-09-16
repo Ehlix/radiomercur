@@ -8,6 +8,6 @@ export const tooltip: FunctionDirective = (el, binding) => {
   el.classList.add(styles["v-tooltip"]);
   const arg = binding.arg;
   if (arg && posTable.includes(arg)) {
-    el.classList.add(styles["v-tooltip" + binding.arg]);
+    el.classList.add(styles["v-tooltip-" + binding.arg]);
   }
 };

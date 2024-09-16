@@ -8,7 +8,7 @@ import {
   useForwardProps,
 } from "radix-vue";
 import { Check } from "lucide-vue-next";
-import { cn } from "@/lib/utils/twMerge";
+import { cn } from "@/common/utils/twMerge";
 
 const props = defineProps<
   SelectItemProps & { class?: HTMLAttributes["class"] }

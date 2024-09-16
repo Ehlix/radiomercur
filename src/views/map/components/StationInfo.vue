@@ -3,9 +3,9 @@ import XButton from "@/components/ui/button/XButton.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import XImage from "@/components/ui/image/XImage.vue";
 import ShadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
-import { getFlagImage } from "@/lib/api/flagImage";
-import { messages } from "@/lib/locale/locale";
-import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
+import { getFlagImage } from "@/common/api/flagImage";
+import { messages } from "@/common/locale/locale";
+import { removeMetadata } from "@/common/utils/removeMetaDataFromName";
 import { useMapStore } from "@/stores/mapStore";
 import { useUserStore } from "@/stores/userStore";
 import { Info, ListPlus, Play, Star, ThumbsUp, ZoomIn } from "lucide-vue-next";
@@ -104,10 +104,7 @@ const zoomIn = () => {
               class="text-tc-2"
             />
           </div>
-          <div
-            v-show="selectedStation?.votes"
-            class="flex items-start gap-1"
-          >
+          <div v-show="selectedStation?.votes" class="flex items-start gap-1">
             <p>
               <span class="text-tc-1 sm:hidden">
                 {{ $t("stationCard.votes") }}:
@@ -184,7 +181,7 @@ const zoomIn = () => {
       <div class="z-10 mt-auto flex justify-between gap-2">
         <!-- Add To Favorites -->
         <x-button
-          class="h-10 min-w-10 max-w-10 p-0 sm:h-8 sm:min-w-8 sm:max-w-8"
+          class="h-10 min-w-10 max-w-10 p-0 *:text-bgc-1 sm:h-8 sm:min-w-8 sm:max-w-8"
           @click="dialogOpen = 'favorite'"
         >
           <add-to-favorite
@@ -202,7 +199,7 @@ const zoomIn = () => {
         </x-button>
         <!-- Play -->
         <x-button
-          class="z-10 mt-auto h-10 w-full p-0 sm:h-8"
+          class="z-10 mt-auto h-10 w-full p-0 *:text-bgc-1 sm:h-8"
           @click="() => selectedStation && selectStation(selectedStation)"
         >
           <x-icon
@@ -214,7 +211,7 @@ const zoomIn = () => {
         </x-button>
         <!-- Zoom In -->
         <x-button
-          class="h-10 min-w-10 max-w-10 p-0 sm:h-8 sm:min-w-8 sm:max-w-8"
+          class="h-10 min-w-10 max-w-10 p-0 *:text-bgc-1 sm:h-8 sm:min-w-8 sm:max-w-8"
           @click="zoomIn"
         >
           <x-icon

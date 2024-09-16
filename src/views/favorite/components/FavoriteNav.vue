@@ -38,10 +38,7 @@ const allFoldersId = computed(() => Object.keys(favoriteStations.value));
                 :size="24"
                 :stroke-width="1.5"
               />
-              <select-value
-                placeholder="Folders"
-                class="font-medium"
-              />
+              <select-value placeholder="Folders" class="font-medium" />
             </div>
           </select-trigger>
           <select-content>

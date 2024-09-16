@@ -31,11 +31,7 @@ const playHandler = (station: Station) => {
       class="flex w-8 cursor-pointer items-center justify-center"
     >
       <div v-tooltip:bottom="$t('searchBar.history')">
-        <x-icon
-          :icon="History"
-          :size="20"
-          :stroke-width="2"
-        />
+        <x-icon :icon="History" :size="20" :stroke-width="2" />
       </div>
     </dialog-trigger>
 
@@ -47,7 +43,7 @@ const playHandler = (station: Station) => {
       >
         <dialog-header class="border-b border-mc-2 p-2 px-6 xs:p-1 xs:px-4">
           <dialog-title class="text-2xl text-mc-2">
-            {{ $tc("searchBar.history") }}
+            {{ $t("searchBar.history") }}
           </dialog-title>
           <dialog-description />
         </dialog-header>
@@ -64,7 +60,7 @@ const playHandler = (station: Station) => {
             v-if="!historyList.length"
             class="flex w-full items-center justify-center px-2 py-4 text-center text-lg font-semibold text-mc-2"
           >
-            {{ $tc("favoriteBar.empty") }}
+            {{ $t("favoriteBar.empty") }}
           </div>
         </div>
         <!-- <DialogFooter class="p-6 pt-0"> </DialogFooter> -->

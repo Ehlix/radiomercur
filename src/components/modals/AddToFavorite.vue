@@ -9,7 +9,7 @@ import {
 import { Plus, Check } from "lucide-vue-next";
 import xButton from "@/components/ui/button/XButton.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
-import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
+import { removeMetadata } from "@/common/utils/removeMetaDataFromName";
 import { useUserStore } from "@/stores/userStore";
 
 const props = defineProps<{
@@ -44,10 +44,7 @@ const close = () => {
 </script>
 
 <template>
-  <dialog-main
-    :open="props.open"
-    @update:open="close"
-  >
+  <dialog-main :open="props.open" @update:open="close">
     <dialog-content class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
       <div
         class="min-h-58 grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden rounded bg-mc-1 sm:max-w-[425px]"
@@ -82,11 +79,7 @@ const close = () => {
                 class="hover:text-c-1 h-8 w-full min-w-8 justify-start gap-2 p-0 px-2"
                 @click="removeFromFavorites(station, key)"
               >
-                <x-icon
-                  :icon="Check"
-                  :size="20"
-                  :stroke-width="2"
-                />
+                <x-icon :icon="Check" :size="20" :stroke-width="2" />
                 <p class="w-fit text-tc-1">
                   {{
                     `(${favoriteStations[key].stations.length}) ${key !== "default" ? favoriteStations[key].name : $t("favoriteBar.defaultFolder")}`
@@ -100,11 +93,7 @@ const close = () => {
                 class="hover:text-c-1 h-8 w-full min-w-8 justify-start gap-2 p-0 px-2"
                 @click="addToFavorites(station, key)"
               >
-                <x-icon
-                  :icon="Plus"
-                  :size="20"
-                  :stroke-width="2"
-                />
+                <x-icon :icon="Plus" :size="20" :stroke-width="2" />
                 <p class="text-tc-1">
                   {{
                     `(${favoriteStations[key].stations.length}) ${key !== "default" ? favoriteStations[key].name : $t("favoriteBar.defaultFolder")}`

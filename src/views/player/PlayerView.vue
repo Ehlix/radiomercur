@@ -3,10 +3,11 @@ import XButton from "@/components/ui/button/XButton.vue";
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import XImage from "@/components/ui/image/XImage.vue";
 import XSlider from "@/components/ui/slider/XSlider.vue";
-import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
-import { cn } from "@/lib/utils/twMerge";
+import { removeMetadata } from "@/common/utils/removeMetaDataFromName";
+import { cn } from "@/common/utils/twMerge";
 import { useMapStore } from "@/stores/mapStore";
 import { useUserStore } from "@/stores/userStore";
+import ShadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
 import {
   Disc3,
   Info,
@@ -27,9 +28,9 @@ import {
   watch,
 } from "vue";
 import { useRouter } from "vue-router";
-import HistoryList from "./HistoryList.vue";
-import PlayerVisual from "./PlayerVisual.vue";
-import { getLSData, setLSData } from "@/lib/api/localStorage";
+import HistoryList from "./components/HistoryList.vue";
+import PlayerVisual from "./components/PlayerVisual.vue";
+import { getLSData, setLSData } from "@/common/api/localStorage";
 const AddToFavorite = defineAsyncComponent(
   () => import("@/components/modals/AddToFavorite.vue"),
 );
@@ -151,16 +152,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative h-fit p-2">
+  <div class="relative h-full w-full overflow-hidden rounded bg-mc-1 p-2">
+    <shadow-overlay />
     <!-- Visualization -->
     <player-visual
       v-if="player && selectedStation"
       :player="player"
       :mode="playerVisualMode"
     />
-    <div
-      class="relative z-20 flex h-20 w-full flex-col justify-between sm:h-16"
-    >
+    <div class="relative z-20 flex h-full w-full flex-col justify-between">
       <!-- BG Logo -->
       <div
         class="pointer-events-none absolute left-4 top-2 z-10 size-28 overflow-hidden rounded-full opacity-40"
@@ -232,28 +232,37 @@ onMounted(() => {
       >
         <div
           v-if="selectedStation"
-          class="flex size-4 min-h-4 min-w-4 items-center justify-center overflow-hidden rounded-full"
+          class="flex animate-fade-in items-center justify-center gap-2 overflow-hidden"
         >
           <div
             :class="
-              cn('size-full bg-mc-3', {
+              cn('flex size-4 min-h-4 min-w-4 rounded-full bg-mc-3', {
                 'animate-pulse bg-mc-3': loading,
                 'bg-red-500': loadingError,
                 'bg-green-600': !paused && !loading && !loadingError,
               })
             "
           />
+          <p
+            v-if="selectedStation"
+            class="w-fit truncate text-nowrap text-lg uppercase"
+          >
+            {{ removeMetadata(selectedStation?.name) }}
+          </p>
         </div>
-        <p class="w-fit truncate text-nowrap text-lg uppercase">
-          {{ removeMetadata(selectedStation?.name || "Radio Mercur") }}
-        </p>
+        <h1
+          v-else
+          class="absolute top-5 w-fit truncate text-nowrap text-2xl font-bold uppercase text-mc-2/70"
+        >
+          Radio Mercur
+        </h1>
       </div>
       <!-- Go to map -->
       <x-button
         v-if="
           selectedStation &&
-            selectedStation?.geo_lat &&
-            selectedStation?.geo_long
+          selectedStation?.geo_lat &&
+          selectedStation?.geo_long
         "
         variant="ghost"
         size="icon"
@@ -269,7 +278,8 @@ onMounted(() => {
       </x-button>
       <!-- Controls -->
       <div
-        class="pointer-events-none absolute flex h-full w-full items-start gap-2 pt-[1.56rem] sm:pt-[1.5rem]"
+        v-if="selectedStation"
+        class="pointer-events-none absolute flex h-full w-full animate-fade-in items-start gap-2 pt-[1.56rem] sm:pt-[1.5rem]"
       >
         <div
           class="relative z-10 flex h-full w-full items-center justify-center"
@@ -294,7 +304,7 @@ onMounted(() => {
           <x-icon
             v-show="loading"
             :icon="Disc3"
-            :stroke-width="1"
+            :stroke-width="0.8"
             class="size-14 animate-spin sm:size-12"
           />
         </div>
@@ -313,19 +323,10 @@ onMounted(() => {
               class="h-5 rounded-full"
               @click="muteToggle()"
             >
-              <x-icon
-                :stroke-width="1.8"
-                :size="22"
-                :icon="showIcon"
-              />
+              <x-icon :stroke-width="1.8" :size="22" :icon="showIcon" />
             </x-button>
           </div>
-          <x-slider
-            v-model="volume"
-            :max="MAX_VOLUME"
-            :step="1"
-            class="pb-2"
-          />
+          <x-slider v-model="volume" :max="MAX_VOLUME" :step="1" class="pb-2" />
         </div>
       </div>
     </div>

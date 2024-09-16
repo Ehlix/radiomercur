@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { messages } from "@/lib/locale/locale";
+import { messages } from "@/common/locale/locale";
 import { useUserStore } from "@/stores/userStore";
 import { computed, ref, watchEffect, type HTMLAttributes } from "vue";
 
@@ -34,15 +34,9 @@ watchEffect(() => {
 </script>
 
 <template>
-  <select-main
-    v-model="selected"
-    name="countries"
-  >
+  <select-main v-model="selected" name="countries">
     <select-trigger :class="props.class">
-      <select-value
-        placeholder="All countries"
-        class="font-medium"
-      />
+      <select-value placeholder="All countries" class="font-medium" />
     </select-trigger>
     <select-content>
       <select-group>

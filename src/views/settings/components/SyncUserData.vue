@@ -17,9 +17,9 @@ import {
   setLSData,
   clearLSData,
   validateLsData,
-} from "@/lib/api/localStorage";
+} from "@/common/api/localStorage";
 import { useDropZone } from "@vueuse/core";
-import { cn } from "@/lib/utils/twMerge";
+import { cn } from "@/common/utils/twMerge";
 
 const dropZoneRef = ref<HTMLDivElement>();
 const errorMessage = ref<boolean>(false);
@@ -105,7 +105,7 @@ onUnmounted(() => {
   <dialog-main>
     <dialog-trigger as-child>
       <x-button
-        class="h-full min-w-full bg-none p-1"
+        class="h-full min-w-full bg-mc-1 bg-none p-1 hover:bg-hc-1 focus-visible:ring-offset-0"
         @click="errorMessage = false"
       >
         <x-icon
@@ -122,7 +122,7 @@ onUnmounted(() => {
       >
         <dialog-header class="border-b border-mc-2 p-3 px-8 xs:px-4">
           <dialog-title class="text-2xl text-mc-2">
-            {{ $tc("syncUserData.title") }}
+            {{ $t("syncUserData.title") }}
           </dialog-title>
           <dialog-description />
         </dialog-header>
@@ -140,7 +140,7 @@ onUnmounted(() => {
                 class="text-mc-2"
               />
               <h3 class="text-wrap text-base text-mc-2">
-                {{ $tc("syncUserData.downloadDescription") }}
+                {{ $t("syncUserData.downloadDescription") }}
               </h3>
             </x-button>
             <x-button
@@ -163,12 +163,9 @@ onUnmounted(() => {
                 class="text-mc-2"
               />
               <h3 class="text-base text-mc-2">
-                {{ $tc("syncUserData.uploadDescription") }}
+                {{ $t("syncUserData.uploadDescription") }}
               </h3>
-              <p
-                v-if="errorMessage"
-                class="absolute bottom-2 text-red-500"
-              >
+              <p v-if="errorMessage" class="absolute bottom-2 text-red-500">
                 {{ $t("syncUserData.errorMessage") }}
               </p>
             </x-button>
@@ -178,10 +175,7 @@ onUnmounted(() => {
             @delete="clearData($event)"
           >
             <template #default>
-              <x-button
-                variant="destructive"
-                class="w-full min-w-full"
-              >
+              <x-button variant="destructive" class="w-full min-w-full">
                 {{ $t("syncUserData.clearData") }}
               </x-button>
             </template>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import XIcon from "@/components/ui/icon/XIcon.vue";
 import XImage from "@/components/ui/image/XImage.vue";
-import { getFlagImage } from "@/lib/api/flagImage";
-import { messages } from "@/lib/locale/locale";
-import { removeMetadata } from "@/lib/utils/removeMetaDataFromName";
+import { getFlagImage } from "@/common/api/flagImage";
+import { messages } from "@/common/locale/locale";
+import { removeMetadata } from "@/common/utils/removeMetaDataFromName";
 import { useUserStore } from "@/stores/userStore";
 import { Play } from "lucide-vue-next";
 
@@ -42,11 +42,7 @@ const playHandler = (station: Station) => {
         />
       </div>
 
-      <x-image
-        :src="station.favicon"
-        :alt="station.name"
-        class="z-0"
-      />
+      <x-image :src="station.favicon" :alt="station.name" class="z-0" />
     </button>
     <div
       v-if="station.countrycode"

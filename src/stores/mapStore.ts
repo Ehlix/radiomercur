@@ -1,5 +1,5 @@
 import { ref, shallowRef, watch } from "vue";
-import { getAllStations } from "@/lib/api/stations";
+import { getAllStations } from "@/common/api/stations";
 import { useBaseUrlsStore } from "./baseUrlsStore";
 import type { AxiosProgressEvent } from "axios";
 import { createGlobalState, watchOnce } from "@vueuse/core";

@@ -5,12 +5,13 @@ import {
   ProgressRoot,
   type ProgressRootProps,
 } from "radix-vue";
-import { cn } from "@/lib/utils/twMerge";
+import { cn } from "@/common/utils/twMerge";
 
 const props = withDefaults(
   defineProps<ProgressRootProps & { class?: HTMLAttributes["class"] }>(),
   {
     modelValue: 0,
+    class: "",
   },
 );
 

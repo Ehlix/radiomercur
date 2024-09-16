@@ -1,54 +1,25 @@
 <script setup lang="ts">
 import ShadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
-import NavView from "@/views/navigation/NavView.vue";
-import { RouterLink, RouterView, useRoute } from "vue-router";
-import { cn } from "./lib/utils/twMerge";
-
-const route = useRoute();
-const variants = [
-  {
-    name: "search",
-    path: "/",
-  },
-  {
-    name: "favorite",
-    path: "/favorite",
-  },
-  {
-    name: "map",
-    path: "/map",
-  },
-];
+import { RouterView } from "vue-router";
+import AboutView from "./views/about/AboutView.vue";
+import PlayerView from "./views/player/PlayerView.vue";
+import SettingsView from "./views/settings/SettingsView.vue";
+import NavigationView from "./views/navigation/NavigationView.vue";
 </script>
 
 <template>
   <div
-    class="container relative flex h-full max-h-[100dvh] w-full select-none flex-col gap-2 overflow-hidden p-2 py-2"
+    class="relative flex h-full w-full flex-col gap-2 overflow-hidden p-2 py-2"
   >
-    <nav-view />
+    <header
+      class="z-50 flex h-24 min-h-24 w-full items-center justify-center gap-2 sm:h-20 sm:min-h-20"
+    >
+      <AboutView />
+      <player-view />
+      <settings-view />
+    </header>
     <div class="flex h-full w-full gap-2 overflow-hidden">
-      <div
-        class="flex h-full w-20 min-w-20 flex-col gap-2 md:w-14 md:min-w-14 sm:w-10 sm:min-w-10"
-      >
-        <router-link
-          v-for="variant of variants"
-          :key="variant.path"
-          :to="variant.path"
-          :class="
-            cn(
-              'text-tx-1 relative flex h-full w-full items-center justify-center truncate rounded bg-mc-1 transition-colors hover:bg-hc-1',
-              {
-                'hover:bg-bg-3 bg-mc-3 text-mc-1': route.path === variant.path,
-              },
-            )
-          "
-        >
-          <shadow-overlay />
-          <div class="-rotate-90 whitespace-nowrap text-xl font-medium">
-            {{ $t(variant.name) }}
-          </div>
-        </router-link>
-      </div>
+      <navigation-view />
       <div class="relative h-full w-full overflow-hidden rounded bg-mc-1">
         <shadow-overlay />
         <router-view />
