@@ -30,7 +30,7 @@ const clearInput = () => {
       class="group flex w-fit items-center justify-center rounded"
     >
       <x-button
-        class="flex h-8 min-w-10 justify-center gap-1 bg-mc-3 px-2 text-sm hover:bg-hc-3"
+        class="flex h-8 min-w-10 justify-center gap-1 bg-mc-2 px-2 text-sm hover:bg-hc-2"
         @click="clearInput"
       >
         <x-icon

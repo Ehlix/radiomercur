@@ -105,7 +105,7 @@ onUnmounted(() => {
   <dialog-main>
     <dialog-trigger as-child>
       <x-button
-        class="h-full min-w-full bg-mc-1 bg-none p-1 hover:bg-hc-1"
+        class="h-full min-w-full bg-mc-1 bg-none p-1 hover:bg-hc-1 focus-visible:ring-offset-0"
         @click="errorMessage = false"
       >
         <x-icon

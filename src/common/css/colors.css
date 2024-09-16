@@ -27,20 +27,20 @@
     --hover-color-3: 172 12% 60%;
     --shadow-color-1: 0 0% 0% 0.314;
     --shadow-color-2: 0 0% 0% 0.439;
-    --scrollbar-color: var(--main-color-3) / 45%;
+    --scrollbar-color: var(--main-color-2) / 25%;
   }
   &.pastel-light {
     --background-color-1: 255 30% 91%;
     --main-color-1: 243 31% 83%;
     --main-color-2: 218 18% 47%;
-    --main-color-3: 216 23% 61%;
+    --main-color-3: 216 18% 60%;
     --text-color-1: 218 30% 25%;
     --text-color-2: var(--text-color-1);
     --text-color-3: var(--text-color-1);
     --text-color-4: var(--text-color-1);
     --hover-color-1: 245 30% 81%;
     --hover-color-2: 218 19% 50%;
-    --hover-color-3: 218 21% 58%;
+    --hover-color-3: 218 19% 59%;
     --shadow-color-1: 0 0% 0% 0.314;
     --shadow-color-2: 0 0% 0% 0.439;
   }
@@ -55,7 +55,7 @@
     --text-color-4: 0 0% 75%;
     --hover-color-1: 0 0% 2.5%;
     --hover-color-2: 0 0% 69%;
-    --hover-color-3: 0 0% 40%;
+    --hover-color-3: 0 0% 44%;
     --shadow-color-1: 0 0% 0% 0.314;
     --shadow-color-2: 0 0% 0% 0.439;
     --scrollbar-color: 0 0% 31%;

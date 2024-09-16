@@ -232,21 +232,30 @@ onMounted(() => {
       >
         <div
           v-if="selectedStation"
-          class="flex size-4 min-h-4 min-w-4 items-center justify-center overflow-hidden rounded-full"
+          class="flex animate-fade-in items-center justify-center gap-2 overflow-hidden"
         >
           <div
             :class="
-              cn('size-full bg-mc-3', {
+              cn('flex size-4 min-h-4 min-w-4 rounded-full bg-mc-3', {
                 'animate-pulse bg-mc-3': loading,
                 'bg-red-500': loadingError,
                 'bg-green-600': !paused && !loading && !loadingError,
               })
             "
           />
+          <p
+            v-if="selectedStation"
+            class="w-fit truncate text-nowrap text-lg uppercase"
+          >
+            {{ removeMetadata(selectedStation?.name) }}
+          </p>
         </div>
-        <p class="w-fit truncate text-nowrap text-lg uppercase">
-          {{ removeMetadata(selectedStation?.name || "Radio Mercur") }}
-        </p>
+        <h1
+          v-else
+          class="absolute top-5 w-fit truncate text-nowrap text-2xl font-bold uppercase text-mc-2/70"
+        >
+          Radio Mercur
+        </h1>
       </div>
       <!-- Go to map -->
       <x-button
@@ -269,7 +278,8 @@ onMounted(() => {
       </x-button>
       <!-- Controls -->
       <div
-        class="pointer-events-none absolute flex h-full w-full items-start gap-2 pt-[1.56rem] sm:pt-[1.5rem]"
+        v-if="selectedStation"
+        class="pointer-events-none absolute flex h-full w-full animate-fade-in items-start gap-2 pt-[1.56rem] sm:pt-[1.5rem]"
       >
         <div
           class="relative z-10 flex h-full w-full items-center justify-center"
