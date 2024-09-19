@@ -17,7 +17,7 @@ const { filters, stationsList, openDialog, selectStation } = useSearchStore();
       class="item-list relative w-full"
     >
       <div
-        class="flex h-10 w-full select-text items-center justify-start gap-2 rounded bg-hc-1 p-2 py-1 transition-opacity sm:h-16 sm:flex-wrap sm:gap-0.5 sm:p-1"
+        class="flex h-fit w-full select-text items-center justify-start gap-2 rounded bg-hc-1 px-2 py-1 transition-opacity sm:flex-wrap sm:gap-0.5"
       >
         <div
           class="flex h-full items-center gap-2 sm:h-6 sm:justify-between sm:gap-1"
@@ -47,7 +47,7 @@ const { filters, stationsList, openDialog, selectStation } = useSearchStore();
         <!-- Play -->
         <x-button
           variant="ghost"
-          class="h-full w-full justify-start px-1 sm:order-first sm:h-8 sm:min-w-full"
+          class="h-full w-full justify-start p-0 px-1 sm:order-first sm:h-8 sm:min-w-full"
           @click="selectStation(station)"
         >
           <Play

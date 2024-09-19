@@ -34,7 +34,7 @@ const close = () => {
   <dialog-main :open="open" @update:open="close">
     <dialog-content class="w-full bg-mc-2 p-1 transition-none sm:max-w-[425px]">
       <div
-        class="min-h-58 grid h-fit max-h-[90dvh] grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden rounded bg-mc-1 sm:max-w-[425px]"
+        class="grid h-fit max-h-[90dvh] min-h-[14rem] grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden rounded bg-mc-1 sm:max-w-[425px]"
       >
         <dialog-header
           class="truncate text-wrap border-b border-mc-2 bg-mc-1 p-2 px-10 xs:p-1 xs:px-6"

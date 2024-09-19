@@ -121,7 +121,7 @@ onUnmounted(() => {
       <div
         :class="
           cn(
-            'flex h-10 w-full animate-fade-in select-text items-center justify-start gap-2 rounded bg-hc-1 p-2 py-1 transition-opacity sm:h-16 sm:flex-wrap sm:gap-0.5 sm:p-1 sm:pr-6',
+            'flex h-fit w-full select-text items-center justify-start gap-2 rounded bg-hc-1 px-2 py-1 transition-opacity sm:flex-wrap sm:gap-0.5 sm:pr-6',
             {
               'opacity-20':
                 station.stationuuid === dragTarget?.stationuuid && isDragging,
@@ -163,7 +163,7 @@ onUnmounted(() => {
         <!-- Play -->
         <x-button
           variant="ghost"
-          class="flex h-full w-full justify-start px-1 sm:order-first sm:h-8 sm:min-w-full"
+          class="flex h-full w-full justify-start p-0 px-1 sm:order-first sm:h-8 sm:min-w-full"
           @click="selectStationHandler(station)"
         >
           <Play

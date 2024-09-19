@@ -49,6 +49,11 @@ export default {
             opacity: "1",
           },
         },
+        spin: {
+          to: {
+            transform: "rotate(360deg)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -56,6 +61,7 @@ export default {
         "collapsible-down": "collapsible-down 0.2s ease-in-out",
         "collapsible-up": "collapsible-up 0.2s ease-in-out",
         "fade-in": "fadeIn 0.5s ease-in-out",
+        "spin": "spin 0.55s linear infinite",
       },
       colors: {
         "bgc-1": "hsl(var(--background-color-1))",

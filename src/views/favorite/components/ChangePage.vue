@@ -38,7 +38,7 @@ const inputValue = ref<number>(currentPage.value);
         <dialog-header class="border-b border-mc-2 px-2 pt-2">
           <dialog-title class="text-2xl text-mc-2">
             {{
-              `${$t("favoriteBar.changePage")} (${$t("buttons.total", { count: totalStationCount / STATIONS_PER_PAGE }).toLowerCase()})`
+              `${$t("favoriteBar.changePage")} (${$t("buttons.total", { count: Math.ceil(totalStationCount / STATIONS_PER_PAGE) }).toLowerCase()})`
             }}
           </dialog-title>
           <dialog-description>
