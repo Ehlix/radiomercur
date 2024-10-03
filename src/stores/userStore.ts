@@ -1,8 +1,8 @@
 import { ref, shallowRef, watch } from "vue";
-import { getStationInfoById } from "@/common/api/stations";
+import { getStationInfoById } from "@/shared/api/stations";
 import { useBaseUrlsStore } from "./baseUrlsStore";
-import { getLSData, setLSData } from "@/common/api/localStorage";
-import { generateId } from "@/common/utils/generateId";
+import { getLSData, setLSData } from "@/shared/api/localStorage";
+import { generateId } from "@/shared/lib/utils/generateId";
 import { createGlobalState } from "@vueuse/core";
 
 export const useUserStore = createGlobalState(() => {

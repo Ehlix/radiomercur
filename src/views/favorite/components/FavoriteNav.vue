@@ -6,9 +6,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/shared/ui/select";
 import { computed } from "vue";
-import XIcon from "@/components/ui/icon/XIcon.vue";
+import XIcon from "@/shared/ui/icon/XIcon.vue";
 import DeleteAlert from "@/components/modals/DeleteAlert.vue";
 import AddFolder from "./AddFolder.vue";
 import RenameFolder from "./RenameFolder.vue";

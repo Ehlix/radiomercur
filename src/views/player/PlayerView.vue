@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import XButton from "@/components/ui/button/XButton.vue";
-import XIcon from "@/components/ui/icon/XIcon.vue";
-import XImage from "@/components/ui/image/XImage.vue";
-import XSlider from "@/components/ui/slider/XSlider.vue";
-import { removeMetadata } from "@/common/utils/removeMetaDataFromName";
-import { cn } from "@/common/utils/twMerge";
+import XButton from "@/shared/ui/button/XButton.vue";
+import XIcon from "@/shared/ui/icon/XIcon.vue";
+import XImage from "@/shared/ui/image/XImage.vue";
+import XSlider from "@/shared/ui/slider/XSlider.vue";
+import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
+import { cn } from "@/shared/lib/utils/twMerge";
 import { useMapStore } from "@/stores/mapStore";
 import { useUserStore } from "@/stores/userStore";
-import ShadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
+import ShadowOverlay from "@/shared/ui/shadowOverlay/ShadowOverlay.vue";
 import {
   Disc3,
   Info,
@@ -30,7 +30,7 @@ import {
 import { useRouter } from "vue-router";
 import HistoryList from "./components/HistoryList.vue";
 import PlayerVisual from "./components/PlayerVisual.vue";
-import { getLSData, setLSData } from "@/common/api/localStorage";
+import { getLSData, setLSData } from "@/shared/api/localStorage";
 const AddToFavorite = defineAsyncComponent(
   () => import("@/components/modals/AddToFavorite.vue"),
 );

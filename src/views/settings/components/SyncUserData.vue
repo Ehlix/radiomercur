@@ -6,10 +6,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import XButton from "@/components/ui/button/XButton.vue";
+} from "@/shared/ui/dialog";
+import XButton from "@/shared/ui/button/XButton.vue";
 import { FolderSync, FileDown, FileUp } from "lucide-vue-next";
-import XIcon from "@/components/ui/icon/XIcon.vue";
+import XIcon from "@/shared/ui/icon/XIcon.vue";
 import DeleteAlert from "@/components/modals/DeleteAlert.vue";
 import { onUnmounted, ref } from "vue";
 import {
@@ -17,9 +17,9 @@ import {
   setLSData,
   clearLSData,
   validateLsData,
-} from "@/common/api/localStorage";
+} from "@/shared/api/localStorage";
 import { useDropZone } from "@vueuse/core";
-import { cn } from "@/common/utils/twMerge";
+import { cn } from "@/shared/lib/utils/twMerge";
 
 const dropZoneRef = ref<HTMLDivElement>();
 const errorMessage = ref<boolean>(false);

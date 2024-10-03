@@ -7,13 +7,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import XInput from "@/components/ui/input/XInput.vue";
-import XIcon from "@/components/ui/icon/XIcon.vue";
+} from "@/shared/ui/dialog";
+import XInput from "@/shared/ui/input/XInput.vue";
+import XIcon from "@/shared/ui/icon/XIcon.vue";
 import { Milestone } from "lucide-vue-next";
-import DialogClose from "@/components/ui/dialog/DialogClose.vue";
+import DialogClose from "@/shared/ui/dialog/DialogClose.vue";
 import { ref } from "vue";
-import { useFavoriteStore } from "../../../stores/favoriteStore";
+import { useFavoriteStore } from "@/stores/favoriteStore";
 
 const { currentPage, changePageHandler, STATIONS_PER_PAGE, totalStationCount } =
   useFavoriteStore();

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import XButton from "@/components/ui/button/XButton.vue";
-import XIcon from "@/components/ui/icon/XIcon.vue";
-import XProgress from "@/components/ui/progress/XProgress.vue";
+import XButton from "@/shared/ui/button/XButton.vue";
+import XIcon from "@/shared/ui/icon/XIcon.vue";
+import XProgress from "@/shared/ui/progress/XProgress.vue";
 import { useBaseUrlsStore } from "@/stores/baseUrlsStore";
 import { useMapStore } from "@/stores/mapStore";
 import { Disc3 } from "lucide-vue-next";

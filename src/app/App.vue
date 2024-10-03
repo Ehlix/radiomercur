@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ShadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
+import ShadowOverlay from "@/shared/ui/shadowOverlay/ShadowOverlay.vue";
 import { RouterView } from "vue-router";
 import AboutView from "@/views/about/AboutView.vue";
 import PlayerView from "@/views/player/PlayerView.vue";

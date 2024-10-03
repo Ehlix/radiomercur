@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ShadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
+import ShadowOverlay from "@/shared/ui/shadowOverlay/ShadowOverlay.vue";
 import {
   DialogMain,
   DialogContent,
@@ -7,9 +7,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/shared/ui/dialog";
 import { Github } from "lucide-vue-next";
-import XIcon from "@/components/ui/icon/XIcon.vue";
+import XIcon from "@/shared/ui/icon/XIcon.vue";
 import LogoMain from "@/components/logo/logoMain.vue";
 </script>
 

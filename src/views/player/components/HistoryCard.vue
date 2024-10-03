@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import XIcon from "@/components/ui/icon/XIcon.vue";
-import XImage from "@/components/ui/image/XImage.vue";
-import { getFlagImage } from "@/common/api/flagImage";
-import { messages } from "@/common/locale/locale";
-import { removeMetadata } from "@/common/utils/removeMetaDataFromName";
+import XIcon from "@/shared/ui/icon/XIcon.vue";
+import XImage from "@/shared/ui/image/XImage.vue";
+import { getFlagImage } from "@/shared/api/flagImage";
+import { messages } from "@/shared/lib/locale/locale";
+import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
 import { useUserStore } from "@/stores/userStore";
 import { Play } from "lucide-vue-next";
 

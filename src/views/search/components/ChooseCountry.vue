@@ -6,8 +6,8 @@ import {
   SelectMain,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { messages } from "@/common/locale/locale";
+} from "@/shared/ui/select";
+import { messages } from "@/shared/lib/locale/locale";
 import { useUserStore } from "@/stores/userStore";
 import { computed, ref, watchEffect, type HTMLAttributes } from "vue";
 

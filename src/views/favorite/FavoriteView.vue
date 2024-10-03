@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import XButton from "@/components/ui/button/XButton.vue";
-import XIcon from "@/components/ui/icon/XIcon.vue";
+import XButton from "@/shared/ui/button/XButton.vue";
+import XIcon from "@/shared/ui/icon/XIcon.vue";
 import { useUserStore } from "@/stores/userStore";
 import { ChevronsRight } from "lucide-vue-next";
 import { defineAsyncComponent, ref } from "vue";
 import ChangePage from "./components/ChangePage.vue";
 import FavoriteNav from "./components/FavoriteNav.vue";
-import { useFavoriteStore } from "../../stores/favoriteStore";
+import { useFavoriteStore } from "@/stores/favoriteStore";
 const AddToFavorite = defineAsyncComponent(
   () => import("@/components/modals/AddToFavorite.vue"),
 );

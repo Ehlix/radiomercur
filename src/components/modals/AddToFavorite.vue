@@ -5,11 +5,11 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/shared/ui/dialog";
 import { Plus, Check } from "lucide-vue-next";
-import xButton from "@/components/ui/button/XButton.vue";
-import XIcon from "@/components/ui/icon/XIcon.vue";
-import { removeMetadata } from "@/common/utils/removeMetaDataFromName";
+import xButton from "@/shared/ui/button/XButton.vue";
+import XIcon from "@/shared/ui/icon/XIcon.vue";
+import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
 import { useUserStore } from "@/stores/userStore";
 
 const props = defineProps<{

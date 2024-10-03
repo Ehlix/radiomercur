@@ -7,14 +7,14 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
-} from "@/components/ui/dialog";
-import XButton from "@/components/ui/button/XButton.vue";
+} from "@/shared/ui/dialog";
+import XButton from "@/shared/ui/button/XButton.vue";
 import { Settings } from "lucide-vue-next";
-import XIcon from "@/components/ui/icon/XIcon.vue";
+import XIcon from "@/shared/ui/icon/XIcon.vue";
 import { ref } from "vue";
-import { getLSData, setLSData } from "@/common/api/localStorage";
+import { getLSData, setLSData } from "@/shared/api/localStorage";
 import { useUserStore } from "@/stores/userStore";
-import { themes } from "@/common/static/themes";
+import { themes } from "@/shared/lib/static/themes";
 
 const ls = getLSData();
 

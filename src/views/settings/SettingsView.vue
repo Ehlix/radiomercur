@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppearanceBar from "./components/AppearanceBar.vue";
 import SyncUserData from "./components/SyncUserData.vue";
-import ShadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
+import ShadowOverlay from "@/shared/ui/shadowOverlay/ShadowOverlay.vue";
 </script>
 
 <template>

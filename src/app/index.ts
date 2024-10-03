@@ -1,4 +1,4 @@
-import { messages } from "@/common/locale/locale";
+import { messages } from "@/shared/lib/locale/locale";
 import { useUserStore } from "@/stores/userStore";
 import { inject } from "@vercel/analytics";
 import { createApp } from "vue";

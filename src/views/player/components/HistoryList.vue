@@ -6,8 +6,8 @@ import {
   DialogMain,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import XIcon from "@/components/ui/icon/XIcon.vue";
+} from "@/shared/ui/dialog";
+import XIcon from "@/shared/ui/icon/XIcon.vue";
 import { useUserStore } from "@/stores/userStore";
 import { History } from "lucide-vue-next";
 import { type HTMLAttributes } from "vue";

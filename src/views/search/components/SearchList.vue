@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import XButton from "@/components/ui/button/XButton.vue";
-import XIcon from "@/components/ui/icon/XIcon.vue";
-import XImage from "@/components/ui/image/XImage.vue";
-import { getFlagImage } from "@/common/api/flagImage";
+import XButton from "@/shared/ui/button/XButton.vue";
+import XIcon from "@/shared/ui/icon/XIcon.vue";
+import XImage from "@/shared/ui/image/XImage.vue";
+import { getFlagImage } from "@/shared/api/flagImage";
 import { Info, ListPlus, Play, Star, ThumbsUp } from "lucide-vue-next";
-import { useSearchStore } from "../../../stores/searchStore";
+import { useSearchStore } from "@/stores/searchStore";
 
 const { filters, stationsList, openDialog, selectStation } = useSearchStore();
 </script>

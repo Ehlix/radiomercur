@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import XButton from "@/components/ui/button/XButton.vue";
-import XIcon from "@/components/ui/icon/XIcon.vue";
-import XProgress from "@/components/ui/progress/XProgress.vue";
+import XButton from "@/shared/ui/button/XButton.vue";
+import XIcon from "@/shared/ui/icon/XIcon.vue";
+import XProgress from "@/shared/ui/progress/XProgress.vue";
 import { useSearchStore } from "@/stores/searchStore";
 import { Disc3, Frown } from "lucide-vue-next";
 import { ref, watch } from "vue";

@@ -7,8 +7,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import DialogClose from "@/components/ui/dialog/DialogClose.vue";
+} from "@/shared/ui/dialog";
+import DialogClose from "@/shared/ui/dialog/DialogClose.vue";
 import type { HTMLAttributes } from "vue";
 
 const props = defineProps<{

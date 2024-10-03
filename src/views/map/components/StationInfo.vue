@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import XButton from "@/components/ui/button/XButton.vue";
-import XIcon from "@/components/ui/icon/XIcon.vue";
-import XImage from "@/components/ui/image/XImage.vue";
-import ShadowOverlay from "@/components/ui/shadowOverlay/ShadowOverlay.vue";
-import { getFlagImage } from "@/common/api/flagImage";
-import { messages } from "@/common/locale/locale";
-import { removeMetadata } from "@/common/utils/removeMetaDataFromName";
+import XButton from "@/shared/ui/button/XButton.vue";
+import XIcon from "@/shared/ui/icon/XIcon.vue";
+import XImage from "@/shared/ui/image/XImage.vue";
+import ShadowOverlay from "@/shared/ui/shadowOverlay/ShadowOverlay.vue";
+import { getFlagImage } from "@/shared/api/flagImage";
+import { messages } from "@/shared/lib/locale/locale";
+import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
 import { useMapStore } from "@/stores/mapStore";
 import { useUserStore } from "@/stores/userStore";
 import { Info, ListPlus, Play, Star, ThumbsUp, ZoomIn } from "lucide-vue-next";

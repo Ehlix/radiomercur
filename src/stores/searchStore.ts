@@ -1,5 +1,5 @@
-import { getLSData, setLSData } from "@/common/api/localStorage";
-import { getAllStations } from "@/common/api/stations";
+import { getLSData, setLSData } from "@/shared/api/localStorage";
+import { getAllStations } from "@/shared/api/stations";
 import { useUserStore } from "@/stores/userStore";
 import { createGlobalState, watchOnce } from "@vueuse/core";
 import type { AxiosProgressEvent } from "axios";

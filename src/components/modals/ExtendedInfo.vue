@@ -5,13 +5,13 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/shared/ui/dialog";
 import { ThumbsUp, Star } from "lucide-vue-next";
-import { getFlagImage } from "@/common/api/flagImage";
-import XImage from "@/components/ui/image/XImage.vue";
-import XIcon from "@/components/ui/icon/XIcon.vue";
-import { removeMetadata } from "@/common/utils/removeMetaDataFromName";
-import { messages } from "@/common/locale/locale";
+import { getFlagImage } from "@/shared/api/flagImage";
+import XImage from "@/shared/ui/image/XImage.vue";
+import XIcon from "@/shared/ui/icon/XIcon.vue";
+import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
+import { messages } from "@/shared/lib/locale/locale";
 import { useUserStore } from "@/stores/userStore";
 
 defineProps<{

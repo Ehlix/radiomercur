@@ -4,7 +4,7 @@
     "env.d.ts",
     "src/**/*",
     "src/**/*.vue",
-    "src/@types/types.d.ts",
+    "src/shared/lib/@types/types.d.ts",
     "dist/jsmediatags.min.js"
   ],
   "exclude": ["src/**/__tests__/*"],

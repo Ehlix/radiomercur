@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { cn } from "@/common/utils/twMerge";
-import { getFlagImage } from "@/common/api/flagImage";
+import { cn } from "@/shared/lib/utils/twMerge";
+import { getFlagImage } from "@/shared/api/flagImage";
 import { onMounted, onUnmounted, ref } from "vue";
-import XImage from "@/components/ui/image/XImage.vue";
-import XIcon from "@/components/ui/icon/XIcon.vue";
-import XButton from "@/components/ui/button/XButton.vue";
+import XImage from "@/shared/ui/image/XImage.vue";
+import XIcon from "@/shared/ui/icon/XIcon.vue";
+import XButton from "@/shared/ui/button/XButton.vue";
 import {
   Play,
   ThumbsUp,
