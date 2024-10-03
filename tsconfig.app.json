@@ -1,6 +1,12 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "src/@types/types.d.ts", "dist/jsmediatags.min.js"],
+  "include": [
+    "env.d.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "src/@types/types.d.ts",
+    "dist/jsmediatags.min.js"
+  ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,
@@ -14,6 +20,8 @@
     "moduleResolution": "node",
     "strict": true,
     "importHelpers": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "isolatedModules": true,
     "noEmit": true,
     // "noUnusedLocals": true,

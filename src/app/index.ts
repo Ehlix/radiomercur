@@ -3,15 +3,17 @@ import { useUserStore } from "@/stores/userStore";
 import { inject } from "@vercel/analytics";
 import { createApp } from "vue";
 import { createI18n } from "vue-i18n";
+import { router, directives } from "./providers";
 import App from "./App.vue";
-import "./common/css/main.css";
-import router from "./router";
-import { tooltip } from "./directives/tooltip";
+import "./styles/index.css";
 
 export const app = createApp(App);
+
 app.use(router);
 
-app.directive("tooltip", tooltip);
+directives.forEach((d) => {
+  app.directive(d.name, d.directive);
+});
 
 const { locale } = useUserStore();
 
