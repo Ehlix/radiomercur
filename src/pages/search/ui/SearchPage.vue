@@ -8,8 +8,7 @@ import XProgress from "@/shared/ui/progress/XProgress.vue";
 import { Disc3, Frown } from "lucide-vue-next";
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
-import SearchBar from "./components/SearchBar.vue";
-import SearchList from "./components/SearchList.vue";
+import { SearchBar, SearchList } from "@/features/search";
 
 const el = ref<HTMLElement | null>(null);
 
