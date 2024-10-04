@@ -10,7 +10,7 @@ import {
 } from "@/shared/ui/dialog";
 import { Github } from "lucide-vue-next";
 import XIcon from "@/shared/ui/icon/XIcon.vue";
-import { XLogo }  from "@/shared/ui/logo";
+import { XLogo } from "@/shared/ui/logo";
 </script>
 
 <template>

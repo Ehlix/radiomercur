@@ -1,5 +1,5 @@
 import { messages } from "@/shared/lib/locale/locale";
-import { useUserStore } from "@/entities/user/model";
+import { useUserStore } from "@/entities/user/model/userStore";
 import { inject } from "@vercel/analytics";
 import { createApp } from "vue";
 import { createI18n } from "vue-i18n";

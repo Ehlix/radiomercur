@@ -1,1 +1,1 @@
-export { useMapStore } from "./model"
+export { useMapStore } from "./model/mapStore";

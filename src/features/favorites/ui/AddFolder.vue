@@ -14,7 +14,7 @@ import XIcon from "@/shared/ui/icon/XIcon.vue";
 import { FolderPen, FolderPlus, X } from "lucide-vue-next";
 import DialogClose from "@/shared/ui/dialog/DialogClose.vue";
 import { ref } from "vue";
-import { useFavoriteStore } from "@/entities/favorite";
+import { useFavoriteStore } from "@/entities/favorites";
 
 const { createNewFolder } = useFavoriteStore();
 const inputValue = ref<string>("");

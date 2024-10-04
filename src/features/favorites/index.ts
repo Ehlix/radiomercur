@@ -5,4 +5,11 @@ import FavoriteList from "./ui/FavoriteList.vue";
 import FavoriteNav from "./ui/FavoriteNav.vue";
 import RenameFolder from "./ui/RenameFolder.vue";
 
-export { AddFolder, AddToFavorite, ChangePage, FavoriteList, FavoriteNav, RenameFolder };
+export {
+  AddFolder,
+  AddToFavorite,
+  ChangePage,
+  FavoriteList,
+  FavoriteNav,
+  RenameFolder,
+};

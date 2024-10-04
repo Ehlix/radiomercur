@@ -14,7 +14,7 @@ import AddFolder from "./AddFolder.vue";
 import RenameFolder from "./RenameFolder.vue";
 import { Folder, Delete } from "lucide-vue-next";
 import { useUserStore } from "@/entities/user";
-import { useFavoriteStore } from "@/entities/favorite";
+import { useFavoriteStore } from "@/entities/favorites";
 
 const { deleteFolder, currentFolderId, changePageHandler } = useFavoriteStore();
 const { favoriteStations } = useUserStore();

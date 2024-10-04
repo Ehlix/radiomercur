@@ -1,1 +1,1 @@
-export { useSearchStore } from "./model"
+export { useSearchStore } from "./model/searchStore";

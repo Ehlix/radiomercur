@@ -2,7 +2,7 @@
 import XButton from "@/shared/ui/button/XButton.vue";
 import XIcon from "@/shared/ui/icon/XIcon.vue";
 import XProgress from "@/shared/ui/progress/XProgress.vue";
-import { useBaseUrlsStore } from "@/entities/urls/model";
+import { useBaseUrlsStore } from "@/entities/urls/model/baseUrlsStore";
 import { useMapStore } from "@/entities/map";
 import { Disc3 } from "lucide-vue-next";
 import { useRouter } from "vue-router";

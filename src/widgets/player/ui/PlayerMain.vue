@@ -23,13 +23,7 @@ import {
   Volume2,
   VolumeX,
 } from "lucide-vue-next";
-import {
-  computed,
-  nextTick,
-  onMounted,
-  ref,
-  watch,
-} from "vue";
+import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import PlayerVisual from "./PlayerVisual.vue";
 

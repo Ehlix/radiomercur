@@ -10,7 +10,7 @@ import { Plus, Check } from "lucide-vue-next";
 import xButton from "@/shared/ui/button/XButton.vue";
 import XIcon from "@/shared/ui/icon/XIcon.vue";
 import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
-import { useUserStore } from "@/entities/user/model";
+import { useUserStore } from "@/entities/user/model/userStore";
 
 const props = defineProps<{
   station: Station;

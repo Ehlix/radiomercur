@@ -4,7 +4,7 @@ import { useUserStore } from "@/entities/user";
 import { createGlobalState, watchOnce } from "@vueuse/core";
 import type { AxiosProgressEvent } from "axios";
 import { ref, shallowRef, watch } from "vue";
-import { useBaseUrlsStore } from "../../urls/model";
+import { useBaseUrlsStore } from "../../urls/model/baseUrlsStore";
 
 export const useSearchStore = createGlobalState(() => {
   const { baseUrl, mainServerIsActive, setBaseUrl, baseUrlReload } =

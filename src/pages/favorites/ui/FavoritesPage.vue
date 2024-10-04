@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useFavoriteStore } from "@/entities/favorite";
-import { useUserStore } from "@/entities/user/model";
+import { useFavoriteStore } from "@/entities/favorites";
+import { useUserStore } from "@/entities/user/model/userStore";
 import { ExtendedInfo } from "@/features/extendedInfo";
 import {
   AddToFavorite,

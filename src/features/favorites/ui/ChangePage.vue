@@ -13,7 +13,7 @@ import XIcon from "@/shared/ui/icon/XIcon.vue";
 import { Milestone } from "lucide-vue-next";
 import DialogClose from "@/shared/ui/dialog/DialogClose.vue";
 import { ref } from "vue";
-import { useFavoriteStore } from "@/entities/favorite";
+import { useFavoriteStore } from "@/entities/favorites";
 
 const { currentPage, changePageHandler, STATIONS_PER_PAGE, totalStationCount } =
   useFavoriteStore();

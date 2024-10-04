@@ -12,7 +12,7 @@ import XImage from "@/shared/ui/image/XImage.vue";
 import XIcon from "@/shared/ui/icon/XIcon.vue";
 import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
 import { messages } from "@/shared/lib/locale/locale";
-import { useUserStore } from "@/entities/user/model";
+import { useUserStore } from "@/entities/user/model/userStore";
 
 defineProps<{
   station: Station;

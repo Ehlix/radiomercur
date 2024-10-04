@@ -1,1 +1,1 @@
-export { useBaseUrlsStore } from "./model"
+export { useBaseUrlsStore } from "./model/baseUrlsStore";
