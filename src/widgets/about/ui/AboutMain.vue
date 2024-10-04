@@ -10,7 +10,7 @@ import {
 } from "@/shared/ui/dialog";
 import { Github } from "lucide-vue-next";
 import XIcon from "@/shared/ui/icon/XIcon.vue";
-import LogoMain from "@/components/logo/logoMain.vue";
+import { XLogo }  from "@/shared/ui/logo";
 </script>
 
 <template>
@@ -21,7 +21,7 @@ import LogoMain from "@/components/logo/logoMain.vue";
     <h1 class="sr-only">Radio Mercur</h1>
     <dialog-main>
       <dialog-trigger as-child>
-        <logo-main
+        <x-logo
           class="size-20 cursor-pointer pl-1 transition-none sm:h-20 sm:pl-0.5"
         />
       </dialog-trigger>

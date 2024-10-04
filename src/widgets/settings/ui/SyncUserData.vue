@@ -10,7 +10,7 @@ import {
 import XButton from "@/shared/ui/button/XButton.vue";
 import { FolderSync, FileDown, FileUp } from "lucide-vue-next";
 import XIcon from "@/shared/ui/icon/XIcon.vue";
-import DeleteAlert from "@/components/modals/DeleteAlert.vue";
+import DeleteAlert from "@/shared/ui/deleteAlert/DeleteAlert.vue";
 import { onUnmounted, ref } from "vue";
 import {
   getLSData,

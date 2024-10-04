@@ -9,7 +9,7 @@ import {
 } from "@/shared/ui/select";
 import { computed } from "vue";
 import XIcon from "@/shared/ui/icon/XIcon.vue";
-import DeleteAlert from "@/components/modals/DeleteAlert.vue";
+import DeleteAlert from "@/shared/ui/deleteAlert/DeleteAlert.vue";
 import AddFolder from "./AddFolder.vue";
 import RenameFolder from "./RenameFolder.vue";
 import { Folder, Delete } from "lucide-vue-next";

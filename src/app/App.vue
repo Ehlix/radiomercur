@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import ShadowOverlay from "@/shared/ui/shadowOverlay/ShadowOverlay.vue";
 import { RouterView } from "vue-router";
-import AboutView from "@/views/about/AboutView.vue";
-import PlayerView from "@/views/player/PlayerView.vue";
-import SettingsView from "@/views/settings/SettingsView.vue";
-import NavigationView from "@/views/navigation/NavigationView.vue";
+import { AboutMain } from "@/widgets/about";
+import { PlayerMain } from "@/widgets/player";
+import { SettingsMain } from "@/widgets/settings";
+import { NavigationMain } from "@/features/navigation";
 </script>
 
 <template>
@@ -14,12 +14,12 @@ import NavigationView from "@/views/navigation/NavigationView.vue";
     <header
       class="z-50 flex h-24 min-h-24 w-full items-center justify-center gap-2 sm:h-20 sm:min-h-20"
     >
-      <about-view />
-      <player-view />
-      <settings-view />
+      <about-main />
+      <player-main />
+      <settings-main />
     </header>
     <div class="flex h-full w-full gap-2 overflow-hidden">
-      <navigation-view />
+      <navigation-main />
       <div class="relative h-full w-full overflow-hidden rounded bg-mc-1">
         <shadow-overlay />
         <router-view />

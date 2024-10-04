@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import AddToFavorite from "@/components/modals/AddToFavorite.vue";
-import ExtendedInfo from "@/components/modals/ExtendedInfo.vue";
 import { useSearchStore } from "@/entities/search";
+import { ExtendedInfo } from "@/features/extendedInfo";
+import AddToFavorite from "@/features/favorites/ui/AddToFavorite.vue";
+import { SearchBar, SearchList } from "@/features/search";
 import XButton from "@/shared/ui/button/XButton.vue";
 import XIcon from "@/shared/ui/icon/XIcon.vue";
 import XProgress from "@/shared/ui/progress/XProgress.vue";
 import { Disc3, Frown } from "lucide-vue-next";
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
-import { SearchBar, SearchList } from "@/features/search";
 
 const el = ref<HTMLElement | null>(null);
 

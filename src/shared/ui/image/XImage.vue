@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, watch, type HTMLAttributes } from "vue";
 import { cn } from "@/shared/lib/utils/twMerge";
-import logoMain from "@/components/logo/logoMain.vue";
+import { XLogo } from "@/shared/ui/logo";
+import { ref, watch, type HTMLAttributes } from "vue";
 
 const props = defineProps<{
   src: string | undefined | null;
@@ -39,5 +39,5 @@ watch(
     :width="width || image.width"
     loading="lazy"
   />
-  <logo-main v-else v-once :class="cn(props.class)" />
+  <x-logo v-else v-once :class="cn(props.class)" />
 </template>

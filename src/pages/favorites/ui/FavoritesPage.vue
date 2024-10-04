@@ -1,20 +1,17 @@
 <script setup lang="ts">
+import { useFavoriteStore } from "@/entities/favorite";
+import { useUserStore } from "@/entities/user/model";
+import { ExtendedInfo } from "@/features/extendedInfo";
+import {
+  AddToFavorite,
+  ChangePage,
+  FavoriteList,
+  FavoriteNav,
+} from "@/features/favorites";
 import XButton from "@/shared/ui/button/XButton.vue";
 import XIcon from "@/shared/ui/icon/XIcon.vue";
-import { useUserStore } from "@/entities/user/model";
 import { ChevronsRight } from "lucide-vue-next";
-import { defineAsyncComponent, ref } from "vue";
-import {ChangePage, FavoriteNav, FavoriteList} from "@/features/favorites";
-import { useFavoriteStore } from "@/entities/favorite";
-const AddToFavorite = defineAsyncComponent(
-  () => import("@/components/modals/AddToFavorite.vue"),
-);
-const ExtendedInfo = defineAsyncComponent(
-  () => import("@/components/modals/ExtendedInfo.vue"),
-);
-// const FavoriteList = defineAsyncComponent(
-//   () => import("./components/FavoriteList.vue"),
-// );
+import { ref } from "vue";
 
 const userStore = useUserStore();
 const {
