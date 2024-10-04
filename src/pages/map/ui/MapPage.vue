@@ -5,11 +5,8 @@ import XProgress from "@/shared/ui/progress/XProgress.vue";
 import { useBaseUrlsStore } from "@/entities/urls/model";
 import { useMapStore } from "@/entities/map";
 import { Disc3 } from "lucide-vue-next";
-import { defineAsyncComponent } from "vue";
 import { useRouter } from "vue-router";
-const WorldMap = defineAsyncComponent(
-  () => import("./components/WorldMap.vue"),
-);
+import { WorldMap } from "@/features/map";
 
 const router = useRouter();
 const { stationsList, getStations, downloadProgress, loading } = useMapStore();

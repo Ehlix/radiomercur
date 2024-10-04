@@ -2,21 +2,21 @@ export const routes = [
   {
     path: "/",
     name: "home",
-    component: () => import("@/views/search/SearchView.vue"),
+    component: () => import("@/pages/search"),
   },
   {
     path: "/search",
     name: "search",
-    component: () => import("@/views/search/SearchView.vue"),
+    component: () => import("@/pages/search"),
   },
   {
     path: "/favorite",
     name: "favorite",
-    component: () => import("@/views/favorite/FavoriteView.vue"),
+    component: () => import("@/pages/favorites"),
   },
   {
     path: "/map",
     name: "world map",
-    component: () => import("@/views/map/MapView.vue"),
+    component: () => import("@/pages/map"),
   },
 ];
