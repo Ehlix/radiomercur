@@ -4,7 +4,7 @@ import XImage from "@/shared/ui/image/XImage.vue";
 import { getFlagImage } from "@/shared/api/flagImage";
 import { messages } from "@/shared/lib/locale/locale";
 import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
-import { useUserStore } from "@/stores/userStore";
+import { useUserStore } from "@/entities/user";
 import { Play } from "lucide-vue-next";
 
 defineProps<{

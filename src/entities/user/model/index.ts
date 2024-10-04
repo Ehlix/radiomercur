@@ -1,6 +1,6 @@
 import { ref, shallowRef, watch } from "vue";
 import { getStationInfoById } from "@/shared/api/stations";
-import { useBaseUrlsStore } from "./baseUrlsStore";
+import { useBaseUrlsStore } from "@/entities/urls";
 import { getLSData, setLSData } from "@/shared/api/localStorage";
 import { generateId } from "@/shared/lib/utils/generateId";
 import { createGlobalState } from "@vueuse/core";

@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/shared/ui/select";
 import { messages } from "@/shared/lib/locale/locale";
-import { useUserStore } from "@/stores/userStore";
+import { useUserStore } from "@/entities/user";
 import { computed, ref, watchEffect, type HTMLAttributes } from "vue";
 
 const props = defineProps<{

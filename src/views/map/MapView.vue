@@ -2,8 +2,8 @@
 import XButton from "@/shared/ui/button/XButton.vue";
 import XIcon from "@/shared/ui/icon/XIcon.vue";
 import XProgress from "@/shared/ui/progress/XProgress.vue";
-import { useBaseUrlsStore } from "@/stores/baseUrlsStore";
-import { useMapStore } from "@/stores/mapStore";
+import { useBaseUrlsStore } from "@/entities/urls/model";
+import { useMapStore } from "@/entities/map";
 import { Disc3 } from "lucide-vue-next";
 import { defineAsyncComponent } from "vue";
 import { useRouter } from "vue-router";

@@ -6,8 +6,8 @@ import ShadowOverlay from "@/shared/ui/shadowOverlay/ShadowOverlay.vue";
 import { getFlagImage } from "@/shared/api/flagImage";
 import { messages } from "@/shared/lib/locale/locale";
 import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
-import { useMapStore } from "@/stores/mapStore";
-import { useUserStore } from "@/stores/userStore";
+import { useMapStore } from "@/entities/map";
+import { useUserStore } from "@/entities/user";
 import { Info, ListPlus, Play, Star, ThumbsUp, ZoomIn } from "lucide-vue-next";
 import { defineAsyncComponent, ref } from "vue";
 const AddToFavorite = defineAsyncComponent(

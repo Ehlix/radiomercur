@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/shared/ui/dialog";
 import XIcon from "@/shared/ui/icon/XIcon.vue";
-import { useUserStore } from "@/stores/userStore";
+import { useUserStore } from "@/entities/user";
 import { History } from "lucide-vue-next";
 import { type HTMLAttributes } from "vue";
 import HistoryCard from "./HistoryCard.vue";

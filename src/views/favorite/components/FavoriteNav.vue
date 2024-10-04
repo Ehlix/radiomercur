@@ -13,8 +13,8 @@ import DeleteAlert from "@/components/modals/DeleteAlert.vue";
 import AddFolder from "./AddFolder.vue";
 import RenameFolder from "./RenameFolder.vue";
 import { Folder, Delete } from "lucide-vue-next";
-import { useUserStore } from "@/stores/userStore";
-import { useFavoriteStore } from "../../../stores/favoriteStore";
+import { useUserStore } from "@/entities/user";
+import { useFavoriteStore } from "@/entities/favorite";
 
 const { deleteFolder, currentFolderId, changePageHandler } = useFavoriteStore();
 const { favoriteStations } = useUserStore();

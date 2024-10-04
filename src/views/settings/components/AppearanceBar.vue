@@ -1,20 +1,20 @@
 <script setup lang="ts">
+import { useUserStore } from "@/entities/user";
+import { getLSData, setLSData } from "@/shared/api/localStorage";
+import { themes } from "@/shared/lib/static/themes";
+import XButton from "@/shared/ui/button/XButton.vue";
 import {
-  DialogMain,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
+  DialogMain,
   DialogTitle,
   DialogTrigger,
-  DialogFooter,
 } from "@/shared/ui/dialog";
-import XButton from "@/shared/ui/button/XButton.vue";
-import { Settings } from "lucide-vue-next";
 import XIcon from "@/shared/ui/icon/XIcon.vue";
+import { Settings } from "lucide-vue-next";
 import { ref } from "vue";
-import { getLSData, setLSData } from "@/shared/api/localStorage";
-import { useUserStore } from "@/stores/userStore";
-import { themes } from "@/shared/lib/static/themes";
 
 const ls = getLSData();
 

@@ -21,7 +21,7 @@ import {
   X,
 } from "lucide-vue-next";
 import { ref, watch } from "vue";
-import { useSearchStore } from "@/stores/searchStore";
+import { useSearchStore } from "@/entities/search";
 import ChooseCountry from "./ChooseCountry.vue";
 
 const { filters, updateFilters } = useSearchStore();

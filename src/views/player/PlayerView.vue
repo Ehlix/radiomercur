@@ -5,8 +5,8 @@ import XImage from "@/shared/ui/image/XImage.vue";
 import XSlider from "@/shared/ui/slider/XSlider.vue";
 import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
 import { cn } from "@/shared/lib/utils/twMerge";
-import { useMapStore } from "@/stores/mapStore";
-import { useUserStore } from "@/stores/userStore";
+import { useMapStore } from "@/entities/map";
+import { useUserStore } from "@/entities/user";
 import ShadowOverlay from "@/shared/ui/shadowOverlay/ShadowOverlay.vue";
 import {
   Disc3,

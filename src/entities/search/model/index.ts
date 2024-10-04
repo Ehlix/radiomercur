@@ -1,10 +1,10 @@
 import { getLSData, setLSData } from "@/shared/api/localStorage";
 import { getAllStations } from "@/shared/api/stations";
-import { useUserStore } from "@/stores/userStore";
+import { useUserStore } from "@/entities/user";
 import { createGlobalState, watchOnce } from "@vueuse/core";
 import type { AxiosProgressEvent } from "axios";
 import { ref, shallowRef, watch } from "vue";
-import { useBaseUrlsStore } from "./baseUrlsStore";
+import { useBaseUrlsStore } from "../../urls/model";
 
 export const useSearchStore = createGlobalState(() => {
   const { baseUrl, mainServerIsActive, setBaseUrl, baseUrlReload } =

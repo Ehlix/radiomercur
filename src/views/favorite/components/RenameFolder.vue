@@ -14,7 +14,7 @@ import XIcon from "@/shared/ui/icon/XIcon.vue";
 import { FolderPen, Pen, X } from "lucide-vue-next";
 import DialogClose from "@/shared/ui/dialog/DialogClose.vue";
 import { ref } from "vue";
-import { useFavoriteStore } from "@/stores/favoriteStore";
+import { useFavoriteStore } from "@/entities/favorite";
 
 const props = defineProps<{
   folderName: string;
