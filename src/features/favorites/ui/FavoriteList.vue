@@ -1,21 +1,19 @@
 <script setup lang="ts">
+import { useFavoriteStore } from "@/entities/favorites";
+import { getFlagImage } from "@/shared/api";
 import { cn } from "@/shared/lib/utils/twMerge";
-import { getFlagImage } from "@/shared/api/flagImage";
-import { onMounted, onUnmounted, ref } from "vue";
-import XImage from "@/shared/ui/image/XImage.vue";
-import XIcon from "@/shared/ui/icon/XIcon.vue";
-import XButton from "@/shared/ui/button/XButton.vue";
+import { XButton, XIcon, XImage } from "@/shared/ui";
 import {
-  Play,
-  ThumbsUp,
-  Star,
-  GripVertical,
   ChevronsDown,
-  ListPlus,
+  GripVertical,
   Info,
+  ListPlus,
+  Play,
   RefreshCw,
+  Star,
+  ThumbsUp,
 } from "lucide-vue-next";
-import { useFavoriteStore } from "@/entities/favorites/model/favoriteStore";
+import { onMounted, onUnmounted, ref } from "vue";
 
 const {
   stationsList,

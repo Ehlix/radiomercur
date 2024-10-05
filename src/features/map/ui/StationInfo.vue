@@ -2,17 +2,14 @@
 import { useMapStore } from "@/entities/map";
 import { useUserStore } from "@/entities/user";
 import { ExtendedInfo } from "@/features/extendedInfo";
-import { getFlagImage } from "@/shared/api/flagImage";
+import { getFlagImage } from "@/shared/api";
 import { messages } from "@/shared/lib/locale/locale";
 import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
-import XButton from "@/shared/ui/button/XButton.vue";
-import XIcon from "@/shared/ui/icon/XIcon.vue";
-import XImage from "@/shared/ui/image/XImage.vue";
-import ShadowOverlay from "@/shared/ui/shadowOverlay/ShadowOverlay.vue";
+import { XButton, XIcon, XImage, ShadowOverlay } from "@/shared/ui";
 import { Info, ListPlus, Play, Star, ThumbsUp, ZoomIn } from "lucide-vue-next";
 import { defineAsyncComponent, ref } from "vue";
-const AddToFavorite = defineAsyncComponent(
-  () => import("@/features/favorites/ui/AddToFavorite.vue"),
+const AddToFavorite = defineAsyncComponent(() =>
+  import("@/features/favorites").then((model) => model.AddToFavorite),
 );
 
 const { locale, selectStation } = useUserStore();

@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { useSearchStore } from "@/entities/search";
 import { ExtendedInfo } from "@/features/extendedInfo";
-import AddToFavorite from "@/features/favorites/ui/AddToFavorite.vue";
+import { AddToFavorite } from "@/features/favorites";
 import { SearchBar, SearchList } from "@/features/search";
-import XButton from "@/shared/ui/button/XButton.vue";
-import XIcon from "@/shared/ui/icon/XIcon.vue";
-import XProgress from "@/shared/ui/progress/XProgress.vue";
+import { XButton, XIcon, XProgress } from "@/shared/ui";
 import { Disc3, Frown } from "lucide-vue-next";
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";

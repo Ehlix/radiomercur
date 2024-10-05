@@ -76,13 +76,3 @@ export const useMapStore = createGlobalState(() => {
     loading,
   };
 });
-
-// const findCoords = (countryCode: string) => {
-//   const country = countries_coords.find((c) => c.alpha2 === countryCode);
-//   if (country) {
-//     return {
-//       lat: country.latitude,
-//       long: country.longitude,
-//     };
-//   }
-// };

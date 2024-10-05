@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import XButton from "@/shared/ui/button/XButton.vue";
-import XIcon from "@/shared/ui/icon/XIcon.vue";
+import { calculateDistance, useMapStore } from "@/entities/map";
 import globalConfig from "@/shared/config";
-import { calculateDistance } from "@/shared/lib/utils/calculateDistance";
-import { useMapStore } from "@/entities/map";
+import { XButton, XIcon } from "@/shared/ui";
 import * as mt from "@maptiler/sdk";
 import "@maptiler/sdk/dist/maptiler-sdk.css";
 import { useDebounceFn } from "@vueuse/core";

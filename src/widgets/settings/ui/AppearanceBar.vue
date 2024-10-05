@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { useUserStore } from "@/entities/user";
-import { getLSData, setLSData } from "@/shared/api/localStorage";
+import { getLSData, setLSData } from "@/shared/api";
 import { themes } from "@/shared/lib/static/themes";
-import XButton from "@/shared/ui/button/XButton.vue";
 import {
   DialogContent,
   DialogDescription,
@@ -11,8 +10,9 @@ import {
   DialogMain,
   DialogTitle,
   DialogTrigger,
-} from "@/shared/ui/dialog";
-import XIcon from "@/shared/ui/icon/XIcon.vue";
+  XIcon,
+  XButton,
+} from "@/shared/ui";
 import { Settings } from "lucide-vue-next";
 import { ref } from "vue";
 

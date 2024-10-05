@@ -1,20 +1,20 @@
 <script setup lang="ts">
+import { useFavoriteStore } from "@/entities/favorites";
 import {
-  DialogMain,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogMain,
   DialogTitle,
   DialogTrigger,
-} from "@/shared/ui/dialog";
-import XButton from "@/shared/ui/button/XButton.vue";
-import XInput from "@/shared/ui/input/XInput.vue";
-import XIcon from "@/shared/ui/icon/XIcon.vue";
+  XButton,
+  XIcon,
+  XInput
+} from "@/shared/ui";
 import { FolderPen, Pen, X } from "lucide-vue-next";
-import DialogClose from "@/shared/ui/dialog/DialogClose.vue";
 import { ref } from "vue";
-import { useFavoriteStore } from "@/entities/favorites";
 
 const props = defineProps<{
   folderName: string;

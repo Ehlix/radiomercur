@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useFavoriteStore } from "@/entities/favorites";
-import { useUserStore } from "@/entities/user/model/userStore";
+import { useUserStore } from "@/entities/user";
 import { ExtendedInfo } from "@/features/extendedInfo";
 import {
   AddToFavorite,
@@ -8,8 +8,7 @@ import {
   FavoriteList,
   FavoriteNav,
 } from "@/features/favorites";
-import XButton from "@/shared/ui/button/XButton.vue";
-import XIcon from "@/shared/ui/icon/XIcon.vue";
+import { XButton, XIcon } from "@/shared/ui";
 import { ChevronsRight } from "lucide-vue-next";
 import { ref } from "vue";
 

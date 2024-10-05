@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import XButton from "@/shared/ui/button/XButton.vue";
-import XIcon from "@/shared/ui/icon/XIcon.vue";
-import XProgress from "@/shared/ui/progress/XProgress.vue";
-import { useBaseUrlsStore } from "@/entities/urls/model/baseUrlsStore";
 import { useMapStore } from "@/entities/map";
+import { useBaseUrlsStore } from "@/entities/urls";
+import { WorldMap } from "@/features/map";
+import { XButton, XIcon, XProgress } from "@/shared/ui";
 import { Disc3 } from "lucide-vue-next";
 import { useRouter } from "vue-router";
-import { WorldMap } from "@/features/map";
 
 const router = useRouter();
 const { stationsList, getStations, downloadProgress, loading } = useMapStore();

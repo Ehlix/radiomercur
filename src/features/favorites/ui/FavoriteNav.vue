@@ -1,20 +1,20 @@
 <script setup lang="ts">
+import { useFavoriteStore } from "@/entities/favorites";
+import { useUserStore } from "@/entities/user";
 import {
-  SelectMain,
+  DeleteAlert,
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectMain,
   SelectTrigger,
   SelectValue,
-} from "@/shared/ui/select";
+  XIcon,
+} from "@/shared/ui";
+import { Delete, Folder } from "lucide-vue-next";
 import { computed } from "vue";
-import XIcon from "@/shared/ui/icon/XIcon.vue";
-import DeleteAlert from "@/shared/ui/deleteAlert/DeleteAlert.vue";
 import AddFolder from "./AddFolder.vue";
 import RenameFolder from "./RenameFolder.vue";
-import { Folder, Delete } from "lucide-vue-next";
-import { useUserStore } from "@/entities/user";
-import { useFavoriteStore } from "@/entities/favorites";
 
 const { deleteFolder, currentFolderId, changePageHandler } = useFavoriteStore();
 const { favoriteStations } = useUserStore();

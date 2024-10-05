@@ -1,27 +1,17 @@
-import { messages } from "@/shared/lib/locale/locale";
-import { useUserStore } from "@/entities/user/model/userStore";
 import { inject } from "@vercel/analytics";
 import { createApp } from "vue";
-import { createI18n } from "vue-i18n";
-import { router, directives } from "./providers";
 import App from "./App.vue";
+import { directives, router } from "./providers";
+import { i18n } from "./providers/i18n";
 import "./styles/index.css";
 
-export const app = createApp(App);
-
-app.use(router);
+const app = createApp(App);
 
 directives.forEach((d) => {
   app.directive(d.name, d.directive);
 });
 
-const { locale } = useUserStore();
-
-const i18n = createI18n({
-  locale: locale.value,
-  messages,
-});
-
+app.use(router);
 app.use(i18n);
 app.mount("#app");
 

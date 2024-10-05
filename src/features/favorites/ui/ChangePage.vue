@@ -1,19 +1,19 @@
 <script setup lang="ts">
+import { useFavoriteStore } from "@/entities/favorites";
 import {
-  DialogMain,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogMain,
   DialogTitle,
   DialogTrigger,
-} from "@/shared/ui/dialog";
-import XInput from "@/shared/ui/input/XInput.vue";
-import XIcon from "@/shared/ui/icon/XIcon.vue";
+  XIcon,
+  XInput
+} from "@/shared/ui";
 import { Milestone } from "lucide-vue-next";
-import DialogClose from "@/shared/ui/dialog/DialogClose.vue";
 import { ref } from "vue";
-import { useFavoriteStore } from "@/entities/favorites";
 
 const { currentPage, changePageHandler, STATIONS_PER_PAGE, totalStationCount } =
   useFavoriteStore();

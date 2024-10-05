@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { RouterLink, useRoute } from "vue-router";
 import { cn } from "@/shared/lib/utils/twMerge";
-import ShadowOverlay from "@/shared/ui/shadowOverlay/ShadowOverlay.vue";
+import { ShadowOverlay } from "@/shared/ui";
+import { RouterLink, useRoute } from "vue-router";
 
 const route = useRoute();
 const variants = [

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import xButton from "@/shared/ui/button/XButton.vue";
-import XIcon from "@/shared/ui/icon/XIcon.vue";
-import XInput from "@/shared/ui/input/XInput.vue";
+import { useSearchStore } from "@/entities/search";
 import {
   SelectContent,
   SelectGroup,
@@ -9,8 +7,11 @@ import {
   SelectMain,
   SelectTrigger,
   SelectValue,
-} from "@/shared/ui/select";
-import XSwitch from "@/shared/ui/switch/XSwitch.vue";
+  XButton,
+  XIcon,
+  XInput,
+  XSwitch,
+} from "@/shared/ui";
 import { useDebounce } from "@vueuse/core";
 import {
   ArrowDownNarrowWide,
@@ -21,7 +22,6 @@ import {
   X,
 } from "lucide-vue-next";
 import { ref, watch } from "vue";
-import { useSearchStore } from "@/entities/search";
 import ChooseCountry from "./ChooseCountry.vue";
 
 const { filters, updateFilters } = useSearchStore();

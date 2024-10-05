@@ -1,25 +1,25 @@
 <script setup lang="ts">
 import {
-  DialogMain,
+  clearLSData,
+  getLSData,
+  setLSData,
+  validateLsData,
+} from "@/shared/api";
+import { cn } from "@/shared/lib/utils/twMerge";
+import {
+  DeleteAlert,
   DialogContent,
   DialogDescription,
   DialogHeader,
+  DialogMain,
   DialogTitle,
   DialogTrigger,
-} from "@/shared/ui/dialog";
-import XButton from "@/shared/ui/button/XButton.vue";
-import { FolderSync, FileDown, FileUp } from "lucide-vue-next";
-import XIcon from "@/shared/ui/icon/XIcon.vue";
-import DeleteAlert from "@/shared/ui/deleteAlert/DeleteAlert.vue";
-import { onUnmounted, ref } from "vue";
-import {
-  getLSData,
-  setLSData,
-  clearLSData,
-  validateLsData,
-} from "@/shared/api/localStorage";
+  XButton,
+  XIcon,
+} from "@/shared/ui";
 import { useDropZone } from "@vueuse/core";
-import { cn } from "@/shared/lib/utils/twMerge";
+import { FileDown, FileUp, FolderSync } from "lucide-vue-next";
+import { onUnmounted, ref } from "vue";
 
 const dropZoneRef = ref<HTMLDivElement>();
 const errorMessage = ref<boolean>(false);

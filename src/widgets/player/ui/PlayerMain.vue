@@ -4,14 +4,10 @@ import { useUserStore } from "@/entities/user";
 import { ExtendedInfo } from "@/features/extendedInfo";
 import { AddToFavorite } from "@/features/favorites";
 import { HistoryList } from "@/features/history";
-import { getLSData, setLSData } from "@/shared/api/localStorage";
+import { getLSData, setLSData } from "@/shared/api";
 import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
 import { cn } from "@/shared/lib/utils/twMerge";
-import XButton from "@/shared/ui/button/XButton.vue";
-import XIcon from "@/shared/ui/icon/XIcon.vue";
-import XImage from "@/shared/ui/image/XImage.vue";
-import ShadowOverlay from "@/shared/ui/shadowOverlay/ShadowOverlay.vue";
-import XSlider from "@/shared/ui/slider/XSlider.vue";
+import { ShadowOverlay, XButton, XIcon, XImage, XSlider } from "@/shared/ui";
 import {
   Disc3,
   Info,

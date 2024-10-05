@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import ShadowOverlay from "@/shared/ui/shadowOverlay/ShadowOverlay.vue";
 import {
-  DialogMain,
   DialogContent,
   DialogDescription,
   DialogHeader,
+  DialogMain,
   DialogTitle,
   DialogTrigger,
-} from "@/shared/ui/dialog";
+  XIcon,
+  XLogo,
+  ShadowOverlay,
+} from "@/shared/ui";
 import { Github } from "lucide-vue-next";
-import XIcon from "@/shared/ui/icon/XIcon.vue";
-import { XLogo } from "@/shared/ui/logo";
 </script>
 
 <template>

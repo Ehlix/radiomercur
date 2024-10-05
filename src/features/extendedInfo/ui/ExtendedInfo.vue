@@ -1,18 +1,18 @@
 <script setup lang="ts">
+import { useUserStore } from "@/entities/user";
+import { getFlagImage } from "@/shared/api";
+import { messages } from "@/shared/lib/locale/locale";
+import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
 import {
-  DialogMain,
   DialogContent,
   DialogDescription,
   DialogHeader,
+  DialogMain,
   DialogTitle,
-} from "@/shared/ui/dialog";
-import { ThumbsUp, Star } from "lucide-vue-next";
-import { getFlagImage } from "@/shared/api/flagImage";
-import XImage from "@/shared/ui/image/XImage.vue";
-import XIcon from "@/shared/ui/icon/XIcon.vue";
-import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
-import { messages } from "@/shared/lib/locale/locale";
-import { useUserStore } from "@/entities/user/model/userStore";
+  XIcon,
+  XImage,
+} from "@/shared/ui";
+import { Star, ThumbsUp } from "lucide-vue-next";
 
 defineProps<{
   station: Station;
