@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {
-  DialogMain,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogMain,
   DialogTitle,
   DialogTrigger,
 } from "@/shared/ui/dialog";

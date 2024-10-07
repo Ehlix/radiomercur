@@ -5,7 +5,7 @@ import { ExtendedInfo } from "@/features/extendedInfo";
 import { getFlagImage } from "@/shared/api";
 import { messages } from "@/shared/lib/locale/locale";
 import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
-import { XButton, XIcon, XImage, ShadowOverlay } from "@/shared/ui";
+import { ShadowOverlay, XButton, XIcon, XImage } from "@/shared/ui";
 import { Info, ListPlus, Play, Star, ThumbsUp, ZoomIn } from "lucide-vue-next";
 import { defineAsyncComponent, ref } from "vue";
 const AddToFavorite = defineAsyncComponent(() =>

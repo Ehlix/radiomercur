@@ -6,9 +6,9 @@ import {
   DialogMain,
   DialogTitle,
   DialogTrigger,
+  ShadowOverlay,
   XIcon,
   XLogo,
-  ShadowOverlay,
 } from "@/shared/ui";
 import { Github } from "lucide-vue-next";
 </script>

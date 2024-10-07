@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import {
-  DialogMain,
   DialogContent,
   DialogDescription,
   DialogHeader,
+  DialogMain,
   DialogTitle,
   XButton,
   XIcon,
 } from "@/shared/ui";
-import { Plus, Check } from "lucide-vue-next";
+import { Check, Plus } from "lucide-vue-next";
 import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
 import { useUserStore } from "@/entities/user";
 

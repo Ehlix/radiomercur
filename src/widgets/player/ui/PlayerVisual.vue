@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, ref } from "vue";
+import { ref, watch } from "vue";
 
 const props = defineProps<{
   player: HTMLAudioElement;

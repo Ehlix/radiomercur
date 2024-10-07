@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import XIcon from "@/shared/ui/icon/XIcon.vue";
-import XImage from "@/shared/ui/image/XImage.vue";
+import { useUserStore } from "@/entities/user";
+import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
 import { getFlagImage } from "@/shared/api";
 import { messages } from "@/shared/lib/locale/locale";
-import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
-import { useUserStore } from "@/entities/user";
+import XIcon from "@/shared/ui/icon/XIcon.vue";
+import XImage from "@/shared/ui/image/XImage.vue";
 import { Play } from "lucide-vue-next";
 
 defineProps<{

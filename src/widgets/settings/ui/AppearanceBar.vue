@@ -10,8 +10,8 @@ import {
   DialogMain,
   DialogTitle,
   DialogTrigger,
-  XIcon,
   XButton,
+  XIcon,
 } from "@/shared/ui";
 import { Settings } from "lucide-vue-next";
 import { ref } from "vue";

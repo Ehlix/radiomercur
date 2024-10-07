@@ -21,7 +21,9 @@ const StationInfo = defineAsyncComponent(() => import("./StationInfo.vue"));
 const { stationsList, selectedStation, selectStation, getStations } =
   useMapStore();
 
-!stationsList.value.length && getStations();
+if (!stationsList.value.length) {
+  getStations();
+}
 const mapContainer = shallowRef<HTMLDivElement | null>(null);
 const map = shallowRef<mt.Map | null>(null);
 const geoJson = shallowRef<GeoJsonProperties | null>(null);
@@ -37,7 +39,7 @@ const initialOption = {
   maxZoom: 10,
 };
 
-const mapClickHandler = useDebounceFn((e: mt.MapMouseEvent & Object) => {
+const mapClickHandler = useDebounceFn((e: mt.MapMouseEvent & object) => {
   const lat = e.lngLat.lat;
   const lng = e.lngLat.lng;
   const zoom = e.target.getZoom();

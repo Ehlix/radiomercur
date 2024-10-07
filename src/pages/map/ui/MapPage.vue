@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useBaseUrlsStore } from "@/entities/urls";
-import { useMapStore, WorldMap } from "@/features/map";
+import { WorldMap, useMapStore } from "@/features/map";
 import { XButton, XIcon, XProgress } from "@/shared/ui";
 import { Disc3 } from "lucide-vue-next";
 import { useRouter } from "vue-router";
@@ -8,7 +8,10 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const { stationsList, getStations, downloadProgress, loading } = useMapStore();
 const { mainServerIsActive } = useBaseUrlsStore();
-!stationsList.value.length && getStations();
+
+if (!stationsList.value.length) {
+  getStations();
+}
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useUserStore } from "@/entities/user";
 import { messages } from "@/shared/lib/locale/locale";
+import { useUserStore } from "@/entities/user";
 import {
   SelectContent,
   SelectGroup,
@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/ui";
-import { computed, ref, watchEffect, type HTMLAttributes } from "vue";
+import { type HTMLAttributes, computed, ref, watchEffect } from "vue";
 
 const props = defineProps<{
   countryCode?: string;
