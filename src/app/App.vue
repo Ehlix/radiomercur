@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import ShadowOverlay from "@/shared/ui/shadowOverlay/ShadowOverlay.vue";
-import { RouterView } from "vue-router";
+import { NavigationMain } from "@/features/navigation";
+import { ShadowOverlay } from "@/shared/ui";
 import { AboutMain } from "@/widgets/about";
 import { PlayerMain } from "@/widgets/player";
 import { SettingsMain } from "@/widgets/settings";
-import { NavigationMain } from "@/features/navigation";
+import { RouterView } from "vue-router";
 </script>
 
 <template>

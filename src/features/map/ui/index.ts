@@ -1,4 +1,3 @@
-import StationInfo from "./StationInfo.vue";
-import WorldMap from "./WorldMap.vue";
+import { defineAsyncComponent } from "vue";
 
-export { StationInfo, WorldMap};
+export const WorldMap = defineAsyncComponent(() => import("./WorldMap.vue"));

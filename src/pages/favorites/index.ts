@@ -1,3 +1,4 @@
-import FavoritesPage from "./ui/FavoritesPage.vue";
-
-export default FavoritesPage
+import { defineAsyncComponent } from "vue";
+export const FavoritesPage = defineAsyncComponent(
+  () => import("./ui/FavoritesPage.vue"),
+);

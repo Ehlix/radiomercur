@@ -1,3 +1,4 @@
-import SearchPage from "./ui/SearchPage.vue";
-
-export default SearchPage;
+import { defineAsyncComponent } from "vue";
+export const SearchPage = defineAsyncComponent(
+  () => import("./ui/SearchPage.vue"),
+);

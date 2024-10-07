@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useMapStore } from "@/features/map";
 import { useBaseUrlsStore } from "@/entities/urls";
-import { WorldMap } from "@/features/map";
+import { useMapStore, WorldMap } from "@/features/map";
 import { XButton, XIcon, XProgress } from "@/shared/ui";
 import { Disc3 } from "lucide-vue-next";
 import { useRouter } from "vue-router";

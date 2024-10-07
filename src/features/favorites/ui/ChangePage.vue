@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
   XIcon,
-  XInput
+  XInput,
 } from "@/shared/ui";
 import { Milestone } from "lucide-vue-next";
 import { ref } from "vue";

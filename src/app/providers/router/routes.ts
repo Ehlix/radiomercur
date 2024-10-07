@@ -1,23 +1,26 @@
 import type { RouterOptions } from "vue-router";
+import { MapPage } from "@/pages/map";
+import { FavoritesPage } from "@/pages/favorites";
+import { SearchPage } from "@/pages/search";
 
 export const routes: RouterOptions["routes"] = [
   {
     path: "/",
     name: "home",
-    component: () => import("@/pages/search"),
+    component: SearchPage,
   },
   {
     path: "/search",
-    component: () => import("@/pages/search"),
+    component: SearchPage,
   },
   {
     path: "/favorite",
     name: "favorites",
-    component: () => import("@/pages/favorites"),
+    component: FavoritesPage,
   },
   {
     path: "/map",
     name: "map",
-    component: () => import("@/pages/map"),
+    component: MapPage,
   },
 ];

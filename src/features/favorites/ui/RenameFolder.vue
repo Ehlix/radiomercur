@@ -11,7 +11,7 @@ import {
   DialogTrigger,
   XButton,
   XIcon,
-  XInput
+  XInput,
 } from "@/shared/ui";
 import { FolderPen, Pen, X } from "lucide-vue-next";
 import { ref } from "vue";

@@ -1,3 +1,2 @@
-import MapPage from "./ui/MapPage.vue";
-
-export default MapPage;
+import { defineAsyncComponent } from "vue";
+export const MapPage = defineAsyncComponent(() => import("./ui/MapPage.vue"));

@@ -28,7 +28,7 @@ const el = ref<HTMLElement | null>(null);
 const isDragging = ref(false);
 const dragTarget = ref<Station | null>(null);
 
-const dragStartHandler = (e: DragEvent, station: Station) => {
+const dragStartHandler = (_: DragEvent, station: Station) => {
   dragTarget.value = station;
 };
 

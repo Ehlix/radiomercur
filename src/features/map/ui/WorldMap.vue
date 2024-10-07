@@ -7,9 +7,16 @@ import "@maptiler/sdk/dist/maptiler-sdk.css";
 import { useDebounceFn } from "@vueuse/core";
 import GeoJSON, { type GeoJsonProperties } from "geojson";
 import { Home, Minus, Plus } from "lucide-vue-next";
-import { markRaw, onMounted, onUnmounted, shallowRef, watch } from "vue";
+import {
+  defineAsyncComponent,
+  markRaw,
+  onMounted,
+  onUnmounted,
+  shallowRef,
+  watch,
+} from "vue";
 import { useMapStore } from "../model";
-import StationInfo from "./StationInfo.vue";
+const StationInfo = defineAsyncComponent(() => import("./StationInfo.vue"));
 
 const { stationsList, selectedStation, selectStation, getStations } =
   useMapStore();
