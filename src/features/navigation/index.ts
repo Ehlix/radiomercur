@@ -1,3 +1,1 @@
-import NavigationMain from "./ui/NavigationMain.vue";
-
-export { NavigationMain };
+export * from "./ui";

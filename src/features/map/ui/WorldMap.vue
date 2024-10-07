@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { calculateDistance, useMapStore } from "@/entities/map";
 import globalConfig from "@/shared/config";
+import { calculateDistance } from "@/shared/lib/utils/calculateDistance";
 import { XButton, XIcon } from "@/shared/ui";
 import * as mt from "@maptiler/sdk";
 import "@maptiler/sdk/dist/maptiler-sdk.css";
@@ -8,6 +8,7 @@ import { useDebounceFn } from "@vueuse/core";
 import GeoJSON, { type GeoJsonProperties } from "geojson";
 import { Home, Minus, Plus } from "lucide-vue-next";
 import { markRaw, onMounted, onUnmounted, shallowRef, watch } from "vue";
+import { useMapStore } from "../model";
 import StationInfo from "./StationInfo.vue";
 
 const { stationsList, selectedStation, selectStation, getStations } =

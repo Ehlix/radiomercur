@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useFavoriteStore } from "@/entities/favorites";
+import { useFavoriteStore } from "../model";
 import { getFlagImage } from "@/shared/api";
 import { cn } from "@/shared/lib/utils/twMerge";
 import { XButton, XIcon, XImage } from "@/shared/ui";

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMapStore } from "@/entities/map";
+import { useMapStore } from "@/features/map";
 import { useBaseUrlsStore } from "@/entities/urls";
 import { WorldMap } from "@/features/map";
 import { XButton, XIcon, XProgress } from "@/shared/ui";

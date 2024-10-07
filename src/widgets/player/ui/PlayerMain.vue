@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useMapStore } from "@/entities/map";
 import { useUserStore } from "@/entities/user";
 import { ExtendedInfo } from "@/features/extendedInfo";
 import { AddToFavorite } from "@/features/favorites";
 import { HistoryList } from "@/features/history";
+import { useMapStore } from "@/features/map";
 import { getLSData, setLSData } from "@/shared/api";
 import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
 import { cn } from "@/shared/lib/utils/twMerge";

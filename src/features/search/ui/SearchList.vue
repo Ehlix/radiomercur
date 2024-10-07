@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSearchStore } from "@/entities/search";
+import { useSearchStore } from "../model";
 import { getFlagImage } from "@/shared/api";
 import { XButton, XIcon, XImage } from "@/shared/ui";
 import { Info, ListPlus, Play, Star, ThumbsUp } from "lucide-vue-next";

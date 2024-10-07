@@ -1,4 +1,6 @@
-export const routes = [
+import type { RouterOptions } from "vue-router";
+
+export const routes: RouterOptions["routes"] = [
   {
     path: "/",
     name: "home",
@@ -6,17 +8,16 @@ export const routes = [
   },
   {
     path: "/search",
-    name: "search",
     component: () => import("@/pages/search"),
   },
   {
     path: "/favorite",
-    name: "favorite",
+    name: "favorites",
     component: () => import("@/pages/favorites"),
   },
   {
     path: "/map",
-    name: "world map",
+    name: "map",
     component: () => import("@/pages/map"),
   },
 ];

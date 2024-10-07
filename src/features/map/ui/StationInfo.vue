@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMapStore } from "@/entities/map";
+import { useMapStore } from "../model";
 import { useUserStore } from "@/entities/user";
 import { ExtendedInfo } from "@/features/extendedInfo";
 import { getFlagImage } from "@/shared/api";

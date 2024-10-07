@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useFavoriteStore } from "@/entities/favorites";
+import { useFavoriteStore } from "../model";
 import { useUserStore } from "@/entities/user";
 import {
   DeleteAlert,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSearchStore } from "@/entities/search";
+import { useSearchStore } from "@/features/search";
 import { ExtendedInfo } from "@/features/extendedInfo";
 import { AddToFavorite } from "@/features/favorites";
 import { SearchBar, SearchList } from "@/features/search";

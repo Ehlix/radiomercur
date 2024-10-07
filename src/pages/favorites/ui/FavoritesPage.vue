@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useFavoriteStore } from "@/entities/favorites";
+import { useFavoriteStore } from "@/features/favorites";
 import { useUserStore } from "@/entities/user";
 import { ExtendedInfo } from "@/features/extendedInfo";
 import {

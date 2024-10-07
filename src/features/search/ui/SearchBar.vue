@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSearchStore } from "@/entities/search";
+import { useSearchStore } from "../model";
 import {
   SelectContent,
   SelectGroup,
