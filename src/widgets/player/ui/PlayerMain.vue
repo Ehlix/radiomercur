@@ -1,13 +1,6 @@
 <script setup lang="ts">
-import { useUserStore } from "@/entities/user";
-import { ExtendedInfo } from "@/features/extendedInfo";
-import { AddToFavorite } from "@/features/favorites";
-import { HistoryList } from "@/features/history";
-import { useMapStore } from "@/features/map";
-import { getLSData, setLSData } from "@/shared/api";
-import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
-import { cn } from "@/shared/lib/utils/twMerge";
-import { ShadowOverlay, XButton, XIcon, XImage, XSlider } from "@/shared/ui";
+import { computed, nextTick, onMounted, ref, watch } from "vue";
+import { useRouter } from "vue-router";
 import {
   Disc3,
   Info,
@@ -19,9 +12,18 @@ import {
   Volume2,
   VolumeX,
 } from "lucide-vue-next";
-import { computed, nextTick, onMounted, ref, watch } from "vue";
-import { useRouter } from "vue-router";
+
+import { useUserStore } from "@/entities/user";
+import { getLSData, setLSData } from "@/shared/api";
+import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
+import { cn } from "@/shared/lib/utils/twMerge";
+import { ShadowOverlay, XButton, XIcon, XImage, XSlider } from "@/shared/ui";
+import { ExtendedInfo } from "@/features/extendedInfo";
+import { AddToFavorite } from "@/features/favorites";
+import { HistoryList } from "@/features/history";
+import { useMapStore } from "@/features/map";
 import PlayerVisual from "./PlayerVisual.vue";
+
 
 const { selectStation } = useMapStore();
 const { selectedStation, playerVisualMode } = useUserStore();

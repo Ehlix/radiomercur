@@ -1,6 +1,8 @@
-import { createGlobalState } from "@vueuse/core";
-import { useUserStore } from "@/entities/user";
 import { computed, nextTick, ref } from "vue";
+import { createGlobalState } from "@vueuse/core";
+
+import { useUserStore } from "@/entities/user";
+
 
 export const useFavoriteStore = createGlobalState(() => {
   const userStore = useUserStore();

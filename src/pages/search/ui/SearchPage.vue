@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { useSearchStore } from "@/features/search";
-import { ExtendedInfo } from "@/features/extendedInfo";
-import { AddToFavorite } from "@/features/favorites";
-import { SearchBar, SearchList } from "@/features/search";
-import { XButton, XIcon, XProgress } from "@/shared/ui";
-import { Disc3, Frown } from "lucide-vue-next";
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import { Disc3, Frown } from "lucide-vue-next";
+
+import { XButton, XIcon, XProgress } from "@/shared/ui";
+import { ExtendedInfo } from "@/features/extendedInfo";
+import { AddToFavorite } from "@/features/favorites";
+import { SearchBar, SearchList, useSearchStore } from "@/features/search";
+
 
 const el = ref<HTMLElement | null>(null);
 

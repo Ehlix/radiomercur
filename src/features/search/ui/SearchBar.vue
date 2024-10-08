@@ -1,5 +1,15 @@
 <script setup lang="ts">
-import { useSearchStore } from "../model";
+import { ref, watch } from "vue";
+import {
+  ArrowDownNarrowWide,
+  ArrowDownWideNarrow,
+  Search,
+  Star,
+  ThumbsUp,
+  X,
+} from "lucide-vue-next";
+import { useDebounce } from "@vueuse/core";
+
 import {
   SelectContent,
   SelectGroup,
@@ -12,17 +22,9 @@ import {
   XInput,
   XSwitch,
 } from "@/shared/ui";
-import { useDebounce } from "@vueuse/core";
-import {
-  ArrowDownNarrowWide,
-  ArrowDownWideNarrow,
-  Search,
-  Star,
-  ThumbsUp,
-  X,
-} from "lucide-vue-next";
-import { ref, watch } from "vue";
+import { useSearchStore } from "../model";
 import ChooseCountry from "./ChooseCountry.vue";
+
 
 const { filters, updateFilters } = useSearchStore();
 const searchInput = ref<InstanceType<typeof XInput> | null>(null);

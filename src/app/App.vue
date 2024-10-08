@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { NavigationMain } from "@/features/navigation";
+import { RouterView } from "vue-router";
+
 import { ShadowOverlay } from "@/shared/ui";
+import { NavigationMain } from "@/features/navigation";
 import { AboutMain } from "@/widgets/about";
 import { PlayerMain } from "@/widgets/player";
 import { SettingsMain } from "@/widgets/settings";
-import { RouterView } from "vue-router";
 </script>
 
 <template>

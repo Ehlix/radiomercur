@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { useSearchStore } from "../model";
+import { Info, ListPlus, Play, Star, ThumbsUp } from "lucide-vue-next";
+
 import { getFlagImage } from "@/shared/api";
 import { XButton, XIcon, XImage } from "@/shared/ui";
-import { Info, ListPlus, Play, Star, ThumbsUp } from "lucide-vue-next";
+import { useSearchStore } from "../model";
+
 
 const { filters, stationsList, openDialog, selectStation } = useSearchStore();
 </script>

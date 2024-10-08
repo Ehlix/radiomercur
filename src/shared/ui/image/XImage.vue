@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { type HTMLAttributes, ref, watch } from "vue";
+
 import { cn } from "@/shared/lib/utils/twMerge";
 import { XLogo } from "@/shared/ui/logo";
-import { type HTMLAttributes, ref, watch } from "vue";
+
 
 const props = defineProps<{
   src: string | undefined | null;

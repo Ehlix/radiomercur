@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { useBaseUrlsStore } from "@/entities/urls";
-import { WorldMap, useMapStore } from "@/features/map";
-import { XButton, XIcon, XProgress } from "@/shared/ui";
-import { Disc3 } from "lucide-vue-next";
 import { useRouter } from "vue-router";
+import { Disc3 } from "lucide-vue-next";
+
+import { useBaseUrlsStore } from "@/entities/urls";
+import { XButton, XIcon, XProgress } from "@/shared/ui";
+import { useMapStore, WorldMap } from "@/features/map";
+
 
 const router = useRouter();
 const { stationsList, getStations, downloadProgress, loading } = useMapStore();

@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { type HTMLAttributes, computed } from "vue";
+import { computed, type HTMLAttributes } from "vue";
+import { ChevronDown } from "lucide-vue-next";
 import {
   SelectIcon,
   SelectTrigger,
   type SelectTriggerProps,
   useForwardProps,
 } from "radix-vue";
-import { ChevronDown } from "lucide-vue-next";
-import ShadowOverlay from "../shadowOverlay/ShadowOverlay.vue";
+
 import { cn } from "@/shared/lib/utils/twMerge";
+import ShadowOverlay from "../shadowOverlay/ShadowOverlay.vue";
+
 
 const props = defineProps<
   SelectTriggerProps & { class?: HTMLAttributes["class"] }

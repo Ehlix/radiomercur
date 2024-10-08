@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { type HTMLAttributes, computed } from "vue";
+import { computed, type HTMLAttributes } from "vue";
 import { TabsList, type TabsListProps } from "radix-vue";
+
 import { cn } from "@/shared/lib/utils/twMerge";
+
 
 const props = defineProps<
   TabsListProps & { class?: HTMLAttributes["class"] }

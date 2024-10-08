@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Github } from "lucide-vue-next";
+
 import {
   DialogContent,
   DialogDescription,
@@ -10,7 +12,6 @@ import {
   XIcon,
   XLogo,
 } from "@/shared/ui";
-import { Github } from "lucide-vue-next";
 </script>
 
 <template>

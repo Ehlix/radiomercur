@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { cn } from "@/shared/lib/utils/twMerge";
 import type { HTMLAttributes } from "vue";
+
+import { cn } from "@/shared/lib/utils/twMerge";
+
 
 type Props = {
   variant?: "1" | "2";

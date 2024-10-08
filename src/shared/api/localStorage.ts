@@ -30,7 +30,7 @@ export const validateLsData = (json: string): LocalStorageData | null => {
       },
     };
     return res;
-  } catch (error) {
+  } catch (_) {
     return null;
   }
 };

@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import { useFavoriteStore } from "@/features/favorites";
+import { ref } from "vue";
+import { ChevronsRight } from "lucide-vue-next";
+
 import { useUserStore } from "@/entities/user";
+import { XButton, XIcon } from "@/shared/ui";
 import { ExtendedInfo } from "@/features/extendedInfo";
 import {
   AddToFavorite,
   ChangePage,
   FavoriteList,
   FavoriteNav,
+  useFavoriteStore,
 } from "@/features/favorites";
-import { XButton, XIcon } from "@/shared/ui";
-import { ChevronsRight } from "lucide-vue-next";
-import { ref } from "vue";
+
 
 const userStore = useUserStore();
 const {

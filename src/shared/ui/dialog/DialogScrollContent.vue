@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { type HTMLAttributes, computed } from "vue";
+import { computed, type HTMLAttributes } from "vue";
+import { X } from "lucide-vue-next";
 import {
   DialogClose,
   DialogContent,
@@ -9,8 +10,9 @@ import {
   DialogPortal,
   useForwardPropsEmits,
 } from "radix-vue";
-import { X } from "lucide-vue-next";
+
 import { cn } from "@/shared/lib/utils/twMerge";
+
 
 const props = defineProps<
   DialogContentProps & { class?: HTMLAttributes["class"] }

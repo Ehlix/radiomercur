@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { ref } from "vue";
+import { Settings } from "lucide-vue-next";
+
 import { useUserStore } from "@/entities/user";
 import { getLSData, setLSData } from "@/shared/api";
 import { themes } from "@/shared/lib/static/themes";
@@ -13,8 +16,7 @@ import {
   XButton,
   XIcon,
 } from "@/shared/ui";
-import { Settings } from "lucide-vue-next";
-import { ref } from "vue";
+
 
 const ls = getLSData();
 

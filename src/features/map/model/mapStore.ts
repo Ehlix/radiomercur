@@ -1,8 +1,10 @@
 import { ref, shallowRef, watch } from "vue";
-import { getAllStations } from "@/shared/api/stations";
-import { useBaseUrlsStore } from "@/entities/urls";
 import type { AxiosProgressEvent } from "axios";
 import { createGlobalState, watchOnce } from "@vueuse/core";
+
+import { useBaseUrlsStore } from "@/entities/urls";
+import { getAllStations } from "@/shared/api/stations";
+
 
 export const useMapStore = createGlobalState(() => {
   const { baseUrl, mainServerIsActive, setBaseUrl } = useBaseUrlsStore();

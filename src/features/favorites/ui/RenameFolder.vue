@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { useFavoriteStore } from "../model";
+import { ref } from "vue";
+import { FolderPen, Pen, X } from "lucide-vue-next";
+
 import {
   DialogClose,
   DialogContent,
@@ -13,8 +15,8 @@ import {
   XIcon,
   XInput,
 } from "@/shared/ui";
-import { FolderPen, Pen, X } from "lucide-vue-next";
-import { ref } from "vue";
+import { useFavoriteStore } from "../model";
+
 
 const props = defineProps<{
   folderName: string;

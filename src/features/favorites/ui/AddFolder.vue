@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { useFavoriteStore } from "../model";
+import { ref } from "vue";
+import { FolderPen, FolderPlus, X } from "lucide-vue-next";
+
 import {
   DialogClose,
   DialogContent,
@@ -13,8 +15,8 @@ import {
   XInput,
 } from "@/shared/ui";
 import XButton from "@/shared/ui/button/XButton.vue";
-import { FolderPen, FolderPlus, X } from "lucide-vue-next";
-import { ref } from "vue";
+import { useFavoriteStore } from "../model";
+
 
 const { createNewFolder } = useFavoriteStore();
 const inputValue = ref<string>("");

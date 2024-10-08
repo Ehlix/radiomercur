@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { HTMLAttributes } from "vue";
+
 import {
   DialogContent,
   DialogDescription,
@@ -9,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/shared/ui/dialog";
 import DialogClose from "@/shared/ui/dialog/DialogClose.vue";
-import type { HTMLAttributes } from "vue";
+
 
 const props = defineProps<{
   title: string;

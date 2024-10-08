@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { type HTMLAttributes, computed } from "vue";
+import { computed, type HTMLAttributes } from "vue";
+import { Check } from "lucide-vue-next";
 import {
   SelectItem,
   SelectItemIndicator,
@@ -7,8 +8,9 @@ import {
   SelectItemText,
   useForwardProps,
 } from "radix-vue";
-import { Check } from "lucide-vue-next";
+
 import { cn } from "@/shared/lib/utils/twMerge";
+
 
 const props = defineProps<
   SelectItemProps & { class?: HTMLAttributes["class"] }

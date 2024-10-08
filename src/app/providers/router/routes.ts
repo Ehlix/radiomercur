@@ -1,7 +1,9 @@
 import type { RouterOptions } from "vue-router";
-import { MapPage } from "@/pages/map";
+
 import { FavoritesPage } from "@/pages/favorites";
+import { MapPage } from "@/pages/map";
 import { SearchPage } from "@/pages/search";
+
 
 export const routes: RouterOptions["routes"] = [
   {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type HTMLAttributes, computed } from "vue";
+import { computed, type HTMLAttributes } from "vue";
 import {
   SwitchRoot,
   type SwitchRootEmits,
@@ -7,8 +7,10 @@ import {
   SwitchThumb,
   useForwardPropsEmits,
 } from "radix-vue";
-import ShadowOverlay from "../shadowOverlay/ShadowOverlay.vue";
+
 import { cn } from "@/shared/lib/utils/twMerge";
+import ShadowOverlay from "../shadowOverlay/ShadowOverlay.vue";
+
 
 const props = defineProps<
   SwitchRootProps & { class?: HTMLAttributes["class"] }
