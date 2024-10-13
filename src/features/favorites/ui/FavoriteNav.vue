@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { useFavoriteStore } from "../model";
+import { computed } from "vue";
+import { Delete, Folder } from "lucide-vue-next";
+
 import { useUserStore } from "@/entities/user";
 import {
   DeleteAlert,
@@ -11,10 +13,10 @@ import {
   SelectValue,
   XIcon,
 } from "@/shared/ui";
-import { Delete, Folder } from "lucide-vue-next";
-import { computed } from "vue";
+import { useFavoriteStore } from "../model";
 import AddFolder from "./AddFolder.vue";
 import RenameFolder from "./RenameFolder.vue";
+
 
 const { deleteFolder, currentFolderId, changePageHandler } = useFavoriteStore();
 const { favoriteStations } = useUserStore();

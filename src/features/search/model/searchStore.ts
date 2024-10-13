@@ -1,9 +1,11 @@
+import { ref, shallowRef, watch } from "vue";
+import type { AxiosProgressEvent } from "axios";
+import { createGlobalState, watchOnce } from "@vueuse/core";
+
 import { useBaseUrlsStore } from "@/entities/urls";
 import { useUserStore } from "@/entities/user";
 import { getAllStations, getLSData, setLSData } from "@/shared/api";
-import { createGlobalState, watchOnce } from "@vueuse/core";
-import type { AxiosProgressEvent } from "axios";
-import { ref, shallowRef, watch } from "vue";
+
 
 export const useSearchStore = createGlobalState(() => {
   const { baseUrl, mainServerIsActive, setBaseUrl, baseUrlReload } =

@@ -6,6 +6,7 @@ import {
   useForwardPropsEmits,
 } from "radix-vue";
 
+
 const props = defineProps<DialogRootProps>();
 const emits = defineEmits<DialogRootEmits>();
 

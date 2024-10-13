@@ -1,13 +1,5 @@
-<script setup lang="ts">
-import { useUserStore } from "@/entities/user";
-import { ExtendedInfo } from "@/features/extendedInfo";
-import { AddToFavorite } from "@/features/favorites";
-import { HistoryList } from "@/features/history";
-import { useMapStore } from "@/features/map";
-import { getLSData, setLSData } from "@/shared/api";
-import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
-import { cn } from "@/shared/lib/utils/twMerge";
-import { ShadowOverlay, XButton, XIcon, XImage, XSlider } from "@/shared/ui";
+<script setup lang="ts">import { computed, ref, watch } from "vue";
+import { useRouter } from "vue-router";
 import {
   Disc3,
   Info,
@@ -19,24 +11,45 @@ import {
   Volume2,
   VolumeX,
 } from "lucide-vue-next";
-import { computed, nextTick, onMounted, ref, watch } from "vue";
-import { useRouter } from "vue-router";
+
+import { useUserStore } from "@/entities/user";
+import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
+import { cn } from "@/shared/lib/utils/twMerge";
+import { ShadowOverlay, XButton, XIcon, XImage, XSlider } from "@/shared/ui";
+import { ExtendedInfo } from "@/features/extendedInfo";
+import { AddToFavorite } from "@/features/favorites";
+import { HistoryList } from "@/features/history";
+import { useMapStore } from "@/features/map";
+import { usePlayer } from "../use/usePlayer";
 import PlayerVisual from "./PlayerVisual.vue";
+
+
+const MAX_VOLUME = 100;
+
+const dialogOpen = ref<"favorite" | "info" | false>(false);
+const player = ref<HTMLAudioElement | null>(null);
+const streamLink = ref<string | undefined>();
 
 const { selectStation } = useMapStore();
 const { selectedStation, playerVisualMode } = useUserStore();
-const player = ref<HTMLAudioElement | null>(null);
-const paused = ref<boolean>(true);
-const loading = ref<boolean>(false);
-const loadingError = ref<boolean>(false);
-const streamLink = ref<string | undefined>();
-const volume = ref([100]);
-const muteCache = ref([100]);
-const MAX_VOLUME = 100;
-const MIN_VOLUME = 0;
-const dialogOpen = ref<"favorite" | "info" | false>(false);
+const {
+  autoPlay,
+  isLoading,
+  isPaused,
+  errorHandler,
+  loadingError,
+  muteToggle,
+  play,
+  togglePlay,
+  volume,
+  wheelHandler,
+} = usePlayer(player, streamLink, MAX_VOLUME);
 
-const showIcon = computed(() => {
+const playHandler = () => {
+  togglePlay(selectedStation.value?.url_resolved);
+};
+
+const mutedIcon = computed(() => {
   if (volume.value[0] === 0) {
     return VolumeX;
   }
@@ -45,66 +58,6 @@ const showIcon = computed(() => {
   }
   return Volume2;
 });
-
-const pauseCheck = () => {
-  if (!player.value) {
-    return;
-  }
-  paused.value = player.value.paused;
-};
-
-const togglePlay = () => {
-  if (!player.value || !selectedStation.value || loading.value) {
-    return;
-  }
-  if (player.value.paused) {
-    streamLink.value = undefined;
-    nextTick(() => {
-      streamLink.value = selectedStation.value?.url_resolved;
-      loading.value = true;
-      loadingError.value = false;
-    });
-  } else {
-    player.value.pause();
-    streamLink.value = undefined;
-  }
-  pauseCheck();
-};
-
-const autoPlay = () => {
-  if (!player.value || !streamLink.value) {
-    return;
-  }
-  player.value.play();
-  loading.value = false;
-  pauseCheck();
-};
-
-const errorHandler = () => {
-  if (!player.value) {
-    return;
-  }
-  loading.value = false;
-  loadingError.value = true;
-};
-
-const wheelHandler = (event: WheelEvent) => {
-  if (event.deltaY < 0) {
-    volume.value = [Math.min(volume.value[0] + 2, MAX_VOLUME)];
-  }
-  if (event.deltaY > 0) {
-    volume.value = [Math.max(volume.value[0] - 2, MIN_VOLUME)];
-  }
-};
-
-const muteToggle = () => {
-  if (volume.value[0] === 0) {
-    volume.value = muteCache.value || [100];
-  } else {
-    muteCache.value = volume.value;
-    volume.value = [0];
-  }
-};
 
 const router = useRouter();
 
@@ -116,24 +69,10 @@ const goToMap = () => {
 };
 
 watch(selectedStation, () => {
-  player.value?.pause();
-  loading.value = false;
-  loadingError.value = false;
-  togglePlay();
+  const src = selectedStation.value?.url_resolved;
+  src && play(src);
 });
 
-watch([volume], () => {
-  if (!player.value) {
-    return;
-  }
-  player.value.volume = volume.value[0] / 100;
-  setLSData({ userSettings: { volume: volume.value[0] } });
-});
-
-onMounted(() => {
-  const lsData = getLSData();
-  volume.value = [lsData?.userSettings?.volume || 100];
-});
 </script>
 
 <template>
@@ -222,9 +161,9 @@ onMounted(() => {
           <div
             :class="
               cn('flex size-4 min-h-4 min-w-4 rounded-full bg-mc-3', {
-                'animate-pulse bg-mc-3': loading,
+                'animate-pulse bg-mc-3': isLoading,
                 'bg-red-500': loadingError,
-                'bg-green-600': !paused && !loading && !loadingError,
+                'bg-green-600': !isPaused && !isLoading && !loadingError,
               })
             "
           />
@@ -251,7 +190,7 @@ onMounted(() => {
         "
         variant="ghost"
         size="icon"
-        class="absolute right-0 top-0 z-40 flex h-5 w-6 min-w-6 max-w-6 items-center justify-center rounded bg-mc-1"
+        class="absolute right-0 top-0 z-40 flex h-5 w-6 min-w-6 max-w-6 items-center justify-center rounded bg-none"
         @click="goToMap"
       >
         <x-icon
@@ -271,23 +210,23 @@ onMounted(() => {
         >
           <!-- Play -->
           <x-button
-            v-show="!loading"
+            v-show="!isLoading"
             variant="ghost"
-            :disabled="loading"
+            :disabled="isLoading"
             class="pointer-events-auto size-12 min-w-12 max-w-12 rounded-full border-2 border-tc-1 stroke-[0.1rem] p-1 sm:size-10 sm:min-w-10 sm:max-w-10 sm:p-0.5"
-            @click="togglePlay()"
+            @click="playHandler()"
           >
             <x-icon
-              :icon="paused ? Play : Pause"
+              :icon="isPaused ? Play : Pause"
               :class="
                 cn('size-8 transition-transform', {
-                  'translate-x-[0.11rem]': !loading && paused,
+                  'translate-x-[0.11rem]': !isLoading && isPaused,
                 })
               "
             />
           </x-button>
           <x-icon
-            v-show="loading"
+            v-show="isLoading"
             :icon="Disc3"
             :stroke-width="0.8"
             class="size-14 animate-spin sm:size-12"
@@ -308,7 +247,7 @@ onMounted(() => {
               class="h-5 rounded-full"
               @click="muteToggle()"
             >
-              <x-icon :stroke-width="1.8" :size="22" :icon="showIcon" />
+              <x-icon :stroke-width="1.8" :size="22" :icon="mutedIcon" />
             </x-button>
           </div>
           <x-slider v-model="volume" :max="MAX_VOLUME" :step="1" class="pb-2" />
@@ -319,7 +258,7 @@ onMounted(() => {
       ref="player"
       :src="streamLink"
       crossorigin="anonymous"
-      @change="togglePlay()"
+      @change="playHandler()"
       @canplay="autoPlay()"
       @error="errorHandler()"
     />

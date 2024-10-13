@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { useFavoriteStore } from "../model";
-import { getFlagImage } from "@/shared/api";
-import { cn } from "@/shared/lib/utils/twMerge";
-import { XButton, XIcon, XImage } from "@/shared/ui";
+import { onMounted, onUnmounted, ref } from "vue";
 import {
   ChevronsDown,
   GripVertical,
@@ -13,7 +10,12 @@ import {
   Star,
   ThumbsUp,
 } from "lucide-vue-next";
-import { onMounted, onUnmounted, ref } from "vue";
+
+import { getFlagImage } from "@/shared/api";
+import { cn } from "@/shared/lib/utils/twMerge";
+import { XButton, XIcon, XImage } from "@/shared/ui";
+import { useFavoriteStore } from "../model";
+
 
 const {
   stationsList,

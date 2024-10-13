@@ -1,9 +1,12 @@
-import { inject } from "@vercel/analytics";
 import { createApp } from "vue";
+
+import { i18n } from "./providers/i18n";
 import App from "./App.vue";
 import { directives, router } from "./providers";
-import { i18n } from "./providers/i18n";
 import "./styles/index.css";
+
+import { inject } from "@vercel/analytics";
+
 
 const app = createApp(App);
 

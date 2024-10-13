@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { onUnmounted, ref } from "vue";
+import { FileDown, FileUp, FolderSync } from "lucide-vue-next";
+import { useDropZone } from "@vueuse/core";
+
 import {
   clearLSData,
   getLSData,
@@ -17,9 +21,7 @@ import {
   XButton,
   XIcon,
 } from "@/shared/ui";
-import { useDropZone } from "@vueuse/core";
-import { FileDown, FileUp, FolderSync } from "lucide-vue-next";
-import { onUnmounted, ref } from "vue";
+
 
 const dropZoneRef = ref<HTMLDivElement>();
 const errorMessage = ref<boolean>(false);

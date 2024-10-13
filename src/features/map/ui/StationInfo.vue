@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { useMapStore } from "../model";
+import { defineAsyncComponent, ref } from "vue";
+import { Info, ListPlus, Play, Star, ThumbsUp, ZoomIn } from "lucide-vue-next";
+
 import { useUserStore } from "@/entities/user";
-import { ExtendedInfo } from "@/features/extendedInfo";
 import { getFlagImage } from "@/shared/api";
 import { messages } from "@/shared/lib/locale/locale";
 import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
-import { XButton, XIcon, XImage, ShadowOverlay } from "@/shared/ui";
-import { Info, ListPlus, Play, Star, ThumbsUp, ZoomIn } from "lucide-vue-next";
-import { defineAsyncComponent, ref } from "vue";
+import { ShadowOverlay, XButton, XIcon, XImage } from "@/shared/ui";
+import { ExtendedInfo } from "@/features/extendedInfo";
+import { useMapStore } from "../model";
+
+
 const AddToFavorite = defineAsyncComponent(() =>
   import("@/features/favorites").then((model) => model.AddToFavorite),
 );

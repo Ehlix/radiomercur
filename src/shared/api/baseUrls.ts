@@ -24,7 +24,7 @@ export const getBaseUrls = async (): Promise<BaseURL[] | null> => {
         }
       }),
     );
-  } catch (error) {
+  } catch (_) {
     return null;
   }
 };

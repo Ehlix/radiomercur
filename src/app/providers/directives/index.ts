@@ -1,5 +1,7 @@
 import type { FunctionDirective } from "vue";
+
 import { tooltip } from "./tooltip";
+
 
 type Directive = {
   name: string;

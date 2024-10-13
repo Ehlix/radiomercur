@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Star, ThumbsUp } from "lucide-vue-next";
+
 import { useUserStore } from "@/entities/user";
 import { getFlagImage } from "@/shared/api";
 import { messages } from "@/shared/lib/locale/locale";
@@ -12,7 +14,7 @@ import {
   XIcon,
   XImage,
 } from "@/shared/ui";
-import { Star, ThumbsUp } from "lucide-vue-next";
+
 
 defineProps<{
   station: Station;

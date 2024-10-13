@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { type HTMLAttributes } from "vue";
+import { History } from "lucide-vue-next";
+
 import { useUserStore } from "@/entities/user";
-import { HistoryCard } from "@/features/history";
 import {
   DialogContent,
   DialogDescription,
@@ -10,8 +12,8 @@ import {
   DialogTrigger,
   XIcon,
 } from "@/shared/ui";
-import { History } from "lucide-vue-next";
-import { type HTMLAttributes } from "vue";
+import { HistoryCard } from "@/features/history";
+
 
 const { selectStation, historyList } = useUserStore();
 

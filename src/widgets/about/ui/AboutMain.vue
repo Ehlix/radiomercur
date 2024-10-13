@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Github } from "lucide-vue-next";
+
 import {
   DialogContent,
   DialogDescription,
@@ -6,11 +8,10 @@ import {
   DialogMain,
   DialogTitle,
   DialogTrigger,
+  ShadowOverlay,
   XIcon,
   XLogo,
-  ShadowOverlay,
 } from "@/shared/ui";
-import { Github } from "lucide-vue-next";
 </script>
 
 <template>
