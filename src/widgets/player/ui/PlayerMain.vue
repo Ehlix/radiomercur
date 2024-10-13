@@ -1,5 +1,4 @@
-<script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+<script setup lang="ts">import { computed, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import {
   Disc3,
@@ -14,7 +13,6 @@ import {
 } from "lucide-vue-next";
 
 import { useUserStore } from "@/entities/user";
-import { getLSData, setLSData } from "@/shared/api";
 import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
 import { cn } from "@/shared/lib/utils/twMerge";
 import { ShadowOverlay, XButton, XIcon, XImage, XSlider } from "@/shared/ui";
@@ -75,18 +73,6 @@ watch(selectedStation, () => {
   src && play(src);
 });
 
-watch([volume], () => {
-  if (!player.value) {
-    return;
-  }
-  player.value.volume = volume.value[0] / 100;
-  setLSData({ userSettings: { volume: volume.value[0] } });
-});
-
-onMounted(() => {
-  const lsData = getLSData();
-  volume.value = [lsData?.userSettings?.volume || 100];
-});
 </script>
 
 <template>
@@ -204,7 +190,7 @@ onMounted(() => {
         "
         variant="ghost"
         size="icon"
-        class="absolute right-0 top-0 z-40 flex h-5 w-6 min-w-6 max-w-6 items-center justify-center rounded bg-mc-1"
+        class="absolute right-0 top-0 z-40 flex h-5 w-6 min-w-6 max-w-6 items-center justify-center rounded bg-none"
         @click="goToMap"
       >
         <x-icon

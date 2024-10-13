@@ -24,6 +24,11 @@ export const usePlayerVisual = (
   analyser.connect(audioCtx.destination);
   const frequencyData = new Uint8Array(analyser.frequencyBinCount);
 
+  const setHeight = (value: number) => {
+    const newValue = value < 2 ? 2 : value > maxY ? maxY : value;
+    return newValue;
+  };
+
   const waveVisual = () => {
     const ctx = canvas?.getContext("2d");
     if (!ctx || !canvas) {
@@ -57,28 +62,28 @@ export const usePlayerVisual = (
       } else {
         topYCache[i] = freq;
       }
-      ctx.lineTo(i, topYCache[i]);
+      ctx.lineTo(i, setHeight(topYCache[i]));
     }
     ctx.stroke();
 
     ctx.beginPath();
     ctx.lineWidth = 2;
     for (let i = 0; i <= step; i += stepX) {
-      ctx.lineTo(maxX - i, topYCache[i]);
+      ctx.lineTo(maxX - i, setHeight(topYCache[i]));
     }
     ctx.stroke();
 
     ctx.beginPath();
     ctx.lineWidth = 4;
     for (let i = 0; i <= step; i += stepX) {
-      ctx.lineTo(i, maxY - frequencyData[i]);
+      ctx.lineTo(i, setHeight(maxY - frequencyData[i]));
     }
     ctx.stroke();
 
     ctx.beginPath();
     ctx.lineWidth = 4;
     for (let i = 0; i <= step; i += stepX) {
-      ctx.lineTo(maxX - i, maxY - frequencyData[i]);
+      ctx.lineTo(maxX - i, setHeight(maxY - frequencyData[i]));
     }
     ctx.stroke();
 
@@ -96,14 +101,14 @@ export const usePlayerVisual = (
       } else {
         bottomYCache2[i] = freq;
       }
-      ctx.lineTo(i, bottomYCache2[i]);
+      ctx.lineTo(i, setHeight(bottomYCache2[i]));
     }
     ctx.stroke();
 
     ctx.beginPath();
     ctx.lineWidth = 2;
     for (let i = 0; i <= step; i += stepX) {
-      ctx.lineTo(maxX - i, bottomYCache2[i]);
+      ctx.lineTo(maxX - i, setHeight(bottomYCache2[i]));
     }
     ctx.stroke();
     animationDisableId = requestAnimationFrame(waveVisual);

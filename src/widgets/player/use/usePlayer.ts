@@ -1,4 +1,6 @@
-import { nextTick, type Ref, ref } from "vue";
+import { nextTick, onMounted, type Ref, ref, watch } from "vue";
+
+import { getLSData, setLSData } from "@/shared/api";
 
 
 export const usePlayer = (
@@ -10,9 +12,9 @@ export const usePlayer = (
   const isLoading = ref<boolean>(false);
   const loadingError = ref<boolean>(false);
   const volume = ref([100]);
-  const muteCache = ref([100]);
   const MAX_VOLUME = maxVolume || 100;
   const MIN_VOLUME = 0;
+  const muteCache = [100];
 
   const pauseCheck = () => {
     if (!player.value) {
@@ -74,12 +76,25 @@ export const usePlayer = (
 
   const muteToggle = () => {
     if (volume.value[0] === 0) {
-      volume.value = muteCache.value || [100];
+      volume.value = muteCache || [100];
     } else {
-      muteCache.value = volume.value;
+      muteCache[0] = volume.value[0];
       volume.value = [0];
     }
   };
+
+  watch([volume], () => {
+    if (!player.value) {
+      return;
+    }
+    player.value.volume = volume.value[0] / 100;
+    setLSData({ userSettings: { volume: volume.value[0] } });
+  });
+
+  onMounted(() => {
+    const lsData = getLSData();
+    volume.value = [lsData?.userSettings?.volume || 100];
+  });
 
   return {
     isLoading,
