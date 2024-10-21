@@ -1,4 +1,5 @@
-<script setup lang="ts">import { computed, ref, watch } from "vue";
+<script setup lang="ts">
+import { computed, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import {
   Disc3,
@@ -72,7 +73,6 @@ watch(selectedStation, () => {
   const src = selectedStation.value?.url_resolved;
   src && play(src);
 });
-
 </script>
 
 <template>

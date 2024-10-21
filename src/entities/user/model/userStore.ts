@@ -9,6 +9,8 @@ import { generateId } from "@/shared/lib/utils/generateId";
 
 export const useUserStore = createGlobalState(() => {
   const { baseUrl } = useBaseUrlsStore();
+  const lsData = getLSData();
+
   const favoriteStations = ref<FavoriteStations>({
     default: { name: "default", stations: [] },
   });
@@ -18,7 +20,15 @@ export const useUserStore = createGlobalState(() => {
   const borders = ref<UserSettings["borders"]>("rounded");
   const playerVisualMode = ref<Required<UserSettings["playerVisualMode"]>>("1");
 
-  const lsData = getLSData();
+  const changeBorders = (mode: typeof borders.value) => {
+    borders.value = mode;
+    setLSData({ userSettings: { borders: mode } });
+    if (mode === "square") {
+      document.body.classList.add("not-rounded");
+    } else {
+      document.body.classList.remove("not-rounded");
+    }
+  };
 
   if (lsData) {
     historyList.value = lsData.historyStations;
@@ -40,8 +50,7 @@ export const useUserStore = createGlobalState(() => {
     locale.value = localeFromLS || localeFromNav;
 
     const borderFromLS = lsData.userSettings.borders;
-    borders.value = borderFromLS;
-    document.body.classList.add(borderFromLS);
+    changeBorders(borderFromLS);
 
     playerVisualMode.value = lsData.userSettings.playerVisualMode;
   }
@@ -129,16 +138,6 @@ export const useUserStore = createGlobalState(() => {
   }) => {
     if (favoriteStations.value[folderId]) {
       favoriteStations.value[folderId].name = name;
-    }
-  };
-
-  const changeBorders = (mode: typeof borders.value) => {
-    borders.value = mode;
-    setLSData({ userSettings: { borders: mode } });
-    if (mode === "square") {
-      document.body.classList.add("not-rounded");
-    } else {
-      document.body.classList.remove("not-rounded");
     }
   };
 
