@@ -1,24 +1,19 @@
 <script setup lang="ts">
-import { defineAsyncComponent, ref } from "vue";
-import { Info, ListPlus, Play, Star, ThumbsUp, ZoomIn } from "lucide-vue-next";
+import { Play, Star, ThumbsUp, ZoomIn } from "lucide-vue-next";
 
 import { useUserStore } from "@/entities/user";
 import { getFlagImage } from "@/shared/api";
 import { messages } from "@/shared/lib/locale/locale";
 import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
 import { ShadowOverlay, XButton, XIcon, XImage } from "@/shared/ui";
-import { ExtendedInfo } from "@/features/extendedInfo";
+import { ExtendedInfoWithTrigger } from "@/features/extendedInfo";
+import { AddToFavoriteWithTrigger } from "@/features/favorites";
 import { useMapStore } from "../model";
 
-
-const AddToFavorite = defineAsyncComponent(() =>
-  import("@/features/favorites").then((model) => model.AddToFavorite),
-);
 
 const { locale, selectStation } = useUserStore();
 const { selectedStation } = useMapStore();
 
-const dialogOpen = ref<"favorite" | "info" | false>(false);
 
 const emits = defineEmits({
   zoomIn: () => true,
@@ -46,23 +41,9 @@ const zoomIn = () => {
         {{ removeMetadata(selectedStation?.name || "Unknown") }}
       </h2>
       <!-- Extended Info -->
-      <x-button
-        class="ml-auto hidden w-8 min-w-8 max-w-8 p-0 sm:flex"
-        variant="ghost"
-        @click="dialogOpen = 'info'"
-      >
-        <extended-info
-          :open="dialogOpen === 'info'"
-          :station="selectedStation"
-          @close="dialogOpen = false"
-        />
-        <x-icon
-          :icon="Info"
-          :size="22"
-          :stroke-width="2"
-          class="cursor-pointer"
-        />
-      </x-button>
+      <extended-info-with-trigger
+        :station="selectedStation"
+      />
     </div>
     <div class="relative z-10 flex grow flex-col gap-2">
       <!-- Logo -->
@@ -178,23 +159,11 @@ const zoomIn = () => {
       <!-- Controls -->
       <div class="z-10 mt-auto flex justify-between gap-2">
         <!-- Add To Favorites -->
-        <x-button
+        <add-to-favorite-with-trigger
+          :station="selectedStation"
           class="h-10 min-w-10 max-w-10 p-0 *:text-bgc-1 sm:h-8 sm:min-w-8 sm:max-w-8"
-          @click="dialogOpen = 'favorite'"
-        >
-          <add-to-favorite
-            v-if="dialogOpen === 'favorite'"
-            :station="selectedStation"
-            :open="dialogOpen === 'favorite'"
-            @close="dialogOpen = false"
-          />
-          <x-icon
-            :icon="ListPlus"
-            :size="22"
-            :stroke-width="2"
-            class="cursor-pointer"
-          />
-        </x-button>
+          variant='default'
+        />
         <!-- Play -->
         <x-button
           class="z-10 mt-auto h-10 w-full p-0 *:text-bgc-1 sm:h-8"
