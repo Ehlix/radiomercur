@@ -3,8 +3,6 @@ import { computed, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import {
   Disc3,
-  Info,
-  ListPlus,
   MapPin,
   Pause,
   Play,
@@ -17,8 +15,8 @@ import { useUserStore } from "@/entities/user";
 import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
 import { cn } from "@/shared/lib/utils/twMerge";
 import { ShadowOverlay, XButton, XIcon, XImage, XSlider } from "@/shared/ui";
-import { ExtendedInfo } from "@/features/extendedInfo";
-import { AddToFavorite } from "@/features/favorites";
+import { ExtendedInfoWithTrigger } from "@/features/extendedInfo";
+import { AddToFavoriteWithTrigger } from "@/features/favorites";
 import { HistoryList } from "@/features/history";
 import { useMapStore } from "@/features/map";
 import { usePlayer } from "../use/usePlayer";
@@ -27,7 +25,6 @@ import PlayerVisual from "./PlayerVisual.vue";
 
 const MAX_VOLUME = 100;
 
-const dialogOpen = ref<"favorite" | "info" | false>(false);
 const player = ref<HTMLAudioElement | null>(null);
 const streamLink = ref<string | undefined>();
 
@@ -107,48 +104,12 @@ watch(selectedStation, () => {
         </p>
         <!-- History -->
         <history-list />
-        <!-- Add To Favorites -->
-        <x-button
-          v-if="selectedStation"
-          v-tooltip:right="$t('buttons.addFavorite')"
-          variant="ghost"
-          size="icon"
-          @click="dialogOpen = 'favorite'"
-        >
-          <add-to-favorite
-            v-if="dialogOpen === 'favorite'"
-            :station="selectedStation"
-            :open="dialogOpen === 'favorite'"
-            @close="dialogOpen = false"
-          />
-          <x-icon
-            :icon="ListPlus"
-            :size="22"
-            :stroke-width="2"
-            class="cursor-pointer"
-          />
-        </x-button>
-        <!-- Extra Info Trigger -->
-        <x-button
-          v-if="selectedStation"
-          v-tooltip="$t('stationCard.extendedInfo')"
-          variant="ghost"
-          size="icon"
-          @click="dialogOpen = 'info'"
-        >
-          <x-icon
-            :icon="Info"
-            :size="20"
-            :stroke-width="2"
-            class="cursor-pointer"
-          />
-          <extended-info
-            v-if="dialogOpen === 'info'"
-            :station="selectedStation"
-            :open="dialogOpen === 'info'"
-            @close="dialogOpen = false"
-          />
-        </x-button>
+        <add-to-favorite-with-trigger
+          :station="selectedStation"
+        />
+        <extended-info-with-trigger
+          :station="selectedStation"
+        />
       </div>
       <!-- Station name -->
       <div
