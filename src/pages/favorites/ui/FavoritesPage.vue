@@ -4,14 +4,14 @@ import { ChevronsRight } from "lucide-vue-next";
 
 import { useUserStore } from "@/entities/user";
 import { XButton, XIcon } from "@/shared/ui";
-import { ExtendedInfo } from "@/features/extendedInfo";
+import { ExtendedInfo } from "@/widgets/extendedInfo";
 import {
   AddToFavorite,
   ChangePage,
   FavoriteList,
   FavoriteNav,
   useFavoriteStore,
-} from "@/features/favorites";
+} from "@/widgets/favorites";
 
 
 const userStore = useUserStore();

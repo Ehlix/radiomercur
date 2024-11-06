@@ -8,7 +8,9 @@ import RenameFolder from "./RenameFolder.vue";
 
 
 const AddToFavorite = defineAsyncComponent(() => import("./AddToFavorite.vue"));
-const AddToFavoriteWithTrigger = defineAsyncComponent(() => import("./AddToFavoriteWithTrigger.vue"));
+const AddToFavoriteWithTrigger = defineAsyncComponent(
+  () => import("./AddToFavoriteWithTrigger.vue"),
+);
 
 export {
   AddFolder,
@@ -17,5 +19,5 @@ export {
   FavoriteList,
   FavoriteNav,
   RenameFolder,
-  AddToFavoriteWithTrigger
+  AddToFavoriteWithTrigger,
 };

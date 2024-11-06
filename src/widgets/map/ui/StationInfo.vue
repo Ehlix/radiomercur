@@ -6,14 +6,13 @@ import { getFlagImage } from "@/shared/api";
 import { messages } from "@/shared/lib/locale/locale";
 import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
 import { ShadowOverlay, XButton, XIcon, XImage } from "@/shared/ui";
-import { ExtendedInfoWithTrigger } from "@/features/extendedInfo";
-import { AddToFavoriteWithTrigger } from "@/features/favorites";
+import { ExtendedInfoWithTrigger } from "@/widgets/extendedInfo";
+import { AddToFavoriteWithTrigger } from "@/widgets/favorites";
 import { useMapStore } from "../model";
 
 
 const { locale, selectStation } = useUserStore();
 const { selectedStation } = useMapStore();
-
 
 const emits = defineEmits({
   zoomIn: () => true,
@@ -41,9 +40,7 @@ const zoomIn = () => {
         {{ removeMetadata(selectedStation?.name || "Unknown") }}
       </h2>
       <!-- Extended Info -->
-      <extended-info-with-trigger
-        :station="selectedStation"
-      />
+      <extended-info-with-trigger :station="selectedStation" />
     </div>
     <div class="relative z-10 flex grow flex-col gap-2">
       <!-- Logo -->
@@ -162,7 +159,7 @@ const zoomIn = () => {
         <add-to-favorite-with-trigger
           :station="selectedStation"
           class="h-10 min-w-10 max-w-10 p-0 *:text-bgc-1 sm:h-8 sm:min-w-8 sm:max-w-8"
-          variant='default'
+          variant="default"
         />
         <!-- Play -->
         <x-button

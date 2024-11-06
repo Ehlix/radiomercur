@@ -1,18 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import {
-  Info
-} from "lucide-vue-next";
+import { ref } from "vue";
+import { ListPlus } from "lucide-vue-next";
 
 import { type ButtonVariants, XButton, XIcon } from "@/shared/ui";
-import { ExtendedInfo } from '.';
+import { AddToFavorite } from ".";
 
 
 defineProps<{
-  station?: Station
-  variant?: ButtonVariants['variant']
-  size?: ButtonVariants['size']
-}>()
+  station?: Station;
+  variant?: ButtonVariants["variant"];
+  size?: ButtonVariants["size"];
+}>();
 
 const dialogOpen = ref(false);
 </script>
@@ -20,22 +18,22 @@ const dialogOpen = ref(false);
 <template>
   <x-button
     v-if="station"
-    v-tooltip="$t('stationCard.extendedInfo')"
+    v-tooltip:right="$t('buttons.addFavorite')"
     :variant="variant || 'ghost'"
     :size="size || 'icon'"
     @click="dialogOpen = true"
   >
-    <x-icon
-      :icon="Info"
-      :size="20"
-      :stroke-width="2"
-      class="cursor-pointer"
-    />
-    <extended-info
+    <add-to-favorite
       v-if="dialogOpen"
       :station="station"
       :open="dialogOpen"
       @close="dialogOpen = false"
+    />
+    <x-icon
+      :icon="ListPlus"
+      :size="22"
+      :stroke-width="2"
+      class="cursor-pointer"
     />
   </x-button>
 </template>

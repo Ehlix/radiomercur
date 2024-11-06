@@ -15,10 +15,10 @@ import { useUserStore } from "@/entities/user";
 import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
 import { cn } from "@/shared/lib/utils/twMerge";
 import { ShadowOverlay, XButton, XIcon, XImage, XSlider } from "@/shared/ui";
-import { ExtendedInfoWithTrigger } from "@/features/extendedInfo";
-import { AddToFavoriteWithTrigger } from "@/features/favorites";
-import { HistoryList } from "@/features/history";
-import { useMapStore } from "@/features/map";
+import { ExtendedInfoWithTrigger } from "@/widgets/extendedInfo";
+import { AddToFavoriteWithTrigger } from "@/widgets/favorites";
+import { HistoryList } from "@/widgets/history";
+import { useMapStore } from "@/widgets/map";
 import { usePlayer } from "../use/usePlayer";
 import PlayerVisual from "./PlayerVisual.vue";
 
@@ -104,12 +104,8 @@ watch(selectedStation, () => {
         </p>
         <!-- History -->
         <history-list />
-        <add-to-favorite-with-trigger
-          :station="selectedStation"
-        />
-        <extended-info-with-trigger
-          :station="selectedStation"
-        />
+        <add-to-favorite-with-trigger :station="selectedStation" />
+        <extended-info-with-trigger :station="selectedStation" />
       </div>
       <!-- Station name -->
       <div

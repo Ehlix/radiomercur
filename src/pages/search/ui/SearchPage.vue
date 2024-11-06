@@ -4,9 +4,9 @@ import { useRouter } from "vue-router";
 import { Disc3, Frown } from "lucide-vue-next";
 
 import { XButton, XIcon, XProgress } from "@/shared/ui";
-import { ExtendedInfo } from "@/features/extendedInfo";
-import { AddToFavorite } from "@/features/favorites";
-import { SearchBar, SearchList, useSearchStore } from "@/features/search";
+import { ExtendedInfo } from "@/widgets/extendedInfo";
+import { AddToFavorite } from "@/widgets/favorites";
+import { SearchBar, SearchList, useSearchStore } from "@/widgets/search";
 
 
 const el = ref<HTMLElement | null>(null);

@@ -12,7 +12,7 @@ import {
   DialogTrigger,
   XIcon,
 } from "@/shared/ui";
-import { HistoryCard } from "@/features/history";
+import HistoryCard from "./HistoryCard.vue";
 
 
 const { selectStation, historyList } = useUserStore();
