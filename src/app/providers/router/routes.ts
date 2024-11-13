@@ -25,4 +25,9 @@ export const routes: RouterOptions["routes"] = [
     name: "map",
     component: MapPage,
   },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    redirect: "/",
+  },
 ];
