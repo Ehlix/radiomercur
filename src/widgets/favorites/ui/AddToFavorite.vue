@@ -13,7 +13,6 @@ import {
   XIcon,
 } from "@/shared/ui";
 
-
 const props = defineProps<{
   station: Station;
   open: boolean;

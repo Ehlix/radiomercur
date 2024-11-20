@@ -19,7 +19,6 @@ import "@maptiler/sdk/dist/maptiler-sdk.css";
 
 import * as mt from "@maptiler/sdk";
 
-
 const StationInfo = defineAsyncComponent(() => import("./StationInfo.vue"));
 
 const { stationsList, selectedStation, selectStation, getStations } =

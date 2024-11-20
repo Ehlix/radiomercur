@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 
-
 type Props = {
   class?: HTMLAttributes["class"];
 };

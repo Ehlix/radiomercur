@@ -6,7 +6,6 @@ import FavoriteList from "./FavoriteList.vue";
 import FavoriteNav from "./FavoriteNav.vue";
 import RenameFolder from "./RenameFolder.vue";
 
-
 const AddToFavorite = defineAsyncComponent(() => import("./AddToFavorite.vue"));
 const AddToFavoriteWithTrigger = defineAsyncComponent(
   () => import("./AddToFavoriteWithTrigger.vue"),

@@ -8,7 +8,6 @@ import { ExtendedInfo } from "@/widgets/extendedInfo";
 import { AddToFavorite } from "@/widgets/favorites";
 import { SearchBar, SearchList, useSearchStore } from "@/widgets/search";
 
-
 const el = ref<HTMLElement | null>(null);
 
 const {

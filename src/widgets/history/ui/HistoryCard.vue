@@ -8,16 +8,14 @@ import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
 import XIcon from "@/shared/ui/icon/XIcon.vue";
 import XImage from "@/shared/ui/image/XImage.vue";
 
-
 defineProps<{
   station: Station;
 }>();
 
-const { locale } = useUserStore();
 const emit = defineEmits<{
   (e: "playHandler", station: Station): void;
 }>();
-
+const { locale } = useUserStore();
 const playHandler = (station: Station) => {
   emit("playHandler", station);
 };

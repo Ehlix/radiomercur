@@ -17,7 +17,6 @@ import {
 } from "@/shared/ui";
 import { useFavoriteStore } from "../model";
 
-
 const props = defineProps<{
   folderName: string;
   folderId: string;

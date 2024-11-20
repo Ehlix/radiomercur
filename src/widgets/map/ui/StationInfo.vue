@@ -10,13 +10,11 @@ import { ExtendedInfoWithTrigger } from "@/widgets/extendedInfo";
 import { AddToFavoriteWithTrigger } from "@/widgets/favorites";
 import { useMapStore } from "../model";
 
-
-const { locale, selectStation } = useUserStore();
-const { selectedStation } = useMapStore();
-
 const emits = defineEmits({
   zoomIn: () => true,
 });
+const { locale, selectStation } = useUserStore();
+const { selectedStation } = useMapStore();
 
 const zoomIn = () => {
   emits("zoomIn");

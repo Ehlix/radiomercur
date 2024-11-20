@@ -22,7 +22,6 @@ import {
   XIcon,
 } from "@/shared/ui";
 
-
 const dropZoneRef = ref<HTMLDivElement>();
 const errorMessage = ref<boolean>(false);
 

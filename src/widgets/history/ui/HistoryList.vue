@@ -14,12 +14,11 @@ import {
 } from "@/shared/ui";
 import HistoryCard from "./HistoryCard.vue";
 
-
-const { selectStation, historyList } = useUserStore();
-
 defineProps<{
   class?: HTMLAttributes["class"];
 }>();
+
+const { selectStation, historyList } = useUserStore();
 
 const playHandler = (station: Station) => {
   selectStation(station);

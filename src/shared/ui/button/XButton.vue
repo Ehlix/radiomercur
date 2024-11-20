@@ -5,7 +5,6 @@ import { Primitive, type PrimitiveProps } from "radix-vue";
 import { cn } from "@/shared/lib/utils/twMerge";
 import { type ButtonVariants, buttonVariants } from ".";
 
-
 interface Props extends PrimitiveProps {
   variant?: ButtonVariants["variant"];
   size?: ButtonVariants["size"];

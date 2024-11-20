@@ -1,6 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
 
-
 export { default as XButton } from "./XButton.vue";
 
 export const buttonVariants = cva(

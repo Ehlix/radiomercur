@@ -1,23 +1,30 @@
-import js from "@eslint/js";
-import eslintConfigPrettier from "eslint-config-prettier";
-import pluginVue from "eslint-plugin-vue";
-import ts from "typescript-eslint";
 import vueParser from "vue-eslint-parser";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
-import importPlugin from "eslint-plugin-import";
+import vue from "eslint-plugin-vue";
+import globals from "globals";
+import ts from "typescript-eslint";
+
+import js from "@eslint/js";
+import skipFormatting from "@vue/eslint-config-prettier/skip-formatting";
+import vueTsEslintConfig from "@vue/eslint-config-typescript";
 
 export default ts.config(
   js.configs.recommended,
   ...ts.configs.recommended,
-  importPlugin.flatConfigs.recommended,
-  ...pluginVue.configs["flat/recommended"],
+  ...vue.configs["flat/recommended"],
+  ...vueTsEslintConfig(),
+  skipFormatting,
   {
-    ignores: ["dist/**", "node_modules/**", "html/"],
-    files: ["src/**/*.vue", "src/**/*.js", "src/**/*.ts", "src/**/*.jsx", "src/**/*.tsx"],
+    ignores: ["**/dist/**", "**/dist-ssr/**", "**/coverage/**"],
+    files: ["**/*.{js,ts,mts,tsx,vue}"],
     languageOptions: {
       parser: vueParser,
       parserOptions: {
         parser: ts.parser,
+      },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
       },
     },
     plugins: {
@@ -38,9 +45,6 @@ export default ts.config(
           caughtErrorsIgnorePattern: "_",
         },
       ],
-      "import/newline-after-import": ["error", { count: 2 }],
-      //TODO need add path resolver
-      "import/no-unresolved": 'off',
       "simple-import-sort/imports": [
         "error",
         {
@@ -69,7 +73,24 @@ export default ts.config(
           ],
         },
       ],
+      "vue/block-lang": ["error", { script: { lang: "ts" } }],
+      "vue/block-order": [
+        "error",
+        { order: ["script[setup]", "template", "style[scoped]"] },
+      ],
+      "vue/define-macros-order": [
+        "error",
+        {
+          order: [
+            "defineOptions",
+            "defineModel",
+            "defineProps",
+            "defineEmits",
+            "defineSlots",
+          ],
+          defineExposeLast: true,
+        },
+      ],
     },
   },
-  eslintConfigPrettier,
 );

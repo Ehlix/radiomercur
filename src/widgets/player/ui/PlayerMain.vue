@@ -22,7 +22,6 @@ import { useMapStore } from "@/widgets/map";
 import { usePlayer } from "../use/usePlayer";
 import PlayerVisual from "./PlayerVisual.vue";
 
-
 const MAX_VOLUME = 100;
 
 const player = ref<HTMLAudioElement | null>(null);

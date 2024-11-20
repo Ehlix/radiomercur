@@ -5,7 +5,6 @@ import { getFlagImage } from "@/shared/api";
 import { XButton, XIcon, XImage } from "@/shared/ui";
 import { useSearchStore } from "../model";
 
-
 const { filters, stationsList, openDialog, selectStation } = useSearchStore();
 </script>
 

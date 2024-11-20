@@ -16,7 +16,6 @@ import {
 } from "@/shared/ui";
 import { useFavoriteStore } from "../model";
 
-
 const { currentPage, changePageHandler, STATIONS_PER_PAGE, totalStationCount } =
   useFavoriteStore();
 

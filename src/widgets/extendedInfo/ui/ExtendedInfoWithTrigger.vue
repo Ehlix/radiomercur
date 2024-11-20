@@ -5,7 +5,6 @@ import { Info } from "lucide-vue-next";
 import { type ButtonVariants, XButton, XIcon } from "@/shared/ui";
 import { ExtendedInfo } from ".";
 
-
 defineProps<{
   station?: Station;
   variant?: ButtonVariants["variant"];

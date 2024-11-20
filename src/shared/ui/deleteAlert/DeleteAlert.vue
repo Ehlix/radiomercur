@@ -12,7 +12,6 @@ import {
 } from "@/shared/ui/dialog";
 import DialogClose from "@/shared/ui/dialog/DialogClose.vue";
 
-
 const props = defineProps<{
   title: string;
   class?: HTMLAttributes["class"];

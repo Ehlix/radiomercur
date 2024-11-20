@@ -13,7 +13,6 @@ import {
   useFavoriteStore,
 } from "@/widgets/favorites";
 
-
 const userStore = useUserStore();
 const {
   currentFolderId,

@@ -8,7 +8,6 @@ import {
 
 import { cn } from "@/shared/lib/utils/twMerge";
 
-
 const props = withDefaults(
   defineProps<ProgressRootProps & { class?: HTMLAttributes["class"] }>(),
   {

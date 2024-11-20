@@ -17,7 +17,6 @@ import {
   XIcon,
 } from "@/shared/ui";
 
-
 const ls = getLSData();
 
 const currentTheme = ref<Theme>(ls?.userSettings?.colorTheme ?? "default");

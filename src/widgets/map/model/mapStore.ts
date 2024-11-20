@@ -5,7 +5,6 @@ import { createGlobalState, watchOnce } from "@vueuse/core";
 import { useBaseUrlsStore } from "@/entities/urls";
 import { getAllStations } from "@/shared/api/stations";
 
-
 export const useMapStore = createGlobalState(() => {
   const { baseUrl, mainServerIsActive, setBaseUrl } = useBaseUrlsStore();
   const selectedStation = shallowRef<Station>();

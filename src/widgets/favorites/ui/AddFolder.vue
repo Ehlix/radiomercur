@@ -17,7 +17,6 @@ import {
 import XButton from "@/shared/ui/button/XButton.vue";
 import { useFavoriteStore } from "../model";
 
-
 const { createNewFolder } = useFavoriteStore();
 const inputValue = ref<string>("");
 

@@ -6,7 +6,6 @@ import { useBaseUrlsStore } from "@/entities/urls";
 import { XButton, XIcon, XProgress } from "@/shared/ui";
 import { useMapStore, WorldMap } from "@/widgets/map";
 
-
 const router = useRouter();
 const { stationsList, getStations, downloadProgress, loading } = useMapStore();
 const { mainServerIsActive } = useBaseUrlsStore();

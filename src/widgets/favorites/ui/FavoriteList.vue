@@ -16,7 +16,6 @@ import { cn } from "@/shared/lib/utils/twMerge";
 import { XButton, XIcon, XImage } from "@/shared/ui";
 import { useFavoriteStore } from "../model";
 
-
 const {
   stationsList,
   updateStation,

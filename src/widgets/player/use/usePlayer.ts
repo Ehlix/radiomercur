@@ -2,7 +2,6 @@ import { nextTick, onMounted, type Ref, ref, watch } from "vue";
 
 import { getLSData, setLSData } from "@/shared/api";
 
-
 export const usePlayer = (
   player: Ref<HTMLAudioElement | null>,
   streamLink: Ref<string | undefined>,

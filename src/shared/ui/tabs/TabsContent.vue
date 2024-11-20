@@ -4,7 +4,6 @@ import { TabsContent, type TabsContentProps } from "radix-vue";
 
 import { cn } from "@/shared/lib/utils/twMerge";
 
-
 const props = defineProps<
   TabsContentProps & { class?: HTMLAttributes["class"] }
 >();

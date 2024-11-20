@@ -14,7 +14,6 @@ import {
 import { cn } from "@/shared/lib/utils/twMerge";
 import XIcon from "@/shared/ui/icon/XIcon.vue";
 
-
 const props = defineProps<
   DialogContentProps & { class?: HTMLAttributes["class"] }
 >();

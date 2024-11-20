@@ -4,7 +4,6 @@ import { SelectSeparator, type SelectSeparatorProps } from "radix-vue";
 
 import { cn } from "@/shared/lib/utils/twMerge";
 
-
 const props = defineProps<
   SelectSeparatorProps & { class?: HTMLAttributes["class"] }
 >();

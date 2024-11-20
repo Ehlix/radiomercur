@@ -25,7 +25,6 @@ import {
 import { useSearchStore } from "../model";
 import ChooseCountry from "./ChooseCountry.vue";
 
-
 const { filters, updateFilters } = useSearchStore();
 const searchInput = ref<InstanceType<typeof XInput> | null>(null);
 const searchValue = ref<string>();

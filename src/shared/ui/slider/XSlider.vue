@@ -10,7 +10,6 @@ import {
 
 import { cn } from "@/shared/lib/utils/twMerge";
 
-
 const props = defineProps<
   SliderRootProps & { class?: HTMLAttributes["class"] }
 >();

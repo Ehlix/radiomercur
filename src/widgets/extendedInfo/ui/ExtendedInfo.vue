@@ -15,17 +15,16 @@ import {
   XImage,
 } from "@/shared/ui";
 
-
 defineProps<{
   station: Station;
   open: boolean;
 }>();
 
-const { locale } = useUserStore();
-
 const emits = defineEmits<{
   (e: "close"): void;
 }>();
+
+const { locale } = useUserStore();
 
 const close = () => {
   emits("close");

@@ -17,7 +17,6 @@ import { useFavoriteStore } from "../model";
 import AddFolder from "./AddFolder.vue";
 import RenameFolder from "./RenameFolder.vue";
 
-
 const { deleteFolder, currentFolderId, changePageHandler } = useFavoriteStore();
 const { favoriteStations } = useUserStore();
 const allFoldersId = computed(() => Object.keys(favoriteStations.value));

@@ -12,10 +12,13 @@ import {
   SelectValue,
 } from "@/shared/ui";
 
-
 const props = defineProps<{
   countryCode?: string;
   class?: HTMLAttributes["class"];
+}>();
+
+const emits = defineEmits<{
+  (e: "changeCountryCode", value: string): void;
 }>();
 
 const { locale } = useUserStore();
@@ -25,10 +28,6 @@ const countries = computed(() =>
     return a[1] < b[1] ? -1 : 1;
   }),
 );
-
-const emits = defineEmits<{
-  (e: "changeCountryCode", value: string): void;
-}>();
 
 watchEffect(() => {
   emits("changeCountryCode", selected.value);

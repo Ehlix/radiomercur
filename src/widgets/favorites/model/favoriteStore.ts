@@ -3,7 +3,6 @@ import { createGlobalState } from "@vueuse/core";
 
 import { useUserStore } from "@/entities/user";
 
-
 export const useFavoriteStore = createGlobalState(() => {
   const userStore = useUserStore();
   const STATIONS_PER_PAGE = 35;

@@ -4,7 +4,6 @@ import { RouterLink, useRoute } from "vue-router";
 import { cn } from "@/shared/lib/utils/twMerge";
 import { ShadowOverlay } from "@/shared/ui";
 
-
 const route = useRoute();
 const variants = [
   {

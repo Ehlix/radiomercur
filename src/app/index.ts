@@ -6,7 +6,6 @@ import "./styles/index.css";
 
 import { inject } from "@vercel/analytics";
 
-
 const app = createApp(App);
 
 directives.forEach((directive) => {

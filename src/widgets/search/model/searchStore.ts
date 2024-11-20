@@ -6,7 +6,6 @@ import { useBaseUrlsStore } from "@/entities/urls";
 import { useUserStore } from "@/entities/user";
 import { getAllStations, getLSData, setLSData } from "@/shared/api";
 
-
 export const useSearchStore = createGlobalState(() => {
   const { baseUrl, mainServerIsActive, setBaseUrl, baseUrlReload } =
     useBaseUrlsStore();
