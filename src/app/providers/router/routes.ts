@@ -4,7 +4,6 @@ import { FavoritesPage } from "@/pages/favorites";
 import { MapPage } from "@/pages/map";
 import { SearchPage } from "@/pages/search";
 
-
 export const routes: RouterOptions["routes"] = [
   {
     path: "/",
@@ -24,5 +23,10 @@ export const routes: RouterOptions["routes"] = [
     path: "/map",
     name: "map",
     component: MapPage,
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    redirect: "/",
   },
 ];

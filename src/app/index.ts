@@ -1,17 +1,15 @@
 import { createApp } from "vue";
 
-import { i18n } from "./providers/i18n";
 import App from "./App.vue";
-import { directives, router } from "./providers";
+import { directives, i18n, router } from "./providers";
 import "./styles/index.css";
 
 import { inject } from "@vercel/analytics";
 
-
 const app = createApp(App);
 
-directives.forEach((d) => {
-  app.directive(d.name, d.directive);
+directives.forEach((directive) => {
+  app.directive(directive.name, directive);
 });
 
 app.use(router);

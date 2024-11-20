@@ -12,7 +12,6 @@ import {
 import { cn } from "@/shared/lib/utils/twMerge";
 import { SelectScrollDownButton, SelectScrollUpButton } from ".";
 
-
 defineOptions({
   inheritAttrs: false,
 });

@@ -8,7 +8,6 @@ import {
 
 import { cn } from "@/shared/lib/utils/twMerge";
 
-
 const props = defineProps<
   DialogDescriptionProps & { class?: HTMLAttributes["class"] }
 >();

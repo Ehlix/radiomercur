@@ -4,7 +4,6 @@ import { SelectGroup, type SelectGroupProps } from "radix-vue";
 
 import { cn } from "@/shared/lib/utils/twMerge";
 
-
 const props = defineProps<
   SelectGroupProps & { class?: HTMLAttributes["class"] }
 >();

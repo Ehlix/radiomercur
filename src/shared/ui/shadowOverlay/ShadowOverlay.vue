@@ -3,7 +3,6 @@ import type { HTMLAttributes } from "vue";
 
 import { cn } from "@/shared/lib/utils/twMerge";
 
-
 type Props = {
   variant?: "1" | "2";
   class?: HTMLAttributes["class"];

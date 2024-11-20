@@ -4,7 +4,6 @@ import { TabsTrigger, type TabsTriggerProps, useForwardProps } from "radix-vue";
 
 import { cn } from "@/shared/lib/utils/twMerge";
 
-
 const props = defineProps<
   TabsTriggerProps & { class?: HTMLAttributes["class"] }
 >();

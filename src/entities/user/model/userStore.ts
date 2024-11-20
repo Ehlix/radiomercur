@@ -6,7 +6,6 @@ import { getLSData, setLSData } from "@/shared/api/localStorage";
 import { getStationInfoById } from "@/shared/api/stations";
 import { generateId } from "@/shared/lib/utils/generateId";
 
-
 export const useUserStore = createGlobalState(() => {
   const { baseUrl } = useBaseUrlsStore();
   const lsData = getLSData();

@@ -4,7 +4,6 @@ import { SelectLabel, type SelectLabelProps } from "radix-vue";
 
 import { cn } from "@/shared/lib/utils/twMerge";
 
-
 const props = defineProps<
   SelectLabelProps & { class?: HTMLAttributes["class"] }
 >();

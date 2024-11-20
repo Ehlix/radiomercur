@@ -11,7 +11,6 @@ import {
 
 import { cn } from "@/shared/lib/utils/twMerge";
 
-
 const props = defineProps<
   SelectItemProps & { class?: HTMLAttributes["class"] }
 >();

@@ -1,6 +1,5 @@
 import { onUnmounted, type Ref, watch } from "vue";
 
-
 export const usePlayerVisual = (
   canvas: HTMLCanvasElement,
   player: HTMLAudioElement,

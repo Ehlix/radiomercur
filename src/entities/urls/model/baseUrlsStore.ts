@@ -3,7 +3,6 @@ import { createGlobalState } from "@vueuse/core";
 
 import { getBaseUrls } from "@/shared/api/baseUrls";
 
-
 export const useBaseUrlsStore = createGlobalState(() => {
   const mainServerIsActive = ref(true);
   const allBaseUrls = ref<BaseURL[]>([]);

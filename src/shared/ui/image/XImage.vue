@@ -4,7 +4,6 @@ import { type HTMLAttributes, ref, watch } from "vue";
 import { cn } from "@/shared/lib/utils/twMerge";
 import { XLogo } from "@/shared/ui/logo";
 
-
 const props = defineProps<{
   src: string | undefined | null;
   alt?: string;

@@ -3,7 +3,6 @@ import { onMounted, ref, toRef } from "vue";
 
 import { usePlayerVisual } from "../use/usePlayerVisual";
 
-
 const props = defineProps<{
   player: HTMLAudioElement;
   mode: "1" | "2";

@@ -2,7 +2,6 @@ import axios, { AxiosError, type AxiosProgressEvent } from "axios";
 
 import { removeMetadata } from "@/shared/lib/utils/removeMetaDataFromName";
 
-
 let stationsController: AbortController | undefined;
 
 const getStations = async (

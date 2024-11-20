@@ -11,7 +11,6 @@ import {
 import { cn } from "@/shared/lib/utils/twMerge";
 import ShadowOverlay from "../shadowOverlay/ShadowOverlay.vue";
 
-
 const props = defineProps<
   SwitchRootProps & { class?: HTMLAttributes["class"] }
 >();
