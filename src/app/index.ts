@@ -8,8 +8,8 @@ import { inject } from "@vercel/analytics";
 
 const app = createApp(App);
 
-directives.forEach((directive) => {
-  app.directive(directive.name, directive);
+directives.forEach(({ name, directive }) => {
+  app.directive(name, directive);
 });
 
 app.use(router);
